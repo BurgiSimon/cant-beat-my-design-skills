@@ -1,0 +1,343 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mist — Make every workflow smarter with AI</title>
+  <meta name="description" content="Bring your tools, data, and workflows together. Automate repetitive tasks and help your team focus on what matters." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300&family=Inter:opsz,wght@14..32,400..500&display=swap" rel="stylesheet" />
+  <link rel="preload" as="image" href="assets/mountains.webp" />
+  <style>
+    :root {
+      /* palette sampled from the reference design */
+      --sky-0: #26115a;
+      --sky-1: #2a1560;
+      --sky-2: #2f1769;
+      --sky-3: #381c73;
+      --sky-4: #442282;
+      --sky-5: #58309d;
+      --text: #ffffff;
+      --text-soft: #c3b0e3;      /* paragraph */
+      --text-muted: #beade0;     /* "Backed by" */
+      --text-nav: #b4aac4;       /* inactive nav links */
+      --head-from: #bea4e4;      /* headline gradient start */
+      --glass: rgba(255, 255, 255, 0.1);
+      --glass-active: rgba(255, 255, 255, 0.075);
+      --cta-bg: #ffffff;
+      --cta-text: #1b1922;
+      --antler: #e5141f;
+
+      --gutter: clamp(16px, 5vw, 72px);
+      --font: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      --font-display: "DM Sans", "Inter", ui-sans-serif, system-ui, sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { margin: 0; }
+    body {
+      background: var(--sky-0);
+      color: var(--text);
+      font-family: var(--font);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizeLegibility;
+    }
+    a { color: inherit; text-decoration: none; }
+
+    /* ---------- Hero shell + scenery ---------- */
+    .hero {
+      position: relative;
+      /* fill the viewport, but on short screens grow enough to show the
+         landscape (crop ≤ 15%) below the copy */
+      min-height: max(100vh, calc(330px + 100vw / 2.2575 * 0.85));
+      min-height: max(100svh, calc(330px + 100vw / 2.2575 * 0.85));
+      overflow: hidden;
+      isolation: isolate;
+      background:
+        radial-gradient(62% 52% at 100% 56%, rgba(170, 68, 200, 0.5), transparent 82%),
+        radial-gradient(85% 55% at 72% 60%, rgba(125, 55, 185, 0.2), transparent 85%),
+        radial-gradient(42% 30% at 55% 62%, rgba(165, 90, 230, 0.42), transparent 75%),
+        linear-gradient(180deg,
+          var(--sky-0) 0%,
+          var(--sky-1) 17%,
+          var(--sky-2) 31%,
+          var(--sky-3) 43%,
+          var(--sky-4) 51%,
+          var(--sky-5) 58%,
+          #6a3db2 66%);
+    }
+
+    .scene {
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    /* The landscape keeps the illustration's aspect ratio (2560×1134) when it
+       fits (e.g. 1440×1024); on short screens it is capped so the peaks stay
+       below the copy, and on tall/narrow screens it grows and crops around
+       the hiker. */
+    .land {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: max(46%, min(calc(100vw / 2.2575), 66%, calc(100% - 330px)));
+    }
+    .land img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: 72% 35%;
+      display: block;
+    }
+
+    /* film grain across the whole frame */
+    .grain {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      pointer-events: none;
+      opacity: 0.16;
+      mix-blend-mode: overlay;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+
+    /* ---------- Navigation ---------- */
+    .nav {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: stretch;
+      gap: 16px;
+      padding: 32px var(--gutter) 0;
+      height: calc(32px + 47px);
+    }
+    .brand,
+    .links,
+    .signin {
+      background: var(--glass);
+      -webkit-backdrop-filter: blur(12px);
+      backdrop-filter: blur(12px);
+    }
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0 36px;
+      font-size: 18px;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+    }
+    .brand svg { width: 21px; height: 21px; flex: none; }
+
+    .links {
+      display: flex;
+      align-items: stretch;
+      padding: 5px;
+    }
+    .links a {
+      display: inline-flex;
+      align-items: center;
+      padding: 0 18px;
+      font-size: 16px;
+      color: var(--text-nav);
+      transition: color 0.2s, background-color 0.2s;
+    }
+    .links a:hover { color: var(--text); }
+    .links a[aria-current="page"] {
+      color: var(--text);
+      background: var(--glass-active);
+    }
+
+    .signin {
+      margin-left: auto;
+      display: inline-flex;
+      align-items: center;
+      padding: 0 21px;
+      font-size: 17px;
+      font-weight: 450;
+      transition: background-color 0.2s;
+    }
+    .signin:hover { background: rgba(255, 255, 255, 0.16); }
+
+    /* ---------- Hero copy ---------- */
+    .hero__content {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: 1fr minmax(0, 478px);
+      gap: 48px;
+      align-items: start;
+      padding: clamp(56px, 14vh, 143px) var(--gutter) 0;
+    }
+
+    .backed {
+      margin: 0;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0 6px;
+      font-size: 15px;
+      line-height: 20px;
+      color: var(--text-muted);
+    }
+    .backed a {
+      color: #f4e8fe;
+      text-decoration: underline;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+      margin: 0 3px;
+    }
+    .backed a:hover { color: #fff; }
+    .backed .antler {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      margin-left: 4px;
+    }
+    .backed .antler a { margin: 0; }
+    .backed .antler svg { width: 12px; height: 12px; flex: none; transform: translateY(1px); }
+
+    h1 {
+      margin: 17px 0 0;
+      font-family: var(--font-display);
+      font-size: 68px;
+      line-height: 70px;
+      font-weight: 300;
+      letter-spacing: -0.014em;
+      color: transparent;
+      background: linear-gradient(90deg, var(--head-from) 0, #fff 5.95em);
+      -webkit-background-clip: text;
+      background-clip: text;
+    }
+    h1 .line { display: block; }
+
+    .aside p {
+      margin: 0;
+      max-width: 470px;
+      font-size: 22px;
+      line-height: 27px;
+      letter-spacing: 0;
+      color: var(--text-soft);
+    }
+    .cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 25px;
+      height: 58px;
+      padding: 0 28px;
+      background: var(--cta-bg);
+      color: var(--cta-text);
+      font-size: 21px;
+      font-weight: 500;
+      letter-spacing: -0.012em;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .cta:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 30px -10px rgba(20, 8, 50, 0.6);
+    }
+
+    a:focus-visible {
+      outline: 2px solid #fff;
+      outline-offset: 3px;
+    }
+
+    /* ---------- Responsive ---------- */
+    @media (max-width: 1100px) {
+      h1 { font-size: clamp(46px, 5.95vw, 68px); line-height: 1.03; }
+      .hero__content { grid-template-columns: 1fr minmax(0, 380px); }
+    }
+    @media (max-width: 860px) {
+      .hero__content {
+        grid-template-columns: 1fr;
+        gap: 28px;
+        padding-top: 72px;
+      }
+      .aside { max-width: 480px; }
+    }
+    @media (max-width: 720px) {
+      .nav { padding-top: 16px; height: calc(16px + 44px); gap: 8px; }
+      .links { display: none; }
+      .brand { padding: 0 20px; }
+      .signin { padding: 0 18px; font-size: 16px; }
+      .hero__content { padding-top: 48px; gap: 24px; }
+      h1 { font-size: clamp(40px, 11vw, 56px); line-height: 1.04; margin-top: 14px; }
+      h1 .line { display: inline; }
+      .aside p { font-size: 17px; line-height: 1.45; }
+      .cta { margin-top: 24px; height: 52px; font-size: 18px; padding: 0 24px; }
+      .hero { min-height: 100vh; min-height: 100svh; }
+      .land { height: 46%; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * { transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="hero">
+    <div class="scene" aria-hidden="true">
+      <div class="land">
+        <img src="assets/mountains.webp" alt="" width="2560" height="1134" decoding="async" fetchpriority="high" />
+      </div>
+    </div>
+    <div class="grain" aria-hidden="true"></div>
+
+    <header class="nav">
+      <a class="brand" href="#" aria-label="Mist home">
+        <svg viewBox="0 0 20 20" aria-hidden="true">
+          <defs><clipPath id="logo-clip"><circle cx="10" cy="10" r="10" /></clipPath></defs>
+          <g clip-path="url(#logo-clip)" fill="currentColor">
+            <rect x="0" y="0" width="20" height="3.6" />
+            <rect x="0" y="5.5" width="20" height="3.6" />
+            <rect x="0" y="11" width="20" height="3.6" />
+            <rect x="0" y="16.4" width="20" height="3.6" />
+          </g>
+        </svg>
+        Mist
+      </a>
+      <nav class="links" aria-label="Primary">
+        <a href="#" aria-current="page">Platform</a>
+        <a href="#">Pricing</a>
+        <a href="#">Features</a>
+        <a href="#">Use cases</a>
+      </nav>
+      <a class="signin" href="#">Sign in</a>
+    </header>
+
+    <main class="hero__content">
+      <div class="intro">
+        <p class="backed">
+          <span>Backed by</span>
+          <a href="#">Blackbird</a>
+          <span>and</span>
+          <span class="antler">
+            <svg viewBox="0 0 12 12" aria-hidden="true">
+              <rect width="12" height="12" fill="var(--antler)" />
+              <path d="M6 2.7 9.1 8.9H2.9Z" fill="none" stroke="#fff" stroke-width="1.3" stroke-linejoin="miter" />
+            </svg>
+            <a href="#">Antler</a>
+          </span>
+        </p>
+        <h1>
+          <span class="line">Make every workflow</span>
+          <span class="line">smarter with AI.</span>
+        </h1>
+      </div>
+
+      <div class="aside">
+        <p>Bring your tools, data, and workflows together. Automate repetitive tasks and help your team focus on what matters.</p>
+        <a class="cta" href="#">Start Free Trial</a>
+      </div>
+    </main>
+  </div>
+</body>
+</html>
