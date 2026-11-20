@@ -53,8 +53,12 @@ GitHub Pages (Settings → Pages → Source: GitHub Actions).
 - Progressive enhancement: everything readable without JavaScript; widgets are keyboard-complete with
   correct ARIA; `prefers-reduced-motion` turns all motion off.
 - Responsive from 360px to wide desktop; no horizontal overflow.
-- Self-hosted variable fonts, responsive WebP art, preloaded hero image, cache-busted assets.
-- Favicon (adapts to light/dark tabs), touch icons, web manifest, Open Graph image, sitemap, robots.
+- Self-hosted variable fonts (subset to Latin plus arrows, ⌘ and tabular figures), responsive WebP
+  art, preloaded hero image, minified and cache-busted CSS.
+- Favicon (adapts to light/dark tabs), touch icons, web manifest, Open Graph image, sitemap, robots,
+  FAQ and product structured data.
+- Deep links land instantly (smooth scrolling switches on after load); print styles hide the fixed
+  chrome and keep headings legible.
 
 ## Credits
 

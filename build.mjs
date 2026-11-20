@@ -100,6 +100,30 @@ async function resolveIncludes(html, stack) {
   return parts.join("");
 }
 
+/** Conservative CSS minify: drop comments (keeps /*! banners) and indentation/blank lines.
+ *  String contents are left untouched; whitespace inside values is never collapsed. */
+function minifyCss(input) {
+  let out = "";
+  for (let i = 0; i < input.length; i++) {
+    const c = input[i];
+    if (c === '"' || c === "'") {
+      const start = i;
+      for (i++; i < input.length && input[i] !== c; i++) if (input[i] === "\\") i++;
+      out += input.slice(start, i + 1);
+    } else if (c === "/" && input[i + 1] === "*") {
+      const end = input.indexOf("*/", i + 2);
+      const stop = end === -1 ? input.length : end + 2;
+      if (input[i + 2] === "!") out += input.slice(i, stop);
+      i = stop - 1;
+    } else out += c;
+  }
+  return out
+    .split("\n")
+    .map((line) => line.trim())
+    .filter(Boolean)
+    .join("\n");
+}
+
 function replaceTokens(text, tokens) {
   return text.replace(/\{\{(SITE_URL|BASE|VERSION|YEAR)\}\}/g, (_, key) => tokens[key]);
 }
@@ -117,7 +141,8 @@ async function build() {
   const cssChunks = await Promise.all(
     cssFiles.map(async (f) => `/* ── ${path.basename(f)} ── */\n${(await fs.readFile(f, "utf8")).trim()}\n`)
   );
-  const css = `/*! Mist — built ${new Date().toISOString().slice(0, 10)} */\n${cssChunks.join("\n")}`;
+  const bundle = `/*! Mist — built ${new Date().toISOString().slice(0, 10)} */\n${cssChunks.join("\n")}`;
+  const css = SERVE ? bundle : minifyCss(bundle);
   await fs.mkdir(path.join(OUT, "css"), { recursive: true });
   await fs.writeFile(path.join(OUT, "css", "styles.css"), css);
 
