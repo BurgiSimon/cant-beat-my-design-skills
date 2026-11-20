@@ -1,0 +1,201 @@
+/* ────────────────────────────────────────────────────────────
+   Hero — matched to the reference design at 1440×1024
+   ──────────────────────────────────────────────────────────── */
+.hero {
+  position: relative;
+  /* fill the viewport, but on short screens grow enough to show the
+     landscape (crop ≤ 15%) below the copy */
+  min-height: max(100vh, calc(330px + 100vw / 2.2575 * 0.85));
+  min-height: max(100svh, calc(330px + 100vw / 2.2575 * 0.85));
+  padding-top: var(--header-h);
+  overflow: hidden;
+  isolation: isolate;
+  background: radial-gradient(62% 52% at 100% 56%, rgba(170, 68, 200, 0.5), transparent 82%),
+    radial-gradient(85% 55% at 72% 60%, rgba(125, 55, 185, 0.2), transparent 85%),
+    radial-gradient(42% 30% at 55% 62%, rgba(165, 90, 230, 0.42), transparent 75%),
+    linear-gradient(
+      180deg,
+      var(--sky-0) 0%,
+      var(--sky-1) 17%,
+      var(--sky-2) 31%,
+      var(--sky-3) 43%,
+      var(--sky-4) 51%,
+      var(--sky-5) 58%,
+      var(--sky-6) 66%
+    );
+}
+/* melt the black valley floor into the page background */
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: 72px;
+  z-index: -1;
+  pointer-events: none;
+  background: linear-gradient(180deg, transparent, var(--bg));
+}
+
+.hero__scene {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+/* The landscape keeps the illustration's aspect ratio (2560×1134) when it
+   fits (e.g. 1440×1024); on short screens it is capped so the peaks stay
+   below the copy, and on tall/narrow screens it grows and crops around
+   the hiker. */
+.hero__land {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: max(46%, min(calc(100vw / 2.2575), 66%, calc(100% - 330px)));
+}
+.hero__land img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 72% 35%;
+  transform: translate3d(0, var(--parallax, 0px), 0);
+  will-change: transform;
+}
+
+.hero__content {
+  display: grid;
+  grid-template-columns: 1fr minmax(0, 478px);
+  gap: 48px;
+  align-items: start;
+  padding-top: clamp(56px, 14vh, 143px);
+}
+
+.backed {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0 6px;
+  font-size: 15px;
+  line-height: 20px;
+  color: #beade0;
+}
+.backed a {
+  margin: 0 3px;
+  color: #f4e8fe;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  transition: color var(--dur-fast);
+}
+.backed a:hover {
+  color: #fff;
+}
+.backed__antler {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-left: 4px;
+}
+.backed__antler a {
+  margin: 0;
+}
+.backed__antler svg {
+  width: 12px;
+  height: 12px;
+  flex: none;
+  transform: translateY(1px);
+}
+
+.hero__title {
+  margin-top: 17px;
+}
+.hero__title .line {
+  display: block;
+}
+
+.hero__aside p {
+  max-width: 470px;
+  font-size: 22px;
+  line-height: 27px;
+  color: var(--text-soft);
+}
+.hero__cta {
+  margin-top: 25px;
+}
+
+/* Entrance */
+@media (prefers-reduced-motion: no-preference) {
+  .js .hero [data-hero-in] {
+    animation: hero-in 1100ms var(--ease-out) both;
+    animation-delay: calc(140ms + var(--d, 0) * 90ms);
+  }
+  .js .hero__land {
+    animation: land-in 1800ms var(--ease-out) both;
+  }
+}
+@keyframes hero-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+}
+@keyframes land-in {
+  from {
+    opacity: 0;
+    transform: translateY(56px);
+  }
+}
+
+@media (max-width: 1100px) {
+  .hero .display {
+    font-size: clamp(46px, 5.95vw, 68px);
+    line-height: 1.03;
+  }
+  .hero__content {
+    grid-template-columns: 1fr minmax(0, 380px);
+  }
+}
+@media (max-width: 860px) {
+  .hero__content {
+    grid-template-columns: 1fr;
+    gap: 28px;
+    padding-top: 72px;
+  }
+  .hero__aside {
+    max-width: 480px;
+  }
+}
+@media (max-width: 720px) {
+  .hero {
+    min-height: 100vh;
+    min-height: 100svh;
+  }
+  .hero__content {
+    padding-top: 48px;
+    gap: 24px;
+  }
+  .hero .display {
+    font-size: clamp(40px, 11vw, 56px);
+    line-height: 1.04;
+  }
+  .hero__title {
+    margin-top: 14px;
+  }
+  .hero__title .line {
+    display: inline;
+  }
+  .hero__aside p {
+    font-size: 17px;
+    line-height: 1.45;
+  }
+  .hero__cta {
+    --btn-h: 52px;
+    margin-top: 24px;
+    padding: 0 24px;
+    font-size: 18px;
+  }
+  .hero__land {
+    height: 46%;
+  }
+}

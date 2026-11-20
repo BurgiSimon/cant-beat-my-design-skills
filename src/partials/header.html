@@ -1,0 +1,71 @@
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header" data-header>
+  <div class="site-header__inner container">
+    <a class="brand" href="./" aria-label="Mist home">
+      <svg viewBox="0 0 20 20" aria-hidden="true">
+        <defs><clipPath id="brand-clip"><circle cx="10" cy="10" r="10" /></clipPath></defs>
+        <g clip-path="url(#brand-clip)" fill="currentColor">
+          <rect x="0" y="0" width="20" height="3.6" />
+          <rect x="0" y="5.5" width="20" height="3.6" />
+          <rect x="0" y="11" width="20" height="3.6" />
+          <rect x="0" y="16.4" width="20" height="3.6" />
+        </g>
+      </svg>
+      Mist
+    </a>
+    <nav class="links" aria-label="Primary" data-nav>
+      <span class="links__pill" aria-hidden="true"></span>
+      <a href="./#platform" data-nav="platform">Platform</a>
+      <a href="./#pricing" data-nav="pricing">Pricing</a>
+      <a href="./#features" data-nav="features">Features</a>
+      <a href="./#use-cases" data-nav="use-cases">Use cases</a>
+    </nav>
+    <div class="site-header__end">
+      <a class="signin" href="signin.html">Sign in</a>
+      <button class="menu-toggle" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="mobile-menu" data-menu-open>
+        <span class="sr-only">Open menu</span>
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h16M4 16h16" /></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<dialog class="mobile-menu" id="mobile-menu" aria-label="Site menu" data-menu>
+  <div class="mobile-menu__panel">
+    <div class="mobile-menu__art" aria-hidden="true">
+      <img src="assets/img/mountains-1280.webp" alt="" width="1280" height="567" loading="lazy" decoding="async" />
+    </div>
+    <div class="mobile-menu__top">
+      <a class="brand" href="./" aria-label="Mist home">
+        <svg viewBox="0 0 20 20" aria-hidden="true">
+          <defs><clipPath id="menu-brand-clip"><circle cx="10" cy="10" r="10" /></clipPath></defs>
+          <g clip-path="url(#menu-brand-clip)" fill="currentColor">
+            <rect x="0" y="0" width="20" height="3.6" />
+            <rect x="0" y="5.5" width="20" height="3.6" />
+            <rect x="0" y="11" width="20" height="3.6" />
+            <rect x="0" y="16.4" width="20" height="3.6" />
+          </g>
+        </svg>
+        Mist
+      </a>
+      <button class="mobile-menu__close" type="button" data-menu-close>
+        <span class="sr-only">Close menu</span>
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" /></svg>
+      </button>
+    </div>
+    <nav aria-label="Mobile">
+      <ol class="mobile-menu__links">
+        <li style="--i: 0"><a href="./#platform" data-nav="platform"><span class="mobile-menu__num">01</span><span class="mobile-menu__label">Platform</span></a></li>
+        <li style="--i: 1"><a href="./#features" data-nav="features"><span class="mobile-menu__num">02</span><span class="mobile-menu__label">Features</span></a></li>
+        <li style="--i: 2"><a href="./#use-cases" data-nav="use-cases"><span class="mobile-menu__num">03</span><span class="mobile-menu__label">Use cases</span></a></li>
+        <li style="--i: 3"><a href="./#pricing" data-nav="pricing"><span class="mobile-menu__num">04</span><span class="mobile-menu__label">Pricing</span></a></li>
+        <li style="--i: 4"><a href="./#faq" data-nav="faq"><span class="mobile-menu__num">05</span><span class="mobile-menu__label">FAQ</span></a></li>
+      </ol>
+    </nav>
+    <div class="mobile-menu__actions">
+      <a class="btn btn--primary btn--block" href="signup.html">Start Free Trial</a>
+      <a class="btn btn--glass btn--block" href="signin.html">Sign in</a>
+    </div>
+    <p class="mobile-menu__note">14-day free trial · No credit card required</p>
+  </div>
+</dialog>
