@@ -27,19 +27,25 @@ jobs:
         uses: actions/checkout@v7
 
       - name: Configure Pages
+        id: pages
         uses: actions/configure-pages@v6
 
-      # Publish only the site files, not repo metadata.
-      - name: Assemble site
-        run: |
-          mkdir -p _site
-          cp index.html _site/
-          cp -R assets _site/
+      - name: Set up Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22
+
+      # Zero-dependency build: resolves includes, bundles CSS, writes sitemap/robots.
+      - name: Build site
+        run: node build.mjs
+        env:
+          SITE_URL: ${{ steps.pages.outputs.base_url }}
+          BASE_PATH: ${{ steps.pages.outputs.base_path }}
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v5
         with:
-          path: _site
+          path: dist
 
       - name: Deploy
         id: deployment
