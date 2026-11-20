@@ -17,6 +17,11 @@
     gsap.defaults({ ease: 'power3.out', duration: 0.9 });
     if (reduce) gsap.globalTimeline.timeScale(1000); // anything that still animates resolves instantly
   }
+  // Reduced motion: nothing scrubs or reveals on scroll, and an enabled ScrollTrigger keeps a
+  // requestAnimationFrame loop (plus a sync interval) running for good. Switch it off and don't
+  // hand it out: every module already has its no-ScrollTrigger path.
+  const ST = reduce ? null : (window.ScrollTrigger || null);
+  if (reduce && window.ScrollTrigger) { try { window.ScrollTrigger.disable(); } catch (e) { /* noop */ } }
 
   /* ---------- tiny event bus ---------- */
   const bus = new Map();
@@ -25,11 +30,15 @@
   const emit = (name, data) => { emitted.set(name, data); (bus.get(name) || []).forEach(fn => { try { fn(data); } catch (e) { console.error('[FX]', name, e); } }); };
   const once = (name, fn) => { if (emitted.has(name)) { fn(emitted.get(name)); return () => {}; } const off = on(name, d => { off(); fn(d); }); return off; };
 
-  /* ---------- Lenis smooth scroll, driven by the GSAP ticker ---------- */
+  /* ---------- Lenis smooth scroll, driven by the GSAP ticker ----------
+     Only where it smooths something: wheel / trackpad input on a fine pointer. On touch-first
+     devices (syncTouch is off, phones send no wheel) it would only add non-passive window
+     touch listeners that make every touch scroll wait on the main thread; native scrolling,
+     window.scrollTo smooth anchors and the overflow lock below cover it there. */
   let lenis = null;
-  if (!reduce && hasGsap && typeof window.Lenis !== 'undefined') {
+  if (!reduce && finePointer && hasGsap && typeof window.Lenis !== 'undefined') {
     lenis = new Lenis({ lerp: 0.095, wheelMultiplier: 1, smoothWheel: true, syncTouch: false, autoRaf: false });
-    if (window.ScrollTrigger) lenis.on('scroll', ScrollTrigger.update);
+    if (ST) lenis.on('scroll', ST.update);
     gsap.ticker.add(t => lenis.raf(t * 1000));
     gsap.ticker.lagSmoothing(0);
     root.classList.add('fx-smooth'); // not 'has-lenis': Lenis strips /lenis(-\w+)?/ from <html> class names
@@ -37,9 +46,19 @@
 
   /* ---------- scroll state (velocity, direction) — works with or without Lenis ---------- */
   const scroll = { y: scrollY, velocity: 0, direction: 1, progress: 0 };
+  // scroll range: Lenis' own cached limit, else measured once per layout change (never a layout read per scroll frame)
+  let maxScroll = -1;
+  if (!lenis) {
+    const stale = () => { maxScroll = -1; };
+    addEventListener('resize', stale, { passive: true });
+    addEventListener('load', stale);
+    if ('ResizeObserver' in window) new ResizeObserver(stale).observe(root);
+  }
   const readScroll = (e) => {
     const y = e && typeof e.scroll === 'number' ? e.scroll : scrollY;
-    const max = Math.max(1, document.documentElement.scrollHeight - innerHeight);
+    let max;
+    if (e && typeof e.limit === 'number') max = Math.max(1, e.limit);
+    else { if (maxScroll < 0) maxScroll = Math.max(1, root.scrollHeight - innerHeight); max = maxScroll; }
     scroll.velocity = e && typeof e.velocity === 'number' ? e.velocity : y - scroll.y;
     if (y !== scroll.y) scroll.direction = y > scroll.y ? 1 : -1;
     scroll.y = y; scroll.progress = Math.min(1, Math.max(0, y / max));
@@ -92,10 +111,10 @@
   document.addEventListener('visibilitychange', () => emit('visibility', !document.hidden));
 
   /* ---------- refresh ScrollTrigger once everything (fonts, images) has settled ---------- */
-  addEventListener('load', () => { if (window.ScrollTrigger) ScrollTrigger.refresh(); emit('load'); });
+  addEventListener('load', () => { if (ST) ST.refresh(); emit('load'); });
 
   window.FX = {
-    gsap: window.gsap, ScrollTrigger: window.ScrollTrigger, SplitText: window.SplitText, lenis,
+    gsap: window.gsap, ScrollTrigger: ST, SplitText: window.SplitText, lenis,
     reduce, finePointer, hasGsap,
     on, once, emit, scroll, pointer, lock, unlock, scrollTo, isDesktop, unit, ready, whenVisible,
     // the intro module emits 'intro:start', 'intro:hero' (progress 0..1), and finally 'intro:done'.

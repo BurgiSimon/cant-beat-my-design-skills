@@ -49,3 +49,14 @@ html.fx-reveals .stats blockquote::before{content:"";position:absolute;top:0;bot
 html.fx-reveals .stats.rv-rule-off::before,
 html.fx-reveals .stat.rv-rule-off::after{scale:0 1}
 html.fx-reveals .stats blockquote.rv-bar-off::before{scale:1 0}
+
+/* ---------- feature tab change ----------
+   app.js fades the outgoing copy out (.swap-out, .3s). Here it lifts away
+   instead of sinking, so the whole change reads as one upward flow with the
+   incoming lines rising through their masks. The way back is instant: the
+   swap lands while the block is all but transparent and its new lines are
+   already parked below their masks, so there is no counter-move to see. */
+html.fx-reveals .tab-copy.swap-out,
+html.fx-reveals .feat-list.swap-out{transform:translateY(-6u)}
+html.fx-reveals .tab-copy:not(.swap-out),
+html.fx-reveals .feat-list:not(.swap-out){transition:opacity .3s}

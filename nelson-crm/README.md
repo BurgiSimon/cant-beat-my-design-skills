@@ -10,7 +10,11 @@ A 1:1 recreation of a CRM landing-page design by [@uisabor](https://x.com/uisabo
 
 Every effect resolves to the exact resting state of the design. Each one is turned off under
 `prefers-reduced-motion`, limited to a mouse or trackpad where it is pointer-driven, and the page still
-works if it fails.
+works if it fails. Smooth scrolling (Lenis) runs only with a mouse or trackpad; touch devices keep native scrolling.
+
+The final pass was an adversarial audit (performance, accessibility, cross-module state, touch, art direction)
+followed by fixes: skip link and `<main>` landmark, roving-tabindex tabs and segmented control, announced
+newsletter errors, forced-colors selection states, no redundant WebGL redraws, and no idle loops under reduced motion.
 
 | Module | What it adds |
 | --- | --- |
@@ -20,7 +24,7 @@ works if it fails.
 | `reveals` | Masked line reveals, clip reveals on imagery, counters, timeline draw, word-by-word statement scrub |
 | `cursor` | Blend-mode cursor, hover disc, magnetic buttons, text-roll labels, subtle 3D tilt on the chart and dashboard |
 | `marquee` | Logo strip that speeds up and reverses with scroll velocity, slows on hover |
-| `live` | Tab auto-advance with progress, chart bar hover, live lead ticker, export and newsletter micro-flows, link and focus polish |
+| `live` | One auto-advance tour of the feature tabs (mouse only, pauses on hover/focus), chart bar hover, live lead ticker, export and newsletter micro-flows, link and focus polish |
 | `ascii` | Canvas ASCII night-cloud field behind "How it works", with a decode sweep and a pointer lens |
 
 ## Build

@@ -40,7 +40,9 @@ def logos_html():
         )
     cells.append('<div class="logo-cell">' + CLAY_SVG.format(w=u(92), h=u(26), x=u(-38), y=u(2)) + "</div>")
     first = "\n    ".join(cells)
-    dup = "\n    ".join(c.replace('alt="', 'aria-hidden="true" alt="') for c in cells)
+    # the second set only exists for the seamless loop: hide each whole cell from AT
+    # (the clay logo is an inline <svg role="img"> with aria-label, not an <img alt>)
+    dup = "\n    ".join(c.replace('<div class="logo-cell">', '<div class="logo-cell" aria-hidden="true">', 1) for c in cells)
     return first + "\n    " + dup
 
 BAR_X = [15, 58.6, 101.7, 144.8, 188.5, 232, 275]

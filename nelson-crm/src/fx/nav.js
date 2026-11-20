@@ -104,17 +104,20 @@
   /* ------------------------------------------------------------------
      3. active section → menu link (blue number + dot, aria-current)
      ------------------------------------------------------------------ */
+  // A section is current from the moment its top passes 55% of the viewport until the
+  // next one's does (the last section whose top is above that line). Tracked with an
+  // IntersectionObserver on the band above the line: no ScrollTrigger instances, so under
+  // reduced motion nothing keeps a frame loop alive, and it works without GSAP too.
   safe('sections', () => {
-    const ST = FX.ScrollTrigger;
     const secs = SECTIONS
       .map(id => ({ id, el: document.getElementById(id), a: links.find(l => l.getAttribute('href') === '#' + id) }))
       .filter(s => s.el && s.a);
-    if (!ST || !FX.hasGsap || !secs.length) return;
+    if (!secs.length || !('IntersectionObserver' in window)) return;
     let current = null;
-    const triggers = [];
+    const passed = secs.map(() => false);
     const pick = () => {
       let id = null;
-      triggers.forEach((t, i) => { if (t.isActive) id = secs[i].id; });
+      for (let i = secs.length; i--;) if (passed[i]) { id = secs[i].id; break; }
       if (id === current) return;
       current = id;
       secs.forEach(s => {
@@ -123,17 +126,21 @@
         if (on) s.a.setAttribute('aria-current', 'location'); else s.a.removeAttribute('aria-current');
       });
     };
-    secs.forEach((s, i) => {
-      const next = secs[i + 1];
-      triggers.push(ST.create({
-        trigger: s.el,
-        start: 'top 55%',
-        endTrigger: next ? next.el : s.el,
-        end: next ? 'top 55%' : 'bottom top',
-        onToggle: safe('sections:toggle', pick),
-      }));
-    });
-    pick();
+    // An instant jump (reduced motion, Home/End, a hash) can carry a section from above the
+    // viewport to below the band without it ever intersecting, so no entry reports it. So the
+    // untracked blocks between the sections are observed too (some observed element is always
+    // in the band, so every jump produces at least one entry), and each callback re-derives
+    // every section's state from its rect. Runs only when something crosses the band.
+    const io = new IntersectionObserver(safe('sections:io', entries => {
+      const rb = entries[0] && entries[0].rootBounds;
+      const line = rb ? rb.bottom : innerHeight * 0.55;
+      secs.forEach((s, i) => { passed[i] = s.el.getBoundingClientRect().top < line; });
+      pick();
+    }), { rootMargin: '0px 0px -45% 0px', threshold: 0 });
+    const tracked = secs.map(s => s.el);
+    tracked.concat(Array.from(document.querySelectorAll('.hero, main > *'))
+      .filter(el => !tracked.some(t => t === el || t.contains(el) || el.contains(t))))
+      .forEach(el => io.observe(el));
   })();
 
   /* ------------------------------------------------------------------
@@ -172,7 +179,7 @@
      ------------------------------------------------------------------ */
   FX.once('intro:done', safe('sticky', () => {
     if (!gsap) return;
-    let mode = 'abs', shown = true, geo = null, tween = null, reach = 0;
+    let mode = 'abs', shown = true, geo = null, tween = null, reach = 0, pad = 12;
     let lastY = window.scrollY, turnY = lastY, dir = 0;
 
     const tidy = () => { if (nav.getAttribute('style') === '') nav.removeAttribute('style'); };
@@ -201,11 +208,14 @@
       geo = { left: nr.left, width: nr.width, h: nr.height || 1, top: hr.top + sy + insetTop };
       // how far below the nav's top edge the open menu panel reaches (layout offsets: transform-free)
       reach = brand && menu ? brand.offsetTop + menu.offsetTop + menu.offsetHeight : geo.h;
+      // the floating boxes' drop shadow (nav.css: 0 16u 36u -18u, the menu panel's alike) reaches
+      // ~34u below them: clear that too, or a grey smudge stays at the top of every white section
+      pad = 12 + 36 * (FX.unit() || 1);
       if (wasFixed) fix();
     };
-    // far enough up that nothing (not even the button's antialiased edge, or an open
-    // menu panel fading out) peeks in
-    const hiddenPct = () => -Math.max(140, (geo.top + (menuOpen() ? Math.max(reach, geo.h) : geo.h) + 12) / geo.h * 100);
+    // far enough up that nothing (not even the button's antialiased edge, the drop shadows, or
+    // an open menu panel fading out) peeks in
+    const hiddenPct = () => -Math.max(140, (geo.top + (menuOpen() ? Math.max(reach, geo.h) : geo.h) + pad) / geo.h * 100);
     const settle = () => { if (mode === 'abs' && shown) { gsap.set(nav, { clearProps: 'transform' }); tidy(); } };
     const animate = (pct, dur, ease, done) => {
       if (tween) tween.kill();
@@ -236,7 +246,7 @@
         // the absolute nav has long left the viewport at this point: switching while hidden is invisible.
         // With the menu open, wait until the panel has scrolled out too, then close it unseen
         // (otherwise the panel would jump and hang below the hidden nav).
-        if (y > THRESHOLD && !(menuOpen() && geo.top + reach + 12 > y)) { toFixedHidden(y); closeMenu(); }
+        if (y > THRESHOLD && !(menuOpen() && geo.top + reach + pad > y)) { toFixedHidden(y); closeMenu(); }
       } else if (y < 1) {
         // back at the very top: fixed and absolute placements coincide
         mode = 'abs';

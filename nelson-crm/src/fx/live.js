@@ -1,17 +1,23 @@
 /* ==========================================================================
    fx/live — small "alive" details and interaction polish
 
-   • tabs     feature tabs auto-advance every 7s while #features is in view,
-              the page is visible and the desktop pill exists (≥1100px).
+   • tabs     (fine pointer) feature tabs auto-advance every 7s while
+              #features is in view, the page is visible and the desktop pill
+              exists (≥1100px).
               Progress: a 2px brand-blue line inside the white .tab-pill that
               grows 0→100%, fades as the pill slides on, restarts. Hover over
-              the section (or keyboard focus inside it) freezes it; any click
-              or keydown on .tabs stops it for good.
+              the section (or keyboard focus inside it) freezes it; any press
+              inside the section, or a keydown on .tabs, stops it for good.
+              It tours every tab once and comes to rest back on the first one
+              (the design's state), so the copy never keeps changing under
+              someone reading it (2.2.2). Touch has no hover to hold it, so
+              coarse pointers get no auto-advance at all.
    • chart    (fine pointer) hovering a weekday column highlights that bar
               through APP.drawChart — the blue bar, the dashed guide and the
               label pill glide to it (the pill with a FLIP on its `translate`,
               timed like the guide's own CSS transition); leaving the chart
-              restores the current tab's highlight. Tab changes glide too.
+              restores the current tab's highlight. Tab changes glide too,
+              on every device (touch included).
    • leads    every 6–11s while the dashboard card is on screen, "+1,540"
               grows by 1–3 with a tiny upward roll and a soft green flash.
    • export   click: spinner replaces the arrow (1.1s) → "Exported" + drawn
@@ -20,8 +26,10 @@
    • form     subscribe error: horizontal shake + red ring; success: the
               chevron gives way to a drawn check while app.js shows "Thanks!".
    • polish   social arrows loop through on hover (second arrow injected);
-              the eyebrow dot pulses only while #process is on screen; the
-              rest is pure CSS in live.css.
+              the eyebrow dot pulses only while #process is on screen; touch
+              screens get designed :active press states instead of the UA tap
+              flash (a passive touchstart lets WebKit apply them); the rest is
+              pure CSS in live.css.
 
    Reduced motion: no auto-advance, no counters, no shakes, no loops; state
    changes (export / subscribe / chart highlight) happen instantly.
@@ -77,7 +85,9 @@
      TABS — auto-advance + progress line in the pill
      ====================================================================== */
   function initTabs() {
-    if (REDUCE || !gsap || !APP || typeof APP.selectTab !== 'function' || typeof APP.currentTab !== 'function') return;
+    // a fine pointer only: hovering is how a reader holds the copy still. Touch (and a screen
+    // reader's virtual cursor on a tablet) has no such pause, so there the tabs simply wait
+    if (REDUCE || !FX.finePointer || !gsap || !APP || typeof APP.selectTab !== 'function' || typeof APP.currentTab !== 'function') return;
     const sec = $('#features'), tabsEl = sec && $('.tabs', sec), pill = tabsEl && $('.tab-pill', tabsEl);
     if (!pill) return;
     const count = (APP.TABS && APP.TABS.length) || $$('.tab', tabsEl).length;
@@ -94,7 +104,7 @@
 
     const mq = matchMedia('(min-width: 1100px)');     // the pill only exists in the desktop composition
     const st = { stopped: false, intro: false, view: false, hover: false, focus: false };
-    let run = null, auto = false;
+    let run = null, auto = false, steps = 0;
     const live = () => !st.stopped && st.intro && st.view && !document.hidden && mq.matches;
     const update = () => { if (run) run.paused(!(live() && !st.hover && !st.focus)); };
 
@@ -111,6 +121,8 @@
       if (st.stopped) return;
       auto = true;
       try { APP.selectTab((APP.currentTab() + 1) % count); } finally { auto = false; }
+      // one full tour, back on the first tab: done for good
+      if (++steps >= count) { stop(); return; }
       // the full line fades while the pill slides to the next tab, then a fresh cycle starts
       gsap.to(line, { opacity: 0, duration: 0.5, ease: 'power2.out', force3D: false, onComplete: cycle });
     });
@@ -125,9 +137,18 @@
 
     tabsEl.addEventListener('click', stop);
     tabsEl.addEventListener('keydown', stop);
+    // pressing anywhere in the section (a tap on a touch screen of a hybrid laptop, a click
+    // or text selection in the copy) means someone is reading: done for good
+    sec.addEventListener('pointerdown', stop, { passive: true });
     sec.addEventListener('pointerenter', e => { if (isMouse(e)) { st.hover = true; update(); } });
     sec.addEventListener('pointerleave', e => { if (isMouse(e)) { st.hover = false; update(); } });
-    sec.addEventListener('focusin', () => { st.focus = true; update(); });
+    // a reader's focus inside pauses it; the section itself receiving focus as an anchor
+    // target (nav's menu / footer jump, tabindex=-1) is not someone reading a control
+    sec.addEventListener('focusin', e => {
+      const t = e.target;
+      if (t === sec || (t && t.hasAttribute && t.hasAttribute('data-fx-anchor'))) return;
+      st.focus = true; update();
+    });
     sec.addEventListener('focusout', e => { if (!sec.contains(e.relatedTarget)) { st.focus = false; update(); } });
 
     const io = new IntersectionObserver(safe('tabs-io', entries => {
@@ -147,7 +168,7 @@
      CHART — hover a weekday to move the highlight there
      ====================================================================== */
   function initChart() {
-    if (!FX.finePointer || !APP || typeof APP.drawChart !== 'function' || !APP.TABS) return;
+    if (!APP || typeof APP.drawChart !== 'function' || !APP.TABS) return;
     const chart = $('.chart');
     const bars = chart ? $$('.bar', chart) : [];
     const pill = chart && $('.pill', chart);
@@ -202,16 +223,19 @@
       place(from, data);
     });
 
-    chart.classList.add('fx-live-chart');            // hit columns + overlays click-through (live.css)
-    bars.forEach((b, i) => {
-      b.setAttribute('data-cursor', 'hover');         // the cursor module opens its ring here
-      b.addEventListener('pointerenter', e => { if (isMouse(e)) setHover(i); });
-    });
-    chart.addEventListener('pointerleave', e => {
-      if (!isMouse(e)) return;
-      clearTimeout(restoreT);
-      restoreT = setTimeout(() => setHover(-1), 90);
-    });
+    // hover is for a fine pointer only; the pill's glide on tab changes (below) is for everyone
+    if (FX.finePointer) {
+      chart.classList.add('fx-live-chart');            // hit columns + overlays click-through (live.css)
+      bars.forEach((b, i) => {
+        b.setAttribute('data-cursor', 'hover');         // the cursor module opens its ring here
+        b.addEventListener('pointerenter', e => { if (isMouse(e)) setHover(i); });
+      });
+      chart.addEventListener('pointerleave', e => {
+        if (!isMouse(e)) return;
+        clearTimeout(restoreT);
+        restoreT = setTimeout(() => setHover(-1), 90);
+      });
+    }
     // a tab change redraws the chart: forget the hover, glide the pill along
     FX.on('app:tab', e => { clearTimeout(restoreT); hover = -1; place(pillLeft(), (e && e.data) || current()); });
     // the tooltip offset is in px while the chart scales with --u: re-seat it on resize
@@ -411,6 +435,9 @@
     // the eyebrow dot pulses only while the black section is on screen
     const eyebrow = $('.process .eyebrow');
     if (eyebrow && !REDUCE && props) FX.whenVisible(eyebrow, v => eyebrow.classList.toggle('fx-live-run', v), '0px');
+    // live.css swaps the UA tap flash for real :active press states; WebKit applies :active to
+    // a touch only once a touchstart listener exists (passive: scrolling never waits on it)
+    if (!FX.finePointer) document.addEventListener('touchstart', () => {}, { passive: true });
   }
 
   [['tabs', initTabs], ['chart', initChart], ['leads', initLeads], ['export', initExport], ['newsletter', initNewsletter], ['polish', initPolish]]

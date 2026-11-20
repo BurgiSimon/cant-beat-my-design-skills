@@ -9,7 +9,10 @@
 /* ---------- the cursor: one tiny blend layer, two marks ----------
    The 0x0 fixed container carries the blend mode so ring + dot are composited
    together and then differenced against the page: white over the black
-   section, black over white, inverted over photos. */
+   section, black over white, inverted over photos. The blend only exists while
+   the cursor is shown or fading (.is-on, set by cursor.js): a blend layer costs
+   the compositor an extra render pass on every frame of every animation on the
+   page, even at opacity 0. */
 .fx-cursor {
   position: fixed;
   left: 0;
@@ -18,11 +21,11 @@
   height: 0;
   z-index: 9999;
   pointer-events: none;
-  mix-blend-mode: difference;
   opacity: 0;
   -webkit-user-select: none;
   user-select: none;
 }
+.fx-cursor.is-on { mix-blend-mode: difference; }
 .fx-cursor__ring,
 .fx-cursor__dot {
   position: absolute;

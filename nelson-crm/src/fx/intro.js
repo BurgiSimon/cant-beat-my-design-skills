@@ -19,8 +19,11 @@
    exactly the stylesheet's.
 
    Owns: the overlay; .hero clip-path + transform (scale); .brand / .nav-right
-   (container opacity + transform); .intro h1 (SplitText lines, reverted);
-   .proof (+ its parts); .logos (opacity only).
+   (container clip-path + transform: solid surfaces unroll, they never pass
+   through a translucent phase); .intro h1 (SplitText lines, reverted);
+   .proof (+ its parts); .logos (opacity only); #features (opacity only, and
+   only when its top is already inside the first viewport: phones, tall
+   tablets, big screens), so nothing sits there static while the rest opens.
    ========================================================================== */
 window.FX && (window.FX.introRunning = true);
 (() => {
@@ -41,11 +44,12 @@ window.FX && (window.FX.introRunning = true);
   // clip-paths are driven through proxies: the browser normalises inset() strings
   // (inset(10% 8% 10% 8%) reads back as inset(10% 8%)), which breaks string tweening
   const insetCSS = (t, r, b, l) => `inset(${t}% ${r}% ${b}% ${l}%)`;
-  let heroInset = [10, 8];
+  let heroInset = [10, 8], heroR = 18;
+  // the same inset, rounded card the growth / process / footer reveals open from (reveals.js clipReveal)
   const heroClip = k => {
     if (!els.hero) return;
     const [v, h] = heroInset;
-    els.hero.style.clipPath = k <= 0 ? insetCSS(0, 0, 0, 0) : insetCSS(v * k, h * k, v * k, h * k);
+    els.hero.style.clipPath = k <= 0 ? insetCSS(0, 0, 0, 0) : `inset(${v * k}% ${h * k}% ${v * k}% ${h * k}% round ${(heroR * k).toFixed(2)}px)`;
   };
   const wipeUp = (el, vars) => {
     const o = { k: 0 };
@@ -54,7 +58,7 @@ window.FX && (window.FX.introRunning = true);
   };
 
   const els = {};
-  let overlay = null, split = null, loaderTick = null, loaderTl = null, exitTl = null;
+  let overlay = null, split = null, loaderTick = null, loaderTl = null, exitTl = null, h1Label;
   let watchdog = 0, onVisible = null, prepared = false, locked = false, started = false, doneEmitted = false, finished = false, heroP = -1;
 
   /* ---------------- events ---------------- */
@@ -95,14 +99,19 @@ window.FX && (window.FX.introRunning = true);
   function restore() {
     try { if (split) split.revert(); } catch (e) { fail('revert', e); }
     split = null;
+    if (h1Label !== undefined && els.h1) {
+      if (h1Label === null) els.h1.removeAttribute('aria-label'); else els.h1.setAttribute('aria-label', h1Label);
+      h1Label = undefined;
+    }
     if (!prepared) return;
     clear(els.hero, 'clipPath,transform');
-    clear([els.brand, els.navRight], 'opacity,transform');
+    clear([els.brand, els.navRight], 'opacity,transform,clipPath');
     clear(els.proof, 'transform');
     clear(els.parts, 'opacity');
     clear(els.rules, 'opacity,transform,transformOrigin');
     clear(els.h1, 'opacity,transform');
     clear(els.logos, 'opacity');
+    if (els.featOn) { clear(els.feat, 'opacity'); els.featOn = false; }
   }
   function finish(reason) {
     if (finished) return;
@@ -131,6 +140,7 @@ window.FX && (window.FX.introRunning = true);
     els.h1 = $('.intro h1');
     els.proof = $('.proof');
     els.logos = $('.logos');
+    els.feat = $('#features');
     const kids = els.proof ? Array.from(els.proof.children) : [];
     els.rules = kids.filter(k => k.classList.contains('rule'));
     els.parts = kids.filter(k => !k.classList.contains('rule'));
@@ -146,7 +156,9 @@ window.FX && (window.FX.introRunning = true);
         '<div class="fx-intro__count"><span class="fx-intro__mask"><span class="fx-intro__num">0</span></span></div>' +
         '<div class="fx-intro__line"><span class="fx-intro__fill"></span></div>';
     }
-    document.body.appendChild(overlay);
+    // first child of <body>: a click on the cover makes it the sequential-focus starting point;
+    // once it is removed the first Tab then resolves to the top of the document, not past its end
+    document.body.prepend(overlay);
     // same task as the append: the pseudo cover retires exactly when the real one exists
     root.classList.add('fx-intro-mounted', 'fx-intro-run');
     if (els.page) els.page.setAttribute('aria-busy', 'true');
@@ -158,8 +170,9 @@ window.FX && (window.FX.introRunning = true);
     const g = gsap;
     prepared = true;
     heroInset = short ? [3.5, 3] : [10, 8];
+    try { heroR = (FX.isDesktop() ? 18 : 12) * FX.unit(); } catch (e) { heroR = 18; }
     if (els.hero) { heroClip(1); g.set(els.hero, { scale: short ? 1.025 : 1.04 }); }
-    g.set([els.brand, els.navRight].filter(Boolean), { opacity: 0, y: -16 });
+    [els.brand, els.navRight].filter(Boolean).forEach(el => { g.set(el, { y: -16 }); el.style.clipPath = insetCSS(0, 0, 100, 0); });
     if (els.proof) g.set(els.proof, { y: 14 });
     if (els.parts.length) g.set(els.parts, { opacity: 0 });
     els.rules.forEach((r, i) => g.set(r, { scaleX: 0, opacity: 0, transformOrigin: i === 0 ? '100% 50%' : '0% 50%' }));
@@ -172,7 +185,11 @@ window.FX && (window.FX.introRunning = true);
     if (split || !els.h1) return;
     if (FX.SplitText) {
       try {
+        // SplitText's own label glues the words around the <br> ("CRMfor"): label it from innerText
+        const label = (els.h1.innerText || els.h1.textContent).replace(/\s+/g, ' ').trim();
+        h1Label = els.h1.getAttribute('aria-label');
         split = new FX.SplitText(els.h1, { type: 'lines', mask: 'lines', linesClass: 'fx-intro-line', aria: 'auto' });
+        if (label) els.h1.setAttribute('aria-label', label);
         gsap.set(split.lines, { yPercent: 108 });
         gsap.set(els.h1, { clearProps: 'opacity' });
         return;
@@ -198,9 +215,31 @@ window.FX && (window.FX.introRunning = true);
     if (els.proof) t.to(els.proof, { y: 0, duration: c.text, ease: 'expo.out' }, c.proofAt);
     if (els.parts.length) t.to(els.parts, { opacity: 1, duration: c.text * .7, ease: 'power2.out', stagger: .07 }, c.proofAt + .04);
     if (els.rules.length) t.to(els.rules, { scaleX: 1, opacity: 1, duration: c.text * 1.1, ease: 'expo.out' }, c.proofAt + .14);
-    if (els.brand) t.to(els.brand, { opacity: 1, y: 0, duration: c.nav, ease: 'expo.out' }, c.navAt);
-    if (els.navRight) t.to(els.navRight, { opacity: 1, y: 0, duration: c.nav, ease: 'expo.out' }, c.navAt + .08);
+    // the white brand box and the blue Contact button (+ the reflow layout's white Sign In)
+    // unroll from their top edge while they settle: opaque all the way, never a ghosted slab.
+    // The clip would also hide the menu panel (it hangs below .brand), so opening the
+    // menu before the unroll ends drops the clip at once.
+    let menuOpen = false;
+    const offMenu = FX.on('app:menu', d => { if (d && d.open) menuOpen = true; });
+    const unroll = (el, at) => {
+      const o = { k: 1 };
+      t.to(el, { y: 0, duration: c.nav, ease: 'expo.out' }, at)
+       .to(o, {
+         k: 0, duration: c.nav * .75, ease: 'expo.out',
+         onUpdate: () => { el.style.clipPath = menuOpen ? '' : insetCSS(0, 0, +(o.k * 100).toFixed(3), 0); },
+         onComplete: () => { clear(el, 'clipPath'); if (el === els.navRight) offMenu(); },
+       }, at);
+    };
+    if (els.brand) unroll(els.brand, c.navAt);
+    if (els.navRight) unroll(els.navRight, c.navAt + .08);
+    else offMenu();
     if (els.logos) t.to(els.logos, { opacity: 1, duration: c.logos, ease: 'power2.out' }, c.logosAt);
+    // whatever of #features already shows in the first viewport arrives with the logos
+    // (read once here, behind the still-closed cover, with the layout final)
+    if (els.feat && !els.featOn && els.feat.getBoundingClientRect().top < innerHeight) {
+      els.featOn = true;
+      t.fromTo(els.feat, { opacity: 0 }, { opacity: 1, duration: c.logos, ease: 'power2.out', immediateRender: true }, c.logosAt + .12);
+    }
     return t;
   }
 
@@ -284,13 +323,17 @@ window.FX && (window.FX.introRunning = true);
         if (real >= 1 && smooth > .985) smooth = 1;
         const x = Math.min(1, (now - L0) / 1000 / MIN);
         const cap = x < .5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2;   // power2.inOut over MIN
-        shown = Math.max(shown, Math.min(smooth, cap));
+        // never faster than the cap curve's own peak slope (100 in ~.63 s), with a long frame
+        // counted as at most 1/20 s: a jump in the ready fraction (or a decode stall) reads as
+        // a continuous count instead of a leap
+        shown = Math.max(shown, Math.min(smooth, cap, shown + Math.min(dt, .05) * 1.6));
         const n = Math.round(shown * 100);
         if (n !== label) { label = n; num.textContent = n; }
         setFill(shown);
         if (shown >= 1) {
           gsap.ticker.remove(loaderTick); loaderTick = null;
-          gsap.delayedCall(.12, () => { try { exitFull(word, num, fill); } catch (e) { fail('exit', e); finish('error'); } });
+          // exitFull is async: a throw inside it is a rejection, not an exception
+          gsap.delayedCall(.12, () => { Promise.resolve().then(() => exitFull(word, num, fill)).catch(e => { fail('exit', e); finish('error'); }); });
         }
       } catch (e) {
         fail('loader', e);
@@ -354,6 +397,7 @@ window.FX && (window.FX.introRunning = true);
     await new Promise(r => requestAnimationFrame(() => r()));
     if (finished) return;
     emitDone('hash');                     // the page underneath is final; fade the cover off it
+    if (overlay) overlay.style.pointerEvents = 'none';   // …and let clicks through while it fades
     exitTl = gsap.to(overlay, { opacity: 0, duration: .6, ease: 'power2.out', onComplete: () => finish('hash') });
   }
 
@@ -368,7 +412,13 @@ window.FX && (window.FX.introRunning = true);
 
   /* ---------------- go ---------------- */
   try {
-    try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; } catch (e) { /* noop */ }
+    // every path starts at the top (or the #target), so the browser must not restore a mid-page
+    // position under the intro. ScrollTrigger cached the value when it was registered and writes
+    // it back after every refresh: hand it 'manual' too, or it silently resets to 'auto'.
+    try {
+      if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+      if (FX.ScrollTrigger && FX.ScrollTrigger.clearScrollMemory) FX.ScrollTrigger.clearScrollMemory('manual');
+    } catch (e) { /* noop */ }
     let hashTarget = null;
     const h = location.hash;
     if (h && h.length > 1 && h !== '#top') {

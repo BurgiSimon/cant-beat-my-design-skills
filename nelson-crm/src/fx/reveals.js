@@ -40,15 +40,21 @@
   const rb = { classes: [], texts: [], drops: [] };
   const addCls = (el, c) => { if (el && !el.classList.contains(c)) { el.classList.add(c); rb.classes.push([el, c]); } };
 
-  /* ---------- keyboard safety: focus landing inside a not-yet-revealed block reveals it now ---------- */
+  /* ---------- keyboard safety: focus landing inside a not-yet-revealed block reveals it now ----------
+     run() returns a handle with finish(): a focus-triggered reveal (or one already playing when
+     focus lands) jumps straight to its final state, so the ring is never drawn on a half-faded control */
   const focusQueue = [];   // [{ root, run }]
   const onFocusReveal = (root, run) => { if (root) focusQueue.push({ root, run }); };
-  const once = fn => { let done = false; return function () { if (done) return undefined; done = true; return fn.apply(this, arguments); }; };
+  // runs fn once; later calls return that first result (the playback handle)
+  const once = fn => { let done = false, out; return function () { if (done) return out; done = true; out = fn.apply(this, arguments); return out; }; };
   document.addEventListener('focusin', e => {
     if (!alive || !focusQueue.length) return;
     for (let i = focusQueue.length; i--;) {
       const f = focusQueue[i];
-      if (f.root.contains(e.target)) { focusQueue.splice(i, 1); try { f.run(); } catch (err) { fail('focus', err); } }
+      if (f.root.contains(e.target)) {
+        focusQueue.splice(i, 1);
+        try { const h = f.run(); if (h && typeof h.finish === 'function') h.finish(); } catch (err) { fail('focus', err); }
+      }
     }
   });
 
@@ -81,8 +87,12 @@
     lines.push(cur);
     return lines.map(s => s.replace(/\s+/g, ' ').trim()).filter(Boolean).join('\n');
   }
+  // FontFaceSet 'loading' (faces still arriving, or Chrome re-validating the set right after a
+  // viewport change): line breaks may not be final and SplitText warns. Callers fall back to
+  // their unsplit path (whole-block rise / plain colour) for that one reveal.
+  const fontsBusy = () => { try { return !!document.fonts && document.fonts.status === 'loading'; } catch (e) { return false; } };
   function splitLines(el, mask) {
-    if (!Split || !el || !el.textContent.trim()) return null;
+    if (!Split || !el || !el.textContent.trim() || fontsBusy()) return null;
     const before = lineTexts(el);
     // headings: SplitText hides the line wrappers from AT and labels the heading;
     // innerText turns <br> into a break (SplitText's own label would glue the words).
@@ -165,22 +175,29 @@
   const pendingCounters = new Set();
   /* sr: the counting digits are aria-hidden and a visually-hidden copy carries
      the real value, so assistive tech never reads "0+" while a number waits
-     below the fold (only for elements nobody else reads: app.js parses the
-     dashboard value's textContent, so that one counts as bare text) */
+     below the fold. sr === 'after': app.js parses the dashboard value's own
+     textContent, so there the element itself is aria-hidden while it counts and
+     the copy is a sibling right after it (removed again on release) */
   function makeCounter(el, align, sr) {
     const full = el.textContent.trim();
     const m = full.match(/^(\D*?)(\d[\d,]*(?:\.\d+)?)(\D*)$/);
     if (!m) return null;
     const pre = m[1], suf = m[3], comma = m[2].indexOf(',') > -1, to = parseFloat(m[2].replace(/,/g, ''));
     const fmt = v => pre + (comma ? Math.round(v).toLocaleString('en-US') : String(Math.round(v))) + suf;
-    let tw = null, vis = el;
+    let tw = null, vis = el, twin = null;
     const show = txt => { vis.textContent = txt; };
+    const unTwin = () => { if (twin) { twin.remove(); twin = null; el.removeAttribute('aria-hidden'); } };
     const api = {
       arm() {   // measure the final text, lock its box, show 0
         el.style.minWidth = ''; el.textContent = full; vis = el;
         el.style.minWidth = el.getBoundingClientRect().width.toFixed(2) + 'px';
         el.style.textAlign = align;
-        if (sr) {
+        if (sr === 'after') {
+          unTwin();
+          twin = document.createElement('span'); twin.className = 'rv-sr'; twin.textContent = full;
+          el.setAttribute('aria-hidden', 'true');
+          el.after(twin);
+        } else if (sr) {
           el.textContent = '';
           vis = document.createElement('span'); vis.setAttribute('aria-hidden', 'true');
           const hid = document.createElement('span'); hid.className = 'rv-sr'; hid.textContent = full;
@@ -192,6 +209,7 @@
         if (tw) { tw.kill(); tw = null; }
         el.textContent = restore ? full : vis.textContent; vis = el;
         el.style.minWidth = ''; el.style.textAlign = '';
+        unTwin();
       },
       play(delay = 0, dur = 1.8) {
         const o = { v: 0 };
@@ -227,18 +245,26 @@
     };
     measure(); render(1);
     const o = { p: 0 };
+    // open for good: clip off, trigger gone (false: keep the finished state, no revert)
+    const finish = st => {
+      if (done) return;
+      done = true; render(0);
+      if (st) gsap.delayedCall(0, () => st.kill(false));
+    };
     gsap.to(o, {
       p: 1, ease: 'power1.out',
       scrollTrigger: {
         trigger: sec, start: 'top bottom', end, scrub: 0.8,
-        onRefresh: guard('clip-refresh', () => { if (!done) { measure(); render(1 - o.p); } }),
+        // a refresh that lands past the end renders the scrub to 1 with events suppressed
+        // (no onComplete), so finish here too, or scrolling back up would close it again
+        onRefresh: guard('clip-refresh', self => {
+          if (done) return;
+          if (self.progress >= 1 && o.p >= 0.999) finish(self);
+          else { measure(); render(1 - o.p); }
+        }),
       },
       onUpdate: guard('clip', () => { if (!done) render(1 - o.p); }),
-      onComplete: guard('clip-done', function () {
-        done = true; render(0);
-        const st = this.scrollTrigger;
-        if (st) gsap.delayedCall(0, () => st.kill(false));   // false: keep the finished state (no revert)
-      }),
+      onComplete: guard('clip-done', function () { finish(this.scrollTrigger); }),
     });
   }
 
@@ -453,9 +479,10 @@
           .to(labels, { opacity: 1, duration: 0.6, ease: 'power2.out', stagger: 0.07 }, 0.85);
         // the big number counts once — unless the visitor already used the segmented control
         if (val && !viewTouched) {
-          valueCounter = makeCounter(val, 'left');
+          valueCounter = makeCounter(val, 'left', 'after');
           if (valueCounter) { valueCounter.arm(); valueCounter.play(0.3); }
         }
+        return { finish: () => { if (tl.progress() < 1) tl.progress(1); if (valueCounter) { valueCounter.release(true); valueCounter = null; } } };
     }));
     ST.create({ trigger: wrap, start: 'top 75%', once: true, onEnter: reveal });
     onFocusReveal(wrap, reveal);
@@ -473,18 +500,25 @@
       // own rect is collapsed by its scaleY(0) start state.
       const box = line.offsetParent || line.parentElement;
       gsap.set(line, { scaleY: 0, transformOrigin: '50% 0%' });
+      let drawn = false;
+      const finishLine = st => {
+        if (drawn) return;
+        drawn = true;
+        gsap.set(line, { clearProps: 'transform,transformOrigin' });
+        if (st) gsap.delayedCall(0, () => st.kill(false));   // false: keep the finished state (no revert)
+      };
       gsap.to(line, {
         scaleY: 1, ease: 'none',
         scrollTrigger: {
           trigger: box, scrub: 0.8,
           start: () => `top+=${line.offsetTop} 85%`,
           end: () => `top+=${line.offsetTop + line.offsetHeight} 85%`,
+          // same as clipReveal: a refresh past the end completes the scrub silently
+          onRefresh: guard('line-refresh', self => {
+            if (!drawn && self.progress >= 1 && self.animation && self.animation.progress() >= 0.999) finishLine(self);
+          }),
         },
-        onComplete: guard('line-done', function () {
-          const st = this.scrollTrigger;
-          gsap.set(line, { clearProps: 'transform,transformOrigin' });
-          if (st) gsap.delayedCall(0, () => st.kill(false));   // false: keep the finished state (no revert)
-        }),
+        onComplete: guard('line-done', function () { finishLine(this.scrollTrigger); }),
       });
     }
     items.filter(below).forEach(it => {
@@ -544,6 +578,7 @@
     // the split is reverted, so the resting paragraph is the untouched original markup.
     const ensure = () => {
       if (split || off) return !!split;
+      if (fontsBusy()) return false;                      // try again on the next update
       const before = lineTexts(p);
       split = Split.create(p, { type: 'words', tag: 'span', wordsClass: 'rv-w', aria: 'none' });
       // belt and braces: if wrapping the words ever changed a line break, leave the paragraph alone
@@ -621,11 +656,15 @@
     if (!els.length) return;
     const waiting = new Set(els);
     els.forEach(el => gsap.set(el, el === form ? { opacity: 0 } : { opacity: 0, y: 28 }));
-    const show = batch => batch.filter(el => waiting.delete(el)).forEach((el, i) => {
-      gsap.to(el, el === form
-        ? { opacity: 1, duration: 1.2, delay: i * 0.07, ease: 'power2.out', clearProps: 'opacity' }   // x belongs to live, button to cursor
-        : { opacity: 1, y: 0, duration: 1.3, delay: i * 0.07, ease: EXPO, clearProps: 'opacity,transform' });
-    });
+    const playing = [];
+    const show = batch => {
+      batch.filter(el => waiting.delete(el)).forEach((el, i) => {
+        playing.push(gsap.to(el, el === form
+          ? { opacity: 1, duration: 1.2, delay: i * 0.07, ease: 'power2.out', clearProps: 'opacity' }   // x belongs to live, button to cursor
+          : { opacity: 1, y: 0, duration: 1.3, delay: i * 0.07, ease: EXPO, clearProps: 'opacity,transform' }));
+      });
+      return { finish: () => playing.splice(0).forEach(t => { if (t.progress() < 1) t.progress(1); }) };
+    };
     ST.batch(els, { start: 'clamp(top 94%)', once: true, interval: 0.1, onEnter: guard('footer', show) });
     onFocusReveal(foot, () => show([...waiting]));   // tabbing into the footer shows whatever is still waiting
   }

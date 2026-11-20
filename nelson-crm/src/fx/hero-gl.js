@@ -37,13 +37,21 @@
      - no WebGL / shader error / tainted images that can't be replaced → quietly keeps the CSS background
      - canvas fades in only after a complete first frame; context loss → CSS background
      - render loop runs only while the hero is on screen and the tab is visible,
-       and drops to the 24 fps grain cadence when nothing else is moving
-     - an ambient loop that can't hold ~28 fps → "lite": no grain/breathing,
-       draws only on change (≤ ~16/s)
+       and drops to the 24 fps grain cadence when nothing else is moving; the
+       gaze is held while the eye itself is off screen, and an iris shift too
+       small to see (< 1/20 device px) doesn't repaint
+     - the frame is redrawn only when its content changes: a resize / refresh /
+       return to the hero with the same geometry keeps the frame on the canvas;
+       a buffer invalidated while paused hides the canvas (the CSS background,
+       the same picture at rest, stands in) until the next draw
+     - an ambient loop that can't hold ~28 fps → "lite": no grain/breathing, no
+       idle eye wander (the gaze still follows the pointer), draws only on
+       change (≤ ~16/s)
      - software GL (SwiftShader, llvmpipe…; a full-frame draw costs ~100 ms there)
        → "soft": one static frame (identical to the CSS), no parallax / scroll
        depth / tear; only the eye is repainted (scissored, preserved buffer), so
-       the gaze still follows at full rate for ~1% of the cost.
+       the gaze still follows at full rate for a small part of the cost.
+     - textures are decoded off the main thread (createImageBitmap) where available
        ?herogl=full | ?herogl=lite force full / soft mode (QA)
    Owns: the <canvas class="hero-gl"> it creates inside .hero. Nothing else.
    Hook: FX.heroGL { canvas, live, lite, soft, running, gl2, state, still(bool) } —
@@ -285,6 +293,8 @@ void main(){
     let sacc = { next: now() + rand(3500, 5500), away: false };
     let needReveal = false, sawProgress = false, revealTween = null;
     let liveAt = 0, slowFor = 0, lastDraw = 0;
+    let blanked = false;              // the buffer was invalidated while paused: canvas hidden until the next full draw
+    const drawnG = { x: 0, y: 0 };    // gaze in the frame on the canvas
 
     /* ------------------------------------------------------------------
        GL setup (re-runnable after context restore)
@@ -473,10 +483,21 @@ void main(){
         // 1 texel = 1 device pixel: size the buffer to the pixels the canvas is really composited into
         // (Chromium snaps both edges of the fractional box), so nothing gets resampled on screen.
         const hs = getComputedStyle(hero);
-        if (/^(none|matrix\(1, 0, 0, 1, 0, 0\))$/.test(hs.transform) && (!hs.scale || hs.scale === 'none')) {
-          const r = hero.getBoundingClientRect(), x = r.left + scrollX, y = r.top + scrollY;
-          dw = Math.round((x + r.width) * dpr) - Math.round(x * dpr);
-          dh = Math.round((y + r.height) * dpr) - Math.round(y * dpr);
+        // the intro scales .hero (a plain scale/translate matrix): undo it, so the buffer is sized for the box
+        // at rest and the transform clearing doesn't reallocate (and fully redraw) it
+        const m = /^matrix\(([^)]+)\)$/.exec(hs.transform), v = m ? m[1].split(',').map(parseFloat) : null;
+        const plain = [hs.scale, hs.translate, hs.rotate].every(p => !p || p === 'none') &&
+          (hs.transform === 'none' || (v && v.length === 6 && !v[1] && !v[2] && v[0] > 0 && v[3] > 0));
+        if (plain) {
+          const r = hero.getBoundingClientRect();
+          let x = r.left + scrollX, y = r.top + scrollY, w = r.width, h = r.height;
+          if (v) {
+            const o = (hs.transformOrigin || '').split(' ').map(parseFloat);
+            const ox = o[0] || 0, oy = o[1] || 0;
+            x -= ox * (1 - v[0]) + v[4]; y -= oy * (1 - v[3]) + v[5]; w /= v[0]; h /= v[3];
+          }
+          dw = Math.round((x + w) * dpr) - Math.round(x * dpr);
+          dh = Math.round((y + h) * dpr) - Math.round(y * dpr);
         } else {
           const dp = entry && entry.devicePixelContentBoxSize && entry.devicePixelContentBoxSize[0];
           if (dp) { dw = dp.inlineSize; dh = dp.blockSize; }
@@ -484,16 +505,23 @@ void main(){
       }
       if (!dw || !dh) { const k = Math.min(dpr, cap); dw = Math.round(cw * k); dh = Math.round(ch * k); }
       if (!cw || !ch || !dw || !dh) return;
-      size.cw = cw; size.ch = ch;
-      const realloc = canvas.width !== dw || canvas.height !== dh;
-      if (realloc) { canvas.width = dw; canvas.height = dh; }   // clears the drawing buffer…
-      size.dw = dw; size.dh = dh;
+      const bx = size.bx, by = size.by;
       readBackground();
       measureRect();
+      const realloc = canvas.width !== dw || canvas.height !== dh;
+      const changed = realloc || cw !== size.cw || ch !== size.ch || dw !== size.dw || dh !== size.dh || bx !== size.bx || by !== size.by;
+      size.cw = cw; size.ch = ch;
+      if (realloc) { canvas.width = dw; canvas.height = dh; }   // clears the drawing buffer…
+      size.dw = dw; size.dh = dh;
+      if (!changed) return;            // same geometry: the frame on the canvas is still right (no redraw)
       dirty = true;
-      // …so redraw right here: ResizeObserver / the debounced rAF can run after this frame's tick,
-      // and a cleared buffer would composite as one black frame. Also keeps a correct frame while paused.
-      if (live && (realloc || !running)) draw(now());
+      if (!live) return;
+      // …so redraw right here while on screen: ResizeObserver / the debounced rAF can run after this frame's
+      // tick, and a cleared buffer would composite as one black frame (otherwise the loop redraws this frame).
+      // Paused (hero off screen / tab hidden): don't pay for a frame nobody sees — hide the stale canvas;
+      // the next draw brings it back.
+      if (running) { if (realloc) draw(now()); }
+      else if (!blanked) { blanked = true; canvas.classList.remove('is-live'); }
     }
 
     /* ------------------------------------------------------------------
@@ -532,14 +560,17 @@ void main(){
       }
 
       // gaze: follow the pointer; after IDLE_MS of stillness (or on touch) hold a beat, drift home,
-      // then wander in occasional saccades — mostly sideways glances, always returning to centre
+      // then wander in occasional saccades — mostly sideways glances, always returning to centre.
+      // Held while the eye itself is off screen (the rest of the hero may still be in view).
       const following = ptrOn && t - lastMove < IDLE_MS;
+      const ey = heroTop + (EYE.y * cv.s + cv.oy) * (rect.h / size.ch), eyeR = EYE.ry * cv.s * 2;
       let kg;
       if (still) {
         S.gtx = S.gty = 0; kg = 1;
+      } else if (ey < -eyeR || ey > innerHeight + eyeR) {
+        kg = 0;
       } else if (following) {
         const ex = rect.left + (EYE.x * cv.s + cv.ox) * (rect.w / size.cw);
-        const ey = heroTop + (EYE.y * cv.s + cv.oy) * (rect.h / size.ch);
         const vx = P.x - ex, vy = P.y - ey, R = 170 * (size.cw / 1426);
         const inv = 1 / Math.sqrt(vx * vx + vy * vy + R * R);   // saturating: ~linear near the eye, 1 far away
         S.gtx = vx * inv; S.gty = vy * inv;
@@ -547,7 +578,8 @@ void main(){
         kg = 0.14;
       } else {
         if (t > sacc.next) {
-          if (sacc.away) { S.gtx = S.gty = 0; sacc.away = false; sacc.next = t + rand(2600, 6000); }
+          // lite on a GPU (each glance = a full-frame repaint): no idle wander, the gaze just settles home
+          if (sacc.away || (lite && !soft)) { S.gtx = S.gty = 0; sacc.away = false; sacc.next = t + rand(2600, 6000); }
           else {
             const a = Math.random() < 0.75 ? (Math.random() < 0.5 ? 0 : Math.PI) + rand(-0.55, 0.55) : rand(0, Math.PI * 2);
             const r = rand(0.35, 0.85);
@@ -558,8 +590,8 @@ void main(){
         kg = sacc.away ? 0.2 : 0.045;                      // quick saccade out, slow drift home
       }
 
-      const kp = ease(0.07), kgE = ease(kg);
-      const prev = [S.px, S.py, S.pz, S.gx, S.gy, S.ax * 1e-3, S.ay * 1e-3, S.motion];
+      const kp = ease(0.07), kgE = kg ? ease(kg) : 0;
+      const prev = [S.px, S.py, S.pz, S.ax * 1e-3, S.ay * 1e-3, S.motion];
       const ox = S.px, oy = S.py, oz = S.pz;
       S.px += (tx - S.px) * kp; S.py += (ty - S.py) * kp; S.pz += (tz - S.pz) * kp;
       if (ptrOn) { S.ax += (ax - S.ax) * kp; S.ay += (ay - S.ay) * kp; }
@@ -577,9 +609,12 @@ void main(){
       // snap tiny residues so the rest state is exact
       const snap = (k, v) => { if (Math.abs(S[k] - v) < 1e-4) S[k] = v; };
       snap('px', tx); snap('py', ty); snap('pz', tz); snap('gx', S.gtx); snap('gy', S.gty);
-      const next = [S.px, S.py, S.pz, S.gx, S.gy, S.ax * 1e-3, S.ay * 1e-3, S.motion];
+      const next = [S.px, S.py, S.pz, S.ax * 1e-3, S.ay * 1e-3, S.motion];
       for (let i = 0; i < next.length; i++) if (Math.abs(next[i] - prev[i]) > 1e-5) return true;
-      return false;
+      // the gaze counts once the iris has moved ≥ 1/20 device px from the frame on the canvas, or has landed
+      // (the long tail of the drift home doesn't repaint for shifts nobody can see; the rest state is exact)
+      const gd = Math.max(Math.abs(S.gx - drawnG.x) * GAZE.x, Math.abs(S.gy - drawnG.y) * GAZE.y) * cv.s * (size.dw / size.cw);
+      return gd >= 0.05 || (gd > 0 && S.gx === S.gtx && S.gy === S.gty);
     }
 
     function draw(t, eyeOnly) {
@@ -640,6 +675,7 @@ void main(){
       gl.uniform2f(U.uSeed, ((seed * 0.6180339887) % 1) * 517, ((seed * 0.7548776662) % 1) * 331);
       gl.uniform1f(U.uGrain, ambient ? GRAIN : 0);
       gl.uniform1f(U.uReveal, tex.plate && rv < 1 ? rv : 1);
+      drawnG.x = S.gx; drawnG.y = S.gy;
       if (eyeOnly) {
         // soft mode: only the gaze changed — repaint just the eye opening's box (the gaze weight is 0 outside
         // the ellipse, so the preserved rest of the frame is still exact)
@@ -656,6 +692,7 @@ void main(){
       }
       gl.drawArrays(gl.TRIANGLES, 0, 3);
       lastScroll = sp; lastSeed = seed; dirty = false;
+      if (blanked && live) { blanked = false; canvas.classList.add('is-live'); }   // (same frame: no flash)
     }
 
     function tick() {
@@ -692,7 +729,8 @@ void main(){
       const should = live && !lost && visible && !document.hidden;
       if (should === running) return;
       running = should;
-      if (should) { lastT = now(); dirty = true; ticker ? ticker.add(tick) : (rafId = requestAnimationFrame(rafLoop)); }
+      // (no redraw on resume: the canvas keeps its last frame; whatever changed while paused marked it dirty)
+      if (should) { lastT = now(); ticker ? ticker.add(tick) : (rafId = requestAnimationFrame(rafLoop)); }
       else { ticker ? ticker.remove(tick) : cancelAnimationFrame(rafId); }
     }
 
@@ -736,6 +774,12 @@ void main(){
       img.src = src;
     });
     const nextFrame = () => new Promise(r => requestAnimationFrame(() => r()));
+    // texImage2D(<img>) decodes the image again, synchronously (~70 ms for hero.jpg on a fast CPU). An ImageBitmap
+    // is decoded off the main thread; same default colour-space conversion, so the same pixels as the CSS image.
+    // (Only for the upload: the <img> stays the source kept for a context restore.)
+    const toBitmap = img => (typeof createImageBitmap === 'function'
+      ? createImageBitmap(img, { premultiplyAlpha: 'none' }).catch(() => img) : Promise.resolve(img));
+    const upload = (unit, src) => { try { return uploadImage(unit, src); } finally { if (src.close) src.close(); } };
     function heroImageURL() {
       // reuse the exact URL of the CSS background (cache hit; a data: URI in the standalone build)
       const m = /url\((['"]?)(.*?)\1\)/.exec(getComputedStyle(hero).backgroundImage || '');
@@ -811,14 +855,18 @@ void main(){
       const pPlate = plateURL ? loadImage(plateURL).catch(() => null) : Promise.resolve(null);
 
       images.photo = await pPhoto;
-      await nextFrame(); if (lost) return;
-      tex.photo = uploadImage(0, images.photo);          // anything still tainted throws a SecurityError here → CSS fallback
+      const photo = await toBitmap(images.photo);
+      await nextFrame(); if (lost) { if (photo.close) photo.close(); return; }
+      tex.photo = upload(0, photo);                      // anything still tainted throws a SecurityError here → CSS fallback
+      await nextFrame(); if (lost) return;               // (the CPU-side aux build gets a frame of its own)
       buildAux(images.mask);
-      await nextFrame(); if (lost) return;
       tex.aux = uploadAux();
       images.plate = await pPlate;
-      if (images.plate && S.reveal < 1 && !sawProgress) { await nextFrame(); if (lost) return; tex.plate = uploadImage(1, images.plate); }
-      else { images.plate = null; if (S.reveal < 1) finishReveal(false); }
+      if (images.plate && S.reveal < 1 && !sawProgress) {
+        const plate = await toBitmap(images.plate);
+        await nextFrame(); if (lost) { if (plate.close) plate.close(); return; }
+        tex.plate = upload(1, plate);
+      } else { images.plate = null; if (S.reveal < 1) finishReveal(false); }
 
       // first correct size, then the first frame
       resize(null);
@@ -848,9 +896,12 @@ void main(){
       FX.on('pointer', () => { lastMove = now(); ptrOut = false; });
       // the cursor left the window (address bar, another app): let the sky settle back instead of freezing
       // at the last offset — core's pointer.active doesn't see this in every browser
-      document.addEventListener('mouseout', e => { if (!e.relatedTarget) { ptrOut = true; dirty = true; } }, { passive: true });
+      // (update() sees it next frame; nothing to redraw until something actually moves)
+      document.addEventListener('mouseout', e => { if (!e.relatedTarget) ptrOut = true; }, { passive: true });
     }
-    const remeasure = () => { if (dead) return; measureRect(); dirty = true; };
+    // the hero's document position feeds the pointer mapping and scroll depth, which update()/tick() compare
+    // themselves — a refresh alone never invalidates the frame
+    const remeasure = () => { if (dead) return; measureRect(); };
     // re-snap whenever the hero may have moved without changing size (centring > 1440, intro transforms cleared)
     let rz = 0;
     const resizeSoon = () => { cancelAnimationFrame(rz); rz = requestAnimationFrame(() => resize(null)); };
@@ -861,7 +912,7 @@ void main(){
 
     canvas.addEventListener('webglcontextlost', e => {
       e.preventDefault();
-      lost = true; live = false; sync();
+      lost = true; live = false; blanked = false; sync();
       canvas.classList.remove('is-live', 'is-fading');        // instantly back to the CSS background
     }, false);
     canvas.addEventListener('webglcontextrestored', () => {

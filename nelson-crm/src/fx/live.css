@@ -28,6 +28,11 @@ button:focus-visible,
   [role="tab"]:focus-visible { animation: fx-live-focus .45s cubic-bezier(.19, 1, .22, 1); }
 }
 @keyframes fx-live-focus { from { outline-offset: 8px; outline-color: transparent; } }
+/* the email field's ring (style.css draws it around the whole form); a rule of its own,
+   so a browser without :has() only drops this one */
+@media (prefers-reduced-motion: no-preference) {
+  .f-form:has(input:focus-visible) { animation: fx-live-focus .45s cubic-bezier(.19, 1, .22, 1); }
+}
 
 /* ---------- feature tabs: progress line inside the white pill ---------- */
 .tab-pill > .fx-live-progress {
@@ -241,6 +246,32 @@ button:focus-visible,
 @keyframes fx-live-ping {
   0% { --fx-live-ping: 0; }
   75%, 100% { --fx-live-ping: 1; }
+}
+
+/* ---------- press feedback on touch screens ----------
+   The UA's tap flash is a translucent square that ignores the corners. Once
+   live.js runs it is switched off and, on touch screens, each control shows
+   its own hover look while pressed (live.js registers the passive touchstart
+   WebKit needs before it applies :active to a touch). Colour / opacity only:
+   nothing moves or reflows, so there is nothing to reduce for reduced motion. */
+html.fx-live { -webkit-tap-highlight-color: transparent; }
+@media (hover: none) {
+  .btn:active { background-color: #1784ea; }
+  .menu-btn:active { background-color: #1d8af0; }
+  .f-form button:active { background-color: #2b2b2b; }
+  .menu-panel a:active { background-color: #f2f7ff; color: var(--blue); }
+  .signin:active,
+  .tab:active,
+  .seg button:active,
+  .brand-link:active,
+  .f-brand:active,
+  .f-col a:active,
+  .f-legal a:active,
+  .f-social a:active { opacity: .7; }
+}
+/* the reflow layout's Sign In is a white button: its label turns blue, as on hover */
+@media (hover: none) and (max-width: 1099px) {
+  .signin:active { opacity: 1; color: var(--blue); }
 }
 
 /* ---------- reflow layout: the timeline dots sit on the left ---------- */

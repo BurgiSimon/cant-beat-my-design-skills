@@ -18,8 +18,9 @@
               The f-form label span stays app.js's text holder; a
               MutationObserver rebuilds the strip whenever the text changes.
    • tilt     (≥1100px) .media up to 4°, .panel-wrap up to 3°, the side under
-              the pointer lifts toward it; .chart-glass counter-drifts ~9px in
-              2D for depth. No preserve-3d, so the glass keeps its blur.
+              the pointer lifts toward it. No preserve-3d: the chart glass tilts
+              rigidly with its photo (it keeps its blur, and never slides off the
+              soft patch baked into statue.jpg under it).
 
    Runs only with a fine hover pointer and without reduced motion; cursor +
    magnets + roll from 1024px, tilt from 1100px, none of it under forced
@@ -30,7 +31,7 @@
 
    Owns: .fx-cursor; `translate` on the magnets and their label/lines;
    .fx-roll wrappers + their --fx-roll (the copies' transform); transform on .media,
-   .panel-wrap, .chart-glass.
+   .panel-wrap.
    ========================================================================== */
 (() => {
   const FX = window.FX;
@@ -63,7 +64,7 @@
     { sel: '.menu-btn', s: 0.16, cap: 2.5, capY: 2, inner: 0.12, innerCap: 3, lines: true }, // flush in the brand box: the lines do the moving
   ];
   const TILTS = [
-    { sel: '.media', max: 4, depth: '.chart-glass', shift: 9 },
+    { sel: '.media', max: 4 },
     { sel: '.panel-wrap', max: 3 },
   ];
   const PAD = 20;          // magnet zone around the box (design px)
@@ -224,14 +225,12 @@
   }
 
   function makeTilt(el, cfg) {
-    const glass = cfg.depth ? el.querySelector(cfg.depth) : null;
-    const it = { el, cfg, glass, vis: false, on: false, rect: null, readAt: -1 };
-    springs(it, ['rx', 'ry', 'gx', 'gy'], TILT);
+    const it = { el, cfg, vis: false, on: false, rect: null, readAt: -1 };
+    springs(it, ['rx', 'ry'], TILT);
     it.write = () => {
-      const { rx, ry, gx, gy } = it.p;
+      const { rx, ry } = it.p;
       el.style.transform = (rx || ry) ? `perspective(${Math.round(1200 * k)}px) rotateX(${r2(rx)}deg) rotateY(${r2(ry)}deg)` : '';
       if (!rx && !ry) tidy(el);
-      if (glass) { glass.style.transform = (gx || gy) ? `translate(${r2(gx)}px, ${r2(gy)}px)` : ''; if (!gx && !gy) tidy(glass); }
     };
     // untransformed layout box (the tilted bounding box would wobble at the edges)
     it.read = () => {
@@ -287,6 +286,7 @@
     gsap.set(ring, { x: px, y: py });
     ringX(px, px); ringY(py, py);
     dotX(px); dotY(py);
+    cur.classList.add('is-on');                  // the blend layer exists only while the cursor can be seen
     gsap.to(cur, { opacity: 1, duration: 0.3, ease: 'power2.out', overwrite: true });
     root.classList.add('has-cursor');            // native cursor off only now that ours is live
   }
@@ -294,7 +294,7 @@
     if (!st.shown) return;
     st.shown = false;
     root.classList.remove('has-cursor');
-    gsap.to(cur, { opacity: 0, duration: 0.25, ease: 'power2.out', overwrite: true });
+    gsap.to(cur, { opacity: 0, duration: 0.25, ease: 'power2.out', overwrite: true, onComplete: () => { if (!st.shown && cur) cur.classList.remove('is-on'); } });
   }
 
   /* hover target: drives the cursor state and the label roll */
@@ -343,10 +343,10 @@
       const r = it.rect;
       if (!r.w || !r.h || x < r.l || x > r.l + r.w || y < r.t || y > r.t + r.h) { release(it); continue; }
       const nx = clamp((x - (r.l + r.w / 2)) / (r.w / 2), -1, 1), ny = clamp((y - (r.t + r.h / 2)) / (r.h / 2), -1, 1);
-      const c = it.cfg, s = (c.shift || 0) * k;
+      const c = it.cfg;
       it.on = true;
-      // the side under the pointer lifts toward it; the glass, floating above the plane, drifts the other way
-      it.to({ rx: c.max * ny, ry: -c.max * nx, gx: -s * nx, gy: -s * ny });
+      // the side under the pointer lifts toward it (children move rigidly with the plane)
+      it.to({ rx: c.max * ny, ry: -c.max * nx });
     }
   }
 
