@@ -1,0 +1,650 @@
+/* ────────────────────────────────────────────────────────────
+   Use cases — team tabs, each with a copy column and a
+   mini workflow drawn on a sunken canvas
+   ──────────────────────────────────────────────────────────── */
+/* Atmosphere: two soft lights behind the stage */
+.use-cases__atmos {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+.use-cases__glow--violet {
+  right: 4%;
+  top: 34%;
+  width: 52%;
+  height: 50%;
+  background: radial-gradient(closest-side, rgba(144, 44, 225, 0.55), transparent);
+  opacity: 0.42;
+}
+.use-cases__glow--magenta {
+  left: 6%;
+  bottom: 10%;
+  width: 34%;
+  height: 32%;
+  background: radial-gradient(closest-side, rgba(218, 8, 139, 0.4), transparent);
+  opacity: 0.3;
+}
+.use-cases__head {
+  margin-bottom: clamp(40px, 5vw, 64px);
+}
+.use-cases__sprite {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+/* ── Tab bar: the header's glass links box, as it looks once scrolled ── */
+.use-cases__tabbar {
+  display: flex;
+  width: fit-content;
+  max-width: 100%;
+  margin-bottom: 16px;
+  background: rgba(32, 17, 68, 0.62);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  backdrop-filter: blur(18px) saturate(140%);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.07), 0 12px 32px -16px rgba(0, 0, 0, 0.7);
+}
+.use-cases__tabs {
+  --fade-s: 0px;
+  --fade-e: 0px;
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  min-width: 0;
+  height: 47px;
+  padding: 0 5px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: 5px;
+  scrollbar-width: none;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 var(--fade-s), #000 calc(100% - var(--fade-e)), transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 var(--fade-s), #000 calc(100% - var(--fade-e)), transparent);
+}
+.use-cases__tabs::-webkit-scrollbar {
+  display: none;
+}
+.use-cases__tabbar.is-scroll-start .use-cases__tabs {
+  --fade-s: 36px;
+}
+.use-cases__tabbar.is-scroll-end .use-cases__tabs {
+  --fade-e: 36px;
+}
+.use-cases__tab {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  padding: 0 18px;
+  font-size: 16px;
+  line-height: 1;
+  white-space: nowrap;
+  color: var(--text-nav);
+  scroll-snap-align: center;
+  transition: color var(--dur) var(--ease-out);
+}
+.use-cases__tab[aria-selected="true"] {
+  color: var(--text);
+}
+/* Hover / pressed: a faint fill in the pill's footprint (the pill itself
+   only ever marks the selected tab) */
+.use-cases__tab::before {
+  content: "";
+  position: absolute;
+  inset: 5px 0;
+  z-index: -1;
+  background: var(--surface);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--dur) var(--ease-out);
+}
+@media (hover: hover) {
+  .use-cases__tab:hover {
+    color: var(--text);
+  }
+  .use-cases__tab:not([aria-selected="true"]):hover::before {
+    opacity: 1;
+  }
+}
+.use-cases__tab:not([aria-selected="true"]):active::before {
+  opacity: 1;
+  background: var(--surface-2);
+  transition-duration: 0ms;
+}
+/* Focus ring hugs the pill (the scroller would clip an outside outline) */
+.use-cases__tab:focus-visible {
+  outline: none;
+}
+.use-cases__tab:focus-visible::after {
+  content: "";
+  position: absolute;
+  inset: 5px 0;
+  box-shadow: inset 0 0 0 2px var(--text);
+  pointer-events: none;
+}
+/* A deep link focuses its tab on load: keep the focus, but hold the ring
+   back until the visitor actually uses the keyboard (see use-cases.js) */
+.use-cases__tabbar.is-quiet .use-cases__tab:focus-visible::after {
+  content: none;
+}
+@media (forced-colors: active) {
+  .use-cases__tab[aria-selected="true"] {
+    text-decoration: underline 2px;
+    text-underline-offset: 6px;
+  }
+  .use-cases__tab:focus-visible::after {
+    box-shadow: none;
+    outline: 2px solid CanvasText;
+    outline-offset: -2px;
+  }
+}
+.use-cases__pill {
+  position: absolute;
+  top: 5px;
+  bottom: 5px;
+  left: 0;
+  width: var(--pill-w, 0px);
+  transform: translateX(var(--pill-x, 0px));
+  background: var(--glass-active);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 460ms var(--ease-out), width 460ms var(--ease-out), opacity var(--dur) var(--ease-out);
+}
+.use-cases.is-enhanced .use-cases__pill {
+  opacity: 1;
+}
+/* While the module loads, mark the first tab so nothing jumps */
+.js .use-cases:not(.is-enhanced) .use-cases__tab:first-of-type {
+  color: var(--text);
+  background: linear-gradient(var(--glass-active), var(--glass-active)) 50% 50% / 100% calc(100% - 10px) no-repeat;
+}
+
+/* ── Stage: one glass frame that holds every panel ── */
+.use-cases__stage {
+  box-shadow: 0 40px 80px -48px rgba(0, 0, 0, 0.9);
+}
+.use-cases.is-enhanced .use-cases__stage {
+  display: grid;
+}
+/* Before the module runs, show only the first panel (no flash of six) */
+.js .use-cases:not(.is-enhanced) .use-cases__panel ~ .use-cases__panel {
+  display: none;
+}
+.use-cases__panel {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1.08fr) minmax(0, 1fr);
+}
+/* No JS: panels are stacked, separated by a hairline */
+.use-cases__panel + .use-cases__panel {
+  border-top: 1px solid var(--line);
+}
+.use-cases.is-enhanced .use-cases__panel {
+  grid-area: 1 / 1;
+  align-self: start;
+  min-height: var(--uc-h, 0px);
+  border-top: 0;
+}
+.use-cases__panel:focus-visible {
+  outline-offset: 0;
+}
+/* Single column: panels keep their natural height and the frame eases
+   between them instead (see use-cases.js) */
+.use-cases__stage.is-resizing {
+  overflow: clip;
+  transition: height 300ms var(--ease-out);
+}
+
+/* ── Copy column ── */
+.use-cases__copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
+  padding: clamp(32px, 4vw, 56px);
+}
+.use-cases__team {
+  margin-bottom: 20px;
+}
+.use-cases.is-enhanced .use-cases__team {
+  display: none;
+}
+.use-cases__nb {
+  white-space: nowrap;
+}
+.use-cases__desc {
+  max-width: 52ch;
+  margin-top: 16px;
+  text-wrap: pretty;
+}
+.use-cases__list[role="list"] {
+  width: 100%;
+  margin-top: 32px;
+  border-top: 1px solid var(--line);
+}
+.use-cases__list li {
+  display: grid;
+  grid-template-columns: 20px minmax(0, 1fr);
+  gap: 14px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--text);
+  text-wrap: pretty;
+}
+.use-cases__list .icon {
+  margin-top: 1px;
+  color: var(--lilac);
+}
+
+/* Metric callout */
+.use-cases__metric {
+  display: grid;
+  gap: 16px;
+  margin-top: auto;
+  padding-top: 40px;
+}
+.use-cases__stat {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.use-cases__num {
+  flex: none;
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: clamp(52px, 5vw, 72px);
+  line-height: 0.92;
+  letter-spacing: -0.035em;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  color: transparent;
+  background: var(--accent-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  padding-bottom: 0.04em;
+}
+.use-cases__value {
+  display: inline-block;
+}
+.use-cases__unit {
+  font-size: 0.56em;
+  letter-spacing: -0.02em;
+}
+.use-cases__unit--word {
+  margin-left: 0.18em;
+  font-size: 0.36em;
+  letter-spacing: -0.005em;
+}
+.use-cases__caption {
+  max-width: 24ch;
+  font-size: 16px;
+  line-height: 1.4;
+  color: var(--text-soft);
+  text-wrap: balance;
+}
+.use-cases__customer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--text-muted);
+}
+.use-cases__mono {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  flex: none;
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1;
+  color: var(--text);
+  background: var(--surface-3);
+  border: 1px solid var(--line);
+}
+.use-cases__cta {
+  display: block;
+  max-width: 100%;
+  margin-top: 28px;
+  line-height: 24px;
+  text-wrap: balance;
+}
+.use-cases__cta .icon {
+  display: inline-block;
+  margin-left: 8px;
+  vertical-align: -3px;
+}
+
+/* ── Canvas column: a sunken dot-grid with the team's workflow ── */
+.use-cases__canvas {
+  --chip: 36px;
+  --pad: 14px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  min-width: 0;
+  padding: 24px clamp(20px, 2.6vw, 32px);
+  isolation: isolate;
+  border-left: 1px solid var(--line);
+  background: radial-gradient(60% 46% at 50% 52%, rgba(144, 44, 225, 0.16), transparent 78%), rgba(4, 3, 9, 0.38);
+}
+.use-cases__canvas::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.11) 0.8px, transparent 1.1px) 0 0 / 20px 20px;
+  -webkit-mask-image: radial-gradient(75% 70% at 50% 50%, #000 20%, transparent 100%);
+  mask-image: radial-gradient(75% 70% at 50% 50%, #000 20%, transparent 100%);
+}
+.use-cases__bar,
+.use-cases__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.use-cases__flow-name {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  font-size: 13px;
+  line-height: 1.3;
+  font-weight: 500;
+  color: var(--text-soft);
+}
+.use-cases__flow-name .icon {
+  color: var(--lilac);
+}
+.use-cases__live {
+  height: 24px;
+  padding: 0 8px;
+  font-size: 12px;
+  gap: 7px;
+}
+.use-cases__live .dot {
+  color: var(--success);
+}
+.use-cases__foot {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.3;
+  color: var(--text-muted);
+}
+
+.use-cases__flow {
+  display: flex;
+  flex-direction: column;
+  width: min(100%, 420px);
+  margin: auto;
+}
+/* Same node treatment as the platform mockup: opaque violet tile,
+   tone-tinted icon chip (trigger lilac, AI pink, condition amber,
+   approval mist, action green) */
+.use-cases__node {
+  --tone: var(--lilac);
+  position: relative;
+  display: grid;
+  grid-template-columns: var(--chip) minmax(0, 1fr) auto;
+  align-items: center;
+  column-gap: 14px;
+  padding: 12px var(--pad);
+  background: linear-gradient(180deg, rgba(40, 28, 74, 0.94), rgba(25, 18, 48, 0.94));
+  border: 1px solid rgba(255, 255, 255, 0.11);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 14px 30px -16px rgba(0, 0, 0, 0.9);
+}
+.use-cases__node--ai {
+  --tone: var(--pink);
+}
+.use-cases__node--rule {
+  --tone: var(--warning);
+}
+.use-cases__node--review {
+  --tone: var(--mist);
+}
+.use-cases__node--action {
+  --tone: var(--success);
+}
+.use-cases__node-icon {
+  display: grid;
+  place-items: center;
+  width: var(--chip);
+  height: var(--chip);
+  color: var(--tone);
+  background: color-mix(in srgb, var(--tone) 13%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--tone) 30%, transparent);
+}
+.use-cases__node-icon .icon {
+  width: 18px;
+  height: 18px;
+}
+.use-cases__node-text {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+.use-cases__node-title {
+  font-size: 15px;
+  line-height: 1.3;
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  color: var(--text);
+}
+.use-cases__node-sub {
+  overflow: hidden;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.4;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: var(--text-muted);
+}
+.use-cases__node-step {
+  align-self: start;
+  margin-top: 3px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 1;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+}
+
+/* Connector: a hairline with a port straddling each tile edge
+   (wire + port colors match the platform mockup) */
+.use-cases__wire {
+  --port: rgba(183, 156, 255, 0.6);
+  --port-fill: #1c1434;
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 5px;
+  height: calc(clamp(24px, 3.6vw, 56px) + 4px);
+  margin: -2px 0 -2px calc(1px + var(--pad) + var(--chip) / 2 - 2.5px);
+  overflow: hidden;
+  background: linear-gradient(var(--port-fill), var(--port-fill)) 50% 1px / 3px 3px no-repeat,
+    linear-gradient(var(--port), var(--port)) 50% 0 / 5px 5px no-repeat,
+    linear-gradient(var(--port-fill), var(--port-fill)) 50% calc(100% - 1px) / 3px 3px no-repeat,
+    linear-gradient(var(--port), var(--port)) 50% 100% / 5px 5px no-repeat,
+    linear-gradient(rgba(183, 156, 255, 0.34), rgba(183, 156, 255, 0.34)) 50% 0 / 1px 100% no-repeat;
+}
+.use-cases__wire::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateY(-100%);
+  background: linear-gradient(180deg, transparent 10%, #fff 50%, transparent 90%) 50% 0 / 1px 100% no-repeat,
+    radial-gradient(closest-side, rgba(217, 207, 251, 0.55), transparent) 50% 50% / 5px 80% no-repeat;
+}
+
+/* ── Footnote under the stage ── */
+.use-cases__note {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px 32px;
+  margin-top: 24px;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+.use-cases__note > span {
+  max-width: 68ch;
+}
+.use-cases__note .link-arrow {
+  flex: none;
+  min-height: 24px;
+}
+
+/* ── Motion ── */
+.use-cases__panel.is-leaving {
+  z-index: 0;
+  pointer-events: none;
+}
+.use-cases__panel.is-entering {
+  z-index: 1;
+}
+/* the outgoing panel lets the incoming canvas show through, so the
+   frame never doubles up mid-crossfade */
+.use-cases__panel.is-leaving .use-cases__canvas {
+  background: none;
+  border-color: transparent;
+}
+.use-cases__panel.is-leaving .use-cases__canvas::before {
+  content: none;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .use-cases__panel.is-leaving {
+    animation: uc-out 200ms var(--ease-out) both;
+  }
+  .use-cases__panel.is-entering :is(.use-cases__title, .use-cases__desc, .use-cases__list, .use-cases__metric, .use-cases__cta) {
+    animation: uc-in 300ms var(--ease-out) both;
+    animation-delay: calc(40ms + var(--i, 0) * 35ms);
+  }
+  .use-cases__panel.is-entering :is(.use-cases__node, .use-cases__wire) {
+    animation: uc-in 300ms var(--ease-out) both;
+    animation-delay: calc(70ms + var(--n, 0) * 45ms);
+  }
+  .use-cases__panel.is-entering :is(.use-cases__bar, .use-cases__foot) {
+    animation: uc-fade 300ms var(--ease-out) both;
+    animation-delay: 40ms;
+  }
+  /* slow ambient pulse travelling down the connectors (paused off-screen) */
+  .use-cases.is-inview .use-cases__wire::after {
+    animation: uc-pulse 3.6s linear infinite;
+    animation-delay: calc(600ms + var(--n, 0) * 420ms);
+  }
+}
+@keyframes uc-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+@keyframes uc-fade {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes uc-out {
+  to {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+}
+@keyframes uc-pulse {
+  0% {
+    transform: translateY(-100%);
+    animation-timing-function: var(--ease-in-out);
+  }
+  30%,
+  100% {
+    transform: translateY(100%);
+  }
+}
+
+/* ── Responsive ── */
+@media (max-width: 1100px) {
+  .use-cases__panel {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+}
+@media (max-width: 860px) {
+  .use-cases__panel {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .use-cases__copy {
+    padding: 36px 32px 40px;
+  }
+  .use-cases__desc {
+    max-width: 60ch;
+  }
+  .use-cases__canvas {
+    border-left: 0;
+    border-top: 1px solid var(--line);
+    padding: 24px 32px 28px;
+  }
+}
+@media (max-width: 720px) {
+  .use-cases__tabbar {
+    width: 100%;
+  }
+  /* 44px touch targets without changing the visual rhythm */
+  .use-cases__note .link-arrow {
+    min-height: 44px;
+  }
+  .use-cases__cta {
+    margin: 18px 0 -10px;
+    padding-block: 10px;
+  }
+  .use-cases__note {
+    gap: 2px 32px;
+  }
+}
+@media (max-width: 480px) {
+  .use-cases__copy {
+    padding: 28px 20px 32px;
+  }
+  .use-cases__canvas {
+    --chip: 32px;
+    --pad: 12px;
+    gap: 20px;
+    padding: 20px 16px 20px;
+  }
+  .use-cases__node {
+    grid-template-columns: var(--chip) minmax(0, 1fr);
+    column-gap: 12px;
+  }
+  .use-cases__node-step {
+    display: none;
+  }
+  .use-cases__node-title {
+    font-size: 14px;
+  }
+  .use-cases__stat {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .use-cases__num {
+    font-size: 52px;
+  }
+  .use-cases__caption {
+    max-width: 30ch;
+    font-size: 15px;
+  }
+  .use-cases__note {
+    font-size: 14px;
+  }
+}

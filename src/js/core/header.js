@@ -68,7 +68,11 @@ function initPill(header) {
   const io = new IntersectionObserver(
     (entries) => {
       for (const e of entries) visible.set(e.target, e.isIntersecting);
-      const current = sections.find((s) => visible.get(s));
+      // Nothing under the probe band (e.g. the footer fills it): fall back to
+      // the last section that starts above the band.
+      const current =
+        sections.find((s) => visible.get(s)) ||
+        sections.filter((s) => s.getBoundingClientRect().top < innerHeight * 0.42).pop();
       if (current && current.dataset.navSection !== active) setActive(current.dataset.navSection);
     },
     { rootMargin: "-38% 0px -58% 0px" }

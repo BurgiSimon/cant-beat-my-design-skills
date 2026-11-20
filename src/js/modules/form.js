@@ -43,7 +43,7 @@ function messageFor(input) {
 function errorEl(input) {
   const ids = (input.getAttribute("aria-describedby") || "").split(/\s+/);
   for (const id of ids) {
-    const el = id && document.getElementById(id);
+    const el = id ? document.getElementById(id) : null;
     if (el?.classList.contains("field__error")) return el;
   }
   return input.closest(".field, .check")?.querySelector(".field__error") || null;
@@ -79,6 +79,7 @@ export default function initForm(form) {
 
   form.addEventListener("submit", (e) => {
     e.preventDefault();
+    if (form.dataset.busy) return; // ignore Enter presses while "sending"
     const invalid = fields().filter((input) => !validate(input, form));
     if (invalid.length) {
       invalid[0].focus();
@@ -86,9 +87,14 @@ export default function initForm(form) {
     }
     const button = form.querySelector('[type="submit"]');
     button?.setAttribute("aria-busy", "true");
+    form.dataset.busy = "true";
     const data = Object.fromEntries(new FormData(form));
+    const editable = fields().filter((el) => "readOnly" in el && !el.readOnly);
+    editable.forEach((el) => (el.readOnly = true));
     setTimeout(() => {
       button?.removeAttribute("aria-busy");
+      delete form.dataset.busy;
+      editable.forEach((el) => (el.readOnly = false));
       form.dispatchEvent(new CustomEvent("mist:submit", { detail: data, bubbles: true }));
       if (form.dataset.success === "none") return;
       const panel = document.createElement("div");

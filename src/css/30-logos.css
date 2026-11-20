@@ -1,0 +1,329 @@
+/* ────────────────────────────────────────────────────────────
+   Logos — social proof strip on the calm ground below the hero
+   ──────────────────────────────────────────────────────────── */
+.logos {
+  --logo-h: 36px;
+  --logo-gap: clamp(48px, 5.2vw, 80px);
+  --logo-fade: clamp(48px, 9vw, 160px);
+  --logo-dur: 52s;
+  padding-block: clamp(48px, 6vw, 88px) clamp(24px, 3vw, 40px);
+}
+.logos__inner {
+  position: relative;
+}
+
+/* soft mist lying low over the valley floor */
+.logos__atmos {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+.logos__mist {
+  position: absolute;
+  left: 50%;
+  top: 64%;
+  width: min(1480px, 150%);
+  height: 220px;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(50% 50% at 50% 50%, rgba(201, 180, 250, 0.075), rgba(144, 44, 225, 0.03) 50%, transparent 72%);
+}
+
+/* ── Heading row: hairline · title · hairline · pause ─────── */
+.logos__head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  column-gap: 24px;
+  margin-bottom: clamp(32px, 3.6vw, 48px);
+}
+.logos__head::before,
+.logos__head::after {
+  content: "";
+  grid-row: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--line-strong));
+}
+.logos__head::before {
+  grid-column: 1;
+  margin-left: 56px;
+}
+.logos__head::after {
+  grid-column: 3;
+  margin-right: 56px; /* mirrors the left inset; the pause switch lives in this space */
+  background: linear-gradient(270deg, transparent, var(--line-strong));
+}
+.logos__title {
+  grid-column: 2;
+  grid-row: 1;
+  max-width: 34em;
+  font-size: 15px;
+  line-height: 1.5;
+  font-weight: 400;
+  letter-spacing: 0;
+  color: var(--text-muted);
+  text-align: center;
+}
+/* each phrase stays whole, so a narrow screen breaks the line at the natural
+   pause ("Trusted by 4,000+ teams / who'd rather be doing deep work") */
+.logos__phrase {
+  display: inline-block;
+}
+.logos__title strong {
+  font-weight: 500;
+  color: var(--text);
+}
+
+/* Pause / play — a real control, so keyboard, switch and touch users can stop
+   the motion (WCAG 2.2.2). A native checkbox with role="switch": Space toggles,
+   the on/off state is announced, and it works without JS through :has(). */
+.logos__toggle {
+  grid-column: 3;
+  grid-row: 1;
+  justify-self: end;
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  margin-right: -6px; /* the 32px face sits flush with the container edge */
+  cursor: pointer;
+}
+.logos__toggle-input {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+.logos__toggle-ui {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  color: var(--text-muted);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  transition: color var(--dur) var(--ease-out), border-color var(--dur) var(--ease-out),
+    background-color var(--dur) var(--ease-out), transform var(--dur-fast) var(--ease-out);
+}
+.logos__icon {
+  grid-area: 1 / 1;
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+  transition: opacity var(--dur-fast) var(--ease-out), transform var(--dur) var(--ease-out);
+}
+.logos__icon--play {
+  opacity: 0;
+  transform: scale(0.6);
+}
+@media (hover: hover) {
+  .logos__toggle:hover .logos__toggle-ui {
+    color: var(--text);
+    border-color: var(--line-strong);
+    background: var(--surface-2);
+  }
+}
+.logos__toggle-input:focus-visible + .logos__toggle-ui {
+  color: var(--text);
+  border-color: var(--line-strong);
+  background: var(--surface-2);
+  outline: 2px solid var(--text);
+  outline-offset: 3px;
+}
+.logos__toggle-input:active + .logos__toggle-ui {
+  background: var(--surface-3);
+  transform: translateY(1px);
+}
+.logos__toggle-input:checked + .logos__toggle-ui .logos__icon--pause {
+  opacity: 0;
+  transform: scale(0.6);
+}
+.logos__toggle-input:checked + .logos__toggle-ui .logos__icon--play {
+  opacity: 1;
+  transform: none;
+}
+
+/* ── Marquee ──────────────────────────────────────────────── */
+.logos__marquee {
+  --mask: linear-gradient(
+    90deg,
+    transparent,
+    #000 var(--logo-fade),
+    #000 calc(100% - var(--logo-fade)),
+    transparent
+  );
+  position: relative;
+  overflow: hidden;
+  padding-block: 8px;
+  -webkit-mask-image: var(--mask);
+  mask-image: var(--mask);
+}
+.logos__track {
+  display: flex;
+  width: max-content;
+}
+.logos__track > .logos__list {
+  display: flex;
+  flex: none;
+  align-items: center;
+}
+/* The gap lives inside each item (half on either side) rather than between
+   them: the hover areas touch, so sweeping the pointer along the strip never
+   flashes the other logos back up, and the clone still starts exactly one gap
+   after the last original — a seamless loop at -50%. */
+.logos__item {
+  flex: none;
+  padding-inline: calc(var(--logo-gap) / 2);
+  color: var(--text-muted);
+  opacity: 0.8;
+  transition: color var(--dur) var(--ease-out), opacity var(--dur) var(--ease-out);
+}
+.logos__logo {
+  display: block;
+  width: auto;
+  max-width: none;
+  height: var(--logo-h);
+  fill: currentColor;
+  overflow: visible;
+}
+
+@media (hover: hover) {
+  .logos__item:hover {
+    color: var(--text);
+    opacity: 1;
+  }
+  /* the hovered logo clears; the rest (originals and clones alike) recede into the mist */
+  .logos__track:has(.logos__item:hover) .logos__item:not(:hover) {
+    opacity: 0.45;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .logos__track {
+    animation: logos-drift var(--logo-dur) linear infinite;
+    will-change: transform;
+  }
+  /* :focus-within guards any focusable content added to the strip later; the
+     switch itself lives outside it, so "play" works while it has focus */
+  .logos__marquee:focus-within .logos__track,
+  .logos:has(.logos__toggle-input:checked) .logos__track {
+    animation-play-state: paused;
+  }
+}
+@media (prefers-reduced-motion: no-preference) and (hover: hover) {
+  .logos__marquee:hover .logos__track {
+    animation-play-state: paused;
+  }
+}
+@keyframes logos-drift {
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+/* ── Breakpoints ──────────────────────────────────────────── */
+@media (max-width: 1100px) {
+  .logos {
+    --logo-h: 32px;
+  }
+}
+/* Tablet & phone: the hairlines would shrink to stubs, so the heading stands
+   alone; the strip runs edge to edge (more logos in view, symmetric fades) and
+   the pause switch drops below it, flush with the container's right edge. */
+@media (max-width: 860px) {
+  .logos {
+    --logo-h: 30px;
+    --logo-gap: 56px;
+    --logo-fade: 56px;
+    --logo-dur: 46s;
+  }
+  .logos__inner {
+    padding-bottom: 46px; /* 44px hit area; its 32px face lands 16px below the logos */
+  }
+  .logos__head {
+    grid-template-columns: minmax(0, 1fr);
+    margin-bottom: 32px;
+  }
+  .logos__head::before,
+  .logos__head::after {
+    display: none;
+  }
+  .logos__title {
+    grid-column: 1;
+    margin-inline: auto;
+  }
+  .logos__marquee {
+    margin-inline: calc(-1 * var(--gutter));
+  }
+  .logos__toggle {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+  }
+}
+@media (max-width: 720px) {
+  .logos {
+    --logo-h: 28px;
+    --logo-gap: 44px;
+    --logo-fade: 40px;
+    --logo-dur: 44s;
+  }
+}
+
+/* ── Reduced motion: a calm, static, centered grid — no clone, no switch ──
+   Column counts divide 12 so every row is full: 6 · 4 · 3 · 2. */
+@media (prefers-reduced-motion: reduce) {
+  .logos__inner {
+    padding-bottom: 0;
+  }
+  .logos__marquee {
+    margin-inline: 0;
+    overflow: visible;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+  .logos__track {
+    width: auto;
+  }
+  .logos__track > .logos__list {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    justify-items: center;
+    gap: 40px 24px;
+  }
+  .logos__item {
+    max-width: 100%;
+    padding-inline: 0;
+  }
+  .logos__logo {
+    max-width: 100%; /* a wide wordmark scales down rather than crowd its neighbor */
+  }
+  .logos__toggle,
+  .logos__track > .logos__list--clone {
+    display: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) and (max-width: 1359px) {
+  .logos__track > .logos__list {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+@media (prefers-reduced-motion: reduce) and (max-width: 860px) {
+  .logos__track > .logos__list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 32px 24px;
+  }
+}
+@media (prefers-reduced-motion: reduce) and (max-width: 599px) {
+  .logos__track > .logos__list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px 16px;
+  }
+}

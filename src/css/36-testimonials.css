@@ -1,0 +1,653 @@
+/* ────────────────────────────────────────────────────────────
+   Testimonials — one featured story in a lit glass panel with
+   five shorter quotes around it (3 × 3 bento on desktop); below
+   1100px the short quotes become a swipeable, snapping rail
+   ──────────────────────────────────────────────────────────── */
+.testimonials {
+  --t-gap: 24px;
+  --t-pad: 28px; /* small card padding */
+  --t-peek: 40px; /* how much of the next rail card shows (incl. the gap) */
+}
+
+/* Atmosphere: a violet light behind the featured story, a faint magenta one opposite */
+.testimonials__atmos {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  overflow-x: clip;
+}
+.testimonials__glow--violet {
+  left: -6%;
+  top: 30%;
+  width: 62%;
+  height: 54%;
+  background: radial-gradient(closest-side, rgba(144, 44, 225, 0.5), transparent);
+  opacity: 0.38;
+}
+.testimonials__glow--magenta {
+  right: -4%;
+  bottom: 12%;
+  width: 36%;
+  height: 34%;
+  background: radial-gradient(closest-side, rgba(218, 8, 139, 0.42), transparent);
+  opacity: 0.24;
+}
+
+.testimonials__head {
+  margin-bottom: clamp(40px, 5vw, 72px);
+}
+/* keep the desktop measure when the head stacks (≤ 860px) */
+.testimonials__lede {
+  max-width: 30em;
+}
+/* a 44px hit area for the text link without moving it; the focus ring
+   then sits evenly around the padded box */
+.testimonials__cta {
+  padding: 10px;
+  margin: -10px;
+}
+.testimonials__cta:focus-visible {
+  outline-offset: -2px;
+}
+/* hyphenated words never break across lines */
+.testimonials__nb {
+  white-space: nowrap;
+}
+
+/* ── Shared card anatomy ─────────────────────────────────── */
+.testimonials__logo {
+  display: block;
+  flex: none;
+  width: auto;
+  max-width: none;
+  height: 22px;
+  fill: currentColor;
+  color: var(--text-muted);
+  overflow: visible;
+  transition: color var(--dur) var(--ease-out);
+}
+.testimonials__logo--lg {
+  height: 26px;
+  color: var(--text);
+}
+
+.testimonials__quote p {
+  color: var(--text-soft);
+  text-wrap: pretty;
+}
+.testimonials__quote strong {
+  font-weight: inherit;
+  color: var(--text);
+}
+/* Hanging punctuation: the opening quote sits in the margin so the
+   text block keeps a clean left edge, flush with the logo above it */
+.testimonials__hang {
+  display: inline-block;
+  width: 0.4em;
+  margin-left: -0.4em;
+}
+
+.testimonials__by {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+.testimonials__avatar {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 40px;
+  height: 40px;
+  font-size: 13px;
+  line-height: 1;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--text);
+  background: linear-gradient(135deg, rgba(144, 44, 225, 0.42), rgba(180, 16, 216, 0.14));
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+}
+.testimonials__avatar--lg {
+  width: var(--t-avatar-lg);
+  height: var(--t-avatar-lg);
+  font-size: 16px;
+  background: var(--accent-gradient);
+  box-shadow: 0 10px 28px -12px rgba(218, 8, 139, 0.75);
+}
+.testimonials__who {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+.testimonials__name {
+  font-size: 15px;
+  line-height: 1.35;
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  color: var(--text);
+}
+.testimonials__role {
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--text-muted);
+}
+
+/* ── Featured story ──────────────────────────────────────── */
+.testimonials__featured {
+  --t-fpad: clamp(28px, 4vw, 56px);
+  --t-avatar-lg: 52px;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(32px, 3.4vw, 48px);
+  padding: var(--t-fpad);
+  overflow: hidden;
+  isolation: isolate;
+  container: t-featured / inline-size;
+  border-color: rgba(255, 255, 255, 0.1);
+  background: radial-gradient(70% 60% at 100% 100%, rgba(180, 16, 216, 0.2), transparent 70%),
+    radial-gradient(60% 50% at 0% 0%, rgba(144, 44, 225, 0.14), transparent 70%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
+}
+/* a lit hairline along the top edge — the panel catches the light */
+.testimonials__featured::before {
+  content: "";
+  position: absolute;
+  inset: -1px 0 auto;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(217, 207, 251, 0.5) 30%, rgba(255, 46, 154, 0.45) 70%, transparent);
+  pointer-events: none;
+}
+.testimonials__featured > :not(.testimonials__art) {
+  position: relative;
+  z-index: 1;
+}
+
+/* The hero's landscape, glimpsed through the bottom of the panel */
+.testimonials__art {
+  position: absolute;
+  inset: auto 0 0;
+  height: 58%;
+  z-index: 0;
+  pointer-events: none;
+}
+.testimonials__art img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 68% 100%;
+  opacity: 0.34;
+  transform-origin: 68% 100%;
+  -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 60%);
+  mask-image: linear-gradient(180deg, transparent 0%, #000 60%);
+  transition: opacity 1200ms var(--ease-out), transform 1600ms var(--ease-out);
+}
+/* on hover the landscape brightens and rises a touch, like mist lifting */
+@media (hover: hover) {
+  .testimonials__featured:hover .testimonials__art img {
+    opacity: 0.46;
+    transform: scale(1.015);
+  }
+}
+.testimonials__art::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 40%, rgba(7, 5, 13, 0.72));
+}
+
+.testimonials__featured-top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px 24px;
+}
+
+.testimonials__quote--lg p {
+  max-width: 23em;
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: clamp(26px, 2.8vw, 38px);
+  line-height: 1.24;
+  letter-spacing: -0.018em;
+  text-wrap: balance;
+}
+
+/* the attribution rests on the valley floor of the landscape */
+.testimonials__foot {
+  margin-top: auto;
+  padding-top: clamp(48px, 9vw, 120px);
+}
+
+.testimonials__chip {
+  align-items: flex-start;
+  height: auto;
+  min-height: 32px;
+  padding: 7px 12px;
+  gap: 10px;
+  font-size: 14px;
+  line-height: 18px;
+  font-weight: 400;
+  color: var(--text-soft);
+  white-space: normal;
+  background: rgba(20, 10, 40, 0.55);
+  border-color: rgba(214, 92, 255, 0.32);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+.testimonials__chip strong {
+  font-weight: 600;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+/* the mark stays on the first line's x-height even when the chip wraps */
+.testimonials__chip-mark {
+  flex: none;
+  width: 7px;
+  height: 7px;
+  margin-top: 5.5px;
+  background: var(--accent-gradient);
+}
+/* too narrow for one line: break after "auto-triaged" so the chip hugs two even lines */
+@container t-featured (max-width: 320px) {
+  .testimonials__chip-tail {
+    display: block;
+  }
+}
+
+/* ── Short stories ───────────────────────────────────────── */
+.testimonials__rail .testimonials__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.testimonials__item {
+  display: flex;
+  min-width: 0;
+}
+.testimonials__card {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: var(--t-pad) var(--t-pad) 0;
+  transition: border-color var(--dur) var(--ease-out), transform var(--dur) var(--ease-out),
+    background-color var(--dur) var(--ease-out), box-shadow var(--dur) var(--ease-out);
+}
+.testimonials__card .testimonials__logo {
+  align-self: flex-start;
+  margin-bottom: 24px;
+}
+.testimonials__figure {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+}
+.testimonials__card .testimonials__quote p {
+  font-size: 16px;
+  line-height: 1.6;
+}
+/* attributions line up across a row, whatever the quote length */
+.testimonials__card .testimonials__by {
+  margin-top: auto;
+  padding-top: 24px;
+}
+.testimonials__metric {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-height: 74px; /* room for a two-line label, so footers (and attributions) align across cards */
+  margin: 24px calc(-1 * var(--t-pad)) 0;
+  padding: 18px var(--t-pad);
+  border-top: 1px solid var(--line);
+}
+.testimonials__metric-value {
+  flex: none;
+  display: inline-flex;
+  align-items: baseline;
+  min-width: 72px;
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: 32px;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  color: transparent;
+  background: linear-gradient(90deg, var(--head-from), #fff 2.6em);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+.testimonials__metric-unit {
+  margin-left: 5px;
+  font-size: 15px;
+  letter-spacing: 0;
+}
+/* symbols sit tight against the number (92%), like the use-case stats */
+.testimonials__metric-unit--pct {
+  margin-left: 1px;
+  font-size: 18px;
+  letter-spacing: -0.02em;
+}
+.testimonials__metric-label {
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--text-muted);
+  text-wrap: balance;
+}
+
+@media (hover: hover) {
+  .testimonials__card:hover {
+    border-color: var(--line-strong);
+    background-color: rgba(255, 255, 255, 0.015);
+    transform: translateY(-2px);
+    box-shadow: 0 24px 48px -32px rgba(144, 44, 225, 0.55);
+  }
+  .testimonials__card:hover .testimonials__logo {
+    color: var(--text);
+  }
+}
+
+.testimonials__note {
+  margin-top: 32px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--text-muted);
+  text-wrap: pretty;
+}
+
+/* ── Desktop: 3 × 3 bento — featured spans 2 × 2, the rail is a subgrid ── */
+@media (min-width: 1101px) {
+  .testimonials__grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--t-gap);
+  }
+  .testimonials__featured {
+    grid-column: 1 / 3;
+    grid-row: 1 / 3;
+  }
+  @supports (grid-template-rows: subgrid) {
+    .testimonials__grid {
+      /* 1fr rows in an auto-height grid resolve to the taller row's size,
+         so the two stories beside the featured panel are always equal */
+      grid-template-rows: 1fr 1fr auto;
+    }
+    .testimonials__rail,
+    .testimonials__list {
+      display: grid;
+      grid-column: 1 / -1;
+      grid-row: 1 / -1;
+      grid-template-columns: subgrid;
+      grid-template-rows: subgrid;
+      pointer-events: none; /* the rail overlaps the featured panel's cells */
+    }
+    .testimonials__item {
+      pointer-events: auto;
+    }
+    .testimonials__item:nth-child(1) {
+      grid-area: 1 / 3;
+    }
+    .testimonials__item:nth-child(2) {
+      grid-area: 2 / 3;
+    }
+    .testimonials__item:nth-child(n + 3) {
+      grid-row: 3;
+    }
+  }
+  @supports not (grid-template-rows: subgrid) {
+    .testimonials__featured {
+      grid-column: 1 / -1;
+      grid-row: auto;
+    }
+    .testimonials__rail {
+      grid-column: 1 / -1;
+    }
+    .testimonials__list {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: var(--t-gap);
+    }
+  }
+}
+
+/* Reveal: on desktop the cards cascade one by one; in the rail they arrive
+   together with the rail (a card scrolled in from the side must never be
+   caught mid-fade) */
+@media (prefers-reduced-motion: no-preference) and (min-width: 1101px) {
+  .js .testimonials__rail[data-reveal] {
+    opacity: 1;
+    transform: none;
+  }
+}
+@media (prefers-reduced-motion: no-preference) and (max-width: 1100px) {
+  .js .testimonials__item[data-reveal] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* ── ≤ 1100px: featured on top, short stories in a swipeable rail ── */
+@media (max-width: 1100px) {
+  .testimonials {
+    --t-card: min(400px, calc(100vw - 2 * var(--gutter) - var(--t-peek)));
+  }
+
+  /* The landscape is sized from the bottom edge up to the quote, so the
+     peaks rise between quote and attribution and never sit behind text */
+  .testimonials__featured {
+    --t-foot: clamp(112px, 15vw, 160px);
+  }
+  .testimonials__foot {
+    padding-top: var(--t-foot);
+  }
+  .testimonials__art {
+    height: calc(var(--t-foot) + var(--t-avatar-lg) + var(--t-fpad));
+  }
+  .testimonials__art img {
+    object-position: 0% 100%;
+    transform-origin: 50% 100%;
+    opacity: 0.4;
+    -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 56%);
+    mask-image: linear-gradient(180deg, transparent 0%, #000 56%);
+  }
+
+  .testimonials__rail {
+    /* bleed to the viewport edges; the first card stays on the container line */
+    margin: calc(var(--t-gap) - 8px) calc(-1 * var(--gutter)) 0;
+    padding-block: 8px; /* room for hover lift & the focus ring without clipping */
+    overflow-x: auto;
+    overflow-y: hidden;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: var(--gutter);
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .testimonials__rail::-webkit-scrollbar {
+    display: none;
+  }
+  /* Focus: without JS, ring the rail itself; with JS, ring the card at the
+     rail's start, so arrow keys visibly walk the ring from card to card */
+  .testimonials__rail:focus-visible {
+    outline-offset: -2px;
+  }
+  .testimonials.is-scrollable .testimonials__rail:focus-visible {
+    outline: 0;
+  }
+  .testimonials.is-scrollable .testimonials__rail:focus-visible .is-current .testimonials__card {
+    outline: 2px solid var(--text);
+    outline-offset: 3px;
+  }
+  .testimonials__rail .testimonials__list {
+    display: flex;
+    gap: 16px;
+    width: max-content;
+    padding-inline: var(--gutter);
+  }
+  .testimonials__item {
+    flex: none;
+    width: var(--t-card);
+    scroll-snap-align: start;
+  }
+  @supports (width: 1cqi) {
+    .testimonials__rail {
+      container-type: inline-size;
+    }
+    .testimonials__item {
+      width: min(400px, calc(100cqi - 2 * var(--gutter) - var(--t-peek)));
+    }
+  }
+
+  /* Controls: hint · progress · prev/next */
+  .testimonials__controls {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-top: 16px;
+  }
+  .testimonials__controls[hidden] {
+    display: none;
+  }
+  /* once the rail has moved, the hint fades and folds away; the track takes its place */
+  .testimonials__hint {
+    display: none;
+    align-items: center;
+    gap: 8px;
+    flex: none;
+    max-width: 160px;
+    overflow: hidden;
+    font-size: 13px;
+    line-height: 20px;
+    font-weight: 500;
+    white-space: nowrap;
+    color: var(--text-soft);
+    transition: opacity 360ms var(--ease-out), max-width 700ms var(--ease-out) 240ms,
+      margin-right 700ms var(--ease-out) 240ms;
+  }
+  .testimonials.has-scrolled .testimonials__hint {
+    opacity: 0;
+    max-width: 0;
+    margin-right: -16px; /* swallow the flex gap */
+  }
+  .testimonials__track {
+    position: relative;
+    flex: 1 1 auto;
+    height: 2px;
+    max-width: 320px;
+    background: var(--line);
+    overflow: hidden;
+  }
+  .testimonials__thumb {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 40%;
+    background: rgba(255, 255, 255, 0.72);
+    will-change: transform;
+  }
+  .testimonials__nav {
+    display: flex;
+    gap: 8px;
+    margin-left: auto;
+  }
+  .testimonials__btn {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    color: var(--text);
+    background: var(--glass);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+    transition: background-color var(--dur) var(--ease-out), color var(--dur) var(--ease-out),
+      opacity var(--dur) var(--ease-out), transform var(--dur-fast) var(--ease-out);
+  }
+  .testimonials__btn .icon {
+    width: 18px;
+    height: 18px;
+    transition: transform var(--dur) var(--ease-out);
+  }
+  .testimonials__btn:hover {
+    background: var(--glass-hover);
+  }
+  .testimonials__btn[data-t-prev]:hover .icon {
+    transform: translateX(-2px);
+  }
+  .testimonials__btn[data-t-next]:hover .icon {
+    transform: translateX(2px);
+  }
+  .testimonials__btn:active {
+    transform: translateY(1px);
+  }
+  .testimonials__btn[aria-disabled="true"] {
+    color: var(--text-muted);
+    background: var(--surface-2);
+    opacity: 0.5;
+    cursor: default;
+  }
+  .testimonials__btn[aria-disabled="true"] .icon {
+    transform: none;
+  }
+  .testimonials__btn[aria-disabled="true"]:active {
+    transform: none;
+  }
+}
+
+/* Touch devices: show the swipe hint (it fades once the rail has been moved) */
+@media (max-width: 1100px) and (hover: none) {
+  .testimonials__hint {
+    display: inline-flex;
+  }
+}
+@media (max-width: 1100px) and (hover: none) and (prefers-reduced-motion: no-preference) {
+  .testimonials.is-inview:not(.has-scrolled) .testimonials__hint-icon {
+    animation: testimonials-nudge 3.2s var(--ease-in-out) 1s infinite;
+  }
+}
+@keyframes testimonials-nudge {
+  0%,
+  60%,
+  100% {
+    transform: none;
+  }
+  30% {
+    transform: translateX(4px);
+  }
+}
+
+@media (max-width: 720px) {
+  .testimonials {
+    --t-pad: 24px;
+  }
+  .testimonials__featured {
+    --t-avatar-lg: 48px;
+    gap: 28px;
+  }
+  .testimonials__quote--lg p {
+    font-size: clamp(23px, 6.2vw, 30px);
+    line-height: 1.26;
+    text-wrap: pretty;
+  }
+  .testimonials__logo--lg {
+    height: 24px;
+  }
+  .testimonials__avatar--lg {
+    font-size: 15px;
+  }
+  .testimonials__note {
+    margin-top: 24px;
+  }
+}
+
+@media (max-width: 480px) {
+  .testimonials {
+    --t-peek: 32px;
+  }
+  .testimonials__featured {
+    padding: 28px 24px;
+  }
+  .testimonials__role {
+    font-size: 13px;
+  }
+}

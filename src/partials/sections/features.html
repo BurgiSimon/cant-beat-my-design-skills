@@ -1,0 +1,309 @@
+<section class="section features" id="features" aria-labelledby="features-title" data-nav-section="features" data-module="features">
+  <div class="features__atmos" aria-hidden="true">
+    <span class="glow features__glow features__glow--a"></span>
+    <span class="glow features__glow features__glow--b"></span>
+    <span class="mist-band features__band"></span>
+  </div>
+
+  <div class="container">
+    <div class="section-head features__head" data-reveal-stagger>
+      <div>
+        <p class="eyebrow" data-reveal>Features</p>
+        <h2 class="title-2" id="features-title" data-reveal>Everything you need to automate with confidence</h2>
+      </div>
+      <div class="section-head__aside" data-reveal>
+        <p class="lede">From the first prompt to the millionth run, Mist gives you the building blocks, guardrails, and visibility to hand real work to AI.</p>
+      </div>
+    </div>
+
+    <ul class="features__grid" role="list" data-reveal-stagger data-features-grid>
+      <!-- 1 · Natural-language builder ─────────────────────────────── -->
+      <li class="features__card features__card--builder panel" data-reveal style="--reveal-i: 0">
+        <div class="features__visual features__builder" aria-hidden="true" data-builder>
+          <div class="features__prompt">
+            <p class="features__prompt-label">
+              <svg class="icon icon--sm" viewBox="0 0 24 24"><path d="M12 3.5l1.9 5.1L19 10.5l-5.1 1.9L12 17.5l-1.9-5.1L5 10.5l5.1-1.9z" /><path d="M18.5 15.5l.8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8z" /></svg>
+              Describe a workflow
+            </p>
+            <p class="features__prompt-text">When an <span class="features__ent">invoice over $5,000</span> arrives, <span class="features__ent">extract the details</span>, ask <span class="features__ent">finance</span> to approve, then sync it to <span class="features__ent">billing</span>.<span class="features__caret"></span></p>
+            <div class="features__prompt-foot">
+              <span class="features__uses">
+                <span class="features__mini"><svg class="icon" viewBox="0 0 24 24"><path d="M3.5 6h17v12h-17z" /><path d="M3.5 7l8.5 6 8.5-6" /></svg></span>
+                <span class="features__mini features__mini--ai"><svg class="icon" viewBox="0 0 24 24"><path d="M12 3.5l1.9 5.1L19 10.5l-5.1 1.9L12 17.5l-1.9-5.1L5 10.5l5.1-1.9z" /></svg></span>
+                <span class="features__mini"><svg class="icon" viewBox="0 0 24 24"><path d="M12 11a3.75 3.75 0 1 0 0-7.5 3.75 3.75 0 0 0 0 7.5z" /><path d="M4.5 20.5c.6-3.8 3.6-6.5 7.5-6.5s6.9 2.7 7.5 6.5" /></svg></span>
+                <span class="features__mini"><svg class="icon" viewBox="0 0 24 24"><path d="M3.5 6h17v12h-17z" /><path d="M3.5 10h17M7 14.5h4" /></svg></span>
+              </span>
+              <span class="features__prompt-btn">Build <span class="features__kbd">⌘↵</span></span>
+            </div>
+          </div>
+
+          <div class="features__flow">
+            <div class="features__flow-head">
+              <span class="features__flow-name">Invoice approvals</span>
+              <span class="features__flow-status" data-builder-status>
+                <span class="features__flow-dot"></span>
+                <span class="features__flow-state features__flow-state--idle">Waiting for prompt</span>
+                <span class="features__flow-state features__flow-state--busy">Building…</span>
+                <span class="features__flow-state features__flow-state--done">Ready to run</span>
+              </span>
+            </div>
+            <ol class="features__steps">
+              <li class="features__step" data-step>
+                <span class="features__step-icon"><svg class="icon icon--sm" viewBox="0 0 24 24"><path d="M3.5 6h17v12h-17z" /><path d="M3.5 7l8.5 6 8.5-6" /></svg></span>
+                <span class="features__step-text"><span class="features__step-kind">Trigger</span><span class="features__step-title">Invoice arrives by email</span></span>
+                <span class="features__step-check"><svg class="icon" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" pathLength="1" /></svg></span>
+              </li>
+              <li class="features__step" data-step>
+                <span class="features__step-icon features__step-icon--ai"><svg class="icon icon--sm" viewBox="0 0 24 24"><path d="M12 3.5l1.9 5.1L19 10.5l-5.1 1.9L12 17.5l-1.9-5.1L5 10.5l5.1-1.9z" /></svg></span>
+                <span class="features__step-text"><span class="features__step-kind">AI · Extract</span><span class="features__step-title">Vendor, amount, due date</span></span>
+                <span class="features__step-check"><svg class="icon" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" pathLength="1" /></svg></span>
+              </li>
+              <li class="features__step" data-step>
+                <span class="features__step-icon"><svg class="icon icon--sm" viewBox="0 0 24 24"><path d="M6 3.5v17" /><path d="M6 15c0-4.5 4-7 12-7" /><path d="M15 5l3 3-3 3" /></svg></span>
+                <span class="features__step-text"><span class="features__step-kind">Condition</span><span class="features__step-title">Amount is over $5,000</span></span>
+                <span class="features__step-check"><svg class="icon" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" pathLength="1" /></svg></span>
+              </li>
+              <li class="features__step" data-step>
+                <span class="features__step-icon"><svg class="icon icon--sm" viewBox="0 0 24 24"><path d="M12 11a3.75 3.75 0 1 0 0-7.5 3.75 3.75 0 0 0 0 7.5z" /><path d="M4.5 20.5c.6-3.8 3.6-6.5 7.5-6.5s6.9 2.7 7.5 6.5" /></svg></span>
+                <span class="features__step-text"><span class="features__step-kind">Approval</span><span class="features__step-title">Ask Finance to approve</span></span>
+                <span class="features__step-check"><svg class="icon" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" pathLength="1" /></svg></span>
+              </li>
+              <li class="features__step" data-step>
+                <span class="features__step-icon"><svg class="icon icon--sm" viewBox="0 0 24 24"><path d="M4 9h14l-4-4" /><path d="M20 15H6l4 4" /></svg></span>
+                <span class="features__step-text"><span class="features__step-kind">Action</span><span class="features__step-title">Sync invoice to billing</span></span>
+                <span class="features__step-check"><svg class="icon" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" pathLength="1" /></svg></span>
+              </li>
+            </ol>
+          </div>
+        </div>
+        <div class="features__copy">
+          <h3 class="title-3">Describe it. Mist builds it.</h3>
+          <p class="body">Write what should happen in plain language. Mist drafts the trigger, AI steps, and approvals, so you only review, adjust, and switch it on. Median time to a first live workflow: 12&nbsp;minutes.</p>
+        </div>
+      </li>
+
+      <!-- 2 · Integrations ─────────────────────────────────────────── -->
+      <li class="features__card features__card--orbit panel" data-reveal style="--reveal-i: 1">
+        <div class="features__visual features__orbit" aria-hidden="true">
+          <svg class="features__orbit-lines" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <g class="features__orbit-spokes">
+              <path d="M50 50L80 50M50 50L65 78M50 50L35 78M50 50L20 50M50 50L35 22M50 50L65 22" />
+            </g>
+            <g class="features__orbit-links">
+              <path d="M80 50L91 74M65 78L91 74M35 78L9 74M20 50L9 74M20 50L9 26M35 22L9 26M65 22L91 26M80 50L91 26" />
+            </g>
+            <g class="features__orbit-links features__orbit-links--tb">
+              <path d="M65 78L50 93M35 78L50 93M35 22L50 7M65 22L50 7" />
+            </g>
+          </svg>
+          <span class="features__orbit-glow"></span>
+
+          <!-- inner ring -->
+          <span class="features__tile" style="--x: 80%; --y: 50%"><svg class="icon" viewBox="0 0 24 24"><path d="M4 5h16v11H9.5L4 20z" /><path d="M8 9.5h8M8 12.5h5" /></svg></span>
+          <span class="features__tile" style="--x: 65%; --y: 78%"><svg class="icon" viewBox="0 0 24 24"><path d="M3.5 6h17v12h-17z" /><path d="M3.5 7l8.5 6 8.5-6" /></svg></span>
+          <span class="features__tile" style="--x: 35%; --y: 78%"><svg class="icon" viewBox="0 0 24 24"><path d="M4 4h16v16H4z" /><path d="M4 9.5h16M4 15h16M10 4v16" /></svg></span>
+          <span class="features__tile" style="--x: 20%; --y: 50%"><svg class="icon" viewBox="0 0 24 24"><path d="M9 11a3.25 3.25 0 1 0 0-6.5A3.25 3.25 0 0 0 9 11z" /><path d="M2.75 20c.5-3.4 3-5.75 6.25-5.75S14.75 16.6 15.25 20" /><path d="M15.5 4.9a3.25 3.25 0 0 1 0 5.7" /><path d="M17.75 14.6c1.9.7 3.15 2.6 3.5 5.4" /></svg></span>
+          <span class="features__tile" style="--x: 35%; --y: 22%"><svg class="icon" viewBox="0 0 24 24"><path d="M4 13.5v-2a8 8 0 0 1 16 0v2" /><path d="M4 13.5h3.5V19H4zM16.5 13.5H20V19h-3.5z" /><path d="M20 19c0 1.5-2.5 2-6 2" /></svg></span>
+          <span class="features__tile" style="--x: 65%; --y: 22%"><svg class="icon" viewBox="0 0 24 24"><path d="M3.5 6h17v12h-17z" /><path d="M3.5 10h17M7 14.5h4" /></svg></span>
+
+          <!-- outer ring -->
+          <span class="features__tile features__tile--far" style="--x: 91%; --y: 74%"><svg class="icon" viewBox="0 0 24 24"><path d="M5 6c0-1.7 3.1-3 7-3s7 1.3 7 3-3.1 3-7 3-7-1.3-7-3z" /><path d="M5 6v12c0 1.7 3.1 3 7 3s7-1.3 7-3V6" /><path d="M5 12c0 1.7 3.1 3 7 3s7-1.3 7-3" /></svg></span>
+          <span class="features__tile features__tile--far features__tile--tb" style="--x: 50%; --y: 93%"><svg class="icon" viewBox="0 0 24 24"><path d="M3.5 5.5h6.5l2 2.5h8.5v10.5h-17z" /></svg></span>
+          <span class="features__tile features__tile--far" style="--x: 9%; --y: 74%"><svg class="icon" viewBox="0 0 24 24"><path d="M4 4h16v16H4z" /><path d="M8 4v16" /><path d="M11 8.5h5.5M11 12h5.5M11 15.5h3.5" /></svg></span>
+          <span class="features__tile features__tile--far" style="--x: 9%; --y: 26%"><svg class="icon" viewBox="0 0 24 24"><path d="M4 5.5h16v15H4z" /><path d="M4 10h16M8.5 3v4.5M15.5 3v4.5" /></svg></span>
+          <span class="features__tile features__tile--far features__tile--tb" style="--x: 50%; --y: 7%"><svg class="icon" viewBox="0 0 24 24"><path d="M13.5 3L5.5 13.5h6L10.5 21l8-10.5h-6z" /></svg></span>
+          <span class="features__tile features__tile--far" style="--x: 91%; --y: 26%"><svg class="icon" viewBox="0 0 24 24"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5M13.5 4.5l-3 15" /></svg></span>
+
+          <span class="features__orbit-core">
+            <svg viewBox="0 0 20 20">
+              <defs><clipPath id="features-mark-clip"><circle cx="10" cy="10" r="10" /></clipPath></defs>
+              <g clip-path="url(#features-mark-clip)" fill="currentColor">
+                <rect x="0" y="0" width="20" height="3.6" />
+                <rect x="0" y="5.5" width="20" height="3.6" />
+                <rect x="0" y="11" width="20" height="3.6" />
+                <rect x="0" y="16.4" width="20" height="3.6" />
+              </g>
+            </svg>
+          </span>
+        </div>
+        <div class="features__copy">
+          <h3 class="title-3">300+ integrations</h3>
+          <p class="body">Chat, email, CRM, help desk, billing, data warehouses, and more. For anything else, call any API with webhooks, HTTP requests, or a few lines of JavaScript or Python.</p>
+        </div>
+      </li>
+
+      <!-- 3 · AI steps ─────────────────────────────────────────────── -->
+      <li class="features__card features__card--ai panel" data-reveal style="--reveal-i: 0">
+        <div class="features__visual features__ai" aria-hidden="true">
+          <ul class="features__ai-chips">
+            <li class="chip">Classify</li>
+            <li class="chip chip--accent">Extract</li>
+            <li class="chip">Summarize</li>
+            <li class="chip">Translate</li>
+            <li class="chip">Draft</li>
+            <li class="chip">Decide</li>
+          </ul>
+          <div class="features__email">
+            <p class="features__email-from"><span>From</span> Northvale Accounts</p>
+            <p class="features__email-body">Invoice INV-2291 for $6,480.00 is attached, due December&nbsp;12.</p>
+          </div>
+          <div class="features__ai-link">
+            <span class="features__ai-op">
+              <svg class="icon icon--sm" viewBox="0 0 24 24"><path d="M12 3.5l1.9 5.1L19 10.5l-5.1 1.9L12 17.5l-1.9-5.1L5 10.5l5.1-1.9z" /></svg>
+              Extract <span class="features__ai-time">0.6s</span>
+            </span>
+          </div>
+          <pre class="features__json"><code><span class="p">{</span> <span class="k">"vendor"</span><span class="p">:</span> <span class="s">"Northvale"</span><span class="p">,</span>
+  <span class="k">"invoice"</span><span class="p">:</span> <span class="s">"INV-2291"</span><span class="p">,</span>
+  <span class="k">"amount"</span><span class="p">:</span> <span class="n">6480.00</span><span class="p">,</span>
+  <span class="k">"due"</span><span class="p">:</span> <span class="s">"2026-12-12"</span> <span class="p">}</span></code></pre>
+        </div>
+        <div class="features__copy">
+          <h3 class="title-3">AI steps that do the busywork</h3>
+          <p class="body">Classify, extract, summarize, translate, draft, and decide, as ordinary steps in any workflow. Use Mist’s hosted models or bring your own key.</p>
+        </div>
+      </li>
+
+      <!-- 4 · Humans in the loop ───────────────────────────────────── -->
+      <li class="features__card features__card--approve panel" data-reveal style="--reveal-i: 1">
+        <div class="features__visual features__approve" aria-hidden="true">
+          <div class="features__approve-card">
+            <div class="features__approve-top">
+              <span class="features__approve-badge"><span class="dot"></span>Needs approval</span>
+              <span class="features__approve-id">Run #4812</span>
+            </div>
+            <p class="features__approve-title">Refund $1,240 to Kestrel?</p>
+            <dl class="features__approve-ctx">
+              <div><dt>Order</dt><dd>KS-40912 · $1,240.00</dd></div>
+              <div><dt>Reason</dt><dd>Damaged on arrival</dd></div>
+              <div><dt>Policy</dt><dd class="features__approve-ok"><svg class="icon icon--sm" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg>Within 30-day window</dd></div>
+            </dl>
+            <div class="features__approve-actions">
+              <span class="btn btn--primary btn--sm">Approve</span>
+              <span class="btn btn--glass btn--sm">Reject</span>
+            </div>
+            <p class="features__approve-meta">Requested by Refunds workflow · <span>2m&nbsp;ago</span></p>
+          </div>
+        </div>
+        <div class="features__copy">
+          <h3 class="title-3">Humans in the loop</h3>
+          <p class="body">Send high-stakes decisions to the right person in chat or email. Mist pauses the run, shows the context, and picks up the moment someone approves.</p>
+        </div>
+      </li>
+
+      <!-- 5 · Observability ────────────────────────────────────────── -->
+      <li class="features__card features__card--runs panel" data-reveal style="--reveal-i: 2">
+        <div class="features__visual features__runs" aria-hidden="true" data-runs>
+          <div class="features__runs-stats">
+            <p><span class="features__runs-num">99.2%</span><span class="features__runs-label">Success rate</span></p>
+            <p><span class="features__runs-num">1.8s</span><span class="features__runs-label">Median run</span></p>
+          </div>
+          <div class="features__chart">
+            <svg class="features__chart-svg" viewBox="0 0 300 120" preserveAspectRatio="none">
+              <defs>
+                <linearGradient id="features-chart-fill" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0" stop-color="#b410d8" stop-opacity="0.42" />
+                  <stop offset="0.55" stop-color="#902ce1" stop-opacity="0.12" />
+                  <stop offset="1" stop-color="#902ce1" stop-opacity="0" />
+                </linearGradient>
+                <linearGradient id="features-chart-stroke" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0" stop-color="#8b4dff" />
+                  <stop offset="0.55" stop-color="#b410d8" />
+                  <stop offset="1" stop-color="#ff2e9a" />
+                </linearGradient>
+              </defs>
+              <rect class="features__chart-weekend" x="0" y="0" width="34.62" height="120" />
+              <rect class="features__chart-weekend" x="150" y="0" width="46.15" height="120" />
+              <path class="features__chart-grid" d="M0 14H300M0 66H300" />
+              <path class="features__chart-base" d="M0 119.5H300" />
+              <g class="features__chart-plot">
+                <path class="features__chart-area" fill="url(#features-chart-fill)" d="M0 66.74C7.69 67.93 15.38 70.31 23.08 70.31C30.77 70.31 38.46 45.49 46.15 40.3C53.85 35.1 61.54 36.21 69.23 34.95C76.92 33.68 84.62 31.68 92.31 31.68C100 31.68 107.69 32.91 115.38 33.54C123.08 34.16 130.77 33.59 138.46 37.1C146.15 40.61 153.85 59.69 161.54 63.92C169.23 68.15 176.92 68.15 184.62 68.15C192.31 68.15 200 35.31 207.69 30.79C215.38 26.26 223.08 27.04 230.77 26.18C238.46 25.33 246.15 22.84 253.85 22.84C261.54 22.84 269.23 24.99 276.92 24.99C284.62 24.99 292.31 23.41 300 22.62V120H0Z" />
+                <path class="features__chart-line" stroke="url(#features-chart-stroke)" vector-effect="non-scaling-stroke" d="M0 66.74C7.69 67.93 15.38 70.31 23.08 70.31C30.77 70.31 38.46 45.49 46.15 40.3C53.85 35.1 61.54 36.21 69.23 34.95C76.92 33.68 84.62 31.68 92.31 31.68C100 31.68 107.69 32.91 115.38 33.54C123.08 34.16 130.77 33.59 138.46 37.1C146.15 40.61 153.85 59.69 161.54 63.92C169.23 68.15 176.92 68.15 184.62 68.15C192.31 68.15 200 35.31 207.69 30.79C215.38 26.26 223.08 27.04 230.77 26.18C238.46 25.33 246.15 22.84 253.85 22.84C261.54 22.84 269.23 24.99 276.92 24.99C284.62 24.99 292.31 23.41 300 22.62" />
+              </g>
+            </svg>
+            <span class="features__chart-dot"></span>
+            <span class="features__chart-tip"><b>1,284</b> runs today</span>
+          </div>
+          <div class="features__chart-axis"><span>Nov 7</span><span>Nov 14</span><span>Today</span></div>
+          <p class="features__runs-foot">
+            <span><svg class="icon icon--sm" viewBox="0 0 24 24"><path d="M19.5 12a7.5 7.5 0 1 1-2.2-5.3" /><path d="M19.5 4v4.5H15" /></svg>118 retried automatically</span>
+            <span class="features__runs-replay">Replay<svg class="icon icon--sm" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" /></svg></span>
+          </p>
+        </div>
+        <div class="features__copy">
+          <h3 class="title-3">See every run</h3>
+          <p class="body">Every run is logged step by step, with inputs, outputs, and timings. Failed steps retry automatically, and you can replay any run in one click.</p>
+        </div>
+      </li>
+
+      <!-- 6 · Security ─────────────────────────────────────────────── -->
+      <li class="features__card features__card--security panel" id="security" data-reveal style="--reveal-i: 0">
+        <div class="features__visual features__audit" aria-hidden="true">
+          <div class="features__audit-panel">
+            <div class="features__audit-head">
+              <p class="features__audit-title">
+                <svg class="icon icon--sm" viewBox="0 0 24 24"><path d="M8.5 6.5h12M8.5 12h12M8.5 17.5h12M3.5 6.5h1.5M3.5 12h1.5M3.5 17.5h1.5" /></svg>
+                Audit log
+              </p>
+              <span class="features__audit-region"><span class="dot"></span>EU region</span>
+              <span class="features__audit-range">Last 24 hours<svg class="icon icon--sm" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" /></svg></span>
+            </div>
+            <ol class="features__audit-rows">
+              <li class="features__audit-row">
+                <span class="features__audit-time">09:42:18</span>
+                <span class="features__audit-actor"><span class="features__avatar features__avatar--system"><svg class="icon icon--sm" viewBox="0 0 24 24"><path d="M9 11a3.25 3.25 0 1 0 0-6.5A3.25 3.25 0 0 0 9 11z" /><path d="M2.75 20c.5-3.4 3-5.75 6.25-5.75S14.75 16.6 15.25 20" /><path d="M15.5 4.9a3.25 3.25 0 0 1 0 5.7" /><path d="M17.75 14.6c1.9.7 3.15 2.6 3.5 5.4" /></svg></span>SCIM directory</span>
+                <span class="features__audit-action">Provisioned 12 new members</span>
+                <span class="features__audit-event">member.provision</span>
+              </li>
+              <li class="features__audit-row">
+                <span class="features__audit-time">09:40:51</span>
+                <span class="features__audit-actor"><span class="features__avatar">HW</span>Hannah Weiss</span>
+                <span class="features__audit-action">Required SSO for all members</span>
+                <span class="features__audit-event">sso.enforce</span>
+              </li>
+              <li class="features__audit-row">
+                <span class="features__audit-time">09:37:26</span>
+                <span class="features__audit-actor"><span class="features__avatar features__avatar--system"><svg viewBox="0 0 20 20"><g clip-path="url(#features-mark-clip)" fill="currentColor"><rect x="0" y="0" width="20" height="3.6" /><rect x="0" y="5.5" width="20" height="3.6" /><rect x="0" y="11" width="20" height="3.6" /><rect x="0" y="16.4" width="20" height="3.6" /></g></svg></span>Refunds workflow</span>
+                <span class="features__audit-action">Recorded refund approval</span>
+                <span class="features__audit-event">approval.grant</span>
+              </li>
+              <li class="features__audit-row">
+                <span class="features__audit-time">09:33:09</span>
+                <span class="features__audit-actor"><span class="features__avatar features__avatar--system"><svg class="icon icon--sm" viewBox="0 0 24 24"><path d="M7 16.5a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9z" /><path d="M11.5 12h10M17.5 12v4M21 12v3" /></svg></span>Security policy</span>
+                <span class="features__audit-action">Rotated the production API key</span>
+                <span class="features__audit-event">api_key.rotate</span>
+              </li>
+              <li class="features__audit-row">
+                <span class="features__audit-time">09:30:44</span>
+                <span class="features__audit-actor"><span class="features__avatar">HW</span>Hannah Weiss</span>
+                <span class="features__audit-action">Set data residency to EU</span>
+                <span class="features__audit-event">residency.update</span>
+              </li>
+            </ol>
+            <div class="features__audit-foot">
+              <span>Showing 5 of 214 events</span>
+              <span class="features__audit-export"><svg class="icon icon--sm" viewBox="0 0 24 24"><path d="M12 4v11M7 10.5l5 5 5-5M5 19.5h14" /></svg>Export CSV</span>
+            </div>
+          </div>
+        </div>
+        <div class="features__copy">
+          <h3 class="title-3">Enterprise-grade security</h3>
+          <p class="body">SOC&nbsp;2 Type&nbsp;II audited, with AES-256 encryption at rest and TLS&nbsp;1.3 in transit. Control access with SSO and SCIM, review every change in audit logs, and choose EU or US data residency.</p>
+          <ul class="features__badges" role="list" aria-label="Security and compliance">
+            <li class="features__badge"><svg class="icon icon--sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7.5 3v5.5c0 4.6-3.2 8.2-7.5 9.5-4.3-1.3-7.5-4.9-7.5-9.5V6z" /><path d="M8.75 12l2.25 2.25 4.25-4.5" /></svg>SOC 2 Type II</li>
+            <li class="features__badge"><svg class="icon icon--sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3.5h8.5l3.5 3.5v13.5H6z" /><path d="M9 13.5l2 2 4-4.5" /></svg>GDPR</li>
+            <li class="features__badge"><svg class="icon icon--sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 16.5a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9z" /><path d="M11.5 12h10M17.5 12v4M21 12v3" /></svg>SSO / SAML</li>
+            <li class="features__badge"><svg class="icon icon--sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.5 6.5h12M8.5 12h12M8.5 17.5h12M3.5 6.5h1.5M3.5 12h1.5M3.5 17.5h1.5" /></svg>Audit logs</li>
+            <li class="features__badge features__badge--wide"><svg class="icon icon--sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 11a3.25 3.25 0 1 0 0-6.5A3.25 3.25 0 0 0 9 11z" /><path d="M2.75 20c.5-3.4 3-5.75 6.25-5.75S14.75 16.6 15.25 20" /><path d="M15.5 4.9a3.25 3.25 0 0 1 0 5.7" /><path d="M17.75 14.6c1.9.7 3.15 2.6 3.5 5.4" /></svg>SCIM provisioning</li>
+            <li class="features__badge features__badge--wide"><svg class="icon icon--sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5a8.5 8.5 0 1 0 0-17 8.5 8.5 0 0 0 0 17z" /><path d="M3.5 12h17" /><path d="M12 3.5c2.3 2.3 3.5 5.1 3.5 8.5s-1.2 6.2-3.5 8.5c-2.3-2.3-3.5-5.1-3.5-8.5s1.2-6.2 3.5-8.5z" /></svg>EU / US data residency</li>
+          </ul>
+          <p class="features__promise">
+            <span class="features__promise-icon" aria-hidden="true"><svg class="icon icon--sm" viewBox="0 0 24 24"><path d="M5.5 11h13v9.5h-13z" /><path d="M8.5 11V8a3.5 3.5 0 0 1 7 0v3" /></svg></span>
+            <span>Your data is never used to train models.</span>
+          </p>
+          <a class="link-arrow features__link" href="signup.html?plan=enterprise">Talk to sales<svg class="icon icon--arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6" /></svg></a>
+        </div>
+      </li>
+    </ul>
+  </div>
+</section>

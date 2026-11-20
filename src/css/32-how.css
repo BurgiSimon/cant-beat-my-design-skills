@@ -1,0 +1,1147 @@
+/* ────────────────────────────────────────────────────────────
+   How it works — three steps on a timeline that fills like a
+   progress bar; each step carries a small glass demo card.
+   Without JS (or with reduced motion) everything shows its
+   final state; how.js arms the demo and plays it once in view.
+   ──────────────────────────────────────────────────────────── */
+.how {
+  --how-marker: 40px;
+  --how-ring: 8px; /* page-colored gap the line leaves around each node */
+  --how-hair: rgba(255, 255, 255, 0.075);
+  --how-replay-w: 108px; /* fallback; how.js sets the measured width of the replay node */
+  --how-fill: 1;
+}
+
+/* ── Atmosphere ───────────────────────────────────────────── */
+.how__atmos {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  overflow-x: clip;
+}
+.how__glow--violet {
+  left: 50%;
+  bottom: 6%;
+  width: min(1180px, 110vw);
+  height: 520px;
+  transform: translateX(-50%);
+  background: radial-gradient(closest-side, rgba(144, 44, 225, 0.75), rgba(107, 61, 178, 0.25) 60%, transparent);
+  opacity: 0.32;
+}
+.how__glow--magenta {
+  left: 50%;
+  bottom: 16%;
+  width: min(560px, 80vw);
+  height: 320px;
+  transform: translateX(-8%);
+  background: radial-gradient(closest-side, rgba(218, 8, 139, 0.8), rgba(180, 16, 216, 0.3) 60%, transparent);
+  opacity: 0.22;
+}
+.how__band {
+  top: auto;
+  bottom: 14%;
+  height: 240px;
+  opacity: 0.8;
+}
+
+/* ── Head ─────────────────────────────────────────────────── */
+.how__lede {
+  /* sized so "…first live workflow." ends line one at 18–22px */
+  max-width: 28em;
+}
+
+/* ── Timeline (desktop: three columns on a horizontal line) ─ */
+.how__timeline {
+  position: relative;
+}
+.how__steps {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-rows: auto auto 1fr;
+  column-gap: clamp(32px, 3.4vw, 48px);
+}
+.how__step {
+  position: relative;
+  display: grid;
+  grid-row: span 3;
+  grid-template-rows: subgrid;
+  min-width: 0;
+}
+
+/* The track: a hairline with an accent fill revealed by --how-fill (0–1) */
+.how__track {
+  position: absolute;
+  z-index: 0;
+  top: calc(var(--how-marker) / 2 - 12px);
+  left: calc(var(--how-marker) / 2);
+  right: 0;
+  height: 24px;
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 200px), transparent);
+  mask-image: linear-gradient(90deg, #000 calc(100% - 200px), transparent);
+}
+.how__track::before,
+.how__fill {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 1px;
+}
+.how__track::before {
+  background: var(--line-strong);
+}
+.how__fill {
+  top: calc(50% - 0.5px);
+  height: 2px;
+  background: var(--accent-gradient);
+  box-shadow: 0 0 10px rgba(255, 46, 154, 0.55), 0 0 2px rgba(255, 46, 154, 0.8);
+  clip-path: inset(-12px calc((1 - var(--how-fill)) * 100%) -12px 0);
+}
+/* the bright leading edge while the fill is moving */
+.how__spark {
+  position: absolute;
+  top: 50%;
+  left: calc(var(--how-fill) * 100%);
+  width: 6px;
+  height: 6px;
+  margin: -3px 0 0 -3px;
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(255, 46, 154, 0.22), 0 0 16px 3px rgba(255, 46, 154, 0.75);
+  opacity: 0;
+  transition: opacity var(--dur) var(--ease-out);
+}
+.how.is-playing .how__spark {
+  opacity: 1;
+}
+/* armed (JS + motion): the line runs into the replay node instead of fading out */
+.how.is-armed .how__track {
+  right: var(--how-replay-w);
+  -webkit-mask-image: none;
+  mask-image: none;
+}
+
+/* Square step markers */
+.how__marker {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  justify-self: start;
+  width: var(--how-marker);
+  height: var(--how-marker);
+  margin-bottom: 40px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-muted);
+  background: var(--bg);
+  box-shadow: inset 0 0 0 1px var(--line-strong), 0 0 0 var(--how-ring) var(--bg);
+  transition: color 600ms var(--ease-out), box-shadow 600ms var(--ease-out);
+}
+.how__marker::before,
+.how__marker::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+.how__marker::before {
+  background: var(--accent-gradient);
+  opacity: 0;
+  transition: opacity 600ms var(--ease-out);
+}
+/* a square ripple when the marker lights up */
+.how__marker::after {
+  z-index: 1;
+  box-shadow: inset 0 0 0 1px rgba(255, 46, 154, 0.9);
+  opacity: 0;
+}
+.how__step.is-lit .how__marker {
+  color: #fff;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.18), 0 0 0 var(--how-ring) var(--bg),
+    0 14px 36px -6px rgba(218, 8, 139, 0.55);
+}
+.how__step.is-lit .how__marker::before {
+  opacity: 1;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .how.is-armed .how__step.is-lit .how__marker::after {
+    animation: how-ping 1100ms var(--ease-out) both;
+  }
+}
+@keyframes how-ping {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(1.9);
+  }
+}
+
+/* Copy */
+.how__copy {
+  max-width: 400px;
+  padding-bottom: 32px;
+}
+.how__title {
+  margin-bottom: 12px;
+}
+.how__text {
+  text-wrap: pretty;
+}
+
+/* ── Demo cards ───────────────────────────────────────────── */
+.how__visual {
+  margin: 0;
+  min-width: 0;
+  container-type: inline-size; /* card internals adapt to the card's own width */
+}
+.how__card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--text-soft);
+  background: linear-gradient(180deg, rgba(36, 23, 72, 0.6), rgba(14, 10, 28, 0.86) 72%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 40px 80px -40px rgba(0, 0, 0, 0.9),
+    0 32px 72px -48px rgba(180, 16, 216, 0.5);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  -webkit-user-select: none;
+  user-select: none;
+  cursor: default;
+  transition: border-color var(--dur) var(--ease-out);
+}
+/* light catching the top edge once the step is reached */
+.how__card::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 1px;
+  z-index: 2;
+  background: linear-gradient(90deg, transparent 6%, rgba(217, 207, 251, 0.55) 40%, rgba(255, 46, 154, 0.45) 64%, transparent 94%);
+  opacity: 0;
+  transition: opacity 900ms var(--ease-out);
+}
+.how__step.is-lit .how__card::before {
+  opacity: 1;
+}
+.how__step:hover .how__card {
+  border-color: var(--line-strong);
+}
+.how__card .icon {
+  width: 16px;
+  height: 16px;
+}
+.how__card-head {
+  /* text and mono meta share a baseline; the row itself is centered */
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: baseline;
+  align-content: center;
+  gap: 12px;
+  height: 44px;
+  flex: none;
+  padding: 0 16px;
+  border-bottom: 1px solid var(--how-hair);
+  background: rgba(255, 255, 255, 0.02);
+}
+.how__card-title {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+  min-width: 0;
+  font-weight: 500;
+  color: var(--text);
+  white-space: nowrap;
+}
+.how__card-title > .icon {
+  align-self: center;
+  color: var(--lilac);
+}
+.how__card-meta {
+  flex: none;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.how__card-body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+}
+.how__spinner {
+  width: 12px;
+  height: 12px;
+  flex: none;
+  border: 1.5px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+/* 01 · Connections ------------------------------------------ */
+.how__search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 36px;
+  flex: none;
+  padding: 0 8px 0 10px;
+  color: var(--text-muted);
+  border: 1px solid var(--how-hair);
+  background: rgba(7, 5, 13, 0.35);
+}
+.how__search .icon {
+  width: 14px;
+  height: 14px;
+}
+.how__search > span {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.how__kbd {
+  flex: none;
+  padding: 2px 5px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 1.3;
+  color: var(--text-muted);
+  border: 1px solid var(--line-strong);
+}
+.how__tiles {
+  display: grid;
+  flex: 1;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-auto-rows: minmax(48px, 1fr);
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.how__tile {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  padding: 8px 10px;
+  border: 1px solid var(--how-hair);
+  background: rgba(255, 255, 255, 0.025);
+  transition: border-color 500ms var(--ease-out), background-color 500ms var(--ease-out);
+}
+.how__tile-icon {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  flex: none;
+  color: var(--mist);
+  background: var(--surface-2);
+  box-shadow: inset 0 0 0 1px var(--how-hair);
+  transition: box-shadow 400ms var(--ease-out), color 400ms var(--ease-out);
+}
+/* the green check badge on the icon's corner */
+.how__tile-icon::after {
+  content: "";
+  position: absolute;
+  right: -5px;
+  bottom: -5px;
+  width: 13px;
+  height: 13px;
+  background: var(--success)
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2307050d' stroke-width='3.5' stroke-linecap='square'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E")
+    center / 9px no-repeat;
+  box-shadow: 0 0 0 2px #140f27;
+  transform: scale(0);
+  transition: transform 420ms var(--ease-out);
+}
+.how__tile-text {
+  display: grid;
+  min-width: 0;
+  line-height: 1.3;
+}
+.how__tile-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 500;
+  color: var(--text);
+}
+.how__tile-status {
+  display: grid;
+  font-size: 12px;
+  white-space: nowrap;
+}
+.how__s {
+  grid-area: 1 / 1;
+  opacity: 0;
+  transition: opacity var(--dur) var(--ease-out);
+}
+.how__s--idle {
+  color: var(--text-muted);
+}
+.how__s--pending {
+  color: var(--lilac);
+}
+.how__s--done {
+  color: var(--success);
+}
+.how__tile[data-state="idle"] .how__s--idle,
+.how__tile[data-state="pending"] .how__s--pending,
+.how__tile[data-state="done"] .how__s--done {
+  opacity: 1;
+}
+.how__tile[data-state="pending"] .how__tile-icon {
+  color: #fff;
+  box-shadow: inset 0 0 0 1px var(--line-accent), 0 0 18px -4px rgba(183, 156, 255, 0.6);
+}
+.how__tile[data-state="done"] {
+  border-color: rgba(99, 230, 176, 0.16);
+  background: rgba(99, 230, 176, 0.03);
+}
+.how__tile[data-state="done"] .how__tile-icon::after {
+  transform: scale(1);
+}
+
+/* 02 · Describe ---------------------------------------------- */
+.how__prompt {
+  position: relative;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(7, 5, 13, 0.45);
+  transition: border-color var(--dur) var(--ease-out), box-shadow var(--dur) var(--ease-out);
+}
+.how__prompt:is([data-caret="blink"], [data-caret="solid"]) {
+  border-color: var(--line-accent);
+  box-shadow: 0 0 0 3px rgba(183, 156, 255, 0.12);
+}
+.how__prompt-text {
+  position: relative;
+  flex: 1;
+  margin: 0;
+  min-height: calc(3 * 1.5em + 20px);
+  padding: 12px 14px 8px;
+  font-size: 15px;
+  line-height: 1.5;
+  letter-spacing: -0.006em;
+  color: var(--text);
+  text-wrap: pretty; /* typed + hidden rest is always the full sentence, so wrapping never shifts */
+}
+.how__placeholder {
+  position: absolute;
+  top: 12px;
+  left: 14px;
+  right: 14px;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  opacity: 0;
+  transition: transform var(--dur) var(--ease-out);
+}
+.how__prompt[data-state="empty"] .how__placeholder {
+  opacity: 1;
+}
+/* the block caret takes the first cell; the placeholder steps aside for it */
+.how__prompt[data-caret="blink"] .how__placeholder {
+  transform: translateX(calc(0.5em + 6px));
+}
+.how__rest {
+  visibility: hidden;
+}
+/* block caret: a zero-width inline anchor so it never changes how the text wraps */
+.how__caret {
+  position: relative;
+}
+.how__caret::before {
+  content: "";
+  position: absolute;
+  left: 1px;
+  top: 0.12em;
+  width: 0.5em;
+  height: 1.12em;
+  background: var(--lilac);
+  opacity: 0;
+}
+.how__prompt[data-caret="solid"] .how__caret::before {
+  opacity: 1;
+}
+.how__prompt[data-caret="blink"] .how__caret::before {
+  opacity: 1;
+  animation: how-blink 1.06s steps(1, end) infinite;
+}
+@keyframes how-blink {
+  50% {
+    opacity: 0;
+  }
+}
+.how__prompt-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 8px 8px 14px;
+}
+.how__hint {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+.how__draft {
+  display: inline-grid;
+  flex: none;
+  height: 30px;
+  padding: 0 10px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-on-light);
+  background: #fff;
+  transition: background-color var(--dur) var(--ease-out), color var(--dur) var(--ease-out),
+    transform var(--dur-fast) var(--ease-out);
+}
+.how__draft > span {
+  grid-area: 1 / 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: opacity var(--dur-fast) var(--ease-out);
+}
+.how__draft .icon {
+  width: 13px;
+  height: 13px;
+}
+.how__draft-busy {
+  opacity: 0;
+}
+.how__draft[data-state="disabled"] {
+  color: var(--text-muted);
+  background: var(--surface-3);
+}
+.how__draft[data-state="busy"] {
+  color: var(--text);
+  background: rgba(183, 156, 255, 0.18);
+  transform: scale(0.97);
+}
+.how__draft[data-state="busy"] .how__draft-label {
+  opacity: 0;
+}
+.how__draft[data-state="busy"] .how__draft-busy {
+  opacity: 1;
+}
+.how__draft:not([data-state="busy"]) .how__spinner {
+  animation: none;
+}
+
+.how__drafted {
+  display: grid;
+  gap: 8px;
+}
+.how__drafted-label {
+  font-size: 11px;
+  line-height: 16px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.how__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.how__chip {
+  gap: 6px;
+  font-size: 12px;
+  transition: color var(--dur) var(--ease-out), background-color var(--dur) var(--ease-out),
+    border-color var(--dur) var(--ease-out);
+}
+.how__chip .icon {
+  width: 13px;
+  height: 13px;
+  color: var(--lilac);
+  transition: opacity var(--dur) var(--ease-out);
+}
+.how__chip--ai {
+  color: #fff;
+  background: rgba(180, 16, 216, 0.16);
+  border-color: rgba(214, 92, 255, 0.32);
+}
+.how__chip--ai .icon {
+  color: #f0b3ff;
+}
+.how__chip:is([data-state="ghost"], [data-state="loading"]) {
+  color: transparent;
+  background: transparent;
+  border-style: dashed;
+  border-color: var(--line-strong);
+}
+.how__chip:is([data-state="ghost"], [data-state="loading"]) .icon {
+  opacity: 0;
+}
+.how__chip[data-state="loading"] {
+  border-style: solid;
+  border-color: var(--how-hair);
+  background: linear-gradient(90deg, transparent 20%, rgba(183, 156, 255, 0.14) 50%, transparent 80%) 0 0 / 200% 100%
+    rgba(255, 255, 255, 0.03);
+  animation: how-shimmer 1.1s linear infinite;
+}
+@keyframes how-shimmer {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: -100% 0;
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .how.is-armed .how__chip[data-state="in"] {
+    animation: how-chip-in 520ms var(--ease-out) both;
+  }
+}
+@keyframes how-chip-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px) scale(0.96);
+  }
+}
+
+/* 03 · Test & publish ---------------------------------------- */
+/* status label lines up with the step names below it */
+.how__status .how__card-title {
+  gap: 10px;
+}
+.how__status-icon {
+  display: grid;
+  align-self: center;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  flex: none;
+}
+.how__status-icon > * {
+  grid-area: 1 / 1;
+}
+.how__status-icon::before {
+  content: "";
+  grid-area: 1 / 1;
+  width: 10px;
+  height: 10px;
+  box-shadow: inset 0 0 0 1.5px var(--text-muted);
+}
+.how__status-icon .how__spinner,
+.how__status-icon .icon {
+  display: none;
+}
+.how__status-icon .icon {
+  width: 12px;
+  height: 12px;
+  stroke-width: 2.2;
+}
+.how__status[data-state="running"] .how__status-icon::before,
+.how__status[data-state="passed"] .how__status-icon::before {
+  display: none;
+}
+.how__status[data-state="running"] .how__spinner {
+  display: block;
+  color: var(--lilac);
+}
+.how__status[data-state="passed"] .how__status-icon {
+  color: var(--success);
+  background: rgba(99, 230, 176, 0.14);
+}
+.how__status[data-state="passed"] .how__status-icon .icon {
+  display: block;
+}
+.how__status[data-state="idle"] [data-how-status-label] {
+  color: var(--text-soft);
+}
+
+.how__launch {
+  gap: 0;
+  padding-top: 4px;
+}
+.how__checks {
+  display: grid;
+  align-content: start;
+  flex: 1;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.how__check {
+  display: grid;
+  grid-template-columns: 18px minmax(0, 1fr) auto 34px;
+  align-items: baseline;
+  align-content: center;
+  gap: 10px;
+  min-height: 42px;
+  border-bottom: 1px solid var(--how-hair);
+}
+.how__check-box {
+  display: grid;
+  align-self: center;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  color: var(--text-muted);
+  box-shadow: inset 0 0 0 1px var(--line-strong);
+  transition: background-color var(--dur) var(--ease-out), box-shadow var(--dur) var(--ease-out);
+}
+.how__check-box > * {
+  grid-area: 1 / 1;
+  display: none;
+}
+.how__check-box .icon {
+  width: 12px;
+  height: 12px;
+  stroke-width: 2.2;
+}
+.how__check-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--text-muted);
+  transition: color var(--dur) var(--ease-out);
+}
+.how__check-id {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-muted);
+}
+.how__check-tag {
+  padding: 2px 6px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 1.3;
+  color: var(--text-muted);
+  border: 1px solid var(--how-hair);
+}
+.how__check-time {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-muted);
+}
+.how__check[data-state="running"] .how__check-box {
+  color: var(--lilac);
+  box-shadow: inset 0 0 0 1px var(--line-accent);
+}
+.how__check[data-state="running"] .how__spinner {
+  display: block;
+  width: 10px;
+  height: 10px;
+}
+.how__check[data-state="done"] .how__check-box {
+  color: var(--success);
+  background: rgba(99, 230, 176, 0.14);
+  box-shadow: none;
+}
+.how__check[data-state="done"] .how__check-box .icon {
+  display: block;
+}
+.how__check:is([data-state="running"], [data-state="done"]) .how__check-name {
+  color: var(--text);
+}
+.how__launch-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-top: 14px;
+}
+.how__approval {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  font-size: 12px;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+.how__approval .icon {
+  width: 15px;
+  height: 15px;
+  flex: none;
+}
+.how__publish {
+  display: inline-grid;
+  flex: none;
+  height: 32px;
+  min-width: 84px;
+  padding: 0 14px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-on-light);
+  background: #fff;
+  transition: background-color 400ms var(--ease-out), color 400ms var(--ease-out), box-shadow 400ms var(--ease-out),
+    transform var(--dur-fast) var(--ease-out);
+}
+.how__publish > span {
+  grid-area: 1 / 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: opacity var(--dur) var(--ease-out);
+}
+.how__publish-live {
+  opacity: 0;
+}
+.how__publish[data-state="disabled"] {
+  color: var(--text-muted);
+  background: var(--surface-3);
+}
+.how__publish[data-state="pressed"] {
+  background: var(--mist);
+  transform: scale(0.95);
+}
+.how__publish[data-state="live"] {
+  color: var(--success);
+  background: rgba(99, 230, 176, 0.1);
+  box-shadow: inset 0 0 0 1px rgba(99, 230, 176, 0.3);
+}
+.how__publish[data-state="live"] .how__publish-label {
+  opacity: 0;
+}
+.how__publish[data-state="live"] .how__publish-live {
+  opacity: 1;
+}
+.how__publish:not([data-state="live"]) .dot--live {
+  animation: none;
+}
+.how.is-armed:not(.is-inview) .dot--live {
+  animation-play-state: paused;
+}
+
+/* ── Replay node (end of the line; JS + motion only) ──────── */
+.how__replay {
+  position: absolute;
+  z-index: 1;
+  top: calc(var(--how-marker) / 2 - 22px);
+  right: 0; /* the label ends flush with the container, like the cards below */
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  height: 44px; /* touch target; the square node inside matches the markers */
+  padding-left: var(--how-ring);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-soft);
+  background: var(--bg);
+  transition: color var(--dur) var(--ease-out);
+}
+.how__replay-icon {
+  display: grid;
+  place-items: center;
+  width: var(--how-marker);
+  height: var(--how-marker);
+  flex: none;
+  background: var(--bg);
+  box-shadow: inset 0 0 0 1px var(--line-strong);
+  transition: box-shadow var(--dur) var(--ease-out), background-color var(--dur) var(--ease-out);
+}
+.how__replay-icon .icon {
+  width: 16px;
+  height: 16px;
+  transition: transform 700ms var(--ease-out), opacity 600ms var(--ease-out);
+}
+.how__replay-label {
+  transition: opacity 600ms var(--ease-out);
+}
+.how__replay:is(:hover, :focus-visible) {
+  color: var(--text);
+}
+.how__replay:hover .how__replay-icon {
+  background: var(--surface-2);
+  box-shadow: inset 0 0 0 1px var(--line-accent);
+}
+.how__replay:hover .how__replay-icon .icon {
+  transform: rotate(-1turn);
+}
+.how__replay:active .how__replay-icon {
+  background: var(--surface-3);
+}
+/* the ring hugs the square node, so it never crosses the line it ends */
+.how__replay:focus-visible {
+  outline: none;
+}
+.how__replay:focus-visible .how__replay-icon {
+  outline: 2px solid var(--text);
+  outline-offset: 3px;
+}
+/* while the demo plays the node is an empty terminus the line runs into;
+   the button itself is hidden (not focusable) until the run ends */
+.how__replay.is-pending {
+  visibility: hidden;
+  pointer-events: none;
+}
+.how__replay.is-pending .how__replay-icon {
+  visibility: visible;
+}
+.how__replay.is-pending .how__replay-icon .icon,
+.how__replay.is-pending .how__replay-label {
+  opacity: 0;
+  transition-duration: 0s;
+}
+.how__replay[aria-disabled="true"] {
+  color: var(--text-muted);
+  cursor: default;
+}
+.how__replay[aria-disabled="true"] .how__replay-icon {
+  background: none;
+  box-shadow: inset 0 0 0 1px var(--line-strong);
+}
+.how__replay[aria-disabled="true"] .how__replay-icon .icon {
+  transform: none;
+}
+
+/* ── Footer CTA ───────────────────────────────────────────── */
+.how__foot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  margin-top: clamp(64px, 7vw, 96px);
+  text-align: center;
+}
+.how__foot-item {
+  white-space: nowrap;
+}
+/* too narrow for one line (< 375px): stack the two facts, drop the dot */
+@media (max-width: 374px) {
+  .how__foot-item {
+    display: block;
+  }
+  .how__foot-sep {
+    display: none;
+  }
+}
+
+/* ────────────────────────────────────────────────────────────
+   Responsive — below 1100 the line turns vertical, down the left
+   ──────────────────────────────────────────────────────────── */
+@media (max-width: 1099px) {
+  .how__steps {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: none;
+    row-gap: 72px;
+  }
+  .how__step {
+    grid-row: auto;
+    grid-template-columns: var(--how-marker) minmax(0, 5fr) minmax(0, 7fr);
+    grid-template-rows: auto;
+    column-gap: 24px;
+    align-items: start;
+  }
+  .how__marker {
+    grid-column: 1;
+    grid-row: 1;
+    margin: 0;
+  }
+  .how__copy {
+    grid-column: 2;
+    grid-row: 1;
+    padding: 7px 16px 0 0;
+  }
+  .how__visual {
+    grid-column: 3;
+    grid-row: 1;
+  }
+  .how__track {
+    top: calc(var(--how-marker) / 2);
+    bottom: 0;
+    left: calc(var(--how-marker) / 2 - 12px);
+    right: auto;
+    width: 24px;
+    height: auto;
+    -webkit-mask-image: linear-gradient(180deg, #000 calc(100% - 160px), transparent);
+    mask-image: linear-gradient(180deg, #000 calc(100% - 160px), transparent);
+  }
+  .how__track::before,
+  .how__fill {
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    right: auto;
+    width: 1px;
+    height: auto;
+  }
+  .how__fill {
+    left: calc(50% - 0.5px);
+    width: 2px;
+    background: linear-gradient(180deg, #ff2e9a 0%, #b410d8 52%, #8b4dff 100%);
+    clip-path: inset(0 -12px calc((1 - var(--how-fill)) * 100%) -12px);
+  }
+  .how__spark {
+    top: calc(var(--how-fill) * 100%);
+    left: 50%;
+  }
+  .how.is-armed .how__track {
+    right: auto;
+    bottom: calc((44px + var(--how-marker)) / 2 + var(--how-ring)); /* stops a ring short of the replay node */
+  }
+  .how__replay {
+    position: relative;
+    top: auto;
+    margin-top: 72px;
+    padding: 0 8px 0 0;
+    background: none;
+  }
+  /* stacked: copy and card reveal as a pair, not on the desktop column cascade */
+  .js .how__copy[data-reveal] {
+    transition-delay: 0ms;
+  }
+  .js .how__visual[data-reveal] {
+    transition-delay: 90ms;
+  }
+}
+
+@media (max-width: 859px) {
+  .how {
+    --how-marker: 36px;
+  }
+  .how__steps {
+    row-gap: 64px;
+  }
+  .how__step {
+    grid-template-columns: var(--how-marker) minmax(0, 1fr);
+    column-gap: 20px;
+  }
+  .how__copy {
+    max-width: 560px;
+    padding: 5px 0 0;
+  }
+  .how__visual {
+    grid-column: 2;
+    grid-row: 2;
+    margin-top: 28px;
+  }
+  .how__replay {
+    margin-top: 64px;
+  }
+}
+
+@media (max-width: 479px) {
+  .how {
+    --how-marker: 32px;
+    --how-ring: 6px;
+  }
+  .how__step {
+    column-gap: 16px;
+  }
+  .how__copy {
+    padding-top: 3px;
+  }
+  .how__visual {
+    margin-top: 24px;
+  }
+  .how__foot .btn {
+    width: 100%;
+    max-width: 360px;
+  }
+}
+
+/* Wide cards (stacked tablet layout): connectors go three across */
+@container (min-width: 560px) {
+  .how__tiles {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* Mid-width cards (3-up at 1100–1360, phones): the drafted chips drop their
+   icons so all three stay on one row */
+@container (max-width: 369px) {
+  .how__chip {
+    padding: 0 9px;
+  }
+  .how__chip .icon {
+    display: none;
+  }
+}
+/* The narrowest cards (375px phones and below): one drafted step per line */
+@container (max-width: 299px) {
+  .how__chips {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .how__chip {
+    padding: 0 10px;
+  }
+  .how__chip .icon {
+    display: block;
+  }
+}
+
+/* Narrow cards (3-up at 1100–1280, phones): tighter insets, no step tags */
+@container (max-width: 340px) {
+  .how__card-head {
+    padding: 0 12px;
+  }
+  .how__card-body {
+    padding: 12px;
+  }
+  .how__launch {
+    padding-top: 0;
+  }
+  .how__tile {
+    gap: 8px;
+    padding: 8px;
+  }
+  .how__tile-icon {
+    width: 28px;
+    height: 28px;
+  }
+  .how__prompt-text {
+    padding-inline: 12px;
+  }
+  .how__prompt-foot {
+    padding-left: 12px;
+  }
+  .how__check {
+    grid-template-columns: 18px minmax(0, 1fr) 34px;
+  }
+  .how__check-tag {
+    display: none;
+  }
+}
+
+/* Windows high contrast: box-shadow hairlines vanish, so give nodes real borders */
+@media (forced-colors: active) {
+  .how__marker,
+  .how__replay-icon {
+    border: 1px solid CanvasText;
+  }
+  .how__step.is-lit .how__marker {
+    border-color: Highlight;
+  }
+}

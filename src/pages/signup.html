@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="en">
+<head>
+<!-- @include head-common.html -->
+  <title>Start your 14-day Team trial — Mist</title>
+  <meta name="description" content="Create your Mist workspace. Start a 14-day free trial of Team, begin free on Starter, or talk to our team about Enterprise. No credit card required." />
+  <link rel="canonical" href="{{SITE_URL}}/signup.html" />
+  <meta property="og:title" content="Start your 14-day free trial — Mist" />
+  <meta property="og:description" content="Connect your tools, describe a workflow in plain language, and let AI handle the busywork. No credit card required." />
+  <meta property="og:url" content="{{SITE_URL}}/signup.html" />
+  <link rel="preload" as="image" type="image/webp" media="(min-width: 861px)"
+        href="assets/img/mountains-1920.webp"
+        imagesrcset="assets/img/mountains-1280.webp 1280w, assets/img/mountains-1920.webp 1920w, assets/img/mountains-2560.webp 2560w"
+        imagesizes="(max-width: 860px) 860px, 1360px" />
+</head>
+<body data-page="signup">
+<!-- @include header.html -->
+
+<main id="main" tabindex="-1" class="auth auth--signup" data-module="auth" data-plan="team">
+  <section class="auth__main" aria-labelledby="auth-title">
+    <div class="auth__panel">
+
+      <div class="auth__template" data-auth-template data-auth-hide-on-done hidden>
+        <span class="auth__template-icon" aria-hidden="true">
+          <svg class="icon icon--sm" viewBox="0 0 24 24"><path d="M3.75 3.75h6.5v6.5h-6.5zM13.75 13.75h6.5v6.5h-6.5zM7 10.25V17h6.75M17 13.75V7h-6.75" /></svg>
+        </span>
+        <p class="auth__template-text">
+          <span class="auth__template-kicker">Template</span>
+          <span data-auth-template-msg><strong data-auth-template-name>Ticket triage</strong> will be ready in your workspace.</span>
+        </p>
+        <button class="auth__template-remove" type="button" data-auth-template-remove>
+          <span class="sr-only" data-auth-template-remove-label>Remove the template</span>
+          <svg class="icon icon--sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" /></svg>
+        </button>
+      </div>
+
+      <header class="auth__head" data-auth-in style="--d: 0">
+        <h1 class="title-1 auth__title" id="auth-title" data-plan-title>Start your <span class="auth__nowrap">14-day</span> Team&nbsp;trial</h1>
+        <p class="auth__sub" data-plan-sub>Every Team feature, free for 14 days. No credit&nbsp;card, and you can invite your whole&nbsp;team.</p>
+      </header>
+
+      <!-- outside the form: the hidden "plan" field below carries the choice -->
+      <fieldset class="auth__plans" data-auth-in style="--d: 1" data-auth-hide-on-done>
+        <legend class="sr-only">Plan</legend>
+        <div class="auth__seg" data-auth-seg>
+          <span class="auth__seg-pill" aria-hidden="true"></span>
+          <label class="auth__seg-opt">
+            <input class="auth__seg-input" type="radio" name="plan-choice" value="starter" />
+            <span>Starter</span>
+          </label>
+          <label class="auth__seg-opt">
+            <input class="auth__seg-input" type="radio" name="plan-choice" value="team" checked />
+            <span>Team</span>
+          </label>
+          <label class="auth__seg-opt">
+            <input class="auth__seg-input" type="radio" name="plan-choice" value="enterprise" />
+            <span>Enterprise</span>
+          </label>
+        </div>
+      </fieldset>
+      <p class="sr-only" role="status" data-plan-live></p>
+
+      <form
+        class="auth__form auth__form--signup"
+        data-module="form"
+        novalidate
+        data-auth-signup
+        data-auth-in
+        style="--d: 2"
+        data-success-title="Your workspace is ready"
+        data-success-text="We’ve sent a confirmation link to {email}. Your 14-day Team trial starts now."
+      >
+        <input type="hidden" name="plan" value="team" data-auth-plan-input />
+        <input type="hidden" name="billing" value="annual" data-auth-billing />
+        <input type="hidden" name="template" value="" data-auth-template-input disabled />
+
+        <div class="field">
+          <label class="field__label" for="signup-name">Full name</label>
+          <input
+            class="input"
+            id="signup-name"
+            name="name"
+            type="text"
+            autocomplete="name"
+            autocapitalize="words"
+            spellcheck="false"
+            enterkeyhint="next"
+            required
+            aria-describedby="signup-name-error"
+            data-error-required="Enter your full name."
+          />
+          <p class="field__error" id="signup-name-error" aria-live="polite"></p>
+        </div>
+
+        <div class="field">
+          <label class="field__label" for="signup-email">Work email</label>
+          <input
+            class="input"
+            id="signup-email"
+            name="email"
+            type="email"
+            inputmode="email"
+            autocomplete="email"
+            autocapitalize="off"
+            spellcheck="false"
+            enterkeyhint="next"
+            placeholder="you@company.com"
+            required
+            aria-describedby="signup-email-error"
+            data-error-required="Enter your work email."
+            data-error-type="That doesn’t look like an email. Try you@company.com."
+          />
+          <p class="field__error" id="signup-email-error" aria-live="polite"></p>
+        </div>
+
+        <div class="field">
+          <label class="field__label" for="signup-company">Company</label>
+          <input
+            class="input"
+            id="signup-company"
+            name="company"
+            type="text"
+            autocomplete="organization"
+            autocapitalize="words"
+            enterkeyhint="next"
+            required
+            aria-describedby="signup-company-error"
+            data-error-required="Enter your company name."
+          />
+          <p class="field__error" id="signup-company-error" aria-live="polite"></p>
+        </div>
+
+        <!-- Starter + Team: choose a password -->
+        <div class="field auth__group" data-plan-except="enterprise">
+          <label class="field__label" for="signup-password">Password</label>
+          <div class="auth__pw">
+            <input
+              class="input auth__pw-input"
+              id="signup-password"
+              name="password"
+              type="password"
+              autocomplete="new-password"
+              autocapitalize="off"
+              spellcheck="false"
+              enterkeyhint="next"
+              minlength="10"
+              passwordrules="minlength: 10;"
+              required
+              aria-describedby="signup-password-error signup-password-hint signup-caps"
+              data-caps="signup-caps"
+              data-auth-strength-input
+              data-error-required="Choose a password."
+              data-error-minlength="Use at least 10 characters."
+            />
+            <button class="auth__reveal" type="button" aria-pressed="false" aria-controls="signup-password" data-auth-reveal>
+              <span class="sr-only" data-auth-reveal-label>Show password</span>
+              <svg class="icon auth__eye" viewBox="0 0 24 24" aria-hidden="true"><path d="M2.75 12S6.25 5.75 12 5.75 21.25 12 21.25 12 17.75 18.25 12 18.25 2.75 12 2.75 12z" /><path d="M14.75 12a2.75 2.75 0 1 1-5.5 0 2.75 2.75 0 0 1 5.5 0z" /></svg>
+              <svg class="icon auth__eye-off" viewBox="0 0 24 24" aria-hidden="true"><path d="M9.6 6.1A9.6 9.6 0 0 1 12 5.75C17.75 5.75 21.25 12 21.25 12a17.6 17.6 0 0 1-2.6 3.35M14.1 14.1A2.75 2.75 0 0 1 9.9 9.9M6.6 7.85C4.1 9.5 2.75 12 2.75 12S6.25 18.25 12 18.25c1.7 0 3.2-.55 4.45-1.3M4 4l16 16" /></svg>
+            </button>
+          </div>
+          <div class="auth__strength" data-auth-strength data-level="0">
+            <span class="auth__meter" aria-hidden="true"><span></span><span></span><span></span><span></span></span>
+            <p class="auth__strength-label" aria-live="polite"><span class="sr-only">Password strength: </span><span data-auth-strength-label></span></p>
+            <p class="field__hint auth__strength-hint" id="signup-password-hint">At least 10 characters. A phrase works&nbsp;well.</p>
+          </div>
+          <p class="field__error" id="signup-password-error" aria-live="polite"></p>
+          <p class="auth__caps" id="signup-caps" aria-live="polite"></p>
+        </div>
+
+        <!-- Enterprise: tell us about the team instead -->
+        <div class="auth__group" data-plan-only="enterprise" hidden>
+          <div class="field">
+            <label class="field__label" for="signup-size">Company size</label>
+            <select
+              class="input auth__select"
+              id="signup-size"
+              name="company_size"
+              required
+              aria-describedby="signup-size-error"
+              data-error-required="Choose your company size."
+            >
+              <option value="" selected>Select company size</option>
+              <option value="1-49">1–49 employees</option>
+              <option value="50-249">50–249 employees</option>
+              <option value="250-999">250–999 employees</option>
+              <option value="1000-4999">1,000–4,999 employees</option>
+              <option value="5000+">5,000+ employees</option>
+            </select>
+            <p class="field__error" id="signup-size-error" aria-live="polite"></p>
+          </div>
+          <div class="field">
+            <label class="field__label auth__label" for="signup-message">What would you like to automate? <span class="auth__optional">Optional</span></label>
+            <textarea
+              class="input auth__textarea"
+              id="signup-message"
+              name="message"
+              rows="4"
+              maxlength="1000"
+              enterkeyhint="enter"
+              placeholder="e.g. Triage 3,000 support tickets a month and route refunds over $500 for approval."
+              aria-describedby="signup-message-hint"
+            ></textarea>
+            <p class="field__hint" id="signup-message-hint">A sentence or two helps us tailor your demo.</p>
+          </div>
+        </div>
+
+        <div class="auth__terms">
+          <label class="check">
+            <input
+              type="checkbox"
+              name="terms"
+              value="accepted"
+              required
+              aria-describedby="signup-terms-error"
+              data-error-required="Please accept the Terms of Service and Privacy Policy to continue."
+            />
+            <span>I agree to the <a class="text-link" href="terms.html">Terms of Service</a> and <a class="text-link auth__nowrap" href="privacy.html">Privacy Policy</a>.</span>
+          </label>
+          <p class="field__error" id="signup-terms-error" aria-live="polite"></p>
+        </div>
+
+        <button class="btn btn--primary btn--block auth__submit" type="submit">
+          <span data-plan-submit>Start free trial</span>
+          <svg class="icon icon--arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6" /></svg>
+        </button>
+      </form>
+
+      <p class="auth__switch" data-auth-in style="--d: 3" data-auth-hide-on-done>
+        Already have an account? <a class="auth__switch-link" href="signin.html">Sign in</a>
+      </p>
+    </div>
+  </section>
+
+  <aside class="auth__art" aria-label="Plan summary">
+    <div class="auth__sticky">
+      <div class="auth__scene" aria-hidden="true">
+        <div class="auth__land">
+          <img
+            src="assets/img/mountains-1920.webp"
+            srcset="assets/img/mountains-1280.webp 1280w, assets/img/mountains-1920.webp 1920w, assets/img/mountains-2560.webp 2560w"
+            sizes="(max-width: 860px) 860px, 1360px"
+            width="2560"
+            height="1134"
+            alt=""
+            loading="lazy"
+            decoding="async"
+          />
+        </div>
+        <span class="auth__mist"></span>
+      </div>
+
+      <div class="auth__card auth__plan" data-auth-in style="--d: 2" data-plan-card>
+        <div class="auth__plan-top">
+          <p class="auth__kicker" aria-hidden="true">Your plan</p>
+          <span class="chip chip--accent auth__badge" data-plan-badge>Most popular</span>
+        </div>
+        <h2 class="auth__plan-name" id="plan-title"><span class="sr-only">Your plan: </span><span data-plan-name>Team</span></h2>
+        <div class="auth__price">
+          <p class="auth__amount" data-plan-amount>$24</p>
+          <p class="auth__unit"><span data-plan-unit>per member / month</span><span class="auth__unit-sub" data-plan-unit-sub>billed annually</span></p>
+        </div>
+        <p class="auth__plan-note" data-plan-note>$0 today — free for 14 days.</p>
+
+        <div class="auth__plan-body">
+          <p class="auth__plan-lead" data-plan-lead>Everything in Starter, plus:</p>
+          <ul class="auth__list" role="list" data-plan-includes>
+            <li><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg><span>25,000 tasks / month</span></li>
+            <li><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg><span>Unlimited workflows and AI steps</span></li>
+            <li><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg><span>All 300+ integrations</span></li>
+            <li><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg><span>Human-in-the-loop approvals</span></li>
+          </ul>
+        </div>
+
+        <ul class="auth__perks" role="list" aria-label="Good to know" data-plan-perks>
+          <li><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg><span>14-day free trial</span></li>
+          <li><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg><span>No credit card required</span></li>
+          <li><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg><span>Cancel anytime</span></li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+</main>
+
+<!-- @include footer.html -->
+</body>
+</html>

@@ -1,0 +1,482 @@
+/* ────────────────────────────────────────────────────────────
+   Final CTA (#get-started) — the hero's bookend.
+   The dark page melts into the hero sky, the landscape returns
+   mirrored, and a glass sign-up panel floats in front of the
+   peaks.
+
+   Composition: the art (2560×1134, mirrored) has two tips that
+   matter — the tallest at x 31.3% / y 6.26% and the second at
+   x 70.2% / y 17%. The panel's top edge is the anchor: the art
+   is placed so the tallest tip always tucks --tuck px behind the
+   glass (never grazing an edge or crowding the lede), and the
+   panel widens on large screens so the second tip stays behind
+   it too, until the screen is wide enough for both peaks to
+   frame the panel from outside.
+   ──────────────────────────────────────────────────────────── */
+.cta {
+  --cta-top: clamp(96px, 7.5vw, 120px);
+  --cta-gap: clamp(40px, 3.4vw, 48px); /* lede → panel */
+  /* --bg as channels, for the eased melt below */
+  --cta-bg: 7, 5, 13;
+  padding-block: var(--cta-top) 0;
+  overflow: hidden;
+  background: linear-gradient(
+    180deg,
+    var(--sky-0) 0%,
+    var(--sky-1) 30%,
+    var(--sky-2) 40%,
+    var(--sky-3) 49%,
+    var(--sky-4) 57%,
+    var(--sky-5) 64%,
+    var(--sky-6) 72%
+  );
+  /* the stage and panel are sized from this width (cqi, scrollbar-proof) */
+  container-type: inline-size;
+  view-timeline: --cta-view block;
+}
+
+/* Seamless top edge: the page's --bg dissolves into the sky along an
+   eased curve (no linear "knee", no visible seam) */
+.cta::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: clamp(420px, 48%, 560px);
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    rgb(var(--cta-bg)) 0%,
+    rgba(var(--cta-bg), 0.987) 8.1%,
+    rgba(var(--cta-bg), 0.951) 15.5%,
+    rgba(var(--cta-bg), 0.896) 22.5%,
+    rgba(var(--cta-bg), 0.825) 29%,
+    rgba(var(--cta-bg), 0.741) 35.3%,
+    rgba(var(--cta-bg), 0.648) 41.2%,
+    rgba(var(--cta-bg), 0.55) 47.1%,
+    rgba(var(--cta-bg), 0.45) 52.9%,
+    rgba(var(--cta-bg), 0.352) 58.8%,
+    rgba(var(--cta-bg), 0.259) 64.7%,
+    rgba(var(--cta-bg), 0.175) 71%,
+    rgba(var(--cta-bg), 0.104) 77.5%,
+    rgba(var(--cta-bg), 0.049) 84.5%,
+    rgba(var(--cta-bg), 0.013) 91.9%,
+    rgba(var(--cta-bg), 0) 100%
+  );
+}
+/* Bottom edge: the art's black valley floor settles into the footer */
+.cta::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: 48px;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(4, 3, 9, 0), var(--bg-sunken));
+}
+
+/* Soft mist light behind the headline */
+.cta__halo {
+  position: absolute;
+  top: calc(var(--cta-top) - 120px);
+  left: 50%;
+  width: min(1240px, 150%);
+  height: 640px;
+  transform: translateX(-50%);
+  pointer-events: none;
+  background: radial-gradient(closest-side, rgba(183, 156, 255, 0.13), rgba(183, 156, 255, 0.05) 55%, transparent),
+    radial-gradient(38% 30% at 50% 62%, rgba(217, 207, 251, 0.07), transparent);
+}
+
+/* ── Copy ─────────────────────────────────────────────────── */
+.cta__head {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  text-align: center;
+}
+.cta__lede {
+  max-width: 40em;
+  margin-top: 20px;
+  text-wrap: balance;
+}
+
+/* ── Stage: landscape + panel ─────────────────────────────── */
+.cta__stage {
+  /* the art at full width (never shorter than 495px: narrower screens
+     crop its sides instead) */
+  --land-h: max(495px, 100cqi * 1134 / 2560);
+  /* how far the tallest tip sits behind the panel's top edge */
+  --tuck: 16px;
+  /* art top, relative to the panel's top edge (the stage top) */
+  --land-top: calc(var(--tuck) - var(--land-h) * 0.0626);
+  position: relative;
+  margin-top: var(--cta-gap);
+  /* down to 95.5% of the art: below that it is solid black ground */
+  height: calc(var(--land-top) + var(--land-h) * 0.955);
+}
+/* the hero's glows, mirrored (lit from the left) and pinned to the art so
+   they always bloom right behind the peaks */
+.cta__stage::before {
+  content: "";
+  position: absolute;
+  inset: -55% 0 10%;
+  pointer-events: none;
+  background: radial-gradient(64% 56% at 0% 62%, rgba(170, 68, 200, 0.5), transparent 82%),
+    radial-gradient(85% 50% at 30% 66%, rgba(125, 55, 185, 0.22), transparent 85%),
+    radial-gradient(44% 34% at 47% 68%, rgba(165, 90, 230, 0.42), transparent 75%),
+    radial-gradient(40% 40% at 100% 70%, rgba(144, 44, 225, 0.22), transparent 80%);
+}
+.cta__land {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: var(--land-top);
+  height: var(--land-h);
+  pointer-events: none;
+}
+.cta__land img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* framing when the box is narrower than the art (tablet): keeps the
+     hiker in view and both tips well inside the panel's edges */
+  object-position: 62% 0;
+  transform: scaleX(-1);
+}
+/* a slow band of mist drifting across the peaks' feet */
+.cta__mist {
+  position: absolute;
+  left: -15%;
+  right: -15%;
+  top: calc(var(--land-top) + var(--land-h) * 0.37);
+  height: calc(var(--land-h) * 0.25);
+  pointer-events: none;
+  background: radial-gradient(50% 50% at 50% 50%, rgba(217, 207, 251, 0.2), rgba(201, 180, 250, 0.06) 55%, transparent 72%);
+  mix-blend-mode: screen;
+  opacity: 0.7;
+}
+
+.cta__body {
+  position: relative;
+}
+/* the panel rests on a bank of mist: a soft lavender glow behind the glass
+   that veils the ridges passing under its lower edge */
+.cta__body::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: -48px;
+  width: min(1180px, 100cqi);
+  height: 300px;
+  transform: translateX(-50%);
+  pointer-events: none;
+  background: radial-gradient(closest-side at 50% 58%, rgba(217, 207, 251, 0.16), rgba(201, 180, 250, 0.06) 55%, transparent);
+  mix-blend-mode: screen;
+}
+
+/* ── Glass panel ──────────────────────────────────────────── */
+.cta__card {
+  --card-pad: 8px;
+  position: relative;
+  width: min(100%, 640px);
+  margin-inline: auto;
+  padding: var(--card-pad);
+  background: linear-gradient(180deg, rgba(30, 18, 64, 0.62), rgba(14, 10, 28, 0.66));
+  border: 1px solid var(--line-strong);
+  -webkit-backdrop-filter: blur(22px) saturate(150%);
+  backdrop-filter: blur(22px) saturate(150%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.07), 0 48px 96px -48px rgba(4, 3, 9, 0.9),
+    0 24px 72px -32px rgba(144, 44, 225, 0.32);
+  transition: border-color var(--dur) var(--ease-out), box-shadow var(--dur) var(--ease-out);
+}
+/* keep the hover/focus transitions when the scroll reveal adds its own */
+@media (prefers-reduced-motion: no-preference) {
+  .js .cta__card[data-reveal] {
+    transition: opacity var(--dur-slow) var(--ease-out), transform var(--dur-slow) var(--ease-out),
+      border-color var(--dur) var(--ease-out), box-shadow var(--dur) var(--ease-out);
+  }
+}
+/* light catching the top edge of the glass */
+.cta__card::before {
+  content: "";
+  position: absolute;
+  inset: -1px 0 auto;
+  height: 1px;
+  pointer-events: none;
+  background: linear-gradient(90deg, transparent, rgba(217, 207, 251, 0.55) 50%, transparent);
+  opacity: 0.8;
+  transition: opacity var(--dur) var(--ease-out);
+}
+.cta__card:hover {
+  border-color: rgba(255, 255, 255, 0.22);
+}
+/* the whole panel lights up while the form (not the sales link) has focus */
+.cta__card:has(.cta__form:focus-within) {
+  border-color: var(--line-accent);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.09), 0 48px 96px -48px rgba(4, 3, 9, 0.9),
+    0 24px 80px -24px rgba(144, 44, 225, 0.55);
+}
+.cta__card:has(.cta__form:focus-within)::before {
+  opacity: 1;
+}
+.cta__card:has([aria-invalid="true"]) {
+  border-color: rgba(255, 111, 145, 0.45);
+}
+
+.cta__control {
+  display: flex;
+  gap: 8px;
+}
+.cta__field {
+  position: relative;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.cta__field-icon {
+  position: absolute;
+  top: 50%;
+  left: 16px;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  pointer-events: none;
+  transition: color var(--dur-fast);
+}
+.cta__field:focus-within .cta__field-icon {
+  color: var(--lilac);
+}
+.cta__field:has([aria-invalid="true"]) .cta__field-icon {
+  color: var(--danger);
+}
+.cta__input {
+  padding-left: 48px;
+  background: rgba(255, 255, 255, 0.05);
+  text-overflow: ellipsis;
+}
+.cta__input::placeholder {
+  color: var(--text-muted);
+  opacity: 0.8;
+}
+/* keep browser autofill on the dark glass instead of a pale yellow/blue box */
+.cta__input:-webkit-autofill {
+  -webkit-text-fill-color: var(--text);
+  caret-color: var(--text);
+  -webkit-box-shadow: inset 0 0 0 100px color-mix(in srgb, var(--sky-0) 55%, var(--bg-elevated));
+  box-shadow: inset 0 0 0 100px color-mix(in srgb, var(--sky-0) 55%, var(--bg-elevated));
+}
+.cta__input:-webkit-autofill:focus {
+  -webkit-box-shadow: inset 0 0 0 100px color-mix(in srgb, var(--sky-0) 55%, var(--bg-elevated)),
+    0 0 0 3px rgba(183, 156, 255, 0.22);
+  box-shadow: inset 0 0 0 100px color-mix(in srgb, var(--sky-0) 55%, var(--bg-elevated)),
+    0 0 0 3px rgba(183, 156, 255, 0.22);
+}
+.cta__submit {
+  flex: none;
+  padding-inline: 24px 22px;
+}
+
+.cta__error {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 12px 16px 4px;
+  text-align: left;
+}
+.cta__error:empty {
+  display: none;
+}
+.cta__error::before {
+  content: "";
+  flex: none;
+  width: 16px;
+  height: 16px;
+  margin-top: 1px;
+  background: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.75'%3E%3Cpath d='M4 4h16v16H4z'/%3E%3Cpath d='M12 7.5v6M12 15.75v1.5'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.75'%3E%3Cpath d='M4 4h16v16H4z'/%3E%3Cpath d='M12 7.5v6M12 15.75v1.5'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+/* footer: reassurance + the secondary path */
+.cta__foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 24px;
+  margin-top: var(--card-pad);
+  /* left edge lines up with the mail icon, right edge with the button's arrow */
+  padding: 14px 22px 6px 16px;
+  border-top: 1px solid var(--line);
+}
+.cta__perks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--text-soft);
+}
+.cta__perks li {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+.cta__perks .icon {
+  width: 16px;
+  height: 16px;
+  color: var(--lilac);
+  stroke-width: 1.75;
+}
+.cta__sales {
+  position: relative;
+  font-size: 14px;
+  line-height: 20px;
+  white-space: nowrap;
+  transition: color var(--dur-fast);
+}
+/* 44px hit area without changing the visual rhythm or the focus ring */
+.cta__sales::after {
+  content: "";
+  position: absolute;
+  inset: -12px -8px;
+}
+.cta__sales:hover {
+  color: var(--mist);
+}
+.cta__sales:focus-visible {
+  outline-offset: 4px;
+}
+
+/* success state (form.js swaps the form for a status panel) */
+.cta__card .form-success {
+  grid-template-columns: 44px minmax(0, 1fr);
+  column-gap: 16px;
+  row-gap: 2px;
+  align-items: center;
+  padding: 4px 16px 4px 0;
+  text-align: left;
+}
+.cta__card .form-success:focus {
+  outline: none;
+}
+.cta__card .form-success__icon {
+  grid-row: span 2;
+  align-self: start;
+  margin-top: 4px;
+}
+.cta__card .form-success .body {
+  overflow-wrap: anywhere;
+  /* breaks between the two sentences rather than inside "14-day" */
+  text-wrap: balance;
+}
+
+/* ── Large screens ─────────────────────────────────────────
+   The art scales with the screen while a fixed panel does not, so
+   the second tip would slide out from behind the panel's right edge
+   (~1460px) and the tallest one from behind its left edge (~1710px),
+   grazing both. The panel grows with the art instead (both tips stay
+   ≥ 24px inside), until the peaks are far enough apart (≥ 64px clear)
+   to frame a compact panel from outside. */
+@container (min-width: 1460px) {
+  .cta__card {
+    width: min(100%, max(640px, 40.46cqi + 48px));
+  }
+}
+@container (min-width: 1600px) {
+  .cta__card {
+    --card-pad: 12px;
+  }
+}
+@container (min-width: 2040px) {
+  .cta__card {
+    width: 632px;
+  }
+}
+
+/* ── Motion: the peaks rise and the mist drifts as you arrive ─ */
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .cta__land {
+      animation: cta-rise linear both;
+      animation-timeline: --cta-view;
+      animation-range: entry 30% contain 0%;
+    }
+    .cta__mist {
+      animation: cta-drift linear both;
+      animation-timeline: --cta-view;
+      animation-range: entry 0% exit 100%;
+    }
+  }
+}
+@keyframes cta-rise {
+  from {
+    transform: translate3d(0, 10%, 0);
+  }
+  to {
+    transform: none;
+  }
+}
+@keyframes cta-drift {
+  from {
+    transform: translate3d(-6%, 0, 0);
+  }
+  to {
+    transform: translate3d(6%, 0, 0);
+  }
+}
+
+/* ── Small screens ─────────────────────────────────────────── */
+@media (max-width: 720px) {
+  .cta {
+    --cta-top: 88px;
+  }
+  .cta__lede {
+    margin-top: 16px;
+  }
+  /* the panel covers most of the width: the art sits under its lower
+     half and the scene continues below it */
+  .cta__stage {
+    height: auto;
+    margin-top: 32px;
+    padding-bottom: 300px;
+  }
+  .cta__land {
+    top: auto;
+    bottom: -22px;
+    height: 480px;
+  }
+  .cta__land img {
+    object-position: 72% 0;
+  }
+  .cta__mist {
+    top: auto;
+    bottom: 120px;
+    height: 200px;
+  }
+  .cta__foot {
+    flex-direction: column;
+    gap: 16px;
+    padding: 16px 8px 8px;
+  }
+  .cta__perks {
+    justify-content: center;
+    gap: 8px 16px;
+  }
+}
+@media (max-width: 480px) {
+  /* stacked: field, its error, then the button (DOM/tab order unchanged) */
+  .cta__form {
+    display: grid;
+    gap: 8px;
+  }
+  .cta__control {
+    display: contents;
+  }
+  .cta__error {
+    order: 1;
+    padding: 2px 16px 4px;
+  }
+  .cta__submit {
+    order: 2;
+    width: 100%;
+  }
+}

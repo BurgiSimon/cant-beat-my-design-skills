@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <base href="{{BASE}}" />
+<!-- @include head-common.html -->
+  <title>Page not found — Mist</title>
+  <meta name="description" content="This page drifted away — or never existed. Head back to the Mist home page or see our plans and pricing." />
+  <meta name="robots" content="noindex" />
+  <meta property="og:title" content="Page not found — Mist" />
+  <meta property="og:description" content="This page drifted away — or never existed." />
+  <link rel="preload" as="image" type="image/webp" fetchpriority="high" href="assets/img/mountains-1920.webp"
+        imagesrcset="assets/img/mountains-1280.webp 1280w, assets/img/mountains-1920.webp 1920w, assets/img/mountains-2560.webp 2560w"
+        imagesizes="max(100vw, 1000px)" />
+</head>
+<body data-page="404">
+<!-- @include header.html -->
+
+<div class="nf">
+  <div class="nf__sky" aria-hidden="true"></div>
+
+  <main id="main" tabindex="-1" class="nf__main container">
+    <div class="nf__code" aria-hidden="true" data-nf-in style="--d: 0">
+      <span class="nf__digits">404</span>
+      <span class="nf__fog"></span>
+    </div>
+    <h1 class="title-1 nf__title" data-nf-in style="--d: 1"><span class="sr-only">Error 404. </span>Lost in the fog</h1>
+    <p class="nf__text" data-nf-in style="--d: 2">The page you’re looking for drifted away&nbsp;— or never&nbsp;existed.</p>
+    <div class="nf__actions" data-nf-in style="--d: 3">
+      <a class="btn btn--primary nf__home" href="./">
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12H5M11 6l-6 6 6 6" /></svg>
+        Back to home
+      </a>
+      <a class="btn btn--glass" href="./#pricing">
+        View pricing
+        <svg class="icon icon--arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6" /></svg>
+      </a>
+    </div>
+    <p class="nf__path" data-nf-path data-nf-in style="--d: 4" hidden>
+      <span class="nf__path-label">Requested</span>
+      <code class="nf__path-value" data-nf-path-value></code>
+    </p>
+  </main>
+
+  <div class="nf__land" aria-hidden="true">
+    <img
+      src="assets/img/mountains-1920.webp"
+      srcset="assets/img/mountains-1280.webp 1280w, assets/img/mountains-1920.webp 1920w, assets/img/mountains-2560.webp 2560w"
+      sizes="max(100vw, 1000px)"
+      width="2560"
+      height="1134"
+      alt=""
+      decoding="async"
+      fetchpriority="high"
+    />
+    <span class="nf__mist"></span>
+  </div>
+
+  <footer class="nf__foot container">
+    <p>&copy; {{YEAR}} Mist&nbsp;Labs,&nbsp;Inc.</p>
+    <nav aria-label="Legal">
+      <a href="privacy.html">Privacy</a>
+      <a href="terms.html">Terms</a>
+    </nav>
+  </footer>
+</div>
+
+<script>
+  (() => {
+    // <base> makes "#…" links resolve to the home page; keep them on this page.
+    const here = location.pathname + location.search;
+    for (const a of document.querySelectorAll('a[href^="#"]')) a.setAttribute("href", here + a.getAttribute("href"));
+
+    // Show the path that wasn't found (text only, never HTML), but not for
+    // the site root or when this page is opened directly as /404.html.
+    const box = document.querySelector("[data-nf-path]");
+    let path = location.pathname || "";
+    try {
+      path = decodeURI(path);
+    } catch {}
+    if (box && path && path !== "/" && !/\/404(\.html)?$/.test(path)) {
+      const value = box.querySelector("[data-nf-path-value]");
+      value.textContent = path;
+      value.title = path;
+      box.hidden = false;
+    }
+
+    // Pause the drifting fog while it's off-screen.
+    const code = document.querySelector(".nf__code");
+    if (code && "IntersectionObserver" in window) {
+      new IntersectionObserver(([e]) => code.classList.toggle("is-paused", !e.isIntersecting)).observe(code);
+    }
+  })();
+</script>
+</body>
+</html>

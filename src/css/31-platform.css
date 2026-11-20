@@ -1,0 +1,1434 @@
+/* ────────────────────────────────────────────────────────────
+   Platform — workflow-builder mockup in a glass window + 3 pillars
+   ──────────────────────────────────────────────────────────── */
+.platform {
+  --pf-hair: rgba(255, 255, 255, 0.075);
+  --pf-pane: rgba(255, 255, 255, 0.018);
+  --pf-wire: rgba(183, 156, 255, 0.34);
+}
+
+/* ── Stage: full-bleed band that holds the atmosphere + window ── */
+.platform__stage {
+  position: relative;
+  /* clip the glows at the viewport edges, but let them bleed vertically */
+  overflow-x: clip;
+}
+.platform__atmos {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+/* light rising behind the top edge of the window, like the lit peaks */
+.platform__glow--magenta {
+  left: 50%;
+  top: -240px;
+  width: min(980px, 86vw);
+  height: 560px;
+  transform: translateX(-74%);
+  background: radial-gradient(closest-side, rgba(218, 8, 139, 0.85), rgba(180, 16, 216, 0.4) 55%, transparent);
+  opacity: 0.5;
+}
+.platform__glow--violet {
+  left: 50%;
+  top: -200px;
+  width: min(1040px, 90vw);
+  height: 560px;
+  transform: translateX(-16%);
+  background: radial-gradient(closest-side, rgba(144, 44, 225, 0.95), rgba(107, 61, 178, 0.35) 60%, transparent);
+  opacity: 0.5;
+}
+/* the window floats on a bank of mist */
+.platform__band {
+  top: auto;
+  bottom: -120px;
+  height: 300px;
+  background: radial-gradient(50% 50% at 50% 50%, rgba(201, 180, 250, 0.22), rgba(180, 16, 216, 0.08) 55%, transparent 74%);
+}
+
+/* ── The window ───────────────────────────────────────────── */
+.platform__figure {
+  position: relative;
+  margin: 0;
+}
+.platform__app {
+  --row-h: 44px;
+  --node-h: 60px;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(180deg, rgba(26, 17, 52, 0.82), rgba(11, 8, 22, 0.92) 62%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 2px 0 -1px rgba(0, 0, 0, 0.6),
+    0 60px 120px -40px rgba(0, 0, 0, 0.9), 0 40px 100px -50px rgba(180, 16, 216, 0.55);
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--text-soft);
+  -webkit-user-select: none;
+  user-select: none;
+  cursor: default;
+}
+/* light catching the top edge */
+.platform__app::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 1px;
+  z-index: 3;
+  background: linear-gradient(90deg, transparent 4%, rgba(217, 207, 251, 0.6) 38%, rgba(255, 46, 154, 0.45) 62%, transparent 96%);
+  pointer-events: none;
+}
+.platform__app .icon {
+  width: 16px;
+  height: 16px;
+}
+
+/* ── Top bar ───────────────────────────────────────────────── */
+.platform__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  height: 56px;
+  padding: 0 16px 0 12px;
+  border-bottom: 1px solid var(--pf-hair);
+  background: rgba(255, 255, 255, 0.025);
+}
+.platform__bar-start,
+.platform__bar-end {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+.platform__ws {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  height: 32px;
+  padding: 0 6px 0 4px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text);
+  white-space: nowrap;
+}
+.platform__ws-avatar {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  flex: none;
+  font-size: 12px;
+  font-weight: 600;
+  color: #fff;
+  background: linear-gradient(135deg, var(--hotpink), var(--violet));
+}
+.platform__app .platform__ws-chevron {
+  width: 14px;
+  height: 14px;
+  margin-left: -2px;
+  color: var(--text-muted);
+}
+.platform__bar-sep {
+  width: 1px;
+  height: 20px;
+  background: var(--line-strong);
+}
+.platform__crumbs {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  overflow: hidden;
+  font-size: 14px;
+  white-space: nowrap;
+  color: var(--text-muted);
+}
+.platform__crumb-slash {
+  color: var(--text-faint);
+}
+.platform__crumb--current {
+  color: var(--text);
+  font-weight: 500;
+}
+.platform__live {
+  flex: none;
+  height: 24px;
+  padding: 0 8px;
+  gap: 7px;
+  font-size: 12px;
+  color: var(--success);
+  background: rgba(99, 230, 176, 0.08);
+  border-color: rgba(99, 230, 176, 0.22);
+}
+.platform__saved {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+.platform__avatars {
+  display: inline-flex;
+}
+.platform__avatar {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: #fff;
+  box-shadow: 0 0 0 2px #140e27;
+}
+.platform__avatar--a {
+  background: linear-gradient(135deg, #7a4fd6, #b410d8);
+}
+.platform__avatar--more {
+  margin-left: 2px;
+  color: var(--text-soft);
+  background: var(--surface-3);
+}
+.platform__fakebtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 32px;
+  padding: 0 14px;
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.platform__app .platform__fakebtn .icon {
+  width: 14px;
+  height: 14px;
+}
+.platform__fakebtn--glass {
+  color: var(--text);
+  background: var(--glass);
+}
+.platform__fakebtn--primary {
+  color: var(--text-on-light);
+  background: #fff;
+}
+
+/* ── Body: sidebar | canvas | inspector ───────────────────── */
+.platform__body {
+  display: grid;
+  grid-template-columns: 232px minmax(0, 1fr) 304px;
+}
+
+/* Sidebar */
+.platform__side {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  padding: 14px 12px 16px;
+  border-right: 1px solid var(--pf-hair);
+  background: var(--pf-pane);
+  min-width: 0;
+}
+.platform__search {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 34px;
+  padding: 0 8px 0 10px;
+  color: var(--text-muted);
+  background: rgba(255, 255, 255, 0.04);
+  box-shadow: inset 0 0 0 1px var(--pf-hair);
+}
+.platform__search kbd {
+  margin-left: auto;
+  padding: 2px 5px;
+  font-family: var(--font);
+  font-size: 11px;
+  line-height: 1.2;
+  color: var(--text-muted);
+  background: var(--surface-2);
+  box-shadow: inset 0 0 0 1px var(--pf-hair);
+}
+.platform__group-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 8px 8px;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.platform__group-count {
+  font-family: var(--font-mono);
+  letter-spacing: 0;
+  color: var(--text-faint);
+}
+.platform__list {
+  display: grid;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.platform__item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 32px;
+  padding: 0 8px;
+  color: var(--text-soft);
+  white-space: nowrap;
+}
+.platform__item .icon {
+  color: var(--text-muted);
+}
+.platform__item-name {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.platform__item-meta {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-faint);
+  font-variant-numeric: tabular-nums;
+}
+.platform__item.is-active {
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.07);
+}
+.platform__item.is-active::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 8px;
+  bottom: 8px;
+  width: 2px;
+  background: var(--lilac);
+}
+.platform__item.is-active .icon {
+  color: var(--lilac);
+}
+.platform__item.is-active .platform__item-meta {
+  color: var(--text-muted);
+}
+.platform__conn-glyph {
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  flex: none;
+  color: var(--tone);
+  background: color-mix(in srgb, var(--tone) 14%, transparent);
+}
+.platform__app .platform__conn-glyph .icon {
+  width: 13px;
+  height: 13px;
+  color: inherit;
+}
+.platform__conn-glyph--lilac {
+  --tone: var(--lilac);
+}
+.platform__conn-glyph--pink {
+  --tone: var(--pink);
+}
+.platform__conn-glyph--green {
+  --tone: var(--success);
+}
+.platform__conn-glyph--violet {
+  --tone: #a77bff;
+}
+.platform__conn-dot {
+  width: 6px;
+  height: 6px;
+  margin: 0 4px 0 auto;
+  flex: none;
+  background: var(--success);
+  box-shadow: 0 0 8px rgba(99, 230, 176, 0.6);
+}
+.platform__usage {
+  display: grid;
+  gap: 10px;
+  margin-top: auto;
+  padding: 14px 8px 0;
+  border-top: 1px solid var(--pf-hair);
+}
+.platform__usage-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+.platform__usage-pct,
+.platform__usage-num {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+}
+.platform__usage-pct {
+  color: var(--text-soft);
+}
+.platform__usage-num {
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.platform__usage-bar {
+  position: relative;
+  display: block;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.07);
+}
+.platform__usage-fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: calc(var(--p, 0.33) * 100%);
+  background: linear-gradient(90deg, var(--violet), var(--lilac));
+  transition: width var(--dur-slow) var(--ease-out);
+}
+
+/* ── Canvas ────────────────────────────────────────────────── */
+.platform__canvas {
+  position: relative;
+  min-width: 0;
+  padding: 16px 24px 40px;
+  background: rgba(4, 3, 9, 0.38);
+  isolation: isolate;
+}
+/* square dot grid, fading toward the edges */
+.platform__canvas::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20'%3E%3Crect x='9.5' y='9.5' width='1' height='1' fill='%23fff' fill-opacity='.22'/%3E%3C/svg%3E");
+  background-position: center;
+  -webkit-mask-image: radial-gradient(75% 70% at 50% 45%, #000 40%, transparent 100%);
+  mask-image: radial-gradient(75% 70% at 50% 45%, #000 40%, transparent 100%);
+}
+/* soft magenta light pooled behind the selected step */
+.platform__canvas::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 22%;
+  z-index: -1;
+  width: 70%;
+  height: 46%;
+  transform: translateX(-50%);
+  background: radial-gradient(closest-side, rgba(180, 16, 216, 0.16), transparent);
+  pointer-events: none;
+}
+.platform__tools {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.platform__toolgroup {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px;
+  gap: 2px;
+  background: rgba(20, 14, 40, 0.85);
+  box-shadow: inset 0 0 0 1px var(--pf-hair), 0 8px 20px -10px rgba(0, 0, 0, 0.8);
+}
+.platform__tool {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  color: var(--text-muted);
+}
+.platform__app .platform__tool .icon {
+  width: 15px;
+  height: 15px;
+}
+.platform__tool.is-on {
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.09);
+}
+.platform__zoom-val {
+  min-width: 44px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-align: center;
+  color: var(--text-soft);
+}
+
+/* Flow graph. Wires are drawn in JS from the nodes' real positions,
+   so the same markup works for every layout. */
+.platform__flow {
+  --gap: 36px; /* between steps */
+  --bm: 24px; /* extra air above and below the branch row */
+  --cg: 0px; /* between the two branches */
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-areas:
+    "trigger trigger"
+    "ai ai"
+    "cond cond"
+    "yes no"
+    "log log";
+  gap: var(--gap) var(--cg);
+  width: min(100%, 600px);
+  margin-inline: auto;
+}
+.platform__wires {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+.platform__node {
+  --tone: var(--lilac);
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  justify-self: center;
+  width: min(272px, 100%);
+  height: var(--node-h);
+  padding: 0 14px 0 13px;
+  background: linear-gradient(180deg, rgba(40, 28, 74, 0.94), rgba(25, 18, 48, 0.94));
+  border: 1px solid rgba(255, 255, 255, 0.11);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 14px 30px -16px rgba(0, 0, 0, 0.9);
+  transition: border-color 700ms var(--ease-out), box-shadow 700ms var(--ease-out);
+}
+.platform__node--trigger {
+  grid-area: trigger;
+}
+.platform__node--ai {
+  grid-area: ai;
+  --tone: var(--pink);
+}
+.platform__node--cond {
+  grid-area: cond;
+  --tone: var(--warning);
+}
+.platform__node--yes {
+  grid-area: yes;
+  --tone: var(--danger);
+}
+.platform__node--no {
+  grid-area: no;
+  --tone: var(--mist);
+}
+.platform__node--log {
+  grid-area: log;
+  --tone: var(--success);
+}
+.platform__node--yes,
+.platform__node--no {
+  width: min(240px, 100% - 16px);
+  margin-block: var(--bm);
+}
+.platform__node-icon {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  flex: none;
+  color: var(--tone);
+  background: color-mix(in srgb, var(--tone) 13%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--tone) 30%, transparent);
+  transition: background-color 700ms var(--ease-out), box-shadow 700ms var(--ease-out);
+}
+.platform__app .platform__node-icon .icon {
+  width: 17px;
+  height: 17px;
+}
+.platform__node-text {
+  display: grid;
+  flex: 1;
+  min-width: 0;
+}
+.platform__node-title,
+.platform__node-sub {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.platform__node-title {
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 500;
+  letter-spacing: -0.006em;
+  color: var(--text);
+}
+.platform__node-sub {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  line-height: 16px;
+  color: var(--text-muted);
+}
+.platform__node-step {
+  align-self: flex-start;
+  margin-top: 9px;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  line-height: 1;
+  color: var(--text-faint);
+}
+/* Selected step: accent-gradient outline, soft halo and corner handles */
+.platform__node.is-selected {
+  border-image: var(--accent-gradient) 1;
+  background: linear-gradient(180deg, rgba(52, 26, 82, 0.96), rgba(30, 17, 54, 0.96));
+  box-shadow: 0 0 0 5px rgba(180, 16, 216, 0.12), 0 18px 50px -14px rgba(218, 8, 139, 0.55);
+}
+.platform__node.is-selected::before {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  pointer-events: none;
+  background: linear-gradient(#fff, #fff) left top / 5px 5px no-repeat, linear-gradient(#fff, #fff) right top / 5px 5px no-repeat,
+    linear-gradient(#fff, #fff) left bottom / 5px 5px no-repeat, linear-gradient(#fff, #fff) right bottom / 5px 5px no-repeat;
+  opacity: 0.85;
+}
+/* A run passing through a step */
+.platform__node.is-hot {
+  border-color: color-mix(in srgb, var(--tone) 60%, transparent);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--tone) 26%, transparent),
+    0 0 36px -6px color-mix(in srgb, var(--tone) 55%, transparent), 0 14px 30px -16px rgba(0, 0, 0, 0.9);
+  transition-duration: 160ms;
+}
+.platform__node.is-selected.is-hot {
+  box-shadow: 0 0 0 5px rgba(180, 16, 216, 0.2), 0 0 44px -4px rgba(255, 46, 154, 0.55),
+    0 18px 50px -14px rgba(218, 8, 139, 0.55);
+}
+.platform__node.is-hot .platform__node-icon {
+  background: color-mix(in srgb, var(--tone) 26%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--tone) 60%, transparent);
+  transition-duration: 160ms;
+}
+
+/* SVG wires (built by modules/platform.js) */
+.platform__wire {
+  fill: none;
+  stroke: var(--pf-wire);
+  stroke-width: 1;
+  transition: stroke 1200ms var(--ease-out);
+}
+.platform__wire.is-active {
+  stroke: rgba(217, 207, 251, 0.62);
+  transition-duration: 200ms;
+}
+.platform__wire-lit {
+  fill: none;
+  stroke: var(--mist);
+  stroke-width: 1.5;
+  opacity: 0;
+  transition: opacity 360ms var(--ease-out);
+}
+.platform__wire-lit.is-on {
+  opacity: 0.9;
+  transition-duration: 80ms;
+}
+.platform__port {
+  fill: #1c1434;
+  stroke: rgba(183, 156, 255, 0.6);
+  stroke-width: 1;
+}
+.platform__pulse {
+  fill: #fff;
+  opacity: 0;
+  transition: opacity 200ms linear;
+}
+.platform__pulse.is-on {
+  opacity: 1;
+}
+.platform__edge-label rect {
+  fill: #160f2c;
+  stroke: rgba(255, 255, 255, 0.16);
+  stroke-width: 1;
+}
+.platform__edge-label text {
+  font-family: var(--font);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  fill: var(--text-soft);
+}
+/* No JS (or before wiring): square elbow connectors for the whole graph,
+   from the same spacing variables the layout uses. Branch centers sit at
+   25% / 75% of the flow, less a quarter of the gap between them. */
+.platform__flow:not(.is-wired) :is(.platform__node--trigger, .platform__node--ai, .platform__node--cond)::after,
+.platform__flow:not(.is-wired) .platform__node--log::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  width: 1px;
+  height: var(--gap);
+  background: var(--pf-wire);
+}
+.platform__flow:not(.is-wired) .platform__node--cond::after,
+.platform__flow:not(.is-wired) .platform__node--log::before {
+  height: calc((var(--gap) + var(--bm)) / 2);
+}
+.platform__flow:not(.is-wired) .platform__node--log::before {
+  top: auto;
+  bottom: 100%;
+}
+.platform__flow:not(.is-wired)::before,
+.platform__flow:not(.is-wired)::after {
+  content: "";
+  position: absolute;
+  left: calc(25% - var(--cg) / 4);
+  right: calc(25% - var(--cg) / 4);
+  height: calc((var(--gap) + var(--bm)) / 2);
+  border: 1px solid var(--pf-wire);
+  pointer-events: none;
+}
+.platform__flow:not(.is-wired)::before {
+  top: calc(3 * var(--node-h) + 2 * var(--gap) + (var(--gap) + var(--bm)) / 2);
+  border-bottom: 0;
+}
+.platform__flow:not(.is-wired)::after {
+  top: calc(4 * var(--node-h) + 3 * var(--gap) + var(--bm));
+  border-top: 0;
+}
+
+/* ── Inspector ─────────────────────────────────────────────── */
+.platform__inspector {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  border-left: 1px solid var(--pf-hair);
+  background: var(--pf-pane);
+}
+.platform__insp-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 16px 14px 20px;
+}
+.platform__node-icon--ai {
+  --tone: var(--pink);
+}
+.platform__insp-titles {
+  display: grid;
+  flex: 1;
+  min-width: 0;
+}
+.platform__insp-title {
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 500;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.platform__insp-sub {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--text-muted);
+}
+.platform__app .platform__insp-close {
+  align-self: flex-start;
+  margin-top: 2px;
+  color: var(--text-muted);
+}
+.platform__tabs {
+  display: flex;
+  gap: 20px;
+  padding: 0 20px;
+  border-bottom: 1px solid var(--pf-hair);
+}
+.platform__tab {
+  position: relative;
+  padding: 8px 0 11px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+.platform__tab.is-active {
+  color: var(--text);
+}
+.platform__tab.is-active::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 1px;
+  background: var(--text);
+}
+.platform__fields {
+  display: grid;
+  align-content: start;
+  gap: 20px;
+  padding: 20px 20px 22px;
+  flex: 1;
+}
+.platform__field {
+  display: grid;
+  gap: 8px;
+}
+.platform__label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+.platform__label-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--text-soft);
+}
+.platform__app .platform__label-action .icon {
+  width: 12px;
+  height: 12px;
+}
+.platform__prompt {
+  padding: 12px 14px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--text-soft);
+  background: rgba(0, 0, 0, 0.22);
+  box-shadow: inset 0 0 0 1px var(--pf-hair);
+}
+.platform__var {
+  display: inline-block;
+  padding: 0 5px;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  line-height: 18px;
+  color: var(--mist);
+  background: rgba(183, 156, 255, 0.14);
+  box-shadow: inset 0 0 0 1px rgba(183, 156, 255, 0.28);
+}
+.platform__select {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 38px;
+  padding: 0 10px 0 12px;
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.045);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+}
+.platform__mark {
+  width: 15px;
+  height: 15px;
+  flex: none;
+  color: var(--mist);
+}
+.platform__select-val {
+  font-weight: 500;
+}
+.platform__select-tag {
+  margin-left: auto;
+  padding: 2px 6px;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  color: var(--text-muted);
+  background: var(--surface-2);
+}
+.platform__select .icon {
+  color: var(--text-muted);
+}
+.platform__outputs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.platform__out {
+  display: inline-flex;
+  align-items: center;
+  height: 26px;
+  padding: 0 9px;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--text-soft);
+  background: var(--surface-2);
+  box-shadow: inset 0 0 0 1px var(--pf-hair);
+}
+.platform__toggle-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding-top: 18px;
+  border-top: 1px solid var(--pf-hair);
+}
+.platform__toggle-text {
+  display: grid;
+  gap: 3px;
+  flex: 1;
+}
+.platform__toggle-title {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text);
+}
+.platform__toggle-hint {
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--text-muted);
+}
+.platform__switch {
+  position: relative;
+  flex: none;
+  width: 34px;
+  height: 20px;
+  margin-top: 1px;
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.16);
+}
+.platform__switch span {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 14px;
+  height: 14px;
+  background: var(--text-muted);
+}
+.platform__switch.is-on {
+  background: rgba(183, 156, 255, 0.4);
+  box-shadow: inset 0 0 0 1px rgba(183, 156, 255, 0.7);
+}
+.platform__switch.is-on span {
+  left: 17px;
+  background: #fff;
+}
+.platform__meta-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: auto;
+  padding-top: 16px;
+  border-top: 1px solid var(--pf-hair);
+  font-size: 12px;
+  color: var(--text-muted);
+}
+.platform__meta-val {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--text-soft);
+}
+
+/* ── Run log ───────────────────────────────────────────────── */
+.platform__log {
+  border-top: 1px solid var(--pf-hair);
+  background: rgba(255, 255, 255, 0.02);
+}
+.platform__log-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  height: 48px;
+  padding: 0 20px;
+}
+.platform__log-title {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text);
+}
+.platform__log-meta {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.platform__run {
+  display: grid;
+  grid-template-columns: 104px minmax(0, 1fr) 92px 116px 148px 76px 72px;
+  align-items: center;
+  gap: 16px;
+  height: var(--row-h);
+  padding: 0 20px;
+  border-top: 1px solid var(--pf-hair);
+  font-size: 13px;
+  white-space: nowrap;
+}
+.platform__run > span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.platform__run--head {
+  height: 32px;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  background: rgba(255, 255, 255, 0.015);
+}
+/* every column label shares one style (the cell classes below would
+   otherwise tint "Ticket" white and "Route" lavender) */
+.platform__run--head > span {
+  font-family: var(--font);
+  font-size: 11px;
+  color: var(--text-muted);
+}
+.platform__run-id {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-soft);
+}
+.platform__run-ticket {
+  color: var(--text);
+}
+.platform__run-num {
+  margin-right: 6px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+.platform__cat {
+  display: inline-flex;
+  align-items: center;
+  height: 22px;
+  padding: 0 7px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-soft);
+  background: var(--surface-2);
+  box-shadow: inset 0 0 0 1px var(--pf-hair);
+}
+.platform__run-route {
+  color: var(--text-soft);
+}
+.platform__run-route--urgent {
+  color: var(--danger);
+}
+.platform__run-dur,
+.platform__run-time {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+.platform__run-dur {
+  color: var(--text-soft);
+}
+.platform__status {
+  --tone: var(--success);
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 24px;
+  padding: 0 9px 0 8px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--tone);
+  background: color-mix(in srgb, var(--tone) 9%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--tone) 24%, transparent);
+}
+.platform__status-mark {
+  width: 6px;
+  height: 6px;
+  flex: none;
+  background: currentColor;
+}
+.platform__status--review {
+  --tone: var(--warning);
+}
+.platform__status--running {
+  --tone: var(--lilac);
+}
+.platform__status--running .platform__status-mark {
+  width: 10px;
+  height: 10px;
+  background: none;
+  border: 1.5px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%; /* spinners are the only round thing */
+  animation: spin 0.8s linear infinite;
+}
+.platform__skel {
+  display: inline-block;
+  width: 56px;
+  height: 8px;
+  vertical-align: middle;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.11), rgba(255, 255, 255, 0.05));
+  background-size: 200% 100%;
+  animation: platform-shimmer 1.4s linear infinite;
+}
+.platform__log-viewport {
+  height: calc(var(--row-h) * 4);
+  overflow: hidden;
+}
+.platform__log-rows {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  transition: transform 700ms var(--ease-out);
+}
+.platform__run.is-new {
+  animation: platform-row-in 1600ms var(--ease-out) both;
+}
+.platform__run .is-pop {
+  animation: platform-pop 520ms var(--ease-out) both;
+}
+@keyframes platform-row-in {
+  0% {
+    background-color: rgba(183, 156, 255, 0.12);
+  }
+  100% {
+    background-color: transparent;
+  }
+}
+@keyframes platform-pop {
+  0% {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes platform-shimmer {
+  to {
+    background-position: -200% 0;
+  }
+}
+
+/* ── Pillars ───────────────────────────────────────────────── */
+.platform__pillars {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-rows: auto auto 1fr auto;
+  gap: 0 48px;
+  padding: 0;
+  list-style: none;
+}
+/* (beats the base ul[role="list"] reset) */
+.platform .platform__pillars {
+  margin: clamp(80px, 9vw, 128px) 0 0;
+}
+/* subgrid keeps titles, copy and links aligned across the three columns */
+.platform__pillar {
+  position: relative;
+  display: grid;
+  grid-row: span 4;
+  grid-template-rows: subgrid;
+  align-content: start;
+  justify-items: start;
+  padding-top: 32px;
+  border-top: 1px solid var(--line);
+}
+.platform__pillar::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: -1px;
+  width: 48px;
+  height: 1px;
+  background: var(--lilac);
+  transition: width 700ms var(--ease-out);
+}
+.platform__pillar:hover::before,
+.platform__pillar:has(:focus-visible)::before {
+  width: 100%;
+}
+.platform__pillar-top {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  justify-self: stretch;
+  margin-bottom: 28px;
+}
+.platform__pillar-icon {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  flex: none;
+  color: var(--mist);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.025));
+  box-shadow: inset 0 0 0 1px var(--line-strong);
+  transition: box-shadow var(--dur) var(--ease-out), color var(--dur) var(--ease-out);
+}
+.platform__pillar:hover .platform__pillar-icon,
+.platform__pillar:has(:focus-visible) .platform__pillar-icon {
+  color: #fff;
+  box-shadow: inset 0 0 0 1px var(--line-accent), 0 12px 32px -12px rgba(180, 16, 216, 0.7);
+}
+.platform__pillar-kicker {
+  font-size: 13px;
+  line-height: 16px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-soft);
+}
+.platform__pillar-title {
+  align-self: end;
+  margin-bottom: 12px;
+}
+.platform__pillar .body {
+  max-width: 400px;
+  text-wrap: pretty;
+}
+.platform__pillar-link {
+  align-self: end;
+  margin-top: 24px;
+}
+
+/* ────────────────────────────────────────────────────────────
+   Responsive
+   ──────────────────────────────────────────────────────────── */
+@media (max-width: 1279px) {
+  .platform__body {
+    grid-template-columns: 208px minmax(0, 1fr) 280px;
+  }
+  .platform__saved {
+    display: none;
+  }
+  .platform__run {
+    grid-template-columns: 100px minmax(0, 1fr) 84px 112px 140px 76px 72px;
+    gap: 14px;
+  }
+}
+
+/* 860–1100: drop the sidebar */
+@media (max-width: 1099px) {
+  .platform__body {
+    grid-template-columns: minmax(0, 1fr) 280px;
+  }
+  .platform__side {
+    display: none;
+  }
+  /* the ticket number goes first so subjects keep their room */
+  .platform__log-head {
+    padding: 0 16px;
+  }
+  .platform__run {
+    grid-template-columns: 84px minmax(0, 1fr) 84px 124px 76px 72px;
+    gap: 12px;
+    padding: 0 16px;
+  }
+  .platform__run-route,
+  .platform__run-num {
+    display: none;
+  }
+  /* three narrow columns: give the copy a little more measure */
+  .platform__pillars {
+    column-gap: 32px;
+  }
+}
+
+/* 720–860: canvas only */
+@media (max-width: 859px) {
+  .platform__body {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .platform__inspector,
+  .platform__avatars,
+  .platform__ws-name,
+  .platform__app .platform__ws-chevron {
+    display: none;
+  }
+  .platform__run {
+    grid-template-columns: 84px minmax(0, 1fr) 124px 76px 72px;
+  }
+  .platform__run-cat {
+    display: none;
+  }
+  .platform__pillars {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: none;
+    row-gap: 48px;
+  }
+  .platform__pillar {
+    grid-row: auto;
+    grid-template-columns: minmax(0, 208px) minmax(0, 1fr);
+    grid-template-rows: auto auto 1fr;
+    column-gap: 32px;
+  }
+  .platform__pillar > :not(.platform__pillar-top) {
+    grid-column: 2;
+  }
+  .platform__pillar-top {
+    grid-row: 1 / span 3;
+    align-self: start;
+    margin: 0;
+  }
+  .platform__pillar-link {
+    align-self: start;
+    margin-top: 16px;
+  }
+}
+
+/* < 720: simplified vertical flow */
+@media (max-width: 719px) {
+  .platform__head .link-arrow {
+    min-height: 44px;
+  }
+  .platform__app {
+    --row-h: 64px; /* two-line run rows */
+    --node-h: 56px;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 40px 80px -30px rgba(0, 0, 0, 0.9),
+      0 30px 70px -40px rgba(180, 16, 216, 0.55);
+  }
+  .platform__bar {
+    height: 52px;
+    padding: 0 12px 0 10px;
+  }
+  .platform__ws-name,
+  .platform__app .platform__ws-chevron,
+  .platform__bar-sep,
+  .platform__crumb:not(.platform__crumb--current),
+  .platform__crumb-slash,
+  .platform__bar-end {
+    display: none;
+  }
+  .platform__bar-start {
+    flex: 1;
+    gap: 10px;
+  }
+  .platform__ws {
+    padding: 0;
+  }
+  .platform__live {
+    margin-left: auto;
+  }
+  .platform__canvas {
+    padding: 24px 14px 32px;
+  }
+  .platform__tools {
+    display: none;
+  }
+  /* one clean column: the two branches split the spine's width exactly */
+  .platform__flow {
+    --gap: 28px;
+    --bm: 20px;
+    --cg: 12px;
+    width: min(100%, 400px);
+  }
+  .platform__node {
+    gap: 10px;
+    width: 100%;
+    padding: 0 12px 0 10px;
+  }
+  .platform__node--yes,
+  .platform__node--no {
+    padding: 0 8px;
+    gap: 8px;
+  }
+  .platform__node--yes .platform__node-step,
+  .platform__node--no .platform__node-step {
+    display: none;
+  }
+  .platform__node--yes .platform__node-icon,
+  .platform__node--no .platform__node-icon {
+    width: 28px;
+    height: 28px;
+  }
+  .platform__node-title {
+    font-size: 13.5px;
+  }
+  .platform__node-sub {
+    font-size: 11px;
+  }
+  .platform__node.is-selected {
+    box-shadow: 0 0 0 4px rgba(180, 16, 216, 0.12), 0 16px 40px -14px rgba(218, 8, 139, 0.55);
+  }
+  .platform__log-head {
+    height: 44px;
+    padding: 0 14px;
+  }
+  /* the log becomes a two-line list: the subject gets the whole first
+     line, "run id · time" and the status share the second. Column
+     headers aren't needed for a list. */
+  .platform__run--head,
+  .platform__run-num,
+  .platform__run-cat,
+  .platform__run-route,
+  .platform__run-dur {
+    display: none;
+  }
+  .platform__run {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    grid-template-areas:
+      "ticket ticket ticket"
+      "id time status";
+    align-content: center;
+    align-items: center;
+    gap: 4px 8px;
+    /* optically centered: the subject's line box carries extra leading on top */
+    padding: 0 14px 4px;
+  }
+  .platform__run-ticket {
+    grid-area: ticket;
+    line-height: 20px;
+  }
+  .platform__run-id,
+  .platform__run-time {
+    font-size: 11.5px;
+    line-height: 16px;
+    color: var(--text-muted);
+  }
+  .platform__run-id {
+    grid-area: id;
+  }
+  .platform__run-time {
+    grid-area: time;
+    text-align: left;
+  }
+  .platform__run-time::before {
+    content: "·";
+    margin-right: 8px;
+  }
+  .platform__run-status {
+    grid-area: status;
+    justify-self: end;
+  }
+  .platform__run .platform__status {
+    height: 22px;
+    padding: 0 7px 0 6px;
+    gap: 6px;
+    font-size: 11.5px;
+  }
+  .platform__pillars {
+    row-gap: 56px;
+  }
+  .platform__pillar {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: none;
+  }
+  .platform__pillar > :not(.platform__pillar-top) {
+    grid-column: 1;
+  }
+  .platform__pillar-top {
+    grid-row: auto;
+    margin-bottom: 24px;
+  }
+  .platform__pillar-link {
+    min-height: 44px;
+    margin-top: 10px;
+  }
+}
+@media (max-width: 479px) {
+  .platform__log-meta {
+    font-size: 11px;
+  }
+}
+
+/* Reduced motion: everything static (JS also skips the live demo) */
+@media (prefers-reduced-motion: reduce) {
+  .platform__skel {
+    animation: none;
+  }
+}

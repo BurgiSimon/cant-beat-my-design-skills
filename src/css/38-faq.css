@@ -1,0 +1,541 @@
+/* ────────────────────────────────────────────────────────────
+   FAQ (home #faq) — sticky intro + exclusive accordion.
+   Native <details name="faq"> does the work without JS; faq.js
+   adds the height animation (open and close), deep links,
+   "Copy link" and expand-all for print.
+   Open state = [open]:not(.is-closing), so the icon and the
+   accent hairline turn back the moment a close starts.
+   ──────────────────────────────────────────────────────────── */
+.faq {
+  --faq-num: 40px; /* index column */
+  --faq-icon: 32px; /* plus / minus box */
+  --faq-gap: 16px;
+  --faq-inset: 20px; /* row padding inside the hairlines */
+  --faq-bleed: 0px; /* hover wash / focus ring beyond the hairlines */
+  --faq-pad: clamp(22px, 2vw, 28px);
+  --faq-q: clamp(18px, 1.4vw, 20px);
+  --faq-lh: 1.4;
+  --faq-tuck: 12px; /* question → answer gap is tighter than the row padding */
+  --faq-open: 520ms;
+  --faq-close: 380ms;
+}
+
+/* ── Atmosphere ───────────────────────────────────────────── */
+.faq__atmos {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+.faq__glow--violet {
+  top: 4%;
+  left: -14%;
+  width: min(760px, 86vw);
+  height: 560px;
+  background: radial-gradient(closest-side, rgba(144, 44, 225, 0.6), transparent);
+  opacity: 0.26;
+}
+.faq__glow--magenta {
+  right: -12%;
+  bottom: 6%;
+  width: min(620px, 72vw);
+  height: 440px;
+  background: radial-gradient(closest-side, rgba(218, 8, 139, 0.45), transparent);
+  opacity: 0.14;
+}
+
+/* ── Layout: 5 / 7 of the 12-column frame ─────────────────── */
+.faq__layout {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: 24px;
+  align-items: start;
+}
+.faq__intro {
+  grid-column: 1 / span 5;
+  position: sticky;
+  top: calc(var(--header-h) + 40px);
+}
+.faq__list {
+  grid-column: 6 / -1;
+  border-bottom: 1px solid var(--line);
+  transition: border-color var(--dur) var(--ease-out);
+}
+
+/* ── Intro ────────────────────────────────────────────────── */
+.faq__intro-inner {
+  max-width: 440px;
+}
+.faq__text {
+  max-width: 34ch;
+  margin-top: 24px;
+  text-wrap: pretty;
+}
+.faq__contact {
+  min-height: 44px;
+  margin-top: 22px; /* 32px to the text, after the 44px hit area */
+  /* room for the focus ring; the text stays on the column edge */
+  padding-inline: 8px;
+  margin-left: -8px;
+}
+
+/* ── Row (summary) ────────────────────────────────────────── */
+.faq__summary {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  grid-template-columns: var(--faq-num) minmax(0, 1fr) var(--faq-icon);
+  column-gap: var(--faq-gap);
+  align-items: baseline;
+  padding: var(--faq-pad) var(--faq-inset);
+  border-top: 1px solid var(--line);
+  list-style: none;
+  cursor: pointer;
+  transition: border-color var(--dur) var(--ease-out), padding-bottom var(--faq-open) var(--ease-out);
+}
+.faq__summary::-webkit-details-marker {
+  display: none;
+}
+.faq__summary::marker {
+  content: "";
+}
+/* hover wash + focus ring surface */
+.faq__summary::before {
+  content: "";
+  position: absolute;
+  inset: 0 calc(var(--faq-bleed) * -1);
+  z-index: -1;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.015) 72%, rgba(255, 255, 255, 0));
+  opacity: 0;
+  transition: opacity var(--dur) var(--ease-out);
+}
+/* the one accent per view: the open row's hairline lights up */
+.faq__summary::after {
+  content: "";
+  position: absolute;
+  inset: -1px 0 auto;
+  height: 1px;
+  background: var(--accent-gradient);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 900ms var(--ease-out);
+}
+@media (hover: hover) {
+  .faq__summary:hover {
+    border-top-color: var(--line-strong);
+  }
+  /* a closed row is framed by its own hairline and the next one: light both */
+  .faq__item:not([open]):has(> .faq__summary:hover) + .faq__item > .faq__summary,
+  .faq__list:has(> .faq__item:last-child:not([open]) > .faq__summary:hover) {
+    border-color: var(--line-strong);
+  }
+  .faq__summary:hover::before {
+    opacity: 1;
+  }
+}
+.faq__summary:focus-visible {
+  outline: none;
+}
+.faq__summary:focus-visible::before {
+  opacity: 1;
+  outline: 2px solid var(--text);
+  outline-offset: -2px;
+}
+
+.faq__num {
+  font-size: 13px;
+  line-height: 1;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-muted);
+  transition: color var(--dur) var(--ease-out);
+}
+.faq__q {
+  font-family: var(--font);
+  font-size: var(--faq-q);
+  line-height: var(--faq-lh);
+  font-weight: 500;
+  letter-spacing: -0.012em;
+  color: var(--text);
+  text-wrap: balance;
+}
+
+/* Plus → minus: the box spins a half turn while the vertical bar folds flat */
+.faq__icon {
+  display: grid;
+  place-items: center;
+  align-self: start;
+  width: var(--faq-icon);
+  height: var(--faq-icon);
+  margin-top: calc((var(--faq-q) * var(--faq-lh) - var(--faq-icon)) / 2);
+  color: var(--text);
+  border: 1px solid var(--line-strong);
+  transition: background-color var(--dur) var(--ease-out), border-color var(--dur) var(--ease-out),
+    color var(--dur) var(--ease-out), transform var(--dur-fast) var(--ease-out);
+}
+.faq__icon svg {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-linecap: square;
+  transition: transform var(--faq-open) var(--ease-out);
+}
+.faq__icon-v {
+  transform-box: view-box;
+  transform-origin: 50% 50%;
+  transition: transform var(--faq-open) var(--ease-out), opacity var(--dur) var(--ease-out);
+}
+@media (hover: hover) {
+  .faq__summary:hover .faq__num {
+    color: var(--text-soft);
+  }
+  .faq__summary:hover .faq__icon {
+    background: var(--glass);
+    border-color: rgba(255, 255, 255, 0.3);
+  }
+}
+.faq__summary:active .faq__icon {
+  transform: scale(0.92);
+}
+
+/* ── Open ─────────────────────────────────────────────────── */
+.faq__item[open]:not(.is-closing) > .faq__summary {
+  padding-bottom: calc(var(--faq-pad) - var(--faq-tuck));
+}
+.faq__item[open]:not(.is-closing) > .faq__summary::after {
+  transform: scaleX(1);
+}
+/* on an open row the wash falls from the lit hairline into the answer */
+.faq__item[open]:not(.is-closing) > .faq__summary::before {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0));
+}
+.faq__item[open]:not(.is-closing) .faq__num {
+  color: var(--text);
+}
+.faq__item[open]:not(.is-closing) .faq__icon {
+  color: var(--text-on-light);
+  background: #fff;
+  border-color: #fff;
+}
+@media (hover: hover) {
+  .faq__item[open]:not(.is-closing) .faq__summary:hover .faq__icon {
+    background: var(--mist);
+    border-color: var(--mist);
+  }
+}
+.faq__item[open]:not(.is-closing) .faq__icon svg {
+  transform: rotate(180deg);
+}
+.faq__item[open]:not(.is-closing) .faq__icon-v {
+  transform: rotate(90deg);
+  opacity: 0;
+}
+/* closing runs on the close curve */
+.faq__item.is-closing > .faq__summary {
+  transition-duration: var(--dur), var(--faq-close);
+  transition-timing-function: var(--ease-out), var(--ease-in-out);
+}
+.faq__item.is-closing .faq__icon svg,
+.faq__item.is-closing .faq__icon-v,
+.faq__item.is-closing > .faq__summary::after {
+  transition-duration: var(--faq-close);
+}
+/* deep links land on the final layout: no padding / reveal transitions
+   (the hairline still draws in, as the "you are here" cue) */
+.faq.is-instant .faq__item,
+.faq.is-instant .faq__summary {
+  transition: none !important;
+}
+/* the linked question glows briefly once the page arrives */
+@media (prefers-reduced-motion: no-preference) {
+  .faq__item:target > .faq__summary {
+    animation: faq-target 2200ms var(--ease-out) 360ms both;
+  }
+}
+@keyframes faq-target {
+  from {
+    background-color: rgba(183, 156, 255, 0.09);
+  }
+  to {
+    background-color: transparent;
+  }
+}
+
+/* ── Answer ───────────────────────────────────────────────── */
+.faq__item.is-animating > .faq__panel {
+  overflow: hidden;
+}
+.faq__answer {
+  padding: 0 var(--faq-inset) calc(var(--faq-pad) + 8px) calc(var(--faq-inset) + var(--faq-num) + var(--faq-gap));
+}
+.faq__answer > * + * {
+  margin-top: 16px;
+}
+.faq__answer > :is(p, .faq__points) {
+  max-width: 62ch;
+  text-wrap: pretty;
+}
+.faq__nowrap {
+  white-space: nowrap;
+}
+.faq__lead {
+  font-weight: 500;
+  color: var(--text);
+}
+
+/* Example run (Q1) — a tiny run log that adds up the cost */
+.faq__answer > .faq__run {
+  max-width: 520px;
+  margin-block: 24px;
+}
+.faq__run {
+  border: 1px solid var(--line);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.015));
+}
+.faq__run-head,
+.faq__run-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin: 0;
+  padding: 10px 16px;
+}
+.faq__run-head {
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--line);
+}
+.faq__run-steps {
+  padding: 4px 0;
+}
+.faq__run-step {
+  display: grid;
+  grid-template-columns: 24px 64px minmax(0, 1fr) auto;
+  align-items: center;
+  column-gap: 12px;
+  padding: 8px 16px;
+  font-size: 14px;
+  line-height: 20px;
+}
+.faq__run-icon {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  color: var(--lilac);
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+}
+.faq__run-icon .icon {
+  width: 14px;
+  height: 14px;
+}
+.faq__run-kind {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+.faq__run-name {
+  overflow: hidden;
+  color: var(--text);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.faq__run-cost {
+  justify-self: end;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-soft);
+  white-space: nowrap;
+}
+.faq__run-cost--free {
+  color: var(--success);
+}
+.faq__run-total {
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--text-soft);
+  background: var(--surface);
+  border-top: 1px solid var(--line);
+}
+.faq__run-sum {
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
+}
+
+/* Key points (Q4) */
+.faq__points {
+  display: grid;
+  gap: 10px;
+}
+.faq__answer > .faq__points {
+  margin-top: 16px; /* beats the ul[role="list"] reset */
+}
+.faq__points li {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--text-soft);
+}
+.faq__points .icon {
+  margin-top: 2px;
+  color: var(--lilac);
+}
+.faq__answer > .faq__more {
+  margin-top: 20px;
+  font-size: 15px;
+}
+
+/* Copy link (JS only — needs the Clipboard API) */
+.faq__answer > .faq__copy {
+  margin-top: 20px;
+}
+.faq__copy {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 32px;
+  padding-inline: 8px;
+  margin-left: -10px; /* the link glyph's left edge lines up with the text */
+  font-size: 13px;
+  line-height: 1;
+  font-weight: 500;
+  color: var(--text-muted);
+  transition: color var(--dur-fast) var(--ease-out);
+}
+.faq__copy .icon {
+  width: 16px;
+  height: 16px;
+}
+@media (hover: hover) {
+  .faq__copy:hover {
+    color: var(--text);
+  }
+}
+.faq__copy-check {
+  display: none;
+}
+.faq__copy.is-copied {
+  color: var(--success);
+}
+.faq__copy.is-failed {
+  color: var(--warning);
+}
+/* the label already says what happened; "… to this answer" would misread */
+.faq__copy:is(.is-copied, .is-failed) .faq__copy-sr {
+  display: none;
+}
+.faq__copy.is-copied .faq__copy-link {
+  display: none;
+}
+.faq__copy.is-copied .faq__copy-check {
+  display: block;
+  animation: faq-pop var(--dur) var(--ease-out) both;
+}
+@keyframes faq-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+}
+
+/* Reveal: eight rows cascade on a tighter step than the site default */
+@media (prefers-reduced-motion: no-preference) {
+  .js .faq__list > .faq__item[data-reveal] {
+    transition-delay: calc(var(--reveal-i, 0) * 55ms);
+  }
+}
+
+/* ── Responsive ───────────────────────────────────────────── */
+@media (max-width: 1100px) {
+  .faq {
+    --faq-inset: 16px;
+    --faq-num: 32px;
+  }
+  .faq__intro {
+    grid-column: 1 / span 4;
+  }
+  .faq__list {
+    grid-column: 5 / -1;
+  }
+}
+@media (max-width: 860px) {
+  .faq {
+    --faq-inset: 0px;
+    --faq-bleed: 12px;
+  }
+  .faq__intro,
+  .faq__list {
+    grid-column: 1 / -1;
+  }
+  .faq__intro {
+    position: static;
+    margin-bottom: 48px;
+  }
+  .faq__intro-inner {
+    max-width: 560px;
+  }
+  .faq__summary::before {
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.04) 12px, rgba(255, 255, 255, 0.015) 80%, rgba(255, 255, 255, 0));
+  }
+}
+@media (max-width: 480px) {
+  .faq {
+    --faq-num: 0px;
+  }
+  .faq__summary {
+    grid-template-columns: minmax(0, 1fr) var(--faq-icon);
+  }
+  .faq__num {
+    display: none;
+  }
+  .faq__answer {
+    padding-inline: 0;
+  }
+  .faq__run-step {
+    grid-template-columns: 24px minmax(0, 1fr) auto;
+  }
+  /* the icon carries the step kind visually; keep the word for screen readers */
+  .faq__run-kind {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+  }
+}
+@media (pointer: coarse) {
+  .faq__copy {
+    height: 44px;
+  }
+  .faq__answer > .faq__copy {
+    margin-top: 8px;
+  }
+  .faq__answer > .faq__more {
+    min-height: 44px;
+    margin-top: 10px;
+  }
+}
+
+/* ── Print: every answer, no chrome ───────────────────────── */
+@media print {
+  .faq__intro {
+    position: static;
+  }
+  .faq__atmos,
+  .faq__icon,
+  .faq__copy {
+    display: none !important;
+  }
+}

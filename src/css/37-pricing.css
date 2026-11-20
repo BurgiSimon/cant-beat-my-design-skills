@@ -1,0 +1,1020 @@
+/* ────────────────────────────────────────────────────────────
+   Pricing — billing toggle, plan cards, comparison table
+   State lives in the checked billing radio; CSS :has() swaps
+   prices (works without JS), pricing.js adds the sliding pill,
+   announcements and the comparison disclosure.
+   ──────────────────────────────────────────────────────────── */
+.pricing {
+  --pricing-sticky-top: calc(var(--header-h) - 4px);
+  --pricing-roll: 720ms;
+  overflow-x: clip;
+}
+.pricing__nowrap {
+  white-space: nowrap;
+}
+
+/* ── Head ─────────────────────────────────────────────────── */
+.pricing__head {
+  margin-bottom: clamp(56px, 6vw, 80px);
+}
+.pricing__aside {
+  gap: 40px;
+}
+.pricing__lede {
+  max-width: 34em;
+  text-wrap: balance;
+}
+
+/* ── Billing toggle (radio group styled as the header's glass box) ── */
+.pricing__billing {
+  display: flex;
+  justify-content: center;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.pricing__switch {
+  position: relative;
+  display: inline-flex;
+  align-items: stretch;
+  height: 47px;
+  padding: 5px;
+  background: rgba(32, 17, 68, 0.62);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  backdrop-filter: blur(18px) saturate(140%);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.07), 0 12px 32px -16px rgba(0, 0, 0, 0.7);
+}
+.pricing__option {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 18px;
+  font-size: 16px;
+  line-height: 1;
+  color: var(--text-nav);
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+  transition: color var(--dur) var(--ease-out);
+}
+.pricing__option:hover,
+.pricing__option:has(:checked) {
+  color: var(--text);
+}
+/* The native radio covers the whole segment (incl. the 5px inset → 47px hit area) */
+.pricing__radio {
+  position: absolute;
+  inset: -5px 0;
+  z-index: 1;
+  width: 100%;
+  height: calc(100% + 10px);
+  margin: 0;
+  opacity: 0;
+  appearance: none;
+  cursor: pointer;
+}
+.pricing__option:has(:focus-visible) {
+  outline: 2px solid var(--text);
+  outline-offset: 0;
+}
+.pricing__pill {
+  position: absolute;
+  top: 5px;
+  bottom: 5px;
+  left: 0;
+  width: var(--pill-w, 0px);
+  transform: translateX(var(--pill-x, 0px));
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  opacity: 0;
+  transition: transform 460ms var(--ease-out), width 460ms var(--ease-out), opacity var(--dur) var(--ease-out);
+}
+.pricing__switch.is-ready .pricing__pill {
+  opacity: 1;
+}
+/* No JS: highlight the checked segment directly */
+.pricing__switch:not(.is-ready) .pricing__option:has(:checked) {
+  background: rgba(255, 255, 255, 0.1);
+}
+.pricing__save {
+  height: 22px;
+  margin-right: -6px;
+  padding: 0 7px;
+  font-size: 12px;
+  letter-spacing: 0.01em;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Billing state → visibility of price variants ────────── */
+.pricing [data-billing="monthly"] {
+  --on: 0;
+}
+.pricing [data-billing="annual"] {
+  --on: 1;
+}
+.pricing:has(.pricing__radio[value="monthly"]:checked) [data-billing="annual"] {
+  --on: 0;
+}
+.pricing:has(.pricing__radio[value="monthly"]:checked) [data-billing="monthly"] {
+  --on: 1;
+}
+/* screen-reader copies: only the active one exists in the a11y tree */
+.pricing .sr-only[data-billing="monthly"],
+.pricing:has(.pricing__radio[value="monthly"]:checked) .sr-only[data-billing="annual"] {
+  display: none;
+}
+.pricing:has(.pricing__radio[value="monthly"]:checked) .sr-only[data-billing="monthly"] {
+  display: block;
+}
+/* crossfading text swaps share one grid cell, so nothing reflows */
+.pricing__swap {
+  display: grid;
+}
+.pricing__swap > [data-billing] {
+  grid-area: 1 / 1;
+  opacity: var(--on);
+  visibility: hidden;
+  transform: translateY(calc((1 - var(--on)) * 4px));
+  transition: opacity var(--dur) var(--ease-out), transform var(--dur) var(--ease-out), visibility 0s var(--dur);
+}
+.pricing .pricing__swap > [data-billing="annual"],
+.pricing:has(.pricing__radio[value="monthly"]:checked) .pricing__swap > [data-billing="monthly"] {
+  visibility: visible;
+  transition-delay: 60ms, 60ms, 0s;
+}
+.pricing:has(.pricing__radio[value="monthly"]:checked) .pricing__swap > [data-billing="annual"] {
+  visibility: hidden;
+  transition-delay: 0s, 0s, var(--dur);
+}
+
+/* ── Plans ────────────────────────────────────────────────── */
+.pricing__plans {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-rows: repeat(5, auto);
+  column-gap: 24px;
+}
+.pricing__atmos {
+  position: absolute;
+  inset: -12% -8% -14%;
+  z-index: -1;
+  pointer-events: none;
+}
+.pricing__glow--core {
+  left: 50%;
+  top: 4%;
+  width: min(760px, 72%);
+  height: 62%;
+  transform: translateX(-50%);
+  background: radial-gradient(closest-side, rgba(144, 44, 225, 0.9), rgba(144, 44, 225, 0));
+  opacity: 0.42;
+  filter: blur(90px);
+}
+.pricing__glow--pink {
+  left: 36%;
+  top: 34%;
+  width: 26%;
+  height: 34%;
+  background: radial-gradient(closest-side, rgba(218, 8, 139, 0.9), rgba(218, 8, 139, 0));
+  opacity: 0.22;
+  filter: blur(100px);
+}
+.pricing__glow--violet {
+  right: 6%;
+  top: 48%;
+  width: 34%;
+  height: 40%;
+  background: radial-gradient(closest-side, rgba(183, 156, 255, 0.7), rgba(183, 156, 255, 0));
+  opacity: 0.16;
+  filter: blur(100px);
+}
+.pricing__mist {
+  top: auto;
+  bottom: -2%;
+  height: 200px;
+  opacity: 0.7;
+}
+
+/* Card — glass surface; hairline lives on ::before so its transition never
+   fights the shared [data-reveal] transition on the card itself */
+.pricing__card {
+  --pad-y: 40px;
+  --pad-x: 32px;
+  position: relative;
+  display: grid;
+  grid-row: span 5;
+  grid-template-rows: subgrid;
+  padding: var(--pad-y) var(--pad-x);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.018) 60%, rgba(255, 255, 255, 0.03));
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+}
+.pricing__card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  border: 1px solid var(--line);
+  transition: border-color var(--dur) var(--ease-out);
+}
+.pricing__card:hover::before {
+  border-color: var(--line-strong);
+}
+
+/* Team — the one highlight: accent top edge, lilac hairline, soft glow, lifted */
+.pricing__card--featured {
+  margin-block: -16px;
+  padding-block: calc(var(--pad-y) + 16px);
+  background: radial-gradient(90% 46% at 50% 0%, rgba(144, 44, 225, 0.22), rgba(144, 44, 225, 0) 100%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.075), rgba(255, 255, 255, 0.03) 60%, rgba(255, 255, 255, 0.045));
+  box-shadow: 0 48px 96px -48px rgba(180, 16, 216, 0.6), 0 24px 48px -32px rgba(0, 0, 0, 0.8);
+}
+/* secondary text sits on violet light here: lift it toward --text-soft to keep ≥ 4.5:1 */
+.pricing__card--featured :is(.pricing__unit, .pricing__terms, .pricing__cta-note, .pricing__item-note) {
+  color: color-mix(in srgb, var(--text-muted) 45%, var(--text-soft));
+}
+.pricing__card--featured::before {
+  border-color: rgba(183, 156, 255, 0.28);
+}
+.pricing__card--featured:hover::before {
+  border-color: rgba(183, 156, 255, 0.45);
+}
+.pricing__card--featured::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 3;
+  height: 1px;
+  background: var(--accent-gradient);
+  box-shadow: 0 0 18px 1px rgba(218, 8, 139, 0.55), 0 0 48px 4px rgba(144, 44, 225, 0.35);
+  pointer-events: none;
+}
+
+.pricing__card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 32px;
+}
+.pricing__name {
+  font-size: 26px;
+  line-height: 32px;
+}
+.pricing__badge {
+  gap: 8px;
+}
+.pricing__badge-mark {
+  width: 6px;
+  height: 6px;
+  background: var(--accent-gradient);
+}
+.pricing__desc {
+  margin-top: 12px;
+  max-width: 32ch;
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--text-soft);
+  text-wrap: pretty;
+}
+
+/* Price block */
+.pricing__price {
+  display: grid;
+  align-content: start;
+  gap: 12px;
+  margin-top: 36px;
+}
+.pricing__figure {
+  display: flex;
+  align-items: flex-end;
+  gap: 14px;
+  min-height: 64px;
+}
+.pricing__amount {
+  display: inline-flex;
+  align-items: flex-start;
+  font-family: var(--font-display);
+  font-size: 64px;
+  font-weight: 300;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
+/* numbers in the hero's light: white crest falling into lavender */
+.pricing__num:not(.pricing__num--roll),
+.pricing__digit > span,
+.pricing__amount--word {
+  color: transparent;
+  background: linear-gradient(180deg, #fff 28%, var(--head-from) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+.pricing__currency {
+  margin: 0.14em 0.06em 0 0;
+  font-size: 0.5em;
+  line-height: 1;
+  letter-spacing: 0;
+  color: var(--text-soft);
+}
+.pricing__amount--word {
+  letter-spacing: -0.024em;
+}
+.pricing__unit {
+  padding-bottom: 6px;
+  font-size: 14px;
+  line-height: 1.35;
+  color: var(--text-muted);
+}
+.pricing__terms {
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--text-muted);
+}
+.pricing__terms-sub {
+  display: block;
+  color: var(--text-soft);
+  text-wrap: balance;
+}
+
+/* Odometer roll: every digit is a 1-cell grid holding both values.
+   Annual → monthly rolls up, monthly → annual rolls back down. */
+.pricing__num--roll {
+  display: inline-flex;
+  overflow: hidden;
+  /* room for the glyphs' side bearings so the clip never shaves an edge */
+  padding-inline: 0.04em;
+  margin-inline: -0.04em;
+}
+.pricing__digit {
+  display: grid;
+}
+.pricing__digit > span {
+  grid-area: 1 / 1;
+  text-align: center;
+  opacity: var(--on);
+  transition: transform var(--pricing-roll) var(--ease-out), opacity calc(var(--pricing-roll) * 0.6) var(--ease-out);
+  transition-delay: calc(var(--i, 0) * 70ms);
+}
+.pricing__digit > [data-billing="annual"] {
+  transform: translateY(calc((1 - var(--on)) * -100%));
+}
+.pricing__digit > [data-billing="monthly"] {
+  transform: translateY(calc((1 - var(--on)) * 100%));
+}
+
+/* CTA */
+.pricing__cta {
+  display: grid;
+  align-content: start;
+  gap: 12px;
+  margin-top: 32px;
+}
+.pricing__cta .btn {
+  font-size: 16px;
+}
+.pricing__cta-note {
+  font-size: 13px;
+  line-height: 16px;
+  text-align: center;
+  color: var(--text-muted);
+}
+
+/* Features */
+.pricing__features {
+  margin-top: 32px;
+  padding-top: 32px;
+  border-top: 1px solid var(--line);
+}
+.pricing__card--featured .pricing__features {
+  border-top-color: rgba(183, 156, 255, 0.16);
+}
+.pricing__includes {
+  margin-bottom: 20px;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 500;
+  color: var(--text);
+}
+.pricing__list {
+  display: grid;
+  gap: 14px;
+}
+.pricing__list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-size: 15px;
+  line-height: 22px;
+  color: var(--text-soft);
+}
+.pricing__list .icon {
+  width: 16px;
+  height: 16px;
+  margin-top: 3px;
+  color: var(--lilac);
+}
+.pricing__card--featured .pricing__list .icon {
+  color: var(--mist);
+}
+.pricing__item-note {
+  display: block;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--text-muted);
+}
+
+/* Fine print */
+.pricing__fine {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: baseline;
+  gap: 4px 16px;
+  margin-top: 56px;
+  font-size: 14px;
+  line-height: 1.6;
+  text-align: center;
+  color: var(--text-muted);
+  text-wrap: balance;
+}
+.pricing__fine-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 500;
+  color: var(--text);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+  text-decoration-color: rgba(255, 255, 255, 0.3);
+  transition: text-decoration-color var(--dur-fast);
+}
+.pricing__fine-link:hover {
+  text-decoration-color: currentColor;
+}
+.pricing__fine-link .icon {
+  width: 14px;
+  height: 14px;
+  align-self: center;
+  transition: transform var(--dur) var(--ease-out);
+}
+.pricing__fine-link:hover .icon {
+  transform: translateX(3px);
+}
+
+/* ── Compare: disclosure ──────────────────────────────────── */
+.pricing__compare {
+  margin-top: 72px;
+}
+.pricing__compare-bar {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: 24px;
+}
+.pricing__compare-bar::before,
+.pricing__compare-bar::after {
+  content: "";
+  height: 1px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0), var(--line-strong));
+}
+.pricing__compare-bar::after {
+  background: linear-gradient(270deg, rgba(255, 255, 255, 0), var(--line-strong));
+}
+/* without JS the toggle stays hidden and the table is simply shown */
+.pricing__compare-bar:has(> [hidden]) {
+  display: none;
+}
+.pricing__compare-toggle {
+  grid-column: 2;
+  font-size: 16px;
+}
+.pricing__compare-toggle .icon {
+  margin-right: -4px;
+  transition: transform 460ms var(--ease-out);
+}
+.pricing__compare-toggle[aria-expanded="true"] .icon {
+  transform: rotate(180deg);
+}
+/* the spacing lives on an inner wrapper so the panel's height can animate
+   all the way from 0 (padding on the panel itself would floor it at 48px) */
+.pricing__compare-inner {
+  padding-top: 48px;
+}
+.pricing__compare-panel.is-animating {
+  overflow: hidden;
+  overflow: clip;
+}
+.pricing__compare-foot {
+  display: flex;
+  justify-content: center;
+  margin-top: 32px;
+}
+.pricing__collapse {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 16px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-soft);
+  transition: color var(--dur-fast), background-color var(--dur-fast);
+}
+.pricing__collapse:hover {
+  color: var(--text);
+  background: var(--surface-2);
+}
+
+/* ── Compare: table ───────────────────────────────────────── */
+.pricing__table-frame {
+  position: relative;
+}
+.pricing__table-scroll {
+  outline-offset: 4px;
+}
+.pricing__table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 15px;
+  line-height: 1.45;
+}
+.pricing__table {
+  --feature-w: 34%;
+}
+.pricing__col--feature {
+  width: var(--feature-w);
+}
+.pricing__table :is(th, td) {
+  padding: 16px 20px;
+  text-align: center;
+  vertical-align: middle;
+  font-weight: 400;
+  border-bottom: 1px solid var(--line);
+}
+.pricing__table tbody th[scope="row"] {
+  padding-left: 0;
+  text-align: left;
+  color: var(--text-soft);
+  text-wrap: balance;
+}
+.pricing__table tbody td {
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+.pricing__row-note {
+  display: block;
+  margin-top: 2px;
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--text-muted);
+}
+.pricing__yes {
+  display: inline-block;
+  vertical-align: middle;
+  color: var(--lilac);
+}
+.pricing__table .is-team .pricing__yes {
+  color: var(--mist);
+}
+.pricing__no {
+  display: inline-block;
+  vertical-align: middle;
+  width: 12px;
+  height: 0;
+  border-top: 1px solid var(--text-faint);
+}
+
+/* Row hover: a quiet band so the eye can track across columns */
+.pricing__table tbody tr:not(.pricing__group) > * {
+  transition: background-color var(--dur-fast);
+}
+.pricing__table tbody tr:not(.pricing__group):hover > * {
+  background-color: rgba(255, 255, 255, 0.025);
+}
+
+/* Group header rows — the Team column of light continues through them */
+.pricing__table .pricing__group th {
+  --team-from: calc(var(--feature-w) + (100% - var(--feature-w)) / 3);
+  --team-to: calc(var(--feature-w) + (100% - var(--feature-w)) * 2 / 3);
+  padding: 40px 0 12px;
+  text-align: left;
+  vertical-align: bottom;
+  border-bottom-color: var(--line-strong);
+  background: linear-gradient(
+    90deg,
+    transparent var(--team-from),
+    rgba(183, 156, 255, 0.045) var(--team-from),
+    rgba(183, 156, 255, 0.045) var(--team-to),
+    transparent var(--team-to)
+  );
+}
+.pricing__table tbody:first-of-type .pricing__group th {
+  padding-top: 24px;
+}
+.pricing__group span {
+  position: sticky;
+  left: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  line-height: 16px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-soft);
+}
+.pricing__group span::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  flex: none;
+  background: var(--accent-gradient);
+}
+
+/* Team column — a faint column of light */
+.pricing__table .is-team {
+  background-color: rgba(183, 156, 255, 0.045);
+}
+.pricing__table tbody tr:not(.pricing__group):hover > .is-team {
+  background-color: rgba(183, 156, 255, 0.075);
+}
+.pricing__table tbody:last-of-type tr:last-child > .is-team {
+  box-shadow: inset 0 -1px 0 rgba(183, 156, 255, 0.3);
+}
+
+/* Head row: plan names, live prices and mini CTAs; sticks under the site header */
+.pricing__table thead :is(th, td) {
+  position: sticky;
+  top: var(--pricing-sticky-top);
+  z-index: 3;
+  padding: 20px 16px;
+  vertical-align: bottom;
+  border-bottom-color: var(--line-strong);
+  background-color: rgba(7, 5, 13, 0);
+  transition: background-color var(--dur) var(--ease-out), box-shadow var(--dur) var(--ease-out);
+}
+.pricing__table thead .pricing__corner {
+  z-index: 4;
+  padding-left: 0;
+  text-align: left;
+}
+.pricing__table thead th.is-team {
+  background-color: rgba(183, 156, 255, 0.045);
+  box-shadow: inset 0 1px 0 rgba(183, 156, 255, 0.5);
+}
+.pricing__table thead th.is-team::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 1px;
+  background: var(--accent-gradient);
+}
+.pricing__th {
+  display: grid;
+  justify-items: center;
+  gap: 4px;
+}
+.pricing__th-name {
+  font-family: var(--font-display);
+  font-size: 20px;
+  line-height: 28px;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  color: var(--text);
+}
+.pricing__th-price {
+  margin-bottom: 12px;
+  white-space: nowrap;
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+.pricing__th-price > span {
+  justify-self: center;
+}
+.pricing__th .btn {
+  max-width: 200px;
+}
+.pricing__table thead .pricing__corner {
+  vertical-align: top;
+}
+.pricing__corner-title {
+  display: block;
+  margin-bottom: 4px;
+}
+.pricing__corner-label {
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--text-muted);
+}
+
+/* Once the head row is stuck: frosted bar + a fade so rows don't collide with it */
+.pricing__table-frame.is-stuck thead :is(th, td) {
+  background-color: rgba(9, 6, 18, 0.97);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  backdrop-filter: blur(16px) saturate(140%);
+  box-shadow: 0 1px 0 var(--line-strong);
+}
+.pricing__table-frame.is-stuck thead th.is-team {
+  background-color: rgba(21, 14, 38, 0.98);
+  box-shadow: 0 1px 0 var(--line-strong);
+}
+/* rows dissolve into the mist before they reach the stuck bar */
+.pricing__table-frame.is-stuck thead :is(th, td)::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 100%;
+  height: 40px;
+  pointer-events: none;
+  background: linear-gradient(0deg, rgba(9, 6, 18, 0.97), rgba(9, 6, 18, 0));
+}
+
+/* Edge shade (only shown while the table can scroll sideways) */
+.pricing__table-shade {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 5;
+  width: 48px;
+  pointer-events: none;
+  background: linear-gradient(270deg, var(--bg), rgba(7, 5, 13, 0));
+  opacity: 0;
+  transition: opacity var(--dur) var(--ease-out);
+}
+
+/* ────────────────────────────────────────────────────────────
+   Responsive
+   ──────────────────────────────────────────────────────────── */
+@media (max-width: 1100px) {
+  .pricing__plans {
+    column-gap: 16px;
+  }
+  .pricing__card {
+    --pad-y: 32px;
+    --pad-x: 24px;
+  }
+  .pricing__amount {
+    font-size: 56px;
+  }
+  .pricing__figure {
+    min-height: 56px;
+    gap: 10px;
+  }
+  .pricing__table {
+    --feature-w: 28%;
+  }
+  .pricing__table :is(th, td) {
+    padding-inline: 12px;
+  }
+}
+
+/* Tablet: one card per row, details beside the price. The table still fits
+   (feature column 28%), so its head row keeps sticking under the header. */
+@media (max-width: 860px) {
+  .pricing__plans {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: none;
+    row-gap: 16px;
+  }
+  .pricing__card,
+  .pricing__card--featured {
+    grid-row: auto;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-rows: auto auto auto 1fr;
+    grid-template-areas: "head feat" "desc feat" "price feat" "cta feat";
+    column-gap: 40px;
+    margin-block: 0;
+    padding-block: var(--pad-y);
+  }
+  .pricing__card-head {
+    grid-area: head;
+  }
+  .pricing__desc {
+    grid-area: desc;
+  }
+  .pricing__price {
+    grid-area: price;
+  }
+  .pricing__cta {
+    grid-area: cta;
+  }
+  .pricing__features {
+    grid-area: feat;
+    margin-top: 0;
+    padding: 0 0 0 40px;
+    border-top: 0;
+    border-left: 1px solid var(--line);
+  }
+  .pricing__card--featured .pricing__features {
+    border-left-color: rgba(183, 156, 255, 0.16);
+  }
+  .pricing__card--featured {
+    box-shadow: 0 32px 72px -40px rgba(180, 16, 216, 0.6);
+  }
+}
+
+@media (max-width: 720px) {
+  .pricing__aside {
+    gap: 32px;
+  }
+  .pricing__card,
+  .pricing__card--featured {
+    --pad-y: 28px;
+    --pad-x: 24px;
+    display: block;
+  }
+  .pricing__features {
+    margin-top: 28px;
+    padding: 28px 0 0;
+    border-left: 0;
+    border-top: 1px solid var(--line);
+  }
+  .pricing__card--featured .pricing__features {
+    border-top-color: rgba(183, 156, 255, 0.16);
+  }
+  .pricing__price {
+    margin-top: 28px;
+  }
+  .pricing__cta {
+    margin-top: 28px;
+  }
+  .pricing__name {
+    font-size: 24px;
+  }
+  .pricing__desc {
+    max-width: none;
+  }
+  .pricing__fine {
+    margin-top: 40px;
+  }
+  .pricing__compare {
+    margin-top: 56px;
+  }
+  .pricing__compare-bar {
+    gap: 16px;
+  }
+  .pricing__compare-inner {
+    padding-top: 32px;
+  }
+
+  /* Phones: the table scrolls sideways inside its region and the feature
+     column stays pinned. Plan columns are just wide enough for their head
+     (price + button) so the next plan peeks in under the edge fade. */
+  .pricing__table-scroll {
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.18) transparent;
+  }
+  .pricing__table {
+    --feature-w: 148px;
+    min-width: 572px;
+    font-size: 14px;
+  }
+  .pricing__table :is(th, td) {
+    padding: 14px 10px;
+  }
+  .pricing__table .pricing__group th {
+    padding: 32px 0 10px;
+  }
+  .pricing__table tbody:first-of-type .pricing__group th {
+    padding-top: 20px;
+  }
+  /* the scroller is now the sticky container: no vertical sticking */
+  .pricing__table thead :is(th, td) {
+    position: relative;
+    top: auto;
+    z-index: 1;
+    padding: 16px 10px;
+  }
+  .pricing__table thead .pricing__corner,
+  .pricing__table tbody th[scope="row"] {
+    position: sticky;
+    left: 0;
+    z-index: 3;
+  }
+  .pricing__table tbody th[scope="row"] {
+    padding-right: 16px;
+  }
+  /* the pinned column only needs to be opaque once columns slide beneath it
+     (an always-opaque box shows up as a dark patch against the section glow) */
+  .pricing__table-frame.is-scrolled :is(thead .pricing__corner, tbody th[scope="row"]) {
+    background-color: var(--bg);
+  }
+  .pricing__table-frame.is-scrolled tbody tr:not(.pricing__group):hover > th[scope="row"] {
+    background-color: var(--bg);
+    background-image: linear-gradient(rgba(255, 255, 255, 0.025), rgba(255, 255, 255, 0.025));
+  }
+  /* pinned-column shadow once scrolled, right-edge fade while more remains */
+  .pricing__table tbody th[scope="row"]::after,
+  .pricing__table thead .pricing__corner::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: -1px;
+    left: 100%;
+    width: 16px;
+    pointer-events: none;
+    background: linear-gradient(90deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));
+    opacity: 0;
+    transition: opacity var(--dur) var(--ease-out);
+  }
+  .pricing__table-frame.is-scrolled tbody th[scope="row"]::after,
+  .pricing__table-frame.is-scrolled thead .pricing__corner::after {
+    opacity: 1;
+  }
+  .pricing__table-frame.can-scroll-end .pricing__table-shade {
+    opacity: 1;
+  }
+  .pricing__th-name {
+    font-size: 18px;
+  }
+  .pricing__corner-title {
+    font-size: 16px;
+    white-space: nowrap;
+  }
+  .pricing__th .btn {
+    --btn-h: 44px;
+    padding: 0 12px;
+    font-size: 14px;
+  }
+  /* comfortable touch target without changing the text rhythm */
+  .pricing__fine-link {
+    padding-block: 11px;
+    margin-block: -11px;
+  }
+}
+
+@media (max-width: 480px) {
+  .pricing__switch {
+    width: 100%;
+    max-width: 340px;
+  }
+  .pricing__option {
+    flex: 1 1 auto;
+    justify-content: center;
+    padding: 0 14px;
+  }
+  .pricing__card,
+  .pricing__card--featured {
+    --pad-x: 20px;
+  }
+  .pricing__compare-bar {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .pricing__compare-bar::before,
+  .pricing__compare-bar::after {
+    display: none;
+  }
+  .pricing__compare-toggle {
+    grid-column: 1;
+    width: 100%;
+  }
+}
+
+/* Never animate the price roll / pill for reduced motion (base CSS shortens
+   transitions; this also removes the delays so state flips instantly) */
+@media (prefers-reduced-motion: reduce) {
+  .pricing__digit > span,
+  .pricing__swap > [data-billing] {
+    transition-delay: 0s !important;
+  }
+}
+
+/* Windows High Contrast / forced colors: backgrounds are dropped, so mark the
+   checked billing option (and the featured card) with system colors */
+@media (forced-colors: active) {
+  .pricing__pill {
+    display: none;
+  }
+  .pricing__option:has(:checked) {
+    forced-color-adjust: none;
+    background: SelectedItem;
+    color: SelectedItemText;
+  }
+  .pricing__option:has(:checked) .pricing__save {
+    background: transparent;
+    border-color: currentColor;
+    color: inherit;
+  }
+  .pricing__card--featured::before {
+    border-color: Highlight;
+  }
+}

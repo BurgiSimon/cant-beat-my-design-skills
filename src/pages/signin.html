@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="en">
+<head>
+<!-- @include head-common.html -->
+  <title>Sign in — Mist</title>
+  <meta name="description" content="Sign in to your Mist workspace with your email and password, or continue with your company’s single sign-on (SSO)." />
+  <link rel="canonical" href="{{SITE_URL}}/signin.html" />
+  <meta property="og:title" content="Sign in — Mist" />
+  <meta property="og:description" content="Sign in to your Mist workspace and pick up where your workflows left off." />
+  <meta property="og:url" content="{{SITE_URL}}/signin.html" />
+  <link rel="preload" as="image" type="image/webp" media="(min-width: 861px)"
+        href="assets/img/mountains-1920.webp"
+        imagesrcset="assets/img/mountains-1280.webp 1280w, assets/img/mountains-1920.webp 1920w, assets/img/mountains-2560.webp 2560w"
+        imagesizes="(max-width: 860px) 860px, 1360px" />
+</head>
+<body data-page="signin">
+<!-- @include header.html -->
+
+<main id="main" tabindex="-1" class="auth auth--signin" data-module="auth">
+  <section class="auth__main" aria-labelledby="auth-title">
+    <div class="auth__panel">
+      <!-- one page heading; its copy follows the active view (sign in ⇄ reset) -->
+      <header class="auth__head" data-auth-in style="--d: 0" data-auth-head>
+        <h1 class="title-1 auth__title" id="auth-title" tabindex="-1" data-auth-heading>Welcome back</h1>
+        <p class="auth__sub" data-auth-sub>Sign in to your workspace and pick up where your workflows left&nbsp;off.</p>
+      </header>
+
+      <!-- ── View 1: sign in ─────────────────────────────────── -->
+      <div class="auth__view" data-auth-view="signin">
+        <div class="auth__sso" data-auth-in style="--d: 1" data-auth-hide-on-done>
+          <button class="btn btn--glass btn--block auth__sso-toggle" type="button" aria-expanded="false" aria-controls="signin-sso" data-auth-sso>
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12.5 8.25a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0zM11.4 11.4 20.25 20.25M15.75 15.75l2.5-2.5M18.25 18.25l2.25-2.25" /></svg>
+            <span>Continue with SSO</span>
+            <svg class="icon auth__chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" /></svg>
+          </button>
+          <div class="auth__collapse" id="signin-sso" data-auth-collapse>
+            <div class="auth__collapse-inner">
+              <form
+                class="auth__form auth__form--sso"
+                data-module="form"
+                novalidate
+                data-auth-sso-form
+                data-success-title="Redirecting to your identity provider…"
+                data-success-text="We found single sign-on for {email}. Hang tight while we hand you over."
+              >
+                <div class="field">
+                  <label class="field__label" for="sso-email">Work email</label>
+                  <input
+                    class="input"
+                    id="sso-email"
+                    name="email"
+                    type="email"
+                    inputmode="email"
+                    autocomplete="username"
+                    autocapitalize="off"
+                    spellcheck="false"
+                    enterkeyhint="go"
+                    placeholder="you@company.com"
+                    required
+                    aria-describedby="sso-email-error sso-email-hint"
+                    data-error-required="Enter your work email to find your company’s SSO."
+                    data-error-type="That doesn’t look like an email. Try you@company.com."
+                  />
+                  <p class="field__hint" id="sso-email-hint">We’ll find your identity provider from your email&nbsp;domain.</p>
+                  <p class="field__error" id="sso-email-error" aria-live="polite"></p>
+                </div>
+                <button class="btn btn--primary btn--block auth__submit" type="submit">
+                  Continue
+                  <svg class="icon icon--arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6" /></svg>
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <p class="auth__or" data-auth-in style="--d: 2" data-auth-hide-on-done><span>or</span></p>
+
+        <form
+          class="auth__form"
+          data-module="form"
+          novalidate
+          data-auth-signin
+          data-auth-in
+          style="--d: 3"
+          data-success-title="Signed in"
+          data-success-text="Taking you to your workspace…"
+        >
+          <div class="field">
+            <label class="field__label" for="signin-email">Email</label>
+            <input
+              class="input"
+              id="signin-email"
+              name="email"
+              type="email"
+              inputmode="email"
+              autocomplete="username"
+              autocapitalize="off"
+              spellcheck="false"
+              enterkeyhint="next"
+              placeholder="you@company.com"
+              required
+              aria-describedby="signin-email-error"
+              data-error-required="Enter the email you use for Mist."
+              data-error-type="That doesn’t look like an email. Try you@company.com."
+            />
+            <p class="field__error" id="signin-email-error" aria-live="polite"></p>
+          </div>
+
+          <div class="field">
+            <label class="field__label" for="signin-password">Password</label>
+            <div class="auth__pw">
+              <input
+                class="input auth__pw-input"
+                id="signin-password"
+                name="password"
+                type="password"
+                autocomplete="current-password"
+                autocapitalize="off"
+                spellcheck="false"
+                enterkeyhint="go"
+                required
+                aria-describedby="signin-password-error signin-caps"
+                data-caps="signin-caps"
+                data-error-required="Enter your password."
+              />
+              <button class="auth__reveal" type="button" aria-pressed="false" aria-controls="signin-password" data-auth-reveal>
+                <span class="sr-only" data-auth-reveal-label>Show password</span>
+                <svg class="icon auth__eye" viewBox="0 0 24 24" aria-hidden="true"><path d="M2.75 12S6.25 5.75 12 5.75 21.25 12 21.25 12 17.75 18.25 12 18.25 2.75 12 2.75 12z" /><path d="M14.75 12a2.75 2.75 0 1 1-5.5 0 2.75 2.75 0 0 1 5.5 0z" /></svg>
+                <svg class="icon auth__eye-off" viewBox="0 0 24 24" aria-hidden="true"><path d="M9.6 6.1A9.6 9.6 0 0 1 12 5.75C17.75 5.75 21.25 12 21.25 12a17.6 17.6 0 0 1-2.6 3.35M14.1 14.1A2.75 2.75 0 0 1 9.9 9.9M6.6 7.85C4.1 9.5 2.75 12 2.75 12S6.25 18.25 12 18.25c1.7 0 3.2-.55 4.45-1.3M4 4l16 16" /></svg>
+              </button>
+            </div>
+            <p class="field__error" id="signin-password-error" aria-live="polite"></p>
+            <p class="auth__caps" id="signin-caps" aria-live="polite"></p>
+          </div>
+
+          <div class="auth__row">
+            <label class="check auth__remember">
+              <input type="checkbox" name="remember" value="yes" aria-describedby="signin-remember-note" />
+              <span>Remember me</span>
+            </label>
+            <p class="sr-only" id="signin-remember-note">Keeps you signed in on this device.</p>
+            <button class="auth__link" type="button" aria-controls="reset-view" data-auth-forgot>Forgot password?</button>
+          </div>
+
+          <button class="btn btn--primary btn--block auth__submit" type="submit">
+            Sign in
+            <svg class="icon icon--arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6" /></svg>
+          </button>
+        </form>
+
+        <p class="auth__switch" data-auth-in style="--d: 4" data-auth-hide-on-done>
+          New to Mist? <a class="auth__switch-link" href="signup.html">Start a free trial</a>
+        </p>
+      </div>
+
+      <!-- ── View 2: reset password ──────────────────────────── -->
+      <div
+        class="auth__view"
+        id="reset-view"
+        data-auth-view="reset"
+        data-auth-title="Reset your password — Mist"
+        data-auth-heading="Reset your password"
+        data-auth-sub="Enter the email you use for Mist and we’ll send you a link to choose a new&nbsp;one."
+        hidden
+      >
+        <form
+          class="auth__form"
+          data-module="form"
+          novalidate
+          data-auth-reset
+          data-success-title="Check your inbox"
+          data-success-text="If {email} has a Mist account, a reset link is on its way. It expires in 30 minutes."
+        >
+          <div class="field">
+            <label class="field__label" for="reset-email">Email</label>
+            <input
+              class="input"
+              id="reset-email"
+              name="email"
+              type="email"
+              inputmode="email"
+              autocomplete="username"
+              autocapitalize="off"
+              spellcheck="false"
+              enterkeyhint="send"
+              placeholder="you@company.com"
+              required
+              aria-describedby="reset-email-error"
+              data-error-required="Enter the email you use for Mist."
+              data-error-type="That doesn’t look like an email. Try you@company.com."
+            />
+            <p class="field__error" id="reset-email-error" aria-live="polite"></p>
+          </div>
+          <button class="btn btn--primary btn--block auth__submit" type="submit">
+            Send reset link
+            <svg class="icon icon--arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6" /></svg>
+          </button>
+        </form>
+
+        <p class="auth__switch">
+          <button class="auth__back" type="button" data-auth-back>
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12H5M11 6l-6 6 6 6" /></svg>
+            Back to sign in
+          </button>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <aside class="auth__art" aria-label="Customer story">
+    <div class="auth__sticky">
+      <div class="auth__scene" aria-hidden="true">
+        <div class="auth__land">
+          <img
+            src="assets/img/mountains-1920.webp"
+            srcset="assets/img/mountains-1280.webp 1280w, assets/img/mountains-1920.webp 1920w, assets/img/mountains-2560.webp 2560w"
+            sizes="(max-width: 860px) 860px, 1360px"
+            width="2560"
+            height="1134"
+            alt=""
+            loading="lazy"
+            decoding="async"
+          />
+        </div>
+        <span class="auth__mist"></span>
+      </div>
+
+      <figure class="auth__card auth__quote" data-auth-in style="--d: 3">
+        <svg class="auth__quote-mark" viewBox="0 0 32 24" aria-hidden="true">
+          <defs><linearGradient id="auth-quote-grad" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ff2e9a" /><stop offset=".52" stop-color="#b410d8" /><stop offset="1" stop-color="#8b4dff" /></linearGradient></defs>
+          <path fill="url(#auth-quote-grad)" d="M0 24V11.5L6 0h5.5L6.75 11.5H13V24zM19 24V11.5L25 0h5.5l-4.75 11.5H32V24z" /></svg>
+        <blockquote class="auth__quote-text">
+          <p>Mist reads every new ticket before we do. Our agents start from a drafted answer, and first responses are 63% faster.</p>
+        </blockquote>
+        <figcaption class="auth__person">
+          <span class="auth__avatar" aria-hidden="true">PR</span>
+          <span class="auth__person-text">
+            <span class="auth__person-name">Priya Raman</span>
+            <span class="auth__person-role">VP Customer Experience, Lumora</span>
+          </span>
+        </figcaption>
+      </figure>
+    </div>
+  </aside>
+</main>
+
+<!-- @include footer.html -->
+</body>
+</html>

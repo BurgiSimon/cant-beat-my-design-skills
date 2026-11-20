@@ -1,0 +1,394 @@
+/* ────────────────────────────────────────────────────────────
+   Impact — a luminous band of four count-up numbers sitting on
+   a lit horizon, with a drifting mist layer behind them
+   ──────────────────────────────────────────────────────────── */
+.impact {
+  --impact-num: clamp(52px, 6vw, 92px);
+  --impact-pad-x: 24px;
+  /* an interlude between two dense sections: a little less air than a full section */
+  padding-block: calc(var(--section-y) * 0.85);
+}
+
+/* Atmosphere: violet + magenta light low in the band */
+.impact__atmos {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+}
+.impact__glow--violet {
+  left: 4%;
+  top: 40%;
+  width: 50%;
+  height: 50%;
+  background: radial-gradient(closest-side, rgba(144, 44, 225, 0.6), transparent);
+  opacity: 0.5;
+}
+.impact__glow--magenta {
+  right: 2%;
+  top: 44%;
+  width: 38%;
+  height: 44%;
+  background: radial-gradient(closest-side, rgba(218, 8, 139, 0.55), transparent);
+  opacity: 0.42;
+}
+
+/* ── Head ─────────────────────────────────────────────────── */
+.impact__head {
+  margin-bottom: clamp(56px, 6vw, 88px);
+}
+.impact__title span {
+  display: inline-block;
+}
+
+/* ── Band ─────────────────────────────────────────────────── */
+.impact__band {
+  position: relative;
+}
+/* soft lavender mist behind the numbers, wider than the container */
+.impact__mist {
+  position: absolute;
+  inset-inline: calc(-1 * var(--gutter));
+  top: 50%;
+  z-index: -1;
+  pointer-events: none;
+  transform: translate3d(0, -50%, 0);
+}
+/* a wide wash of violet light… */
+.impact__mist--back {
+  height: 300px;
+  background: radial-gradient(48% 50% at 50% 50%, rgba(144, 44, 225, 0.34), rgba(144, 44, 225, 0.1) 55%, transparent 78%);
+  filter: blur(28px);
+}
+/* …crossed by a thin streak of lavender mist at the foot of the numbers */
+.impact__mist--front {
+  height: 56px;
+  background: radial-gradient(46% 50% at 50% 50%, rgba(217, 207, 251, 0.2), rgba(183, 156, 255, 0.07) 60%, transparent 80%);
+  filter: blur(12px);
+}
+
+/* the lit horizon: a hairline that brightens toward the center */
+.impact__horizon {
+  position: absolute;
+  inset-inline: calc(-1 * var(--gutter));
+  top: 0;
+  height: 1px;
+  overflow: hidden;
+  /* the running bead fades out at the ends just like the line */
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 18%, #000 82%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 18%, #000 82%, transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.1) 14%,
+    rgba(217, 207, 251, 0.62) 50%,
+    rgba(255, 255, 255, 0.1) 86%,
+    transparent
+  );
+}
+/* light spilling down from the horizon */
+.impact__band::before {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  height: 180px;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(42% 100% at 50% 0, rgba(183, 156, 255, 0.12), transparent 80%);
+}
+/* a bead of light that runs along the horizon while the numbers count */
+.impact__horizon::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 24%;
+  height: 1px;
+  opacity: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.95) 50%, transparent);
+  transform: translateX(-100%);
+}
+
+/* ── Stats ────────────────────────────────────────────────── */
+.impact__stats {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+.impact__stats::after {
+  content: "";
+  position: absolute;
+  inset-inline: calc(-1 * var(--gutter));
+  bottom: 0;
+  height: 1px;
+  pointer-events: none;
+  background: linear-gradient(90deg, transparent, var(--line) 20%, var(--line-strong) 50%, var(--line) 80%, transparent);
+}
+.impact__stat {
+  position: relative;
+  display: flex;
+  flex-direction: column-reverse; /* number first visually; label first for screen readers */
+  justify-content: flex-end;
+  align-items: center;
+  /* The number's line box carries ~0.13em of air above the cap height, so
+     the top padding is the smaller one: the ink sits optically centered
+     between the horizon and the bottom hairline. */
+  padding: clamp(36px, 4vw, 58px) var(--impact-pad-x) clamp(40px, 4.4vw, 64px);
+  text-align: center;
+}
+/* Dividers: a lit square node on the horizon emits a faint beam that fades
+   out toward the bottom hairline */
+.impact__stat + .impact__stat::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: linear-gradient(180deg, rgba(183, 156, 255, 0.4), var(--line-strong) 34%, var(--line) 80%, transparent);
+}
+.impact__stat + .impact__stat::after {
+  content: "";
+  position: absolute;
+  left: -2px;
+  top: -2px;
+  width: 5px;
+  height: 5px;
+  background: var(--mist);
+  box-shadow: 0 0 0 3px rgba(183, 156, 255, 0.12), 0 0 14px 2px rgba(183, 156, 255, 0.45);
+}
+
+.impact__value {
+  display: flex;
+  justify-content: center;
+  max-width: 100%;
+}
+.impact__num {
+  display: inline-flex;
+  align-items: baseline;
+  /* The gradient's paint area reaches 0.4em further left than the layout box
+     (padding + negative margin), so digits that spill left while counting
+     stay visible; the right padding keeps the last glyph's bearing inside. */
+  margin-inline: -0.4em -0.04em;
+  padding-inline: 0.4em 0.04em;
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: var(--impact-num);
+  line-height: 1;
+  letter-spacing: -0.035em;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  color: transparent;
+  /* the ramp starts at the first glyph (not in the 0.4em paint padding), so
+     each number opens in lavender like the headings */
+  background: linear-gradient(90deg, var(--head-from) 0.4em, #fff);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+/* While counting, impact.js locks the digits to the final value's width.
+   DM Sans has proportional figures, so an in-between value can be a little
+   wider ("10" vs "11"): flex-end lets it spill left instead of pushing the
+   unit, which never moves. */
+.impact__digits {
+  display: inline-flex;
+  justify-content: flex-end;
+}
+.impact__unit--word {
+  margin-left: 0.16em;
+  font-size: 0.42em;
+  letter-spacing: -0.01em;
+}
+.impact__unit--pct {
+  margin-left: 0.04em;
+  font-size: 0.56em;
+  letter-spacing: 0;
+}
+.impact__unit--plus {
+  margin-left: 0.06em;
+  font-size: 0.5em;
+  letter-spacing: 0;
+  /* raised so the top of the + meets the cap height of the digits (measured:
+     -0.89em of the unit). Not a transform: background-clip: text masks with
+     the untransformed glyph. */
+  position: relative;
+  top: -0.89em;
+}
+
+.impact__label {
+  margin-top: 20px;
+  font-size: 16px;
+  line-height: 1.45;
+  color: var(--text-soft);
+  text-wrap: balance;
+}
+.impact__label > span {
+  position: relative;
+  display: block;
+}
+/* Footnote marks hang outside the text (absolute at their static position,
+   so they take no space) and centered lines stay optically centered */
+.impact__mark {
+  position: absolute;
+  color: var(--text-muted);
+}
+.impact__label .impact__mark {
+  margin-left: 1px;
+}
+
+/* type comes from .small */
+.impact__note {
+  margin-top: 32px;
+  text-align: center;
+  text-wrap: balance;
+}
+.impact__note .impact__mark {
+  transform: translateX(calc(-100% - 2px));
+}
+
+/* ── Motion (JS only, never under reduced motion) ─────────── */
+@media (prefers-reduced-motion: no-preference) {
+  /* The negative delay (half a cycle) starts each layer at the midpoint of
+     its swing, so the paused band matches the static composition exactly
+     instead of sitting 3% off to one side until it scrolls into view. */
+  .js .impact__mist {
+    animation: impact-drift 22s var(--ease-in-out) -11s infinite alternate both;
+    animation-play-state: paused;
+  }
+  .js .impact__mist--front {
+    animation-duration: 30s;
+    animation-delay: -15s;
+    animation-direction: alternate-reverse;
+  }
+  .js .impact.is-inview .impact__mist {
+    animation-play-state: running;
+  }
+  /* one rule for both states, so the sweep isn't restarted or cut when counting ends */
+  .impact:is(.is-counting, .is-counted) .impact__horizon::after {
+    animation: impact-sweep 1900ms cubic-bezier(0.45, 0, 0.2, 1) both;
+  }
+  /* no fill-mode: the filter is gone once the glow has faded */
+  .impact__stat.is-done .impact__num {
+    animation: impact-land 1400ms var(--ease-out);
+  }
+}
+@keyframes impact-drift {
+  from {
+    transform: translate3d(-3%, -50%, 0);
+  }
+  to {
+    transform: translate3d(3%, -50%, 0);
+  }
+}
+@keyframes impact-sweep {
+  0% {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+  20%,
+  70% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(420%);
+  }
+}
+@keyframes impact-land {
+  0% {
+    filter: drop-shadow(0 0 0 rgba(183, 156, 255, 0));
+  }
+  30% {
+    filter: drop-shadow(0 0 18px rgba(183, 156, 255, 0.5));
+  }
+  100% {
+    filter: drop-shadow(0 0 0 rgba(183, 156, 255, 0));
+  }
+}
+
+/* ── Responsive ───────────────────────────────────────────── */
+@media (max-width: 1100px) {
+  .impact {
+    --impact-pad-x: 16px;
+  }
+  .impact__label {
+    font-size: 15px;
+  }
+}
+@media (max-width: 860px) {
+  .impact {
+    --impact-num: clamp(44px, 12.4vw, 76px);
+    --impact-pad-x: 12px;
+  }
+  .impact__stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .impact__stat {
+    padding-block: 36px 40px;
+  }
+  /* 2 × 2: one vertical and one horizontal beam crossing at a single
+     node in the middle, both fading toward the outer edges */
+  .impact__stat:nth-child(-n + 3)::after {
+    display: none;
+  }
+  .impact__stat:nth-child(2)::before {
+    background: linear-gradient(180deg, transparent, var(--line-strong) 45%, rgba(183, 156, 255, 0.4));
+  }
+  .impact__stat:nth-child(4)::before {
+    background: linear-gradient(180deg, rgba(183, 156, 255, 0.4), var(--line-strong) 55%, transparent);
+  }
+  .impact__stat:nth-child(3)::before {
+    left: 0;
+    top: 0;
+    bottom: auto;
+    width: 200%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--line-strong) 30%, rgba(183, 156, 255, 0.4) 50%, var(--line-strong) 70%, transparent);
+  }
+  .impact__mist--back {
+    height: 76%;
+  }
+}
+@media (max-width: 480px) {
+  .impact__stat {
+    padding-block: 28px 32px;
+  }
+  .impact__label {
+    margin-top: 14px;
+    font-size: 14px;
+  }
+  .impact__note {
+    font-size: 13px;
+  }
+}
+
+/* Printers drop background graphics, which would leave the gradient numbers blank */
+@media print {
+  .impact__num {
+    color: #000;
+    background: none;
+  }
+}
+
+/* Forced colors drop gradient backgrounds, which would erase every hairline
+   and node: redraw the grid in system colors and drop the atmosphere */
+@media (forced-colors: active) {
+  .impact__horizon,
+  .impact__stats::after,
+  .impact__stat + .impact__stat::before {
+    forced-color-adjust: none;
+    background: GrayText;
+  }
+  .impact__stat + .impact__stat::after {
+    forced-color-adjust: none;
+    background: CanvasText;
+    box-shadow: none;
+  }
+  .impact__atmos,
+  .impact__mist,
+  .impact__band::before,
+  .impact__horizon::after {
+    display: none;
+  }
+}

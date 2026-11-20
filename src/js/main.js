@@ -13,6 +13,12 @@ initHeader();
 initReveal();
 initHeroParallax();
 
+// Smooth anchor scrolling switches on after load (see 01-base.css), so a
+// deep link from another page lands instantly.
+const markLoaded = () => requestAnimationFrame(() => document.documentElement.classList.add("is-loaded"));
+if (document.readyState === "complete") markLoaded();
+else window.addEventListener("load", markLoaded, { once: true });
+
 const loaded = new Map();
 for (const el of document.querySelectorAll("[data-module]")) {
   for (const name of el.dataset.module.split(/\s+/).filter(Boolean)) {

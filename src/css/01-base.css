@@ -12,8 +12,11 @@ html {
   scroll-padding-top: calc(var(--header-h) + 24px);
   scrollbar-color: rgba(255, 255, 255, 0.18) var(--bg);
 }
+/* Smooth in-page scrolling, but only once loaded: a deep link arriving
+   from another page (index.html#pricing) should land instantly, not
+   animate through every section above it. main.js adds .is-loaded. */
 @media (prefers-reduced-motion: no-preference) {
-  html {
+  html.is-loaded {
     scroll-behavior: smooth;
   }
 }
@@ -44,8 +47,7 @@ dl,
 dd {
   margin: 0;
 }
-ul[role="list"],
-ol[role="list"] {
+:where(ul[role="list"], ol[role="list"]) {
   list-style: none;
   margin: 0;
   padding: 0;
@@ -691,5 +693,39 @@ select.input {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+}
+
+/* Sections own their glows and mist bands; they may bleed vertically into
+   neighbours but never widen the page. */
+.section {
+  overflow-x: clip;
+}
+
+/* ────────────────────────────────────────────────────────────
+   Print — ink-friendly, no fixed chrome, readable headings
+   ──────────────────────────────────────────────────────────── */
+@media print {
+  .site-header,
+  .skip-link,
+  .mobile-menu,
+  body::after {
+    display: none !important;
+  }
+  body {
+    background: #fff;
+    color: #000;
+  }
+  .display,
+  .title-1,
+  .title-2,
+  .accent-text {
+    color: #000 !important;
+    background: none !important;
+    -webkit-text-fill-color: currentColor;
+  }
+  .js [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
   }
 }

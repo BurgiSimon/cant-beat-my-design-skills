@@ -1,0 +1,361 @@
+/* ────────────────────────────────────────────────────────────
+   404 — the hero's sky, a giant "404" with a band of mist
+   drifting through it, the lone hiker on the ridge below.
+   The landscape keeps its ratio and tucks its empty top band
+   (the sky between the peaks) under the copy.
+   ──────────────────────────────────────────────────────────── */
+.nf {
+  /* the landscape row takes whatever height the copy leaves (never less
+     than --nf-land-min) and slides --nf-overlap up under the copy, where
+     the art is empty sky between the peaks */
+  --nf-land-min: clamp(260px, 38vh, 440px);
+  --nf-overlap: clamp(64px, 14vh, 150px);
+  --nf-size: clamp(132px, min(24vw, 26vh), 280px);
+  /* the art's height at full width; like the hero, crop it by at most 15% */
+  --nf-art-h: calc(100vw / 2.2575);
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: auto minmax(max(var(--nf-land-min), var(--nf-art-h) * 0.85 - var(--nf-overlap)), 1fr);
+  min-height: 100vh;
+  min-height: 100svh;
+  background: radial-gradient(60% 46% at 100% 70%, rgba(170, 68, 200, 0.46), transparent 82%),
+    radial-gradient(52% 40% at 0% 78%, rgba(125, 55, 185, 0.3), transparent 82%),
+    radial-gradient(40% 30% at 50% 74%, rgba(165, 90, 230, 0.36), transparent 75%),
+    linear-gradient(
+      180deg,
+      var(--sky-0) 0%,
+      var(--sky-1) 18%,
+      var(--sky-2) 32%,
+      var(--sky-3) 44%,
+      var(--sky-4) 54%,
+      var(--sky-5) 62%,
+      var(--sky-6) 72%
+    );
+}
+/* the valley floor darkens under the footer line */
+.nf::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  z-index: 2;
+  height: 112px;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(4, 3, 9, 0), rgba(4, 3, 9, 0.55) 55%, rgba(4, 3, 9, 0.86));
+}
+
+/* a pale halo behind the number */
+.nf__sky {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(34% 30% at 50% 30%, rgba(183, 156, 255, 0.14), transparent 75%),
+    radial-gradient(22% 16% at 50% 26%, rgba(217, 207, 251, 0.08), transparent 80%);
+}
+
+/* ── Copy ───────────────────────────────────────────────── */
+.nf__main {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: calc(var(--header-h) + clamp(28px, 4.4vh, 56px));
+  text-align: center;
+}
+.nf__main:focus {
+  outline: none;
+}
+
+.nf__code {
+  position: relative;
+  display: inline-block;
+}
+.nf__digits {
+  display: block;
+  /* trim DM Sans' internal leading so the figures sit tight to the title */
+  margin: -0.13em 0 -0.15em;
+  padding: 0 0.05em;
+  font-family: var(--font-display);
+  font-weight: 200;
+  font-size: var(--nf-size);
+  line-height: 1;
+  letter-spacing: -0.05em;
+  font-variant-numeric: lining-nums;
+  color: transparent;
+  background: linear-gradient(90deg, var(--head-from) 8%, #fff 92%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  /* the figures dissolve downward into the fog */
+  -webkit-mask-image: linear-gradient(180deg, #000 34%, rgba(0, 0, 0, 0.5) 66%, rgba(0, 0, 0, 0.12) 86%, transparent 98%);
+  mask-image: linear-gradient(180deg, #000 34%, rgba(0, 0, 0, 0.5) 66%, rgba(0, 0, 0, 0.12) 86%, transparent 98%);
+  user-select: none;
+}
+/* a band of mist drifting across the lower half of the figures */
+.nf__fog {
+  position: absolute;
+  left: -32%;
+  right: -32%;
+  top: 48%;
+  height: 46%;
+  pointer-events: none;
+  background: radial-gradient(34% 50% at 32% 52%, rgba(217, 207, 251, 0.3), transparent 72%),
+    radial-gradient(30% 42% at 66% 46%, rgba(201, 180, 250, 0.24), transparent 72%),
+    radial-gradient(50% 34% at 50% 60%, rgba(183, 156, 255, 0.14), transparent 80%);
+  filter: blur(12px);
+}
+
+.nf__title {
+  margin-top: clamp(12px, 2vh, 24px);
+  font-size: clamp(36px, min(4.4vw, 6.2vh), 56px);
+  line-height: 1.05;
+}
+.nf__text {
+  max-width: 26em;
+  margin-top: 14px;
+  font-size: clamp(17px, 1.45vw, 20px);
+  line-height: 1.45;
+  color: var(--text-soft);
+  text-wrap: balance;
+}
+.nf__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin-top: clamp(24px, 3.4vh, 36px);
+}
+.nf__home:hover .icon {
+  transform: translateX(-3px);
+}
+
+/* the requested path, in a quiet glass chip */
+.nf__path {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  max-width: 100%;
+  min-height: 32px;
+  margin-top: clamp(18px, 2.6vh, 28px);
+  padding: 0 12px;
+  background: rgba(7, 5, 13, 0.22);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+.nf__path[hidden] {
+  display: none;
+}
+.nf__path-label {
+  flex: none;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-soft);
+}
+.nf__path-value {
+  min-width: 0;
+  overflow: hidden;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 32px;
+  color: var(--text);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* ── Landscape ──────────────────────────────────────────── */
+.nf__land {
+  position: relative;
+  z-index: 1;
+  margin-top: calc(-1 * var(--nf-overlap));
+  pointer-events: none;
+  /* when the row is shorter than the art, the tips dissolve into the sky */
+  -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 9%);
+  mask-image: linear-gradient(180deg, transparent 0, #000 9%);
+}
+.nf__land img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* keep the hiker in frame on narrow screens; crop the ground before the peaks */
+  object-position: 72% 35%;
+}
+/* mist pooling in the valley, in front of the far peaks */
+.nf__mist {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 40%;
+  height: 26%;
+  background: radial-gradient(40% 50% at 30% 50%, rgba(217, 207, 251, 0.16), transparent 72%),
+    radial-gradient(36% 46% at 74% 54%, rgba(201, 180, 250, 0.12), transparent 72%);
+  filter: blur(16px);
+}
+
+/* ── Minimal footer on the valley floor ─────────────────── */
+.nf__foot {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 24px;
+  min-height: 64px;
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--text-muted);
+}
+.nf__foot nav {
+  display: flex;
+  gap: 4px;
+  margin-right: -10px;
+}
+.nf__foot a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 10px;
+  color: var(--text-soft);
+  transition: color var(--dur-fast) var(--ease-out);
+}
+.nf__foot a:hover {
+  color: var(--text);
+}
+
+/* ── Motion ─────────────────────────────────────────────── */
+@media (prefers-reduced-motion: no-preference) {
+  .js .nf [data-nf-in] {
+    animation: rise 1100ms var(--ease-out) both;
+    animation-delay: calc(160ms + var(--d, 0) * 90ms);
+  }
+  .js .nf .nf__code {
+    animation: nf-emerge 1800ms var(--ease-out) both;
+  }
+  .js .nf__land {
+    animation: nf-land-in 1800ms var(--ease-out) both;
+  }
+  .nf__fog {
+    animation: nf-drift 14s var(--ease-in-out) infinite alternate;
+  }
+  .nf__code.is-paused .nf__fog {
+    animation-play-state: paused;
+  }
+}
+@keyframes nf-emerge {
+  from {
+    opacity: 0;
+    filter: blur(14px);
+    transform: translateY(20px) scale(0.98);
+  }
+}
+@keyframes nf-land-in {
+  from {
+    opacity: 0;
+    transform: translateY(48px);
+  }
+}
+@keyframes nf-drift {
+  from {
+    transform: translateX(-10%);
+  }
+  to {
+    transform: translateX(10%);
+  }
+}
+
+/* ── Responsive ─────────────────────────────────────────── */
+/* Below ~1100px the button row is wider than the clear sky between the
+   peaks, so only tuck the art's top sliver (the tallest tip sits 6% in)
+   under the copy. */
+@media (max-width: 1100px) {
+  .nf {
+    --nf-overlap: calc(var(--nf-art-h) * 0.08);
+  }
+}
+@media (max-width: 860px) {
+  .nf {
+    --nf-overlap: 48px;
+  }
+  .nf__land img {
+    object-position: 62% 35%;
+  }
+}
+@media (max-width: 720px) {
+  .nf {
+    --nf-art-h: 0px;
+    --nf-overlap: clamp(32px, 6vh, 64px);
+    --nf-size: clamp(120px, 38vw, 200px);
+  }
+  .nf__main {
+    padding-top: calc(var(--header-h) + 28px);
+  }
+  .nf__title {
+    font-size: clamp(34px, 9.4vw, 44px);
+  }
+  .nf__text {
+    max-width: 20em;
+  }
+}
+@media (max-width: 480px) {
+  /* The footer gets its own strip of valley floor below the art, so the
+     hiker always stands on the ground, never on the centered links. */
+  .nf {
+    --nf-land-min: clamp(200px, 32vh, 400px);
+    grid-template-rows: auto minmax(var(--nf-land-min), 1fr) auto;
+  }
+  .nf::after {
+    height: 80px;
+    background: linear-gradient(180deg, rgba(4, 3, 9, 0), var(--bg-sunken) 24px);
+  }
+  .nf__land img {
+    object-position: 68% 35%;
+  }
+  .nf__actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: 100%;
+    max-width: 380px;
+  }
+  .nf__actions .btn {
+    padding: 0 14px;
+    font-size: 16px;
+  }
+  .nf__foot {
+    position: relative;
+    grid-row: 3;
+    justify-content: center;
+    flex-wrap: wrap;
+    min-height: 56px;
+  }
+  .nf__foot nav {
+    margin-right: 0;
+  }
+}
+/* two buttons fit side by side down to 340px (148px of content in 156px) */
+@media (max-width: 339px) {
+  .nf__actions {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (forced-colors: active) {
+  .nf__digits {
+    color: CanvasText;
+    background: none;
+  }
+  .nf__fog,
+  .nf__land,
+  .nf__sky {
+    display: none;
+  }
+}

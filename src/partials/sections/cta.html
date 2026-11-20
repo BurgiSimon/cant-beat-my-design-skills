@@ -1,0 +1,79 @@
+<section class="section cta" id="get-started" aria-labelledby="cta-title" data-nav-section="pricing">
+  <div class="cta__halo" aria-hidden="true"></div>
+
+  <div class="cta__head container" data-reveal>
+    <p class="eyebrow">Get started</p>
+    <h2 class="title-1 cta__title" id="cta-title">Clear the fog from your&nbsp;workflows.</h2>
+    <p class="lede cta__lede">Start free today — your first workflow is about 12&nbsp;minutes&nbsp;away.</p>
+  </div>
+
+  <div class="cta__stage">
+    <div class="cta__land" aria-hidden="true">
+      <img
+        src="assets/img/mountains-1920.webp"
+        srcset="assets/img/mountains-1280.webp 1280w, assets/img/mountains-1920.webp 1920w, assets/img/mountains-2560.webp 2560w"
+        sizes="(max-width: 1120px) 1120px, 100vw"
+        width="2560"
+        height="1134"
+        alt=""
+        loading="lazy"
+        decoding="async"
+      />
+    </div>
+    <div class="cta__mist" aria-hidden="true"></div>
+
+    <div class="cta__body container">
+      <div class="cta__card" data-reveal="scale">
+        <form
+          class="cta__form"
+          action="signup.html"
+          method="get"
+          data-module="form"
+          data-success-title="You’re in."
+          data-success-text="We’ve sent a sign-in link to {email}. Your&nbsp;14-day&nbsp;Team&nbsp;trial starts now."
+        >
+          <input type="hidden" name="plan" value="team" />
+          <div class="cta__control">
+            <div class="cta__field">
+              <label class="sr-only" for="cta-email">Work email</label>
+              <svg class="icon cta__field-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3.75 6.25h16.5v11.5H3.75z" /><path d="M4.5 7.25 12 13l7.5-5.75" /></svg>
+              <input
+                class="input cta__input"
+                id="cta-email"
+                name="email"
+                type="email"
+                inputmode="email"
+                autocomplete="email"
+                autocapitalize="off"
+                spellcheck="false"
+                enterkeyhint="go"
+                placeholder="you@company.com"
+                required
+                aria-describedby="cta-email-error"
+                data-error-required="Enter your work email to start your trial."
+                data-error-type="That doesn’t look like an email. Try you@company.com."
+              />
+            </div>
+            <button class="btn btn--primary cta__submit" type="submit">
+              Start free trial
+              <svg class="icon icon--arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6" /></svg>
+            </button>
+          </div>
+          <p class="field__error cta__error" id="cta-email-error" aria-live="polite"></p>
+        </form>
+
+        <div class="cta__foot">
+          <ul class="cta__perks" role="list" aria-label="Trial terms">
+            <li><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg>14-day free trial</li>
+            <li><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg>No credit card</li>
+            <li><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg>Cancel anytime</li>
+          </ul>
+          <a class="link-arrow cta__sales" href="signup.html?plan=enterprise">
+            Or talk to sales
+            <svg class="icon icon--arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6" /></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

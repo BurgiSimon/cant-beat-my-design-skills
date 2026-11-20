@@ -1,0 +1,379 @@
+<section class="section pricing" id="pricing" aria-labelledby="pricing-title" data-nav-section="pricing" data-module="pricing">
+  <div class="container">
+    <div class="section-head section-head--center pricing__head">
+      <div data-reveal>
+        <p class="eyebrow">Pricing</p>
+        <h2 class="title-2" id="pricing-title">Simple pricing that scales with you</h2>
+      </div>
+      <div class="section-head__aside pricing__aside" data-reveal>
+        <p class="lede pricing__lede">Start free, upgrade when you’re ready. Every paid plan starts with a <span class="pricing__nowrap">14-day</span> trial — no credit card required.</p>
+
+        <fieldset class="pricing__billing">
+          <legend class="sr-only">Billing period</legend>
+          <div class="pricing__switch" data-pricing-switch>
+            <span class="pricing__pill" aria-hidden="true"></span>
+            <label class="pricing__option">
+              <input class="pricing__radio" type="radio" name="pricing-billing" value="monthly" />
+              <span>Monthly</span>
+            </label>
+            <label class="pricing__option">
+              <input class="pricing__radio" type="radio" name="pricing-billing" value="annual" checked />
+              <span>Annually</span>
+              <span class="chip chip--accent pricing__save">Save 20%</span>
+            </label>
+          </div>
+        </fieldset>
+        <p class="sr-only" role="status" data-pricing-live></p>
+      </div>
+    </div>
+
+    <div class="pricing__plans" data-reveal-stagger>
+      <div class="pricing__atmos" aria-hidden="true">
+        <span class="glow pricing__glow pricing__glow--core"></span>
+        <span class="glow pricing__glow pricing__glow--pink"></span>
+        <span class="glow pricing__glow pricing__glow--violet"></span>
+        <span class="mist-band pricing__mist"></span>
+      </div>
+
+      <!-- Starter -->
+      <article class="pricing__card" aria-labelledby="pricing-starter-name" data-reveal>
+        <header class="pricing__card-head">
+          <h3 class="title-3 pricing__name" id="pricing-starter-name">Starter</h3>
+        </header>
+        <p class="pricing__desc">For individuals and small teams automating their first workflows.</p>
+        <div class="pricing__price">
+          <p class="pricing__figure" aria-hidden="true">
+            <span class="pricing__amount"><span class="pricing__currency">$</span><span class="pricing__num">0</span></span>
+          </p>
+          <p class="pricing__terms" aria-hidden="true">Free forever</p>
+          <p class="sr-only">$0 — free forever</p>
+        </div>
+        <div class="pricing__cta">
+          <a class="btn btn--outline btn--block" href="signup.html?plan=starter">Start for free<span class="sr-only"> on the Starter plan</span></a>
+        </div>
+        <div class="pricing__features">
+          <p class="pricing__includes">Includes:</p>
+          <ul class="pricing__list" role="list">
+            <li><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg>Up to 3 members</li>
+            <li><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg>1,000 tasks / month</li>
+            <li><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg>5 active workflows</li>
+            <li><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg>50+ core integrations</li>
+            <li><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg>100 AI steps / month</li>
+            <li><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg>7-day run history</li>
+            <li><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg>Community support</li>
+          </ul>
+        </div>
+      </article>
+
+      <!-- Team (featured) -->
+      <article class="pricing__card pricing__card--featured" aria-labelledby="pricing-team-name" data-reveal>
+        <header class="pricing__card-head">
+          <h3 class="title-3 pricing__name" id="pricing-team-name">Team</h3>
+          <span class="chip chip--accent pricing__badge"><span class="pricing__badge-mark" aria-hidden="true"></span>Most popular</span>
+        </header>
+        <p class="pricing__desc">For growing teams putting AI to work across every tool they use.</p>
+        <div class="pricing__price">
+          <p class="pricing__figure" aria-hidden="true">
+            <span class="pricing__amount">
+              <span class="pricing__currency">$</span>
+              <span class="pricing__num pricing__num--roll">
+                <span class="pricing__digit" style="--i: 0"><span data-billing="annual">2</span><span data-billing="monthly">3</span></span>
+                <span class="pricing__digit" style="--i: 1"><span data-billing="annual">4</span><span data-billing="monthly">0</span></span>
+              </span>
+            </span>
+            <span class="pricing__unit">per member<br />/ month</span>
+          </p>
+          <p class="pricing__terms pricing__swap" aria-hidden="true">
+            <span data-billing="annual">Billed annually<span class="pricing__terms-sub">Save $72 <span class="pricing__nowrap">per member</span> a year</span></span>
+            <span data-billing="monthly">Billed monthly<span class="pricing__terms-sub">Save 20% with <span class="pricing__nowrap">annual billing</span></span></span>
+          </p>
+          <p class="sr-only" data-billing="annual">$24 per member per month, billed annually. You save $72 per member each year.</p>
+          <p class="sr-only" data-billing="monthly">$30 per member per month, billed monthly. Save 20% with annual billing.</p>
+        </div>
+        <div class="pricing__cta">
+          <a class="btn btn--primary btn--block" href="signup.html?plan=team" data-pricing-team-link>
+            <span>Start <span class="pricing__nowrap">14-day</span> trial<span class="sr-only"> of the Team plan</span></span>
+            <svg class="icon icon--arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6" /></svg>
+          </a>
+          <p class="pricing__cta-note">No credit card required</p>
+        </div>
+        <div class="pricing__features">
+          <p class="pricing__includes">Everything in Starter, plus:</p>
+          <ul class="pricing__list" role="list">
+            <li><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg><span>25,000 tasks / month<span class="pricing__item-note">then $8 per extra 1,000</span></span></li>
+            <li><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg>Unlimited workflows</li>
+            <li><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg>All 300+ integrations</li>
+            <li><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg>Unlimited AI steps</li>
+            <li><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg>Human-in-the-loop approvals</li>
+            <li><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg>90-day run history</li>
+            <li><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg>Roles &amp; permissions</li>
+            <li><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg>Priority email support</li>
+            <li><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg>99.9% uptime</li>
+          </ul>
+        </div>
+      </article>
+
+      <!-- Enterprise -->
+      <article class="pricing__card" aria-labelledby="pricing-enterprise-name" data-reveal>
+        <header class="pricing__card-head">
+          <h3 class="title-3 pricing__name" id="pricing-enterprise-name">Enterprise</h3>
+        </header>
+        <p class="pricing__desc">For organizations that need advanced security, control, and scale.</p>
+        <div class="pricing__price">
+          <p class="pricing__figure" aria-hidden="true">
+            <span class="pricing__amount pricing__amount--word">Custom</span>
+          </p>
+          <p class="pricing__terms" aria-hidden="true">Tailored to your organization</p>
+          <p class="sr-only">Custom pricing, tailored to your organization</p>
+        </div>
+        <div class="pricing__cta">
+          <a class="btn btn--glass btn--block" href="signup.html?plan=enterprise">Talk to sales<span class="sr-only"> about the Enterprise plan</span></a>
+        </div>
+        <div class="pricing__features">
+          <p class="pricing__includes">Everything in Team, plus:</p>
+          <ul class="pricing__list" role="list">
+            <li><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg>SSO / SAML &amp; SCIM</li>
+            <li><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg>Audit logs</li>
+            <li><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg>EU or US data residency</li>
+            <li><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg><span>Private networking <span class="pricing__nowrap">(VPC peering)</span></span></li>
+            <li><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg>Custom data retention</li>
+            <li><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg>99.99% uptime SLA</li>
+            <li><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg>Dedicated success manager</li>
+            <li><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg>Security review &amp; DPA</li>
+          </ul>
+        </div>
+      </article>
+    </div>
+
+    <p class="pricing__fine" data-reveal="fade">
+      Prices in USD. Taxes may apply. Need more tasks on Team? Add 1,000 for $8.
+      <a class="pricing__fine-link" href="./#faq">Read the pricing FAQ<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6" /></svg></a>
+    </p>
+
+    <div class="pricing__compare" data-pricing-compare>
+      <div class="pricing__compare-bar" data-reveal="fade">
+        <button class="btn btn--outline pricing__compare-toggle" type="button" aria-expanded="true" aria-controls="compare-plans" data-compare-toggle hidden>
+          <span>Compare all plans</span>
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" /></svg>
+        </button>
+      </div>
+
+      <div class="pricing__compare-panel" id="compare-plans" data-compare-panel>
+        <div class="pricing__compare-inner">
+          <div class="pricing__table-frame" data-table-frame>
+            <div class="pricing__table-scroll" role="region" aria-labelledby="pricing-compare-caption" tabindex="0" data-table-scroll>
+              <table class="pricing__table">
+                <caption class="sr-only" id="pricing-compare-caption">Feature comparison of the Starter, Team, and Enterprise plans</caption>
+                <colgroup>
+                  <col class="pricing__col pricing__col--feature" />
+                  <col class="pricing__col" />
+                  <col class="pricing__col pricing__col--team" />
+                  <col class="pricing__col" />
+                </colgroup>
+                <thead>
+                  <tr>
+                    <td class="pricing__corner">
+                      <span class="pricing__th-name pricing__corner-title" aria-hidden="true">Compare plans</span>
+                      <span class="pricing__corner-label pricing__swap" aria-hidden="true">
+                        <span data-billing="annual">Prices billed annually</span>
+                        <span data-billing="monthly">Prices billed monthly</span>
+                      </span>
+                    </td>
+                    <th scope="col" abbr="Starter">
+                      <span class="pricing__th">
+                        <span class="pricing__th-name">Starter</span>
+                        <span class="pricing__th-price" aria-hidden="true">Free forever</span>
+                        <a class="btn btn--sm btn--outline btn--block" href="signup.html?plan=starter">Start free<span class="sr-only"> on the Starter plan</span></a>
+                      </span>
+                    </th>
+                    <th scope="col" abbr="Team" class="is-team">
+                      <span class="pricing__th">
+                        <span class="pricing__th-name">Team</span>
+                        <span class="pricing__th-price pricing__swap" aria-hidden="true">
+                          <span data-billing="annual">$24 / member / mo</span>
+                          <span data-billing="monthly">$30 / member / mo</span>
+                        </span>
+                        <a class="btn btn--sm btn--primary btn--block" href="signup.html?plan=team" data-pricing-team-link>Start trial<span class="sr-only"> of the Team plan</span></a>
+                      </span>
+                    </th>
+                    <th scope="col" abbr="Enterprise">
+                      <span class="pricing__th">
+                        <span class="pricing__th-name">Enterprise</span>
+                        <span class="pricing__th-price" aria-hidden="true">Custom pricing</span>
+                        <a class="btn btn--sm btn--glass btn--block" href="signup.html?plan=enterprise">Talk to sales<span class="sr-only"> about the Enterprise plan</span></a>
+                      </span>
+                    </th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  <tr class="pricing__group">
+                    <th scope="rowgroup" colspan="4"><span>Usage</span></th>
+                  </tr>
+                  <tr>
+                    <th scope="row">Members</th>
+                    <td>Up to 3</td>
+                    <td class="is-team">Unlimited</td>
+                    <td>Unlimited</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Tasks per month</th>
+                    <td><span class="pricing__val">1,000</span></td>
+                    <td class="is-team"><span class="pricing__val">25,000</span></td>
+                    <td>Custom</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Additional tasks</th>
+                    <td><span class="pricing__no" aria-hidden="true"></span><span class="sr-only">Not included</span></td>
+                    <td class="is-team">$8 per 1,000</td>
+                    <td>Custom</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Run history</th>
+                    <td>7 days</td>
+                    <td class="is-team">90 days</td>
+                    <td>Custom retention</td>
+                  </tr>
+                </tbody>
+
+                <tbody>
+                  <tr class="pricing__group">
+                    <th scope="rowgroup" colspan="4"><span>Building</span></th>
+                  </tr>
+                  <tr>
+                    <th scope="row">Active workflows</th>
+                    <td>5</td>
+                    <td class="is-team">Unlimited</td>
+                    <td>Unlimited</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Integrations</th>
+                    <td>50+ core</td>
+                    <td class="is-team">All 300+</td>
+                    <td>All 300+</td>
+                  </tr>
+                  <tr>
+                    <th scope="row"><span class="pricing__nowrap">Human-in-the-loop</span> approvals</th>
+                    <td><span class="pricing__no" aria-hidden="true"></span><span class="sr-only">Not included</span></td>
+                    <td class="is-team"><svg class="icon pricing__yes" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg><span class="sr-only">Included</span></td>
+                    <td><svg class="icon pricing__yes" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg><span class="sr-only">Included</span></td>
+                  </tr>
+                </tbody>
+
+                <tbody>
+                  <tr class="pricing__group">
+                    <th scope="rowgroup" colspan="4"><span>AI</span></th>
+                  </tr>
+                  <tr>
+                    <th scope="row">AI steps</th>
+                    <td>100 / month</td>
+                    <td class="is-team">Unlimited</td>
+                    <td>Unlimited</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Hosted models or bring your own key</th>
+                    <td><svg class="icon pricing__yes" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg><span class="sr-only">Included</span></td>
+                    <td class="is-team"><svg class="icon pricing__yes" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg><span class="sr-only">Included</span></td>
+                    <td><svg class="icon pricing__yes" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg><span class="sr-only">Included</span></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Your data is never used to train models</th>
+                    <td><svg class="icon pricing__yes" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg><span class="sr-only">Included</span></td>
+                    <td class="is-team"><svg class="icon pricing__yes" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg><span class="sr-only">Included</span></td>
+                    <td><svg class="icon pricing__yes" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg><span class="sr-only">Included</span></td>
+                  </tr>
+                </tbody>
+
+                <tbody>
+                  <tr class="pricing__group">
+                    <th scope="rowgroup" colspan="4"><span>Security &amp; admin</span></th>
+                  </tr>
+                  <tr>
+                    <th scope="row">SOC 2 <span class="pricing__nowrap">Type II</span> &amp; GDPR</th>
+                    <td><svg class="icon pricing__yes" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg><span class="sr-only">Included</span></td>
+                    <td class="is-team"><svg class="icon pricing__yes" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg><span class="sr-only">Included</span></td>
+                    <td><svg class="icon pricing__yes" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg><span class="sr-only">Included</span></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Encryption at rest and in transit <span class="pricing__row-note">AES-256 · TLS 1.3</span></th>
+                    <td><svg class="icon pricing__yes" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg><span class="sr-only">Included</span></td>
+                    <td class="is-team"><svg class="icon pricing__yes" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg><span class="sr-only">Included</span></td>
+                    <td><svg class="icon pricing__yes" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg><span class="sr-only">Included</span></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Roles &amp; permissions</th>
+                    <td><span class="pricing__no" aria-hidden="true"></span><span class="sr-only">Not included</span></td>
+                    <td class="is-team"><svg class="icon pricing__yes" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg><span class="sr-only">Included</span></td>
+                    <td><svg class="icon pricing__yes" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg><span class="sr-only">Included</span></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">SSO / SAML</th>
+                    <td><span class="pricing__no" aria-hidden="true"></span><span class="sr-only">Not included</span></td>
+                    <td class="is-team"><span class="pricing__no" aria-hidden="true"></span><span class="sr-only">Not included</span></td>
+                    <td><svg class="icon pricing__yes" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg><span class="sr-only">Included</span></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">SCIM user provisioning</th>
+                    <td><span class="pricing__no" aria-hidden="true"></span><span class="sr-only">Not included</span></td>
+                    <td class="is-team"><span class="pricing__no" aria-hidden="true"></span><span class="sr-only">Not included</span></td>
+                    <td><svg class="icon pricing__yes" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg><span class="sr-only">Included</span></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Audit logs</th>
+                    <td><span class="pricing__no" aria-hidden="true"></span><span class="sr-only">Not included</span></td>
+                    <td class="is-team"><span class="pricing__no" aria-hidden="true"></span><span class="sr-only">Not included</span></td>
+                    <td><svg class="icon pricing__yes" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg><span class="sr-only">Included</span></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Data residency <span class="pricing__row-note">EU or US</span></th>
+                    <td><span class="pricing__no" aria-hidden="true"></span><span class="sr-only">Not included</span></td>
+                    <td class="is-team"><span class="pricing__no" aria-hidden="true"></span><span class="sr-only">Not included</span></td>
+                    <td><svg class="icon pricing__yes" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg><span class="sr-only">Included</span></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Private networking <span class="pricing__row-note">VPC peering</span></th>
+                    <td><span class="pricing__no" aria-hidden="true"></span><span class="sr-only">Not included</span></td>
+                    <td class="is-team"><span class="pricing__no" aria-hidden="true"></span><span class="sr-only">Not included</span></td>
+                    <td><svg class="icon pricing__yes" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg><span class="sr-only">Included</span></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Security review &amp; DPA</th>
+                    <td><span class="pricing__no" aria-hidden="true"></span><span class="sr-only">Not included</span></td>
+                    <td class="is-team"><span class="pricing__no" aria-hidden="true"></span><span class="sr-only">Not included</span></td>
+                    <td><svg class="icon pricing__yes" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg><span class="sr-only">Included</span></td>
+                  </tr>
+                </tbody>
+
+                <tbody>
+                  <tr class="pricing__group">
+                    <th scope="rowgroup" colspan="4"><span>Support</span></th>
+                  </tr>
+                  <tr>
+                    <th scope="row">Support</th>
+                    <td>Community</td>
+                    <td class="is-team">Priority email</td>
+                    <td>Dedicated success manager</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Uptime</th>
+                    <td><span class="pricing__no" aria-hidden="true"></span><span class="sr-only">No uptime commitment</span></td>
+                    <td class="is-team">99.9%</td>
+                    <td>99.99% SLA</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <span class="pricing__table-shade" aria-hidden="true"></span>
+          </div>
+
+          <div class="pricing__compare-foot">
+            <button class="pricing__collapse" type="button" aria-controls="compare-plans" data-compare-collapse hidden>
+              <svg class="icon icon--sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 15l6-6 6 6" /></svg>
+              <span>Hide comparison</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
