@@ -1,0 +1,51 @@
+/* ==========================================================================
+   fx/reveals.css — helpers for fx/reveals.js
+   Everything that could hide or restyle content is gated by html.fx-reveals
+   (added only after reveals.js initialised successfully) and/or by state
+   classes reveals.js adds itself. At rest every rule here renders exactly
+   like the original design.
+   ========================================================================== */
+@property --rv-by{syntax:"<percentage>";inherits:false;initial-value:0%}
+@property --rv-bs{syntax:"<number>";inherits:false;initial-value:1}
+@property --rv-dot{syntax:"<number>";inherits:true;initial-value:1}
+
+/* SplitText line masks exist only while a heading animates; reveals.js styles
+   them inline (clip-path reaching .3em past each line box, so the serif's
+   ascenders/descenders are never cut at rest). */
+
+/* counters: the real value for assistive tech while the visible digits count (aria-hidden) */
+.rv-sr{position:absolute!important;width:1px;height:1px;margin:-1px;padding:0;border:0;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
+
+/* ---------- image layers ----------
+   A pseudo-element repaints the section's own background (background:inherit,
+   so desktop/reflow variants follow automatically) and can be zoomed/drifted on
+   the compositor. At identity it covers the host pixel-for-pixel. */
+html.fx-reveals .rv-bg{isolation:isolate}
+html.fx-reveals .footer.rv-bg{overflow:clip}
+html.fx-reveals .rv-bg::after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:inherit;--rv-by:inherit;--rv-bs:inherit;transform:translate(0,var(--rv-by)) scale(var(--rv-bs));transform-origin:50% 50%}
+html.fx-reveals .rv-bg.rv-live::after{will-change:transform}
+
+/* ---------- weekly chart label pill: pops on the independent `scale` property ---------- */
+html.fx-reveals .pill.rv-pop{scale:var(--rv-ps,1)}
+
+/* ---------- growth timeline items + their dots ---------- */
+html.fx-reveals .tl-item.rv-off{opacity:0;translate:14u 0;--rv-dot:0}
+html.fx-reveals .tl-item.rv-off::after,html.fx-reveals .tl-item.rv-tr::after{scale:var(--rv-dot)}
+html.fx-reveals .tl-item.rv-tr{transition:opacity 1.1s cubic-bezier(.19,1,.22,1),translate 1.3s cubic-bezier(.19,1,.22,1),--rv-dot .9s cubic-bezier(.19,1,.22,1) .12s}
+
+/* ---------- stats rules + blockquote bar ----------
+   The real borders keep their width (layout untouched) but turn transparent;
+   pseudo-elements with the very same border declaration sit exactly on top of
+   them and are drawn with `scale`. */
+html.fx-reveals .stats{position:relative;border-top-color:transparent}
+html.fx-reveals .stats::before,
+html.fx-reveals .stat:not(:last-child)::after{content:"";position:absolute;left:0;right:0;height:0;border-top:1u solid #e3e3e3;transform-origin:0 50%;transition:scale 1.7s cubic-bezier(.19,1,.22,1);pointer-events:none}
+html.fx-reveals .stats::before{bottom:100%}
+html.fx-reveals .stat{position:relative}
+html.fx-reveals .stat:not(:last-child){border-bottom-color:transparent}
+html.fx-reveals .stat:not(:last-child)::after{top:100%}
+html.fx-reveals .stats blockquote{position:relative;border-left-color:transparent}
+html.fx-reveals .stats blockquote::before{content:"";position:absolute;top:0;bottom:0;right:100%;width:0;border-left:3.6u solid #2d95f9;transform-origin:50% 0;transition:scale 1.4s cubic-bezier(.19,1,.22,1) .1s;pointer-events:none}
+html.fx-reveals .stats.rv-rule-off::before,
+html.fx-reveals .stat.rv-rule-off::after{scale:0 1}
+html.fx-reveals .stats blockquote.rv-bar-off::before{scale:1 0}

@@ -16,6 +16,20 @@ single hero design: a violet sky, magenta-lit peaks and glowing mist.
 
 All forms validate on the client and show success states; there is no backend.
 
+## Also here: Nelson CRM
+
+A second, separate project lives in [`nelson-crm/`](nelson-crm/): a 1:1 recreation of a CRM landing-page
+design by [@uisabor](https://x.com/uisabor/status/2120804761528328263), then given a restrained,
+premium motion layer.
+
+| Page | What it is |
+| --- | --- |
+| [`/nelson-crm/`](https://burgisimon.github.io/cant-beat-my-design-skills/nelson-crm/) | Final site with motion: preloader + hero reveal, WebGL torn-paper hero whose eye follows the cursor, Lenis smooth scroll, GSAP scroll reveals, ASCII night-cloud field, custom cursor with magnetic buttons, live dashboard details |
+| [`/nelson-crm/recreation.html`](https://burgisimon.github.io/cant-beat-my-design-skills/nelson-crm/recreation.html) | The static recreation it started from: pixel-matched to the design at 1440px, no motion layer |
+
+It is prebuilt (`python3 nelson-crm/src/build.py`); `build.mjs` only copies its runtime files into
+`dist/nelson-crm/`. See [`nelson-crm/README.md`](nelson-crm/README.md).
+
 ## Develop
 
 Requires Node 20+. No dependencies to install.
@@ -41,6 +55,7 @@ src/
   js/main.js           entry; core/* runs everywhere, modules/<name>.js loads for [data-module="name"]
   assets/              self-hosted fonts, images, icons
   static/              copied to the site root (web manifest)
+nelson-crm/            separate prebuilt project, published under /nelson-crm/
 ```
 
 ## Deploy

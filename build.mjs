@@ -11,6 +11,7 @@
  *   <!-- @include sections/pricing.html -->
  * CSS files in src/css are concatenated in filename order into css/styles.css.
  * src/js, src/assets and src/static are copied as-is (src/static → site root).
+ * The prebuilt Nelson CRM project (nelson-crm/) is published as-is under /nelson-crm/.
  *
  * Tokens replaced in pages and static text files:
  *   {{SITE_URL}}  absolute site URL without trailing slash  (env SITE_URL)
@@ -26,6 +27,8 @@ import { fileURLToPath } from "node:url";
 
 const ROOT = path.dirname(fileURLToPath(import.meta.url));
 const SRC = path.join(ROOT, "src");
+const NELSON = path.join(ROOT, "nelson-crm");
+const NELSON_PUBLIC = ["index.html", "recreation.html", "assets", "fonts", "vendor"];
 
 const argv = process.argv.slice(2);
 const flag = (name) => argv.includes(name);
@@ -155,6 +158,19 @@ async function build() {
   await copyDir(path.join(SRC, "js"), path.join(OUT, "js"));
   await copyDir(path.join(SRC, "assets"), path.join(OUT, "assets"));
   await copyDir(path.join(SRC, "static"), OUT, (text) => replaceTokens(text, tokens));
+
+  // Nelson CRM: a separate, prebuilt project (see nelson-crm/README.md) published as-is under /nelson-crm/.
+  // Only its runtime files are copied; its sources stay in the repo.
+  for (const item of NELSON_PUBLIC) {
+    const from = path.join(NELSON, item);
+    if (!(await exists(from))) continue;
+    const to = path.join(OUT, "nelson-crm", item);
+    if ((await fs.stat(from)).isDirectory()) await copyDir(from, to);
+    else {
+      await fs.mkdir(path.dirname(to), { recursive: true });
+      await fs.copyFile(from, to);
+    }
+  }
 
   // Pages
   const pages = (await listFiles(path.join(SRC, "pages"))).filter((f) => f.endsWith(".html"));

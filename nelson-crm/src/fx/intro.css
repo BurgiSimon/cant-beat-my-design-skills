@@ -1,0 +1,114 @@
+/* ==========================================================================
+   fx/intro — preloader overlay + first-viewport entrance
+   The white cover below paints from the very first frame (html.js.is-loading
+   is set by the head script). intro.js mounts the real overlay in the same
+   task and adds .fx-intro-mounted, which retires the pseudo cover. If intro.js
+   never runs, the head script drops .is-loading after 6 s (or core does on
+   intro:done) and the page shows as designed. Never shown under reduced motion.
+   ========================================================================== */
+@media (prefers-reduced-motion: no-preference) {
+  html.js.is-loading:not(.fx-intro-mounted) body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    background: #fff;
+  }
+}
+
+/* the hero is scaled + clipped while the intro runs: give it its own layer */
+html.fx-intro-run .hero { will-change: transform, clip-path; }
+
+/* FX.lock() hides the root scrollbar (Lenis' overflow:clip). With classic,
+   space-taking scrollbars that widens the page by ~15px for the duration of
+   the lock and the whole --u-scaled composition jumps back when it unlocks,
+   right as the hero has opened. Keep the gutter reserved while the intro runs
+   (overflow:clip makes no scroll container, so the gutter needs hidden). */
+html.fx-intro-run { scrollbar-gutter: stable; }
+html.fx-intro-run.lenis.lenis-stopped { overflow: hidden; }
+
+.fx-intro {
+  --g: clamp(16px, 1.95vw, 28px);
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: #fff;
+  color: #111;
+  overflow: hidden;
+  -webkit-user-select: none;
+  user-select: none;
+  will-change: clip-path;
+}
+.fx-intro__mask { display: block; overflow: hidden; }
+
+/* centred mark + wordmark — the same lock-up as the nav brand */
+.fx-intro__brand {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+.fx-intro__word {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 2px 1px 3px;
+  font-family: var(--sans);
+  font-weight: 500;
+  font-size: 22px;
+  line-height: 1.2;
+  letter-spacing: -.025em;
+  color: #1b1b1b;
+  will-change: transform;
+}
+.fx-intro__mark {
+  width: 16px;
+  height: 18px;
+  flex: none;
+  margin-top: -1px;
+  stroke-dasharray: 27;
+  stroke-dashoffset: 0;
+}
+
+/* big serif counter, bottom right — echoes the 40+ / 94% figures further down */
+.fx-intro__count {
+  position: absolute;
+  right: calc(var(--g) - .04em);
+  bottom: calc(var(--g) - .14em);
+  font-size: clamp(84px, 12.2vw, 176px);
+}
+.fx-intro__count .fx-intro__mask { padding-top: .04em; }
+.fx-intro__num {
+  display: block;
+  font-family: var(--serif);
+  font-weight: 300;
+  font-size: 1em;
+  line-height: 1;
+  letter-spacing: -.035em;
+  font-variant-numeric: lining-nums tabular-nums;
+  color: #111;
+  text-align: right;
+  will-change: transform;
+}
+
+/* 1px progress line along the bottom edge */
+.fx-intro__line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: rgba(17, 17, 17, .08);
+}
+.fx-intro__fill {
+  position: absolute;
+  inset: 0;
+  background: var(--blue);
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+}
+
+@media (max-width: 640px) {
+  .fx-intro__word { font-size: 20px; gap: 7px; }
+  .fx-intro__mark { width: 14.5px; height: 16.3px; }
+}

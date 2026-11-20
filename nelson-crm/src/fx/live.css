@@ -1,0 +1,260 @@
+/* ==========================================================================
+   fx/live.css — small "alive" details + interaction polish
+   Nothing here can hide content: rules either style elements live.js
+   created (.fx-live-*), are gated by classes live.js adds after it
+   initialised, or are hover / focus / selection states. At rest the page
+   renders exactly like the design.
+   ========================================================================== */
+
+/* ---------- selection ---------- */
+::selection { background: var(--blue); color: #fff; }
+
+/* ---------- focus: one ring everywhere (2px brand blue, 3px offset) ----------
+   On surfaces where blue would vanish (the blue tab bar, the photo sections,
+   Sign In — which nav.js backs with a dark frost once the nav floats) the
+   same ring turns white; the blue Contact button floats over any background,
+   so a white gap keeps its blue ring readable everywhere. */
+a:focus-visible,
+button:focus-visible,
+[role="tab"]:focus-visible { outline: 2px solid var(--blue); outline-offset: 3px; }
+.tabs .tab:focus-visible,
+.nav-right .signin:focus-visible,
+.growth .start:focus-visible,
+.footer a:focus-visible { outline-color: #fff; }
+.nav-right .contact:focus-visible { box-shadow: 0 0 0 3px #fff; }
+@media (prefers-reduced-motion: no-preference) {
+  a:focus-visible,
+  button:focus-visible,
+  [role="tab"]:focus-visible { animation: fx-live-focus .45s cubic-bezier(.19, 1, .22, 1); }
+}
+@keyframes fx-live-focus { from { outline-offset: 8px; outline-color: transparent; } }
+
+/* ---------- feature tabs: progress line inside the white pill ---------- */
+.tab-pill > .fx-live-progress {
+  position: absolute;
+  left: 16u;
+  right: 16u;
+  bottom: 5u;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--blue);
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  pointer-events: none;
+}
+
+/* ---------- weekly chart: whole weekday columns are hoverable ----------
+   Each bar gets an invisible hit column (pseudo-element: no layout) spanning
+   the chart's full height, day label included; the label pill, the guide and
+   the day names let the pointer through to it. */
+.fx-live-chart .bar::before {
+  content: "";
+  position: absolute;
+  left: -4.3u;
+  right: -4.3u;
+  bottom: -51u;
+  height: 188u;
+}
+.fx-live-chart .day,
+.fx-live-chart .pill,
+.fx-live-chart .guide { pointer-events: none; }
+
+/* ---------- live leads number ----------
+   inline-block so it can move (renders exactly like the inline em); the soft
+   green flash is a tint + spread shadow, never a size change */
+.c-leads em.fx-live-num {
+  display: inline-block;
+  border-radius: 3px;
+  background-color: rgba(18, 161, 80, calc(var(--fx-flash, 0) * .13));
+  box-shadow: 0 0 0 3px rgba(18, 161, 80, calc(var(--fx-flash, 0) * .13));
+}
+
+/* ---------- export button states ---------- */
+.export.fx-live-export { transition: background .2s, transform .2s, color .17s ease; }
+.export.fx-live-fade { color: rgba(255, 255, 255, 0); }
+.export > svg > use,
+.f-form button > svg > use {
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+  transition: opacity .25s ease, transform .45s cubic-bezier(.19, 1, .22, 1);
+}
+.fx-live-ico { overflow: visible; pointer-events: none; }
+.fx-live-ico > * { opacity: 0; transition: opacity .25s ease; }
+.fx-live-spin { transform-box: fill-box; transform-origin: 50% 50%; }
+.fx-live-tick { stroke-dasharray: 1; stroke-dashoffset: 1; transition: opacity .2s ease, stroke-dashoffset .5s cubic-bezier(.65, 0, .35, 1) .08s; }
+.export.fx-live-busy > svg,
+.export.fx-live-done > svg { transform: none; }            /* no hover nudge while it reports */
+.export.fx-live-busy > svg > use,
+.export.fx-live-done > svg > use { opacity: 0; transform: scale(.55); }
+.export.fx-live-busy .fx-live-spin { opacity: 1; animation: fx-live-rot .75s linear infinite; }
+.export.fx-live-done .fx-live-tick { opacity: 1; stroke-dashoffset: 0; }
+.export.fx-live-busy { cursor: progress; }
+@keyframes fx-live-rot { to { transform: rotate(360deg); } }
+
+.fx-live-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* ---------- newsletter ---------- */
+.f-form { transition: box-shadow .4s cubic-bezier(.22, 1, .36, 1); }
+.f-form:focus-within { box-shadow: 0 0 0 3px rgba(40, 148, 249, .35); }
+.f-form.fx-live-err,
+.f-form.fx-live-err:focus-within { box-shadow: 0 0 0 3px rgba(229, 72, 77, .5); transition-duration: .15s; }
+.f-form.fx-live-ok button > svg > use { opacity: 0; transform: translateX(45%) scale(.7); }
+.f-form.fx-live-ok .fx-live-tick { opacity: 1; stroke-dashoffset: 0; transition-delay: 0s, .12s; }
+
+/* ---------- hover polish (pointer devices) ---------- */
+@media (hover: hover) {
+  /* footer column + legal links: a 1px underline draws in from the left, leaves to the right */
+  .f-col a,
+  .f-legal a { position: relative; }
+  .f-col a::after,
+  .f-legal a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -1px;
+    height: 1px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: 100% 50%;
+    transition: transform .6s cubic-bezier(.19, 1, .22, 1);
+    pointer-events: none;
+  }
+  .f-col a:hover::after,
+  .f-legal a:hover::after { transform: scaleX(1); transform-origin: 0 50%; }
+
+  /* social: the rule brightens to full white as a sweep from the left */
+  .f-social a { position: relative; }
+  .f-social a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -1.2u;
+    height: 1.2u;
+    background: #fff;
+    transform: scaleX(0);
+    transform-origin: 100% 50%;
+    transition: transform .8s cubic-bezier(.19, 1, .22, 1);
+    pointer-events: none;
+  }
+  .f-social a:hover::after { transform: scaleX(1); transform-origin: 0 50%; }
+  .f-social a:hover { border-color: rgba(255, 255, 255, .75); }
+  /* arrows loop through: out to the top-right, the twin in from the bottom-left */
+  html.fx-live-social .f-social a:hover svg { transform: none; }
+  html.fx-live-social .f-social svg use { transition: transform .6s cubic-bezier(.19, 1, .22, 1); }
+  html.fx-live-social .f-social svg use.fx-live-twin { transform: translate(-100%, 100%); }
+  html.fx-live-social .f-social a:hover svg use { transform: translate(100%, -100%); }
+  html.fx-live-social .f-social a:hover svg use.fx-live-twin { transform: none; }
+
+  /* timeline dots: a soft halo breathes out while hovered (an expanding,
+     fading spread shadow: paint only, no transform animation) */
+  .tl-item::before {
+    content: "";
+    position: absolute;
+    right: -41.75u;
+    top: 50%;
+    width: 11.5u;
+    height: 11.5u;
+    margin-top: -5.75u;
+    border-radius: 50%;
+    pointer-events: none;
+  }
+  .tl-item.key::before { right: -25.75u; }
+
+  /* step icons: a thin arc of light orbits the navy ring.
+     The arc is a grid item stacked on the icon's own cell (no positioning:
+     the icon renders exactly as designed) and it turns by animating a
+     registered angle, never a transform. A transform animation — even a
+     paused one — makes Chrome assume it overlaps everything painted after
+     it and promotes the footer, tabs, nav and more into layers at rest. */
+  .step .ico > svg { grid-area: 1 / 1; }
+  .step .ico::before {
+    content: "";
+    grid-area: 1 / 1;
+    width: 68u;
+    height: 68u;
+    margin: -5u;                      /* margin box = the 58u content box: no track growth */
+    border-radius: 50%;
+    background: conic-gradient(from var(--fx-live-arc, 0deg), rgba(150, 205, 255, 0) 0deg 150deg, rgba(150, 205, 255, .35) 250deg, rgba(225, 241, 255, .95) 340deg, rgba(150, 205, 255, 0) 360deg);
+    -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 1.6px), #000 calc(100% - 1.4px));
+    mask: radial-gradient(farthest-side, transparent calc(100% - 1.6px), #000 calc(100% - 1.4px));
+    opacity: 0;
+    transition: opacity .6s ease;
+    pointer-events: none;
+  }
+  html.fx-live-props .step .ico::before { animation: fx-live-arc 3.6s linear infinite paused; }   /* freezes (no snap) while it fades out */
+  .step:hover .ico::before { opacity: 1; }
+  html.fx-live-props .step:hover .ico::before { animation-play-state: running; }
+
+  /* avatars lift a touch */
+  .proof img,
+  .c-leads img { transition: translate .5s cubic-bezier(.19, 1, .22, 1); }
+  .proof img:hover,
+  .c-leads img:hover { translate: 0 -2px; }
+}
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .tl-item:hover::before { animation: fx-live-halo 1.9s cubic-bezier(.2, .6, .3, 1) infinite; }
+}
+@keyframes fx-live-halo {
+  0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, .28); }
+  100% { box-shadow: 0 0 0 13.25u rgba(255, 255, 255, 0); }
+}
+
+/* registered so they interpolate (paint-only animations, see the step arc) */
+@property --fx-live-arc { syntax: "<angle>"; inherits: false; initial-value: 0deg; }
+@property --fx-live-ping { syntax: "<number>"; inherits: false; initial-value: 0; }
+@keyframes fx-live-arc { to { --fx-live-arc: 360deg; } }
+
+/* ---------- eyebrow dot: a gentle ping (only while #process is on screen) ----------
+   A 1px ring drawn by a radial gradient whose radius/alpha follow --fx-live-ping,
+   on a grid item stacked over the dot (the dot's ::after shares the cell).
+   No transform: a running transform animation would push the heading, the
+   steps and the whole footer into their own layers while it plays. */
+.eyebrow i::after { grid-area: 1 / 1; }
+@media (prefers-reduced-motion: no-preference) {
+  html.fx-live .eyebrow.fx-live-run i::before {
+    --fx-live-r: calc(11u + var(--fx-live-ping) * 8.25u);
+    --fx-live-c: rgba(255, 255, 255, calc(.75 - .75 * var(--fx-live-ping)));
+    content: "";
+    grid-area: 1 / 1;
+    width: 40u;
+    height: 40u;
+    margin: -9u;                      /* margin box = the 22u dot: no track growth */
+    border-radius: 50%;
+    background: radial-gradient(closest-side, rgba(255, 255, 255, 0) calc(var(--fx-live-r) - 1.4px), var(--fx-live-c) calc(var(--fx-live-r) - .9px), var(--fx-live-c) calc(var(--fx-live-r) - .4px), rgba(255, 255, 255, 0) var(--fx-live-r));
+    animation: fx-live-ping 2.8s cubic-bezier(.2, .6, .3, 1) infinite;
+    pointer-events: none;
+  }
+}
+@keyframes fx-live-ping {
+  0% { --fx-live-ping: 0; }
+  75%, 100% { --fx-live-ping: 1; }
+}
+
+/* ---------- reflow layout: the timeline dots sit on the left ---------- */
+@media (max-width: 1099px) {
+  .tl-item::before { right: auto !important; left: 4px; }
+  .tl-item.key::before { left: -30px; }
+}
+
+/* ---------- reduced motion: states change, nothing travels ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .f-col a::after, .f-legal a::after, .f-social a::after,
+  .step .ico::before, .tl-item::before,
+  .fx-live-ico > *, .fx-live-tick,
+  .export > svg > use, .f-form button > svg > use,
+  .f-social svg use { transition: none !important; animation: none !important; }
+  .step:hover .ico::before { opacity: 0; }
+}

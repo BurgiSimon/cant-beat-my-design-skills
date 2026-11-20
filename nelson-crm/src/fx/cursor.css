@@ -1,0 +1,103 @@
+/* ==========================================================================
+   fx/cursor — custom cursor, magnetic buttons, label roll, card tilt
+   Nothing here can hide page content: the cursor layer is a new element,
+   html.has-cursor is added by cursor.js only once its cursor is live and
+   visible, and the label-roll wrappers exist only if cursor.js injected them
+   (at rest they render pixel-identical to the bare label).
+   ========================================================================== */
+
+/* ---------- the cursor: one tiny blend layer, two marks ----------
+   The 0x0 fixed container carries the blend mode so ring + dot are composited
+   together and then differenced against the page: white over the black
+   section, black over white, inverted over photos. */
+.fx-cursor {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+  z-index: 9999;
+  pointer-events: none;
+  mix-blend-mode: difference;
+  opacity: 0;
+  -webkit-user-select: none;
+  user-select: none;
+}
+.fx-cursor__ring,
+.fx-cursor__dot {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+  will-change: transform;
+}
+.fx-cursor__ring i,
+.fx-cursor__dot i {
+  position: absolute;
+  display: block;
+  box-sizing: border-box;
+  border-radius: 50%;
+}
+.fx-cursor__ring i {
+  left: -18px;
+  top: -18px;
+  width: 36px;
+  height: 36px;
+  border: 1.5px solid rgba(255, 255, 255, 1);
+  background-color: rgba(255, 255, 255, 0);
+}
+/* a true hairline where the screen can draw one */
+@media (min-resolution: 2dppx) {
+  .fx-cursor__ring i { border-width: 1px; }
+}
+.fx-cursor__dot i {
+  left: -4px;
+  top: -4px;
+  width: 8px;
+  height: 8px;
+  background: #fff;
+}
+
+/* native cursor off only while the custom one is live; text fields keep the
+   native I-beam (the custom marks hide there) */
+html.has-cursor,
+html.has-cursor * { cursor: none !important; }
+html.has-cursor input:not([type="submit"]):not([type="button"]):not([type="reset"]):not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="color"]):not([type="file"]):not([type="image"]),
+html.has-cursor textarea,
+html.has-cursor [contenteditable]:not([contenteditable="false"]) { cursor: text !important; }
+
+/* ---------- label roll ----------
+   .fx-roll replaces the bare label text (or is the existing label span).
+   Copy A sits in flow exactly where the text was; copy B waits one line plus
+   a gap below. The clip has vertical slack: the antialiased foot of a
+   descender ('g', 'p') can reach just past the line box, and a clip sitting
+   exactly on the box shaved it at some sizes (1280 desktop, reflow). The gap
+   between the copies is larger than the slack, so neither copy ever peeks
+   into it (at rest or rolled). Wide horizontal slack keeps the last glyph's
+   ink, which overhangs with the negative tracking, untouched.
+   The roll itself is one number, --fx-roll (0 → 1), on the holder; it only
+   exists while a roll is under way or held. Unset, the transform below is
+   invalid at computed-value time, so at rest the copies have no transform. */
+.fx-roll {
+  --fx-roll-gap: .3em;
+  position: relative;
+  display: inline-block;
+  clip-path: inset(-.14em -.5em);
+}
+.fx-roll__a { display: block; }
+.fx-roll__b {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(100% + var(--fx-roll-gap));
+  display: block;
+  -webkit-user-select: none;
+  user-select: none;
+}
+.fx-roll__a,
+.fx-roll__b { transform: translateY(calc(var(--fx-roll) * (-100% - var(--fx-roll-gap)))); }
+
+@media print {
+  .fx-cursor { display: none !important; }
+}

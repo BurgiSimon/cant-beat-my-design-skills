@@ -1,0 +1,100 @@
+/* ==========================================================================
+   fx/nav — persistent nav, scroll progress, menu polish, anchor targets.
+   Everything here is either a new element (.fx-nav-progress), gated by a
+   class nav.js adds (.fx-nav, .is-fixed, .is-frost, .is-current), or a hover /
+   focus state — the resting page is untouched.
+   ========================================================================== */
+
+/* fixed state: geometry is set inline by nav.js (same left/width/top as in the hero) */
+.nav.is-fixed { will-change: transform; }
+
+/* floating over the page, the white brand box gets an edge — the same soft
+   drop the menu panel uses — so it never dissolves into white sections */
+.nav.fx-nav .brand { transition: box-shadow .55s cubic-bezier(.22, 1, .36, 1); }
+.nav.is-frost .brand { box-shadow: 0 0 0 1px rgba(17, 24, 39, .06), 0 16u 36u -18u rgba(10, 30, 60, .38); }
+
+/* scroll progress: 2px brand-blue line along the bottom of the brand box,
+   from its left edge to the hamburger */
+.brand > .fx-nav-progress {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  right: 51.4u;
+  height: 2px;
+  background: var(--blue);
+  border-bottom-left-radius: 3u;
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  pointer-events: none;
+}
+
+/* Sign In legibility once the nav floats over light sections: a frosted dark
+   pill painted behind the label (pseudo-element, so the label's box, flow and
+   the cursor module's transforms are untouched). Off at the top of the page. */
+.nav.fx-nav .signin { position: relative; isolation: isolate; }
+.nav.fx-nav .signin::before {
+  content: "";
+  position: absolute;
+  inset: -9u -15u -9u -15u;
+  z-index: -1;
+  border-radius: 2px;
+  background: rgba(10, 22, 40, .52);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .55s cubic-bezier(.22, 1, .36, 1), background-color .3s ease;
+}
+.nav.is-fixed .signin::before { -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
+.nav.is-frost .signin::before { opacity: 1; }
+/* in the pill, hover darkens the pill instead of fading the label (an opacity
+   < 1 on the label would also switch the backdrop blur off) */
+.nav.is-frost .signin:hover { opacity: 1; }
+.nav.is-frost .signin:hover::before { background-color: rgba(10, 22, 40, .68); }
+
+/* the closed panel is only faded out (opacity 0) by the base styles, which
+   leaves five invisible links in the tab order with an invisible focus ring.
+   Hide it for real once its fade-out has finished (opening stays instant). */
+.nav.fx-nav .menu-panel:not(.open) {
+  visibility: hidden;
+  transition: opacity .25s, transform .25s, visibility 0s linear .25s;
+}
+
+/* menu links: label nudges right, number turns blue; the section in view is
+   marked with a blue number and a small dot */
+.menu-panel a .fx-mt {
+  display: inline-block;
+  color: inherit;
+  font-size: inherit;
+  transition: transform .5s cubic-bezier(.22, 1, .36, 1);
+}
+.menu-panel a .fx-mn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8u;
+  transition: color .3s ease;
+}
+.menu-panel a .fx-mn::before {
+  content: "";
+  width: 5u;
+  height: 5u;
+  border-radius: 50%;
+  background: var(--blue);
+  opacity: 0;
+  transform: scale(0);
+  transition: opacity .35s ease, transform .5s cubic-bezier(.22, 1, .36, 1);
+}
+.menu-panel a:hover .fx-mt,
+.menu-panel a:focus-visible .fx-mt { transform: translateX(4u); }
+.menu-panel a:hover .fx-mn,
+.menu-panel a:focus-visible .fx-mn,
+.menu-panel a.is-current .fx-mn { color: var(--blue); }
+.menu-panel a.is-current .fx-mn::before { opacity: 1; transform: none; }
+
+/* programmatic focus target of a smooth anchor jump (tabindex=-1 while focused) */
+[data-fx-anchor]:focus { outline: none; }
+
+@media (max-width: 1099px) {
+  .brand > .fx-nav-progress { right: 46px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .menu-panel a .fx-mt { transition: none; }
+}

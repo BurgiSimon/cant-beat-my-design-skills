@@ -1,0 +1,53 @@
+/* ==========================================================================
+   fx/marquee.css
+   • .fx-marquee is added by marquee.js only once its loop owns the track:
+     until then (or if the script fails) style.css's CSS loop keeps running.
+   • logo hover: a soft #f7f7f7 wash wipes up from the bottom of the cell,
+     the logo darkens (style.css's brightness .55, eased longer) and grows a
+     hair (1.03 via the individual `scale` property, so the logos' inline
+     translate stays untouched). Pointer devices only; at rest nothing here
+     paints.
+   • while the loop runs, the hovered cell is the one marquee.js marks with
+     .fx-hover: :hover is not re-evaluated while cells slide under a resting
+     pointer, so it would keep a logo highlighted after it drifted away (and
+     a tap on touch would leave one darkened as it travels).
+   ========================================================================== */
+.logos.fx-marquee .logo-track {
+  animation: none;
+  will-change: transform;
+}
+.logos.fx-marquee .logo-cell:hover img,
+.logos.fx-marquee .logo-cell:hover svg { filter: none; }
+
+@media (hover: hover) and (pointer: fine) {
+  .logo-cell { position: relative; }
+  .logo-cell::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: #f7f7f7;
+    transform: scaleY(0);
+    transform-origin: 50% 100%;
+    transition: transform .7s cubic-bezier(.19, 1, .22, 1);
+    pointer-events: none;
+  }
+  .logo-cell img,
+  .logo-cell svg {
+    position: relative;               /* paint above the wash (no offsets: no shift) */
+    transition: opacity .3s, filter .6s cubic-bezier(.22, 1, .36, 1), scale .8s cubic-bezier(.19, 1, .22, 1);
+  }
+  /* static strip (CSS loop paused by style.css on hover, or reduced motion) */
+  .logos:not(.fx-marquee) .logo-cell:hover::before { transform: scaleY(1); }
+  .logos:not(.fx-marquee) .logo-cell:hover img,
+  .logos:not(.fx-marquee) .logo-cell:hover svg { scale: 1.03; }
+  /* moving strip: the cell under the pointer, tracked by marquee.js */
+  .logos.fx-marquee .logo-cell.fx-hover::before { transform: scaleY(1); }
+  .logos.fx-marquee .logo-cell.fx-hover img,
+  .logos.fx-marquee .logo-cell.fx-hover svg { filter: brightness(.55); scale: 1.03; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .logo-cell::before,
+  .logo-cell img,
+  .logo-cell svg { transition: none !important; }
+}

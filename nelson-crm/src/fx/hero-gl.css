@@ -1,0 +1,21 @@
+/* ==========================================================================
+   fx/hero-gl — the living hero picture.
+   The <canvas> is created by fx/hero-gl.js as the first child of .hero. It
+   sits behind .nav (z-index 5) and stays transparent (opacity 0) until the
+   first WebGL frame has been drawn with every texture loaded, so the CSS
+   background of .hero is what you see until then — and whenever WebGL is
+   unavailable, fails, loses its context, or the user prefers reduced motion.
+   ========================================================================== */
+.hero > .hero-gl {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  z-index: 0;
+  pointer-events: none;
+  user-select: none;
+  opacity: 0;
+}
+.hero > .hero-gl.is-live { opacity: 1; }
+.hero > .hero-gl.is-fading { transition: opacity .7s cubic-bezier(.22, 1, .36, 1); }
