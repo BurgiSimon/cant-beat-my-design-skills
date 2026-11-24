@@ -1,0 +1,159 @@
+/* The picker: a line of cards, one per site, each with a still of its hero. Where the cards do not fit the screen
+   the script makes the line endless and moves the cards itself (.is-loop); where they fit they stand in the middle;
+   on a phone they are a strip that a swipe moves from card to card. A chosen card opens into its site: a copy of it
+   grows to fill the screen and settles on the colour that site first paints, so the site's own entrance plays on
+   from there. */
+
+@font-face {
+  font-family: "Mona Sans Variable";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 200 900;
+  font-stretch: 75% 125%;
+  src: url(assets/fonts/mona-sans-latin-wdth-normal.woff2) format("woff2-variations");
+}
+@font-face {
+  font-family: "JetBrains Mono Variable";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 800;
+  src: url(assets/fonts/jetbrains-mono-latin-wght-normal.woff2) format("woff2-variations");
+}
+
+:root {
+  --font-sans: "Mona Sans Variable", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono Variable", ui-monospace, monospace;
+  --gutter: clamp(16px, 2.5vw, 40px);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  /* The screen's own edges (a notch, round corners, a home bar): zero where there are none. */
+  --safe-t: env(safe-area-inset-top, 0px);
+  --safe-r: env(safe-area-inset-right, 0px);
+  --safe-b: env(safe-area-inset-bottom, 0px);
+  --safe-l: env(safe-area-inset-left, 0px);
+  color-scheme: dark;
+
+  /* Each site: its still, wide for a screen held sideways and tall for one held upright, and --arrive, what the
+     site paints first. The opener ends on that, so the hand-over is invisible. */
+  --mist: url("assets/stills/mist-wide.jpg");
+  --nelson: url("assets/stills/nelson-wide.jpg");
+}
+@media (orientation: portrait) {
+  :root {
+    --mist: url("assets/stills/mist-tall.jpg");
+    --nelson: url("assets/stills/nelson-tall.jpg");
+  }
+}
+/* Mist opens on its bare sky (the peaks and the copy rise into it); Nelson on the white of its preloader. */
+[data-id="mist"] {
+  --still: var(--mist);
+  --arrive: linear-gradient(transparent calc(100% - 72px), #07050d),
+    radial-gradient(62% 52% at 100% 56%, rgb(170 68 200 / 0.5), transparent 82%),
+    radial-gradient(85% 55% at 72% 60%, rgb(125 55 185 / 0.2), transparent 85%),
+    radial-gradient(42% 30% at 55% 62%, rgb(165 90 230 / 0.42), transparent 75%),
+    linear-gradient(180deg, #26115a 0%, #2a1560 17%, #2f1769 31%, #381c73 43%, #442282 51%, #58309d 58%, #6a3db2 66%);
+  --at: 62% 50%;
+}
+[data-id="nelson"] {
+  --still: var(--nelson);
+  --arrive: #fff;
+  --at: 50% 46%;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; background: #07080a; color: #f4f2ec; font-family: var(--font-sans); -webkit-font-smoothing: antialiased; }
+h1, p { margin: 0; }
+:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
+
+.picker { display: flex; flex-direction: column; min-height: 100svh; overflow-x: hidden; }
+.picker > * { transition: opacity 0.35s var(--ease-out); }
+
+/* The top: what this is on the left, what to do on the right. */
+.top {
+  position: absolute; z-index: 2; inset: 0 0 auto; display: flex; justify-content: space-between; align-items: center; gap: 16px;
+  padding: max(var(--gutter), var(--safe-t)) max(var(--gutter), var(--safe-r) + 8px) 0 max(var(--gutter), var(--safe-l) + 8px);
+  min-height: calc(max(var(--gutter), var(--safe-t)) + 36px); pointer-events: none;
+}
+.top h1, .top p, .list span, .foot { font: 500 11px var(--font-mono); letter-spacing: 0.08em; text-transform: uppercase; }
+.top p { opacity: 0.6; }
+
+/* Without the script: the cards side by side, in a strip that scrolls if they do not fit. */
+.list {
+  --card: clamp(280px, 30vw, 540px);
+  position: relative; flex: 1; display: flex; align-items: center; gap: 20px;
+  padding: 76px max(var(--gutter), var(--safe-r) + 8px) 36px max(var(--gutter), var(--safe-l) + 8px);
+  overflow-x: auto; scrollbar-width: none; user-select: none; -webkit-user-select: none;
+}
+.list::-webkit-scrollbar { display: none; }
+.list a {
+  position: relative; flex: 0 0 var(--card); height: min(70svh, calc(var(--card) * 1.36));
+  display: flex; flex-direction: column-reverse; justify-content: space-between; align-items: flex-start;
+  padding: 22px; border-radius: 14px; overflow: hidden; isolation: isolate; background: #15171a var(--still) var(--at, center) / cover no-repeat;
+  color: inherit; text-decoration: none; font-size: calc(var(--card) * 0.125); font-weight: 700; font-stretch: 125%; letter-spacing: -0.04em; line-height: 1;
+  transition: opacity 0.3s var(--ease-out);
+}
+.list a:first-child { margin-left: auto; }
+.list a:last-child { margin-right: auto; }
+.list a::before { content: ""; position: absolute; z-index: -1; inset: 0; background: linear-gradient(to top, rgb(7 8 10 / 0.72), rgb(7 8 10 / 0) 45%, rgb(7 8 10 / 0.35)); } /* over the still, under the type */
+.list a:focus-visible { outline: 1px solid rgb(244 242 236 / 0.85); outline-offset: 4px; }
+.list.has-on a:not(.is-on) { opacity: 0.5; } /* under the pointer, or with the keyboard's focus */
+.list span { opacity: 0.9; }
+.list a.is-copy { display: none; } /* the endless line's copies, only while it is endless */
+
+/* The endless line: the cards run from one edge of the screen to the other, and the script moves them. */
+.list.is-loop { padding-inline: 0; overflow-x: hidden; overflow-x: clip; touch-action: pan-y pinch-zoom; cursor: grab; }
+.list.is-loop a { margin: 0; will-change: transform; -webkit-user-drag: none; }
+.list.is-loop a.is-copy { display: flex; }
+.list.is-dragging, .list.is-dragging a { cursor: grabbing; }
+
+/* What the pointer leaves on the lit card: mist that parts, a hole torn through the clouds. */
+.trace { position: fixed; z-index: 1; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+
+/* The foot: this project's source on the left, a way to support it in the middle, its maker elsewhere on the right. */
+.foot {
+  position: relative; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 16px;
+  padding: 0 max(var(--gutter), var(--safe-r) + 8px) max(var(--gutter), var(--safe-b)) max(var(--gutter), var(--safe-l) + 8px);
+}
+.foot > :first-child { justify-self: start; }
+.foot nav { display: flex; gap: 20px; justify-self: end; }
+.foot a { color: inherit; text-decoration: none; opacity: 0.6; transition: opacity 0.2s var(--ease-out), border-color 0.2s var(--ease-out); }
+.foot a:focus-visible { opacity: 1; }
+@media (hover: hover) { .foot a:hover { opacity: 1; } }
+.foot .support { display: inline-flex; align-items: center; min-height: 32px; padding: 0 14px; border: 1px solid #ffffff3d; border-radius: 999px; opacity: 0.85; }
+@media (hover: hover) { .foot .support:hover { border-color: #ffffff99; } }
+
+/* A finger needs more to aim at than a cursor: every link in the foot is a full 44 px tall. */
+@media (pointer: coarse) {
+  .foot .support { min-height: 44px; padding: 0 16px; }
+  .foot a { display: inline-flex; align-items: center; min-height: 44px; }
+  .foot nav { gap: 6px; }
+  .foot nav a { padding: 0 8px; }
+  .foot nav a:last-child { margin-right: -8px; }
+}
+
+/* Opening a site: a copy of the card, from where the card is to the whole screen. On the way its still gives way to
+   what the site paints first. */
+.opener {
+  position: fixed; z-index: 20; inset: 0; overflow: hidden; background: var(--still) var(--at, center) / cover no-repeat;
+  transition: inset 0.6s var(--ease-out), border-radius 0.6s var(--ease-out);
+}
+.opener::after { content: ""; position: absolute; inset: 0; background: var(--arrive, #07080a); opacity: 0; transition: opacity 0.42s ease-in 0.18s; }
+.opener.is-grown::after { opacity: 1; }
+.is-opening > :not(.opener) { opacity: 0; }
+
+/* A phone: tall cards, one at a time in the middle, and a swipe goes from one to the next. */
+@media (max-width: 640px) {
+  .list { gap: 12px; padding: 76px 11vw 20px; scroll-snap-type: x mandatory; }
+  .list a { flex-basis: 78vw; height: min(64svh, 540px); padding: 18px; font-size: 2.4rem; scroll-snap-align: center; }
+  .list.has-on a:not(.is-on) { opacity: 0.55; }
+  .top p { display: none; }
+}
+
+/* A phone on its side: the line runs across a screen that is short, so the cards, the top and the foot all fit it,
+   with nothing below the fold. */
+@media (orientation: landscape) and (max-height: 500px) {
+  .list { padding-top: max(56px, var(--safe-t) + 48px); padding-bottom: 8px; }
+  .list a { height: calc(100svh - 124px - var(--safe-t) - var(--safe-b)); min-height: 140px; padding: 16px 18px; }
+  .foot { padding-bottom: max(8px, var(--safe-b)); }
+}
+
+@media (prefers-reduced-motion: reduce) { .picker > *, .list a, .foot a, .opener, .opener::after { transition: none; } }

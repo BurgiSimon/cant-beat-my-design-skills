@@ -1,11 +1,41 @@
-# Mist — marketing site
+# Can't Beat My Design Skills
 
-A complete marketing site for **Mist**, a (fictional) AI workflow-automation product, grown out of a
-single hero design: a violet sky, magenta-lit peaks and glowing mist.
+Websites built from a single design, each its own project, behind one picker.
 
 **Live:** https://burgisimon.github.io/cant-beat-my-design-skills/
 
-## What's inside
+| Site | Where |
+| --- | --- |
+| **Mist**, a marketing site for an AI workflow-automation product | [`/mist/`](https://burgisimon.github.io/cant-beat-my-design-skills/mist/) |
+| **Nelson**, a CRM landing page recreated 1:1 and given a motion layer | [`/nelson-crm/`](https://burgisimon.github.io/cant-beat-my-design-skills/nelson-crm/) |
+
+## The picker
+
+The front page ([`picker/`](picker/)) is a line of cards, one per site, each with a still of that site's hero.
+
+- **Point at a card** and it lights up with a trace in its site's own manner: on Mist, wisps of mist drift
+  across the foot and part around the pointer; on Nelson, a hole tears open in the clouds onto a night of
+  drifting ASCII, the way its hero tears its paper.
+- **Choose one** and the card grows to fill the screen, its still giving way to the colour that site paints
+  first: Mist's bare violet sky, Nelson's white preloader. The site's own entrance then plays from there, so
+  the move from picker to site has no seam.
+- While the cards fit the screen they stand in the middle. With more sites than fit, the line becomes
+  endless: it drifts when left alone, and the wheel, a drag or the arrow keys move it.
+- On a phone the cards are a strip you swipe; the one in the middle is lit.
+- Keyboard: the arrow keys go from card to card, and Enter opens one. With reduced motion there is no drift,
+  no trace and no opening animation. Without JavaScript it is still a row of links.
+
+To add a site: a link in `picker/index.html` with its own `data-id`, its `--still` and `--arrive` in
+`picker/picker.css`, and its stills from `node picker/tools/stills.mjs` (which renders every still and the
+share image; it needs Playwright). A trace of its own in `picker/picker.js` is optional.
+
+## Mist
+
+A complete marketing site for **Mist**, a (fictional) AI workflow-automation product, grown out of a
+single hero design: a violet sky, magenta-lit peaks and glowing mist. It lived at the root of the site
+until the picker took that place; its old addresses (`/signup.html` and so on) now forward to `/mist/`.
+
+### What's inside
 
 | Page | Highlights |
 | --- | --- |
@@ -16,9 +46,9 @@ single hero design: a violet sky, magenta-lit peaks and glowing mist.
 
 All forms validate on the client and show success states; there is no backend.
 
-## Also here: Nelson CRM
+## Nelson CRM
 
-A second, separate project lives in [`nelson-crm/`](nelson-crm/): a 1:1 recreation of a CRM landing-page
+A separate project lives in [`nelson-crm/`](nelson-crm/): a 1:1 recreation of a CRM landing-page
 design by [@uisabor](https://x.com/uisabor/status/2120804761528328263), then given a restrained,
 premium motion layer.
 
@@ -35,26 +65,31 @@ It is prebuilt (`python3 nelson-crm/src/build.py`); `build.mjs` only copies its 
 Requires Node 20+. No dependencies to install.
 
 ```bash
-node build.mjs --serve        # http://localhost:4321 — rebuilds and live-reloads on change
+node build.mjs --serve        # http://localhost:4321 — the picker, /mist/ and /nelson-crm/; rebuilds and live-reloads on change
 node build.mjs                # production build into ./dist
 ```
 
 `SITE_URL` (absolute URL, no trailing slash) and `BASE_PATH` (e.g. `/repo`) feed canonical URLs,
-Open Graph tags, the sitemap and the 404 page's `<base>`; the GitHub Actions workflow sets both
-automatically.
+Open Graph tags, the sitemap and the 404 page's `<base>` (Mist's own get `/mist` added); the GitHub
+Actions workflow sets both automatically.
 
 ## Structure
 
 ```
-build.mjs              zero-dependency build: includes, CSS bundle, sitemap, robots, dev server
-DESIGN.md              design system, components, motion, a11y rules and product facts
-src/
+build.mjs              zero-dependency build of every site: includes, CSS bundle, sitemap, robots, dev server
+picker/                the front page, published at the root
+  index.html           one card per site
+  picker.css, .js      the line of cards, the traces and the opening
+  assets/              stills (wide + tall per site), fonts, favicon, share image
+  tools/stills.mjs     renders the stills and the share image (Playwright; not published)
+DESIGN.md              Mist: design system, components, motion, a11y rules and product facts
+src/                   Mist, published under /mist/ (its 404 page answers for the whole site)
   pages/               one file per page; <!-- @include path --> pulls in partials
   partials/            head-common, header (+ mobile menu), footer, sections/*
   css/NN-name.css      concatenated in order into css/styles.css (tokens → base → header → sections → pages)
   js/main.js           entry; core/* runs everywhere, modules/<name>.js loads for [data-module="name"]
   assets/              self-hosted fonts, images, icons
-  static/              copied to the site root (web manifest)
+  static/              copied to the root of Mist (web manifest)
 nelson-crm/            separate prebuilt project, published under /nelson-crm/
 ```
 
@@ -63,7 +98,7 @@ nelson-crm/            separate prebuilt project, published under /nelson-crm/
 Every push to `main` runs `.github/workflows/pages.yml`: it builds with Node and publishes `dist/` to
 GitHub Pages (Settings → Pages → Source: GitHub Actions).
 
-## Quality
+## Quality (Mist)
 
 - Progressive enhancement: everything readable without JavaScript; widgets are keyboard-complete with
   correct ARIA; `prefers-reduced-motion` turns all motion off.
@@ -77,8 +112,10 @@ GitHub Pages (Settings → Pages → Source: GitHub Actions).
 
 ## Credits
 
-- Type: [Inter](https://github.com/rsms/inter) and [DM Sans](https://github.com/googlefonts/dm-fonts),
-  both under the SIL Open Font License (licences in `src/assets/fonts/`).
+- Type: [Inter](https://github.com/rsms/inter) and [DM Sans](https://github.com/googlefonts/dm-fonts) for
+  Mist (licences in `src/assets/fonts/`); [Mona Sans](https://github.com/github/mona-sans) and
+  [JetBrains Mono](https://github.com/JetBrains/JetBrainsMono) for the picker (licences in
+  `picker/assets/fonts/`). All under the SIL Open Font License.
 - Landscape art: adapted from a wallpaper published on wallpapers.com (sky replaced, birds removed,
   mist added). Check its licence before using this site commercially.
 - Mist, its customers, people, quotes and numbers are fictional. The investor line in the hero comes
