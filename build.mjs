@@ -1,22 +1,27 @@
 #!/usr/bin/env node
 /**
- * Mist — zero-dependency static site build.
+ * Zero-dependency static build for every site in this repo.
  *
- *   node build.mjs                  build ./src into ./dist
+ *   node build.mjs                  build into ./dist
  *   node build.mjs --out <dir>      build into another directory
  *   node build.mjs --serve [port]   build, serve on http://localhost:<port> (default 4321),
  *                                   rebuild on change and live-reload the browser
  *
- * Pages live in src/pages/*.html and may include partials from src/partials with
+ * What goes where:
+ *   picker/      →  /             the picker: one card per site (picker/tools stays behind)
+ *   src/         →  /mist/        the Mist site (its 404.html goes to the root: Pages has one per site)
+ *   nelson-crm/  →  /nelson-crm/  the prebuilt Nelson CRM project, runtime files only
+ * Mist used to live at the root, so each of its old page URLs gets a small redirect into /mist/.
+ *
+ * Mist pages live in src/pages/*.html and may include partials from src/partials with
  *   <!-- @include sections/pricing.html -->
  * CSS files in src/css are concatenated in filename order into css/styles.css.
- * src/js, src/assets and src/static are copied as-is (src/static → site root).
- * The prebuilt Nelson CRM project (nelson-crm/) is published as-is under /nelson-crm/.
+ * src/js, src/assets and src/static are copied as-is (src/static → the root of Mist).
  *
  * Tokens replaced in pages and static text files:
- *   {{SITE_URL}}  absolute site URL without trailing slash  (env SITE_URL)
- *   {{BASE}}      URL path the site is served under, with trailing slash (env BASE_PATH)
- *   {{VERSION}}   content hash of CSS + JS, for cache-busting
+ *   {{SITE_URL}}  absolute URL of the page's own site, without trailing slash (env SITE_URL, + /mist for Mist)
+ *   {{BASE}}      URL path that site is served under, with trailing slash (env BASE_PATH, + mist/ for Mist)
+ *   {{VERSION}}   content hash of that site's CSS + JS, for cache-busting
  *   {{YEAR}}      current year
  */
 import { promises as fs, watch } from "node:fs";
@@ -27,6 +32,9 @@ import { fileURLToPath } from "node:url";
 
 const ROOT = path.dirname(fileURLToPath(import.meta.url));
 const SRC = path.join(ROOT, "src");
+const PICKER = path.join(ROOT, "picker");
+const PICKER_PRIVATE = new Set(["tools"]); // kept in the repo, not published
+const MIST = "mist"; // the folder Mist is published under
 const NELSON = path.join(ROOT, "nelson-crm");
 const NELSON_PUBLIC = ["index.html", "recreation.html", "assets", "fonts", "vendor"];
 
@@ -133,11 +141,32 @@ function replaceTokens(text, tokens) {
 
 const LIVE_RELOAD = `<script>(()=>{const s=new EventSource("/__livereload");s.onmessage=()=>location.reload();})();</script>`;
 
+const hashOf = (text) => crypto.createHash("sha256").update(text).digest("hex").slice(0, 10);
+const withLiveReload = (html) => (SERVE ? html.replace("</body>", `${LIVE_RELOAD}\n</body>`) : html);
+
 async function build() {
   const started = Date.now();
   warnings.length = 0;
   await fs.rm(OUT, { recursive: true, force: true });
   await fs.mkdir(OUT, { recursive: true });
+  const YEAR = String(new Date().getFullYear());
+
+  // ── The picker, at the root ──
+  const pickerFiles = (await listFiles(PICKER)).filter((f) => !PICKER_PRIVATE.has(path.relative(PICKER, f).split(path.sep)[0]));
+  const pickerCode = (
+    await Promise.all(pickerFiles.filter((f) => /\.(css|js)$/.test(f)).map((f) => fs.readFile(f, "utf8")))
+  ).join("\n");
+  const pickerTokens = { SITE_URL, BASE, VERSION: hashOf(pickerCode), YEAR };
+  for (const file of pickerFiles) {
+    const dest = path.join(OUT, path.relative(PICKER, file));
+    await fs.mkdir(path.dirname(dest), { recursive: true });
+    if (file.endsWith(".html")) await fs.writeFile(dest, withLiveReload(replaceTokens(await fs.readFile(file, "utf8"), pickerTokens)));
+    else await fs.copyFile(file, dest);
+  }
+
+  // ── Mist, under /mist/ ──
+  const MIST_OUT = path.join(OUT, MIST);
+  const MIST_URL = `${SITE_URL}/${MIST}`;
 
   // CSS bundle
   const cssFiles = (await listFiles(path.join(SRC, "css"))).filter((f) => f.endsWith(".css"));
@@ -146,21 +175,43 @@ async function build() {
   );
   const bundle = `/*! Mist — built ${new Date().toISOString().slice(0, 10)} */\n${cssChunks.join("\n")}`;
   const css = SERVE ? bundle : minifyCss(bundle);
-  await fs.mkdir(path.join(OUT, "css"), { recursive: true });
-  await fs.writeFile(path.join(OUT, "css", "styles.css"), css);
+  await fs.mkdir(path.join(MIST_OUT, "css"), { recursive: true });
+  await fs.writeFile(path.join(MIST_OUT, "css", "styles.css"), css);
 
   // JS, assets, static
   const jsFiles = await listFiles(path.join(SRC, "js"));
   const jsSource = (await Promise.all(jsFiles.map((f) => fs.readFile(f, "utf8")))).join("\n");
-  const VERSION = crypto.createHash("sha256").update(css + jsSource).digest("hex").slice(0, 10);
-  const tokens = { SITE_URL, BASE, VERSION, YEAR: String(new Date().getFullYear()) };
+  const tokens = { SITE_URL: MIST_URL, BASE: `${BASE}${MIST}/`, VERSION: hashOf(css + jsSource), YEAR };
 
-  await copyDir(path.join(SRC, "js"), path.join(OUT, "js"));
-  await copyDir(path.join(SRC, "assets"), path.join(OUT, "assets"));
-  await copyDir(path.join(SRC, "static"), OUT, (text) => replaceTokens(text, tokens));
+  await copyDir(path.join(SRC, "js"), path.join(MIST_OUT, "js"));
+  await copyDir(path.join(SRC, "assets"), path.join(MIST_OUT, "assets"));
+  await copyDir(path.join(SRC, "static"), MIST_OUT, (text) => replaceTokens(text, tokens));
 
-  // Nelson CRM: a separate, prebuilt project (see nelson-crm/README.md) published as-is under /nelson-crm/.
-  // Only its runtime files are copied; its sources stay in the repo.
+  // Pages. The 404 page answers for the whole site, so it goes to the root; its <base> points it back into Mist.
+  const pages = (await listFiles(path.join(SRC, "pages"))).filter((f) => f.endsWith(".html"));
+  for (const page of pages) {
+    const name = path.basename(page);
+    const html = replaceTokens(await resolveIncludes(await fs.readFile(page, "utf8"), [page]), tokens);
+    await fs.writeFile(path.join(name === "404.html" ? OUT : MIST_OUT, name), withLiveReload(html));
+  }
+
+  // Mist's old URLs at the root (the root is the picker now) move on to the same page in /mist/, query and hash
+  // included (signup.html?plan=team).
+  for (const name of pages.map((p) => path.basename(p)).filter((n) => n !== "index.html" && n !== "404.html")) {
+    const to = `${MIST}/${name}`;
+    await fs.writeFile(
+      path.join(OUT, name),
+      `<!doctype html>\n<html lang="en">\n<head>\n  <meta charset="utf-8" />\n  <title>Moved — Mist</title>\n` +
+        `  <meta name="robots" content="noindex" />\n  <link rel="canonical" href="${MIST_URL}/${name}" />\n` +
+        `  <script>location.replace(${JSON.stringify(to)} + location.search + location.hash);</script>\n` +
+        `  <meta http-equiv="refresh" content="0; url=${to}" />\n</head>\n` +
+        `<body><p>This page has moved to <a href="${to}">${to}</a>.</p></body>\n</html>\n`
+    );
+  }
+
+  // ── Nelson CRM, under /nelson-crm/ ──
+  // A separate, prebuilt project (see nelson-crm/README.md) published as-is. Only its runtime files are copied;
+  // its sources stay in the repo.
   for (const item of NELSON_PUBLIC) {
     const from = path.join(NELSON, item);
     if (!(await exists(from))) continue;
@@ -172,21 +223,17 @@ async function build() {
     }
   }
 
-  // Pages
-  const pages = (await listFiles(path.join(SRC, "pages"))).filter((f) => f.endsWith(".html"));
-  for (const page of pages) {
-    let html = await resolveIncludes(await fs.readFile(page, "utf8"), [page]);
-    html = replaceTokens(html, tokens);
-    if (SERVE) html = html.replace("</body>", `${LIVE_RELOAD}\n</body>`);
-    await fs.writeFile(path.join(OUT, path.basename(page)), html);
-  }
-
   // Sitemap + robots
   const today = new Date().toISOString().slice(0, 10);
-  const urls = pages
-    .map((p) => path.basename(p))
-    .filter((name) => name !== "404.html")
-    .map((name) => (name === "index.html" ? `${SITE_URL}/` : `${SITE_URL}/${name}`));
+  const urls = [
+    `${SITE_URL}/`,
+    ...pages
+      .map((p) => path.basename(p))
+      .filter((name) => name !== "404.html")
+      .map((name) => (name === "index.html" ? `${MIST_URL}/` : `${MIST_URL}/${name}`)),
+    `${SITE_URL}/nelson-crm/`,
+    `${SITE_URL}/nelson-crm/recreation.html`,
+  ];
   const sitemap =
     `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
     urls.map((u) => `  <url><loc>${u}</loc><lastmod>${today}</lastmod></url>`).join("\n") +
@@ -196,7 +243,7 @@ async function build() {
   await fs.writeFile(path.join(OUT, ".nojekyll"), "");
 
   for (const w of warnings) console.warn(`  ⚠ ${w}`);
-  console.log(`✓ built ${pages.length} pages → ${path.relative(ROOT, OUT) || OUT} in ${Date.now() - started}ms`);
+  console.log(`✓ built the picker and ${pages.length} Mist pages → ${path.relative(ROOT, OUT) || OUT} in ${Date.now() - started}ms`);
 }
 
 const MIME = {
@@ -229,6 +276,10 @@ function serve() {
     let file = path.join(OUT, decodeURIComponent(url.pathname));
     if (!file.startsWith(OUT)) return res.writeHead(403).end();
     if (url.pathname.endsWith("/")) file = path.join(file, "index.html");
+    else if ((await exists(file)) && (await fs.stat(file)).isDirectory()) {
+      res.writeHead(301, { Location: `${url.pathname}/${url.search}` }).end(); // as Pages does: /mist → /mist/
+      return;
+    }
     let status = 200;
     if (!(await exists(file))) {
       status = 404;
@@ -240,7 +291,7 @@ function serve() {
   server.listen(PORT, () => console.log(`→ serving ${path.relative(ROOT, OUT)} on http://localhost:${PORT}`));
 
   let timer;
-  watch(SRC, { recursive: true }, () => {
+  const rebuild = () => {
     clearTimeout(timer);
     timer = setTimeout(async () => {
       try {
@@ -250,7 +301,9 @@ function serve() {
         console.error(err);
       }
     }, 120);
-  });
+  };
+  watch(SRC, { recursive: true }, rebuild);
+  watch(PICKER, { recursive: true }, rebuild);
 }
 
 await build();

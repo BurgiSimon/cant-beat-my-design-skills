@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#07080a" />
+  <meta name="color-scheme" content="dark" />
+  <title>Can’t Beat My Design Skills — pick a site</title>
+  <meta name="description" content="Websites built from a single design: Mist, an AI workflow-automation marketing site, and Nelson, a CRM landing page recreated 1:1 and given a motion layer." />
+  <link rel="canonical" href="{{SITE_URL}}/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="{{SITE_URL}}/" />
+  <meta property="og:title" content="Can’t Beat My Design Skills" />
+  <meta property="og:description" content="Websites built from a single design. Pick one and step in." />
+  <meta property="og:image" content="{{SITE_URL}}/assets/og.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+  <link rel="preload" href="assets/fonts/mona-sans-latin-wdth-normal.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="stylesheet" href="picker.css?v={{VERSION}}" />
+  <script type="module" src="picker.js?v={{VERSION}}"></script>
+</head>
+<body class="picker">
+  <canvas class="trace" aria-hidden="true"></canvas>
+  <header class="top">
+    <h1>Can’t beat my design skills</h1>
+    <p>Pick a site</p>
+  </header>
+  <!-- One card per site. To add a site: a link here with its own data-id, its stills in assets/stills and
+       its --still / --arrive in picker.css; a trace of its own in picker.js is optional. -->
+  <main class="list" aria-label="Sites">
+    <a href="mist/" data-id="mist">Mist <span>AI workflow automation · Marketing site</span></a>
+    <a href="nelson-crm/" data-id="nelson">Nelson <span>All-in-one CRM · Recreation in motion</span></a>
+  </main>
+  <footer class="foot">
+    <a href="https://github.com/BurgiSimon/cant-beat-my-design-skills">Source code</a>
+    <a class="support" href="https://ko-fi.com/chliburgi">Support me</a>
+    <nav aria-label="Elsewhere"><a href="https://github.com/BurgiSimon">GitHub</a><a href="https://x.com/SimpleDev101">X</a></nav>
+  </footer>
+</body>
+</html>
