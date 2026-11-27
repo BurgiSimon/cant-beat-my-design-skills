@@ -2,7 +2,7 @@
 // the matrix and the traffic grid, the performance bars, the dot display, the live counters and the local time.
 // Each runs only while it is on screen.
 
-import { calm, on, once, emit, whenVisible, loop, fmt, ScrollTrigger } from './core.js';
+import { calm, motion, on, once, emit, whenVisible, loop, fmt, ScrollTrigger } from './core.js';
 import * as V from './viz.js';
 
 // A status line for screen readers: emptied first, so the same words said twice are heard twice.
@@ -48,12 +48,12 @@ export function init() {
       say(status, 'Alarm cleared.');
     });
     // the face in the card spins the wheel for those who can't drag it. Where there is no wheel to turn (no WebGL,
-    // or reduced motion), it raises the alarm itself.
+    // or reduced motion), or it can't turn now (motion paused), it raises the alarm itself.
     let wheel = !calm;
     once('hero:gl', (d) => { wheel = !!d && !calm; });
     let busy = false;
     card.querySelector('[data-spin]')?.addEventListener('click', () => {
-      if (wheel) { emit('vault:spin'); return; }
+      if (wheel && !motion.paused) { emit('vault:spin'); return; }
       if (busy) return;
       busy = true; emit('vault:open');
       setTimeout(() => { emit('vault:close'); busy = false; }, 4200);
@@ -76,7 +76,7 @@ export function init() {
       say(told, `Alert raised on the ${what ? what.textContent : 'matrix'}.`); // what it does is drawn
     });
     on('tab', ({ index }) => { tl.start(14 * 60 + 27 + index * 41); dg.jump(); });
-    if (!calm) setInterval(() => { if (shown) ping(); }, 5200);
+    if (!calm) setInterval(() => { if (shown && !motion.paused) ping(); }, 5200);
   }
 
   // ---- performance bars, grown when they come into view ----
@@ -104,7 +104,7 @@ export function init() {
     if (!calm) running(lc, (() => { let acc = 0; return (dt) => { acc += dt; if (acc > 0.35) { acc = 0; n += 3 + Math.floor(Math.random() * 18); lc.textContent = fmt(n); } }; })());
   }
 
-  // ---- local time in the footer ----
+  // ---- local time in the footer (information, not motion: it keeps time while motion is paused) ----
   const lt = document.querySelector('[data-local-time]');
   if (lt) {
     const set = () => { lt.textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); };

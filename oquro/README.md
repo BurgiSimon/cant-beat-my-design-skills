@@ -43,21 +43,33 @@ picture into its own canvas, so the page holds two WebGL contexts (plus the wate
 | `scenes.js` | The garden behind the layer cards, the laptop on its rock (its screen is a canvas: the wordmark, a model of signals, a shield), the chain link in the sand |
 | `reveals.js` | Headings rise word by word out of their lines, the statement lights as you read it (to the shot's white-then-grey), numbers count, the checklist ticks itself, the performance card's frame draws, the footer's word rises letter by letter and its letters lift under the pointer |
 | `field.js` | Behind the call to action: the vault's wheel in a field of dots, turning with the scroll, the pointer a lens |
-| `nav.js`, `ui.js` | A header that frosts once the page moves, steps aside while you read down, turns light over the dark sections and marks where you are; rolling labels, magnetic buttons, cards that tilt with a light across them, a cursor label over what you can drag, gliding anchors, an honest sign-up form |
+| `nav.js`, `ui.js` | A header that frosts once the page moves, steps aside while you read down, turns light over the dark sections and marks where you are; rolling labels, magnetic buttons, cards that tilt with a light across them, a cursor label over what you can drag, gliding anchors, an honest sign-up form, the Pause motion switch |
 
 ## Quality
 
 - Every effect resolves to the resting design. Under `prefers-reduced-motion` (or `?reduced` in the URL) nothing
   animates and the 3D is drawn once. Without WebGL (or with `?nogl`) the ring, the door and the mound are drawn in
-  CSS gradients; without JavaScript the page reads in full.
+  CSS gradients; without JavaScript the page reads in full. `?still` skips the hero's entrance.
+- **Pause motion**, a switch by "Back to top" in the footer (and first in the tab order after the skip link), stops
+  everything that moves on its own: the 3D, the water, the cards' live visuals and counters, the monitor, the CTA's
+  field, the accordion's and the tabs' autoplay, the CSS loops (`html.is-paused`). Each canvas keeps its last frame,
+  and draws a still one after a resize. The choice is remembered (`localStorage`), so the next visit arrives at rest,
+  without the intro. Scrolling, the local time, and what answers a click or the pointer (hover effects, a tab or a
+  layer someone picks) still work. Under reduced motion there is nothing to pause, and without JavaScript the CSS loops
+  hold from the start; in both the switch is hidden. In code: `motion.paused`, `setPaused()` and the `motion` event
+  in `core.js`; every endless loop goes through its `loop()`, which honours it.
 - The 3D is built in slices, handing the main thread back between them, and its shaders compile in parallel where the
-  browser can, so the intro keeps turning. Every canvas and loop runs only while on screen and the tab is visible.
-- Keyboard-complete: skip link, a focus ring everywhere, an accordion and tabs with their ARIA and arrow keys (each holds
-  while the pointer or focus is in it, and has a pause button), and the vault can be opened without dragging; screen
-  readers hear the vault's alarm and the real numbers while the counters run.
+  browser can, so the intro keeps turning. Where frames are too slow for that (a weak or software GPU), the small
+  scenes are built in one go instead. Every canvas and loop runs only while on screen and the tab is visible.
+- Keyboard-complete: skip link, then the Pause motion switch (shown when focused), a focus ring everywhere, an
+  accordion and tabs with their ARIA and arrow keys (each holds while the pointer or focus is in it, and has its own
+  pause button), and the vault can be opened without dragging (the face in the threat card; with motion paused it
+  raises the alarm itself); screen readers hear the vault's alarm and the real numbers while the counters run.
+  Without JavaScript all four accordion panels show, and their buttons say so.
 - From 360 px to wide screens with no horizontal scroll: the hero is one scaled picture (1440 × 969 design px fitted
-  to the screen) on landscape screens and a column on phones and upright tablets; the 3D follows a CSS anchor, so CSS
-  alone decides the composition.
+  to the screen) on landscape screens, with the copy and the threat card stepping into a row beneath it in short,
+  narrow windows (761-1000 × 501-640 px, where a desktop zoomed to 150-200 % lands, so their text grows with zoom),
+  and a column on phones and upright tablets; the 3D follows a CSS anchor, so CSS alone decides the composition.
 
 ## Credits
 

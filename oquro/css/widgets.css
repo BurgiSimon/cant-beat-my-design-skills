@@ -1,9 +1,11 @@
 /* The live cards. Each is drawn in em, with 1em = 10 design px, so a card scales by its font-size alone. */
 
 /* A tone is a glow (--c0, its 70% alpha baked in so no color-mix() is needed) over a centre (--c1) that falls to a
-   mid tone (--c2) at the edges' middles and to near black (--c3) in the corners, as in the shot. */
+   mid tone (--c2) at the edges' middles and to near black (--c3) in the corners, as in the shot. --ch (for halos) and
+   --cg (for the glass) are its darks as bare channels, to take an alpha in rgb(var(--ch) / a). Its position: relative
+   also holds for the hero's threat card, which hero.css places from its static spot (the stage's top left). */
 .widget {
-  --c0: #ff6b5fb3; --c1: #b52a26; --c2: #5a1514; --c3: #0b0303;
+  --c0: #ff6b5fb3; --c1: #b52a26; --c2: #5a1514; --c3: #0b0303; --ch: 40 6 6; --cg: 80 16 14;
   position: relative; display: block; overflow: hidden; border-radius: 1.45em; color: #fff; isolation: isolate;
   background:
     radial-gradient(70% 55% at 50% 47%, var(--c0), transparent 72%),
@@ -16,13 +18,13 @@
   background: radial-gradient(60% 50% at var(--gx, 30%) var(--gy, 0%), rgb(255 255 255 / 0.16), transparent 70%);
   mix-blend-mode: soft-light; opacity: var(--glow, 0.8);
 }
-.widget--red { --c0: #ff6a5fb3; --c1: #a82522; --c2: #4c100f; --c3: #0b0303; }
+.widget--red { --c0: #ff6a5fb3; --c1: #a82522; --c2: #4c100f; --c3: #0b0303; --ch: 40 6 6; --cg: 80 16 14; }
 .widget--threat { box-shadow: inset 0 0 0 0.1em rgb(255 255 255 / 0.12), 0 0 0 0.15em rgb(20 10 10 / 0.55), 0 2.4em 4em -1.6em rgb(0 0 0 / 0.45); }
-.widget--green { --c0: #4ee26ab3; --c1: #179a33; --c2: #0e6821; --c3: #03100a; }
-.widget--purple { --c0: #f0a6ffb3; --c1: #b351e6; --c2: #5f1d8f; --c3: #0b0510; }
-.widget--blue { --c0: #8fd2ffb3; --c1: #2d86d6; --c2: #134a86; --c3: #020a14; }
-.widget--amber { --c0: #ffd27ab3; --c1: #e08a1e; --c2: #7c430b; --c3: #110802; }
-.widget--teal { --c0: #9ee6e2b3; --c1: #2f9a98; --c2: #145555; --c3: #031010; }
+.widget--green { --c0: #4ee26ab3; --c1: #179a33; --c2: #0e6821; --c3: #03100a; --ch: 2 30 10; --cg: 8 72 24; }
+.widget--purple { --c0: #f0a6ffb3; --c1: #b351e6; --c2: #5f1d8f; --c3: #0b0510; --ch: 30 6 50; --cg: 80 24 125; }
+.widget--blue { --c0: #8fd2ffb3; --c1: #2d86d6; --c2: #134a86; --c3: #020a14; --ch: 4 22 48; --cg: 16 62 116; }
+.widget--amber { --c0: #ffd27ab3; --c1: #e08a1e; --c2: #7c430b; --c3: #110802; --ch: 44 18 0; --cg: 96 46 4; }
+.widget--teal { --c0: #9ee6e2b3; --c1: #2f9a98; --c2: #145555; --c3: #031010; --ch: 2 30 30; --cg: 10 62 62; }
 
 .widget__title { position: relative; z-index: 2; margin: 1.3em 0 0; text-align: center; font-size: 2em; font-weight: 700; letter-spacing: -0.01em; line-height: 1.1; }
 .widget__glass {
@@ -111,8 +113,10 @@
 .panel { position: relative; border-radius: 1.2em; padding: 1.6em 1.6em 1.3em; color: #fff; }
 .panel--dark { background: linear-gradient(180deg, #232323, #1b1b1b); box-shadow: inset 0 0 0 0.1em rgb(255 255 255 / 0.07), 0 1.6em 3em -1.4em rgb(0 0 0 / 0.55); }
 .panel--glass { background: linear-gradient(180deg, rgb(30 45 52 / 0.5), rgb(20 30 36 / 0.62)); box-shadow: inset 0 0 0 0.1em rgb(255 255 255 / 0.12), inset 0 0.1em 0 rgb(255 255 255 / 0.12); backdrop-filter: blur(1.4em); -webkit-backdrop-filter: blur(1.4em); }
-.panel__head { display: flex; align-items: center; justify-content: space-between; gap: 1em; min-height: 2.6em; }
-.panel__head strong { font-size: 1.6em; font-weight: 600; letter-spacing: -0.01em; }
+/* The title stays on one line: where the card is narrow (901-1040 px) it gives up size to the room left beside the
+   Alert button (4.8em) and the gap, rather than wrap. 11.6 is the longest title's width in its own em. */
+.panel__head { display: flex; align-items: center; justify-content: space-between; gap: 1em; min-height: 2.6em; container-type: inline-size; }
+.panel__head strong { font-size: 1.6em; font-size: min(1.6em, (100cqw - 5.8em) / 11.6); font-weight: 600; letter-spacing: -0.01em; }
 .alert-btn {
   height: 2.5em; padding: 0 1em; border-radius: 0.6em; background: #ef5350; color: #fff; font-size: 1.12em; font-weight: 500;
   box-shadow: 0 0 0 0 rgb(239 83 80 / 0.5); transition: background-color 0.3s;

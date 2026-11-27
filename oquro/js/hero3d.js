@@ -2,7 +2,7 @@
 // and moss crumbling off the first letter of the word behind. All procedural (see gl/kit.js). The wheel can be
 // dragged round; turn it far enough and the bolts draw back and the door swings open, which the threat card notices.
 
-import { calm, fine, gl, dpr, emit, on, once, pointer, whenVisible, loop, clamp, damp, lerp, seeded, scroll } from './core.js';
+import { calm, motion, fine, gl, dpr, emit, on, once, pointer, whenVisible, loop, clamp, damp, lerp, seeded, scroll } from './core.js';
 
 export async function init() {
   const canvas = document.querySelector('[data-hero-gl]');
@@ -214,7 +214,7 @@ export async function init() {
       else { px = x0 + w * (0.94 + 0.16 * c.side); py = lr.top + h * (0.07 + 0.18 * c.off); }
       toWorld(px, py, cr, c.home);
       c.home.z += (c.drift - 0.5) * 0.06 + (c.loose ? 0.1 : 0.03);
-      if (!c.pos.lengthSq() || calm) c.pos.copy(c.home);   // (nothing springs it home when nothing moves)
+      if (!c.pos.lengthSq() || calm || motion.paused) c.pos.copy(c.home);   // (nothing springs it home when nothing moves)
     }
   }
 
@@ -224,10 +224,16 @@ export async function init() {
   // again whenever its size changes): the frame and the pointer read it without making the browser lay out again
   const cbox = { left: 0, top: 0, width: 1, height: 1 }; let boxY = 0;
   const rect = () => { cbox.top = boxY - scroll.y; return cbox; };
-  // the cost follows the machine: start sharp and, while the frames run long, step down a rung at a time, never back
-  // up: the pixel ratio to 1, then thinner moss and grass, then below 1, then a smaller shadow map. A rung that costs
-  // detail waits for two slow spells in a row, and nothing counts until the intro has settled (shaders warming up).
-  const quality = { dpr: dpr(low ? 1.25 : 1.75), rung: 0, n: 0, sum: 0, slow: 0, on: false };
+  // the cost follows the machine: start sharp and, while the hero's frames are what holds the page back, step down a
+  // rung at a time, never back up: the pixel ratio to 1, then thinner moss and grass, then below 1, then a smaller
+  // shadow map. What counts is what a frame costs, not the pace frames come at: a 30 fps cap (Low Power Mode, Energy
+  // Saver, a 30 Hz screen) or a busy main thread spaces them out however light they are. So a spell of frames that
+  // come late (median interval over 24 ms, or clearly over the pace the page was last found to keep anyway) is put
+  // to the test: six frames skip the draw, six draw, and only if the bare ones came clearly sooner is the hero the
+  // cost; if not, that pace is the page's own, and is left alone. The hero's own work (its script and the draw's
+  // submission) counts at once when it fills most of a 60 Hz frame. A rung that costs detail waits for two slow
+  // spells in a row, and nothing counts until the intro has settled (shaders warming up).
+  const quality = { dpr: dpr(low ? 1.25 : 1.75), rung: 0, on: false, slow: 0, at: 0, iv: [], sum: 0, work: [], testing: false, tested: [], pace: 0 };
   once('intro:done', () => setTimeout(() => { quality.on = true; }, 2500));
   const rungs = [
     () => {
@@ -235,19 +241,46 @@ export async function init() {
       grass.geometry.instanceCount = Math.round(grass.geometry.instanceCount * 0.45);   // placed at random: thins evenly
       clumpsMesh.count = Math.round(CLUMPS * 0.6);
     },
+    // (below 1 only for a cost the test has pinned on the hero, after the thinning: pixels are what the stone and
+    // moss shaders cost most by, and the antialiasing keeps 0.75 clean)
     () => { quality.dpr = Math.min(quality.dpr, 0.75); fit(); },
     () => { if (sun.shadow.mapSize.x > 1024) { sun.shadow.mapSize.set(1024, 1024); sun.shadow.map?.dispose(); sun.shadow.map = null; } },
   ];
-  const watchFrame = (ms) => {
-    if (calm || !quality.on || quality.rung >= rungs.length) return;
-    quality.n++; quality.sum += ms;
-    if (quality.n < 45) return;
-    const slow = quality.sum / quality.n > 24;
-    quality.n = 0; quality.sum = 0; quality.slow = slow ? quality.slow + 1 : 0;
+  const median = (a) => [...a].sort((x, y) => x - y)[a.length >> 1];
+  const stepDown = () => {
     const ratio = renderer.getPixelRatio();
-    if (slow && ratio > 1) { quality.dpr = Math.max(1, Math.min(quality.dpr, ratio) - 0.35); fit(); quality.slow = 0; }
-    else if (quality.slow >= 2) { rungs[quality.rung++](); quality.slow = 0; }
+    if (ratio > 1) { quality.dpr = Math.max(1, Math.min(quality.dpr, ratio) - 0.35); fit(); quality.slow = 0; }
+    else if (++quality.slow >= 2) { rungs[quality.rung++](); quality.slow = 0; }
   };
+  const restart = () => { quality.at = 0; quality.iv.length = 0; quality.sum = 0; quality.work.length = 0; quality.testing = false; };
+  // asked at the start of each moving frame; true: skip this frame's draw (a test is on). Intervals are read off the
+  // clock, not the loop's dt, which is capped at 50 ms (and smoothed by GSAP after a long gap).
+  const watchFrame = (now) => {
+    const iv = quality.at ? now - quality.at : 0; quality.at = now;
+    if (calm || !quality.on || quality.rung >= rungs.length || !iv || iv > 5000) return false;   // (a gap: the loop stopped)
+    if (quality.testing) {
+      // the frame that began the test and the next five go bare, the next six draw: each half judged on its last
+      // four intervals (the GPU may still be catching up at the switch), side by side, so a spell that has just
+      // passed (a build, a hitch) reads as nothing
+      const k = quality.tested.push(iv);
+      if (k < 12) return k < 6;
+      quality.testing = false;
+      const bare = median(quality.tested.slice(2, 6)), full = median(quality.tested.slice(8));
+      if (full > 24 && bare < full * 0.75) stepDown();
+      else { quality.pace = full > 24 ? full : 0; quality.slow = 0; }
+      return false;
+    }
+    quality.iv.push(iv); quality.sum += iv;
+    if (quality.iv.length < 45 && !(quality.iv.length >= 10 && quality.sum > 3000)) return false;   // 45 frames, or 3 s
+    const late = median(quality.iv), work = quality.work.length ? median(quality.work) : 0;
+    quality.iv.length = 0; quality.sum = 0; quality.work.length = 0;
+    if (quality.pace && late < quality.pace * 0.8) quality.pace = 0;   // the page is quicker again: forget its old pace
+    if (work > 12) { stepDown(); return false; }
+    if (late > Math.max(24, quality.pace * 1.25) && !wheel.dragging) { quality.testing = true; quality.tested.length = 0; return true; }
+    quality.slow = 0;
+    return false;
+  };
+  const frameCost = (ms) => { if (quality.on && !quality.testing && quality.rung < rungs.length && !calm) quality.work.push(ms); };
   function fit() {
     const r = canvas.getBoundingClientRect();
     W = Math.max(1, r.width); H = Math.max(1, r.height);
@@ -286,12 +319,12 @@ export async function init() {
       wheel.last = a; wheel.a += da; wheel.v = da * 60; wheel.turned += Math.abs(da);
       return;
     }
-    const over = overWheel(x, y);
+    const over = !motion.paused && overWheel(x, y);   // paused, the wheel can't turn: no grab
     if (over !== hovering) { hovering = over; canvas.classList.toggle('is-grab', over); emit('cursor', over ? 'Drag to spin' : null); }
   });
   canvas.addEventListener('pointerdown', (e) => {
     const r = canvas.getBoundingClientRect(); const x = e.clientX - r.left, y = e.clientY - r.top;
-    if (!overWheel(x, y)) return;
+    if (motion.paused || !overWheel(x, y)) return;   // (a turn nothing shows would open the vault on resume)
     wheel.dragging = true; wheel.last = angleAt(x, y); wheel.turned = 0;
     canvas.setPointerCapture(e.pointerId); canvas.classList.add('is-grabbing'); emit('cursor', 'Keep turning');
     e.preventDefault();
@@ -306,13 +339,15 @@ export async function init() {
   const look = { x: 0, y: 0 };
   const pushWorld = new THREE.Vector3();
   const groundPlane = new THREE.Plane(new THREE.Vector3(0, 0, 1), -0.6);
-  const still = calm || /[?&]still/.test(location.search);
+  const still = calm || motion.paused || /[?&]still/.test(location.search);   // paused: nothing would rise it
   let intro = still ? 1 : 0;
   once('hero:rise', () => { intro = 1; });
   const rise = { v: still ? 1 : 0 };
 
   let t = 0;
   function frame(dt) {
+    const t0 = performance.now();
+    const held = dt > 0 && watchFrame(t0);   // a test may hold this draw back (see quality); a still frame (dt 0) never
     t += dt; shared.uTime.value = t;
     // the intro rises the ring and the plants up out of the mound
     rise.v = damp(rise.v, intro, 2.2, dt);
@@ -387,9 +422,9 @@ export async function init() {
       clumpsMesh.instanceMatrix.needsUpdate = true;
     }
 
-    const t0 = performance.now();
+    if (held) return;
     renderer.render(scene, camera);
-    if (dt > 0) watchFrame(Math.max(dt * 1000, performance.now() - t0));
+    if (dt > 0) frameCost(performance.now() - t0);
   }
 
   // the light inside the vault, seen when the door swings
@@ -405,25 +440,37 @@ export async function init() {
   if (renderer.compileAsync && renderer.extensions.has('KHR_parallel_shader_compile')) await renderer.compileAsync(scene, camera);
   else renderer.compile(scene, camera);
   // refit on a real change of size or place: the canvas, and the anchor (in a short window the canvas holds at the
-  // hero's min-height while the ring still moves). Scrolled away, the refit waits until the hero is back.
+  // hero's min-height while the ring still moves). Scrolled away, the refit waits until the hero is back. A fit
+  // clears the canvas, and an observer runs after the frame's loop has drawn (or with motion paused, none will): so
+  // a still frame (dt 0) is drawn at once, or the frame would show the hero blank.
   let shown = false, stale = false;
   whenVisible(hero, (v) => {
     shown = v;
-    if (v && stale) { stale = false; fit(); }
+    if (v && stale) { stale = false; fit(); if (!calm) frame(0); }
+    if (v && !run.on) restart();   // (the gap is no frame's interval)
     run.set(v && !calm);
     if (v && calm) frame(0.016);
   }, '0px');
-  const ro = new ResizeObserver(() => { if (!shown) { stale = true; return; } fit(); if (calm) frame(0); });
+  const ro = new ResizeObserver(() => { if (!shown) { stale = true; return; } fit(); frame(0); });
   ro.observe(canvas); ro.observe(anchor);
+  // motion paused before the ring has risen (during the intro, or with the rise under way): nothing would rise it now,
+  // so it stands risen, as the page's assembly does. Resumed: the pause is no frame's interval
+  const settle = () => { if (motion.paused && intro && rise.v < 1) { rise.v = 1; if (shown) frame(0); } };
+  once('hero:rise', settle);
+  on('motion', (m) => {
+    if (!m.paused) { restart(); return; }
+    settle();
+    if (hovering) { hovering = false; canvas.classList.remove('is-grab'); emit('cursor', null); }
+  });
   // a lost context comes back without the sky's light (three cannot refill a render target): bake it again, and
-  // redraw where nothing else will
-  canvas.addEventListener('webglcontextrestored', () => { scene.environment = K.skyEnvironment(renderer); if (calm && shown) frame(0); });
+  // redraw at once
+  canvas.addEventListener('webglcontextrestored', () => { scene.environment = K.skyEnvironment(renderer); if (shown) frame(0); });
   frame(0.016);
   hero.classList.add('has-gl');
   canvas.classList.add('is-on');
   if (calm) { frame(0); }
   emit('hero:gl', { canvas });
-  document.fonts?.ready.then(() => { fit(); if (calm) frame(0); });
-  once('intro:done', () => setTimeout(placeClumps, 1800));
+  document.fonts?.ready.then(() => { fit(); if (shown || calm) frame(0); });
+  once('intro:done', () => setTimeout(() => { placeClumps(); if (motion.paused && shown) frame(0); }, 1800));
   return { rise: () => emit('hero:rise') };
 }

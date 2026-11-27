@@ -31,6 +31,8 @@ export function init() {
   const stage = document.querySelector('[data-layers-stage]');
   if (!root || !stage) return;
   const items = [...root.querySelectorAll('.acc__item')];
+  // the markup has every button expanded (without scripts every panel shows); from here only the open one is
+  items.forEach((it, k) => { it.querySelector('.acc__btn').setAttribute('aria-expanded', String(k === 0)); it.querySelector('.acc__panel').hidden = k !== 0; });
   const cards = { a: stage.querySelector('[data-card="a"]'), b: stage.querySelector('[data-card="b"]') };
   const g = V.gauge(cards.a.querySelector('[data-gauge]'));
   const sp = V.spark(cards.b.querySelector('[data-spark]'), { seed: 3 });

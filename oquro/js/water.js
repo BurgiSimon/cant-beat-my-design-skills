@@ -2,7 +2,7 @@
 // through every light section (the dark ones cover it). Crisp under the hero, softer and paler lower down; the pointer
 // sends rings across it. Drawn at half resolution (the blur is part of the look) and only while some of it shows.
 
-import { calm, fine, gl, on, pointer, scroll, loop, clamp, damp } from './core.js';
+import { calm, motion, fine, gl, on, pointer, scroll, loop, clamp, damp } from './core.js';
 
 const VS = `#version 300 es
 in vec2 p; void main(){ gl_Position = vec4(p, 0.0, 1.0); }`;
@@ -84,53 +84,61 @@ export function init() {
   // sliding away flashes it black
   resize(); addEventListener('resize', () => { resize(); draw(); });
 
-  // what shows: the light sections are see-through, so the water runs only while one is on screen (or nearly: it
-  // starts a little early, so a section never comes in over an old frame). Watched, not measured every frame.
+  // what shows: the light sections are see-through, so the water runs only while one is on screen. Watched, not
+  // measured every frame. One about to come in (within a quarter screen) gets the water painted as the page scrolls,
+  // its clock held, so it never comes in over a frame from somewhere else.
   const lights = document.querySelectorAll('[data-theme="light"]');
-  const vis = new Set(); let lost = false;
-  const want = () => !calm && !lost && vis.size > 0 && !document.hidden;
+  const shown = new Set(), near = new Set(); let lost = false;
+  const want = () => !calm && !lost && shown.size > 0 && !document.hidden;
   const hero = document.querySelector('.hero');
   let hh = hero ? hero.offsetHeight : innerHeight;
   if (hero) new ResizeObserver(() => { hh = hero.offsetHeight; }).observe(hero);
 
   // ripples: where the pointer goes, the water rings (only while it runs: its clock stops with it, and rings dropped
-  // under a dark section would play out on the next light one)
+  // under a dark section, or with motion paused, would wait there and play out later)
   const rip = new Float32Array(32); let ri = 0; let lastX = -1e3, lastY = -1e3, lastT = 0;
-  let time = 0;
+  let time = 0, beat = 0;
+  const live = () => run.on && !motion.paused && performance.now() - beat < 1000;   // on, and ticking (not held by a pause)
   const addRipple = (x, y, k) => { rip.set([x, y, time, k], ri * 4); ri = (ri + 1) % 8; };
   if (fine && !calm) on('pointer', (p) => {
-    if (!p.active || !run.on) return;
+    if (!p.active || !live()) return;
     const d = Math.hypot(p.x - lastX, p.y - lastY);
     if (d > 90 && time - lastT > 0.12) { addRipple(p.x, p.y, clamp(d / 400, 0.25, 1)); lastX = p.x; lastY = p.y; lastT = time; }
   });
-  addEventListener('pointerdown', (e) => { if (run.on) addRipple(e.clientX, e.clientY, 1.4); }, { passive: true });
+  addEventListener('pointerdown', (e) => { if (live()) addRipple(e.clientX, e.clientY, 1.4); }, { passive: true });
 
-  let soft = 0;
+  let soft = 0, drawnY = 0;
   function draw() {
     if (lost) return;
-    soft = clamp(scroll.y / (hh * 0.9), 0, 1);
+    soft = clamp(scroll.y / (hh * 0.9), 0, 1); drawnY = scroll.y;
     ctx.uniform2f(uRes, w, h); ctx.uniform1f(uTime, time); ctx.uniform1f(uSoft, soft); ctx.uniform1f(uScroll, scroll.y); ctx.uniform1f(uScale, SCALE);
     ctx.uniform4fv(uRip, rip);
     ctx.drawArrays(ctx.TRIANGLES, 0, 3);
   }
-  let skip = 0;
+  let skip = 0, ticked = false;
   const run = loop((dt) => {
-    time += dt;
-    // a low-end machine draws every other frame: the water moves slowly enough not to show it
-    if (gl.tier < 2 && (skip ^= 1)) return;
+    time += dt; if (dt) { ticked = true; beat = performance.now(); }
+    // a low-end machine draws every other frame while the page is still: the water moves slowly enough not to show
+    // it (but a page that scrolled, or a still frame, dt 0, is drawn at once)
+    if (dt && gl.tier < 2 && scroll.y === drawnY && (skip ^= 1)) return;
     draw();
   });
   canvas.classList.add('is-on');
   draw();
-  const io = new IntersectionObserver((es) => {
-    const was = vis.size;
-    for (const e of es) { if (e.isIntersecting) vis.add(e.target); else vis.delete(e.target); }
-    if (vis.size && !was) draw();   // back in view: fresh at once, whatever the loop's skip
-    run.set(want());
-  }, { rootMargin: '25% 0px' });
-  lights.forEach((el) => io.observe(el));
+  const watch = (set, rootMargin, fn) => {
+    const io = new IntersectionObserver((es) => {
+      for (const e of es) { if (e.isIntersecting) set.add(e.target); else set.delete(e.target); }
+      fn();
+    }, { rootMargin });
+    lights.forEach((el) => io.observe(el));
+  };
+  // on screen: fresh at once (after a jump nothing painted it on the way), whatever the loop's skip; then the loop
+  watch(shown, '0px', () => { if (shown.size && !run.on) draw(); run.set(want()); });
+  watch(near, '25% 0px', () => {});
   document.addEventListener('visibilitychange', () => run.set(want()));
-  on('scroll', () => { if (calm && vis.size) draw(); });
+  // a light section near and the loop not running (reduced motion, nothing light on screen yet, motion paused): paint
+  // where the page is, the clock held. (Running, it draws the scroll itself: it ticked since the last scroll.)
+  on('scroll', () => { if (near.size && !ticked) draw(); ticked = false; });
   // a lost context comes back only if asked to; meanwhile the plain sheen under the canvas shows
   canvas.addEventListener('webglcontextlost', (e) => { e.preventDefault(); lost = true; run.set(false); canvas.classList.remove('is-on'); });
   canvas.addEventListener('webglcontextrestored', () => {

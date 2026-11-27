@@ -31,6 +31,7 @@
       h.className = h.className.replace("no-js", "js");
       try { if (sessionStorage.getItem("oquro:seen")) h.classList.add("is-repeat"); } catch (e) {}
       if (matchMedia("(prefers-reduced-motion: reduce)").matches || /[?&]reduced/.test(location.search)) h.classList.add("is-calm");
+      else try { if (localStorage.getItem("oquro:motion") === "paused") h.classList.add("is-paused"); } catch (e) {} // motion paused on an earlier visit (core.js)
       if (location.hash.length > 1) h.classList.add("is-repeat");
       window.__oquroReady = setTimeout(function () { h.classList.add("is-ready"); }, 8000); // if the scripts never get there, show the page anyway (intro.js cancels this)
     })(document.documentElement);
@@ -64,6 +65,7 @@
   </svg>
 
   <a class="skip" href="#main">Skip to content</a>
+  <button class="skip" type="button" data-motion hidden>Pause motion</button>
 
   <!-- First visit: a vault dial turns to its numbers, clicks open, and the page comes through. -->
   <div class="intro" data-intro aria-hidden="true">
@@ -174,17 +176,17 @@
               <i class="acc__bar" aria-hidden="true"></i>
             </div>
             <div class="acc__item">
-              <h3><button class="acc__btn" aria-expanded="false" aria-controls="acc-2" id="acc-2-btn">Cloud Security</button></h3>
+              <h3><button class="acc__btn" aria-expanded="true" aria-controls="acc-2" id="acc-2-btn">Cloud Security</button></h3>
               <div class="acc__panel" id="acc-2" role="region" aria-labelledby="acc-2-btn" hidden><p>Protect workloads, storage and identities across every cloud you run on, from a single console.</p></div>
               <i class="acc__bar" aria-hidden="true"></i>
             </div>
             <div class="acc__item">
-              <h3><button class="acc__btn" aria-expanded="false" aria-controls="acc-3" id="acc-3-btn">AI Threat Detection</button></h3>
+              <h3><button class="acc__btn" aria-expanded="true" aria-controls="acc-3" id="acc-3-btn">AI Threat Detection</button></h3>
               <div class="acc__panel" id="acc-3" role="region" aria-labelledby="acc-3-btn" hidden><p>Models trained on billions of signals spot unusual behaviour before it turns into an attack.</p></div>
               <i class="acc__bar" aria-hidden="true"></i>
             </div>
             <div class="acc__item">
-              <h3><button class="acc__btn" aria-expanded="false" aria-controls="acc-4" id="acc-4-btn">Data Protection</button></h3>
+              <h3><button class="acc__btn" aria-expanded="true" aria-controls="acc-4" id="acc-4-btn">Data Protection</button></h3>
               <div class="acc__panel" id="acc-4" role="region" aria-labelledby="acc-4-btn" hidden><p>Encrypt, classify and back up sensitive data automatically, wherever it lives.</p></div>
               <i class="acc__bar" aria-hidden="true"></i>
             </div>
@@ -335,7 +337,10 @@
     <p class="foot__word" aria-hidden="true" data-foot-word><span>OQURO</span></p>
     <div class="wrap foot__base">
       <p>© {{YEAR}} OQURO. A design study — the company, its numbers and its threats are fictional.</p>
-      <button class="link-u" type="button" data-to-top><span data-roll>Back to top</span></button>
+      <div class="foot__acts">
+        <button class="link-u" type="button" data-motion hidden><span data-roll>Pause motion</span></button>
+        <button class="link-u" type="button" data-to-top><span data-roll>Back to top</span></button>
+      </div>
     </div>
   </footer>
   <div class="cursor" data-cursor aria-hidden="true"><span data-cursor-label></span></div>

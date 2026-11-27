@@ -4,14 +4,30 @@
 
 import { calm, gl, dpr, on, last, whenVisible, loop, damp, clamp, seeded, fine } from './core.js';
 
-export async function init() {
+// asked for as soon as this module is here (main.js fetches it after starting the hero, which loads the kit too), so
+// that starting the build takes no turn of its own
+const kit = gl ? import('./gl/kit.js') : null;
+kit?.catch(() => {});   // (a failure is reported when init awaits it)
+
+export async function init({ hurry: rush = false } = {}) {
   const hosts = [...document.querySelectorAll('canvas[data-scene]')];
   if (!hosts.length || !gl) return;
-  const K = await import('./gl/kit.js');
+  const K = await kit;
   const { THREE, shared, noise3 } = K;
   const low = gl.tier < 2;
-  // the build hands the main thread back between its slices, so scrolling and the hero's entrance keep running
-  const breathe = () => (globalThis.scheduler?.yield ? scheduler.yield() : new Promise((r) => setTimeout(r, 0)));
+  // the build hands the main thread back between its slices, so frames and scrolling keep running. A timer, as in
+  // hero3d, lets a frame in between; scheduler.yield's turn would come first and run slices back to back for 100 ms
+  // and more. A turn of over a quarter second, or turns adding up to 1.5 s, mean frames that slow (a weak or software
+  // GPU), where waiting only starves the build: the rest is built in one go, as without slices (all of it when main.js
+  // says so)
+  let hurry = rush, waited = 0;
+  const late = (t0, ms = 0) => { const d = performance.now() - t0 - ms; waited += d; if (d > 250 || waited > 1500) hurry = true; };
+  const breathe = async () => {
+    if (hurry) return;
+    const t0 = performance.now();
+    await new Promise((r) => setTimeout(r, 0));
+    late(t0);
+  };
 
   const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
   renderer.setClearColor(0x000000, 0);
@@ -121,7 +137,7 @@ export async function init() {
       update(dt, t, aspect, hover) {
         const [p, tg, f] = shots[shot];
         tp.set(...p); tt.set(...tg);
-        const k = calm ? 1 : 1 - Math.exp(-2.2 * dt);
+        const k = calm || !dt ? 1 : 1 - Math.exp(-2.2 * dt);   // a still (dt 0) shows the layer's own view
         cur.p.lerp(tp, k); cur.t.lerp(tt, k); cur.f += (f - cur.f) * k;
         camera.position.copy(cur.p);
         camera.position.x += Math.sin(t * 0.25) * 0.06 + hover.x * 0.15; camera.position.y += hover.y * -0.1;
@@ -207,6 +223,7 @@ export async function init() {
       update(dt, t, aspect, hover) {
         st += dt; acc += dt;
         if (acc > 1 / 20) { acc = 0; paint(t); }
+        else if (!dt && st < 1) { st = 1; paint(t); }   // a still shows the tab's screen as it settles
         if (aspect !== shape) { shape = aspect; room = glass?.offsetParent ? glass.offsetTop / glass.offsetParent.clientHeight : 0.54; }
         const k = Math.min(1, room / 0.54);
         camera.fov = (2 * Math.atan(0.2867 / k) * 180) / Math.PI; camera.aspect = aspect; camera.updateProjectionMatrix();   // 32 degrees with room enough
@@ -264,7 +281,7 @@ export async function init() {
     if (w !== v.w || h !== v.h) { v.w = w; v.h = h; v.canvas.width = w; v.canvas.height = h; }
     if (w > bufW || h > bufH) { bufW = Math.max(bufW, w); bufH = Math.max(bufH, h); renderer.setSize(bufW, bufH, false); }
   }
-  let t = 0;
+  let t = 0, ticks = 0;
   function draw(v, dt) {
     size(v);
     v.hover.x = damp(v.hover.x, v.hover.tx, 3, dt); v.hover.y = damp(v.hover.y, v.hover.ty, 3, dt);
@@ -281,11 +298,18 @@ export async function init() {
     v.box.classList.add('has-gl');
   }
   const run = loop((dt) => {
-    t += dt;
+    t += dt; ticks++;
     for (const v of views) if (v.visible) draw(v, dt);
   });
   function sync() { run.set(!calm && views.some((v) => v.visible)); }
-  redraw = () => { if (calm) for (const v of views) draw(v, 0); };
+  // under reduced motion at once; otherwise a still (dt 0) unless the loop draws within two frames (it may be paused)
+  let asked = 0;
+  redraw = () => {
+    if (calm) { for (const v of views) draw(v, 0); return; }
+    const n = ticks;
+    cancelAnimationFrame(asked);
+    asked = requestAnimationFrame(() => { asked = requestAnimationFrame(() => { if (ticks === n) for (const v of views) if (v.visible) draw(v, 0); }); });
+  };
   // a lost context comes back without the sky's light (three cannot refill a render target): bake it again
   renderer.domElement.addEventListener('webglcontextrestored', () => {
     env = sky();
@@ -298,13 +322,25 @@ export async function init() {
   // the shadow pass's shaders), so nothing waits for a scroll to have a picture. It joins the loop once it has one.
   const makers = { garden, laptop, chain };
   const parallel = renderer.compileAsync && renderer.extensions.has('KHR_parallel_shader_compile');
+  // the driver's compile can take its time; only a starved check (its polls are timers too) stops the wait, and the
+  // first draw then waits for the link instead
+  const compile = async (v) => {
+    if (!parallel || hurry) { renderer.compile(v.scene, v.camera); return; }
+    let done = false;
+    const job = renderer.compileAsync(v.scene, v.camera).then(() => { done = true; });
+    while (!done && !hurry) {
+      const t0 = performance.now();
+      await Promise.race([job, new Promise((r) => setTimeout(r, 100))]);
+      if (!done) late(t0, 100);
+    }
+  };
   for (const canvas of hosts) {
     const make = makers[canvas.dataset.scene];
     if (!make) continue;
     await breathe();
     const v = await make(canvas);
     await breathe();
-    if (parallel) await renderer.compileAsync(v.scene, v.camera); else renderer.compile(v.scene, v.camera);
+    await compile(v);
     await breathe();
     const hover = { x: 0, y: 0, tx: 0, ty: 0 };
     const box = canvas.parentElement;

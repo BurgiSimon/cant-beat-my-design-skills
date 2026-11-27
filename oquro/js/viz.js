@@ -1,7 +1,7 @@
 // The little live visuals inside the cards, as builders: each draws into its element and returns a controller with
 // tick(dt) for while it is on screen and set(...) for new data. No module state; the callers decide when to run them.
 
-import { calm, seeded, smoothPath, clamp, fmt } from './core.js';
+import { calm, motion, seeded, smoothPath, clamp, fmt } from './core.js';
 
 const NS = 'http://www.w3.org/2000/svg';
 const el = (tag, attrs = {}, parent) => { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); parent?.append(e); return e; };
@@ -61,7 +61,7 @@ export function gauge(host, { ticks = 22, from = 216, to = 324 } = {}) {
   let shown = 0; let target = 0.7; let t = 0;
   const draw = () => { const n = Math.round(shown * ticks); lines.forEach((l, i) => l.classList.toggle('is-on', i < n)); };
   return {
-    set(v) { target = clamp(v, 0, 1); if (calm) { shown = target; draw(); } },
+    set(v) { target = clamp(v, 0, 1); if (calm || motion.paused) { shown = target; draw(); } },   // nothing to ease it there
     tick(dt) { t += dt; const wob = Math.sin(t * 1.7) * 0.02 + Math.sin(t * 4.3) * 0.01; shown += (target + wob - shown) * Math.min(1, dt * 3); draw(); },
   };
 }
