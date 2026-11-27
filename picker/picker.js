@@ -2,7 +2,7 @@
 // in the middle; where they do not, the line is endless: it drifts by itself when the page is left alone, and the
 // wheel, a drag or the arrow keys move it. The card under the pointer (or the one with the keyboard's focus) is lit
 // and gets a trace in its site's own manner: mist that drifts and parts, a hole torn through the clouds onto a night
-// of ASCII, an orbit of light with a streak along its horizon. A chosen card opens into its site: it grows to fill the screen and gives way to the colour the site
+// of ASCII, an orbit of light with a streak along its horizon, a fan of light streaming back. A chosen card opens into its site: it grows to fill the screen and gives way to the colour the site
 // paints first, so the site's own entrance carries on from there. On a phone the cards are a strip that a swipe
 // moves from one to the next. Without this script the page is still a row of links.
 
@@ -336,6 +336,48 @@ const TRACES = {
         const tail = g.createLinearGradient(hx, 0, hx + 170, 0);
         tail.addColorStop(0, `rgb(255 232 220 / ${0.95 * fade})`); tail.addColorStop(0.25, `rgb(255 150 110 / ${0.5 * fade})`); tail.addColorStop(1, 'rgb(255 90 54 / 0)');
         g.strokeStyle = tail; g.lineWidth = 1.6; g.beginPath(); g.moveTo(hx, hy); g.lineTo(hx + 170, hy); g.stroke();
+        g.restore();
+        return true;
+      },
+    };
+  })(),
+
+  // Crestora: the pointer is the car. A fan of lanes in the road's spectrum streams back from it to the card's right
+  // edge, opening as it goes, with dashes running along them the way the road's light runs past the car. Lit with
+  // no pointer on it, the car wanders.
+  crestora: (() => {
+    const at = { x: 0, y: 0, on: false };
+    const BANDS = ['58 109 255', '35 211 255', '32 214 155', '255 177 61', '255 59 59', '255 122 217'];
+    return {
+      reset() { at.on = false; },
+      draw(r, o, on, dt) {
+        if (o < 0.01) return false;
+        const want_ = on && inside(r, ptr) ? ptr : { x: r.left + r.width * (0.36 + 0.14 * Math.sin(clock * 0.47)), y: r.top + r.height * (0.56 + 0.12 * Math.sin(clock * 0.73)) };
+        if (!at.on) { at.x = want_.x; at.y = want_.y; at.on = true; }
+        const ease = 1 - Math.exp(-dt * 6);
+        at.x += (want_.x - at.x) * ease; at.y += (want_.y - at.y) * ease;
+        within(r);
+        const N = 30; const len = r.right + 12 - at.x; const spread = r.height * 0.5 * o;
+        for (let i = 0; i < N; i++) {
+          const f = i / (N - 1) - 0.5;                                    // across the fan, top to bottom
+          const c = BANDS[Math.min(BANDS.length - 1, Math.floor((f + 0.5) * BANDS.length))];
+          const y1 = at.y + f * spread; const bend = f * spread * 0.35;
+          // a lane: from the car, easing out to its place at the card's edge
+          const path = (t) => [at.x + len * t, at.y + (y1 - at.y) * (1 - (1 - t) ** 2) - bend * t * (1 - t)];
+          const fade = g.createLinearGradient(at.x, 0, r.right, 0);
+          fade.addColorStop(0, `rgb(${c} / 0)`); fade.addColorStop(0.12, `rgb(${c} / ${0.55 * o})`); fade.addColorStop(1, `rgb(${c} / ${0.25 * o})`);
+          g.strokeStyle = fade; g.lineWidth = 1; g.beginPath();
+          for (let k = 0; k <= 24; k++) { const [x, y] = path(k / 24); if (k) g.lineTo(x, y); else g.moveTo(x, y); }
+          g.stroke();
+          // its dashes, running back and growing as they go (as if coming nearer)
+          for (let d = 0; d < 3; d++) {
+            const t = mod(clock * (0.35 + 0.25 * rnd(i + 400)) + rnd(i * 3 + d + 500) , 1);
+            const [x, y] = path(t); const [x2, y2] = path(Math.min(1, t + 0.02 + 0.06 * t));
+            g.strokeStyle = `rgb(255 255 255 / ${0.85 * o * Math.min(1, t * 6)})`; g.lineWidth = 1.2;
+            g.beginPath(); g.moveTo(x, y); g.lineTo(x2, y2); g.stroke();
+          }
+        }
+        g.lineWidth = 1;
         g.restore();
         return true;
       },

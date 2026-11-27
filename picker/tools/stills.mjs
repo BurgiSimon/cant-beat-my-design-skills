@@ -9,7 +9,12 @@
  *
  * A still is the site's hero art with no type on it: the card sets its own name over it. Mist's is its own hero,
  * built and photographed with the header and the copy hidden; Nelson's is cut from its hero picture around the eye;
- * AsterPay's is its hero's light, rings and phones, the tall one cut from a wide render around the phones.
+ * AsterPay's is its hero's light, rings and phones, the tall one cut from a wide render around the phones; Crestora's is
+ * its night (the road of light, the car, its dust) with the type taken off, the tall one cut from a wider render
+ * around the car.
+ *
+ *   node picker/tools/stills.mjs crestora   only the named sites' stills (the share image is always made)
+ *
  * Needs Playwright with Chromium (npm i -g playwright && npx playwright install chromium); the site itself does not.
  */
 import { promises as fs } from "node:fs";
@@ -44,7 +49,7 @@ const server = http.createServer(async (req, res) => {
 await new Promise((ok) => server.listen(0, "127.0.0.1", ok));
 const site = `http://127.0.0.1:${server.address().port}`;
 
-const browser = await chromium.launch();
+const browser = await chromium.launch({ args: ["--ignore-gpu-blocklist", "--enable-unsafe-swiftshader"] });
 const shoot = async (viewport, file, go) => {
   const page = await browser.newPage({ viewport, reducedMotion: "reduce" });
   const clip = await go(page, viewport); // a site may photograph a larger page and say which part to keep
@@ -81,9 +86,21 @@ const asterpay = async (page, viewport) => {
   return tall ? { x: 1280 - 450, y: 0, width: 900, height: 1600 } : undefined;
 };
 
+// Crestora: its night as it rests (?still), the type hidden. Held upright, it is cut from a wider render, round the car.
+const crestora = async (page, viewport) => {
+  const tall = viewport.height > viewport.width;
+  if (tall) await page.setViewportSize({ width: 2000, height: 1600 });   // wide enough for the picture layout (6:5)
+  await page.goto(`${site}/crestora/?still`, { waitUntil: "load" });
+  await page.addStyleTag({ content: ".stage > :not(.road), .hint { visibility: hidden !important; }" });
+  await page.waitForFunction(() => document.documentElement.classList.contains("is-drawn"), null, { timeout: 15000 });
+  await page.waitForTimeout(300);
+  return tall ? { x: 618, y: 0, width: 900, height: 1600 } : undefined;
+};
+
 await fs.mkdir(path.join(ASSETS, "stills"), { recursive: true });
 console.log("stills:");
-for (const [name, go] of Object.entries({ mist, nelson, asterpay })) {
+const only = process.argv.slice(2);
+for (const [name, go] of Object.entries({ mist, nelson, asterpay, crestora }).filter(([n]) => !only.length || only.includes(n))) {
   await shoot(WIDE, `stills/${name}-wide.jpg`, go);
   await shoot(TALL, `stills/${name}-tall.jpg`, go);
 }
