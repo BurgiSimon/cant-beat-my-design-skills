@@ -10,6 +10,7 @@
  *     --full                       the whole page (scrolled through first, so every reveal has played)
  *     --el "#features"             just this element (scrolled to)
  *     --reduced                    with prefers-reduced-motion
+ *     --nojs                       with scripts off (the page's no-JS fallback)
  *     --wait 1200                  ms to wait after arriving (default 1200)
  *     --out shot.png               where to write (default /tmp/crestora-shot.png)
  *
@@ -46,7 +47,7 @@ const out = opt("out", "/tmp/crestora-shot.png");
 const el = opt("el", null);
 
 const browser = await chromium.launch({ args: ["--use-gl=angle", "--use-angle=swiftshader", "--enable-unsafe-swiftshader", "--ignore-gpu-blocklist"] });
-const ctx = await browser.newContext({ viewport: { width: W, height: H }, deviceScaleFactor: DPR, reducedMotion: flag("reduced") ? "reduce" : "no-preference", hasTouch: W < 800, isMobile: W < 800 });
+const ctx = await browser.newContext({ viewport: { width: W, height: H }, deviceScaleFactor: DPR, reducedMotion: flag("reduced") ? "reduce" : "no-preference", hasTouch: W < 800, isMobile: W < 800, javaScriptEnabled: !flag("nojs") });
 const p = await ctx.newPage();
 const problems = [];
 p.on("console", (m) => { if (m.type() === "error") problems.push(`console: ${m.text().slice(0, 400)}`); });
@@ -93,7 +94,7 @@ if (el) {
 } else {
   await p.screenshot({ path: out, fullPage: flag("full") });
 }
-console.log(`${out}  (${page} @ ${W}×${H}${flag("reduced") ? ", reduced" : ""}, page height ${height}px)`);
+console.log(`${out}  (${page} @ ${W}×${H}${flag("reduced") ? ", reduced" : ""}${flag("nojs") ? ", no JS" : ""}, page height ${height}px)`);
 console.log(problems.length ? problems.map((x) => `  ✗ ${x}`).join("\n") : "  ✓ no errors, no overflow");
 await browser.close();
 server.close();

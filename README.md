@@ -13,7 +13,7 @@ Websites built from a single design, each its own project, behind one picker.
 | **UnoRouter**, an AI model router's hero recreated from one shot, in pixels, and grown into a full landing page | [`/unorouter/`](https://burgisimon.github.io/cant-beat-my-design-skills/unorouter/) |
 | **OFFFORM**, a sportswear shop recreated from a two-artboard shot and given a motion layer | [`/offform/`](https://burgisimon.github.io/cant-beat-my-design-skills/offform/) |
 | **OQURO**, a cyber-security page recreated from one shot, its 3D renders rebuilt as real-time 3D in code | [`/oquro/`](https://burgisimon.github.io/cant-beat-my-design-skills/oquro/) |
-| **Crestora**, a footer recreated from one shot and set in motion: a car drifting down a road of light | [`/crestora/`](https://burgisimon.github.io/cant-beat-my-design-skills/crestora/) |
+| **Crestora**, a footer recreated from one shot and set in motion (a car drifting down a road of light), grown into the whole 30-page website it belongs to | [`/crestora/`](https://burgisimon.github.io/cant-beat-my-design-skills/crestora/) |
 
 ## The picker
 
@@ -149,16 +149,19 @@ No build step: plain HTML, CSS and ES modules, copied into `dist/oquro/` by `bui
 ## Crestora
 
 An eighth project lives in [`crestora/`](crestora/): a footer recreated from a single shot (measured against it at its
-own size) and set in motion.
+own size) and set in motion, then grown into the whole website behind it. Crestora is a creative workspace whose idea
+comes from the footer's road: *every idea gets a lane*, and each of the road's six colours is one stage of a project
+(Spark, Shape, Make, Review Room, Countdown, Afterglow). Every page ends in the footer's night.
 
 | Part | What it is |
 | --- | --- |
-| The night | WebGL2: a road of light traced off the shot (210 lanes lofted between 14 guides, dashes streaming along them), the car cut from the shot with its wheels turning and the light sliding over its paint, dust off its tail, stars |
-| Motion | An intro where the road lights from under the car at warp speed as the car rolls in; the pointer is a lamp over the road, and holding it down floors the throttle (the stars streak, the hint reads out km/h) |
-| Details | Rolling links, magnetic social boxes with a ring of the road's colours, a chrome mark that turns to the pointer, a glint on the rule, a heart that sends hearts up |
+| The footer | WebGL2: a road of light traced off the shot (210 lanes lofted between 14 guides, dashes streaming along them), the car cut from the shot with its wheels turning and the light sliding over its paint, dust off its tail, stars. An intro where the road lights from under the car at warp speed; the pointer is a lamp over the road, and holding it down floors the throttle |
+| Home | Six light threads on the footer's own ribbon geometry that bend round the pointer and close into one ribbon on scroll; a pinned flow where the lanes light stage by stage; a working mock of the app; a filterable wall of work; plans; a finale form that launches the page into the footer, where the road's reveal replays |
+| The rest | Every page the footer links to: integrations, pricing, changelog, roadmap, security, about, careers, press, partners, contact, Field Notes and six posts, docs, an API reference, help, community, tutorials, webinars, the legal pages and a sitemap, plus sign-up by magic link |
+| Motion | Lenis smooth scroll, GSAP ScrollTrigger and SplitText, rolling Michroma digits, rolling links, spotlight panels; all of it resting under reduced motion and readable without scripts |
 
-No build step: plain HTML, CSS and ES modules, copied into `dist/crestora/` by `build.mjs`. See
-[`crestora/README.md`](crestora/README.md).
+No build step to publish: plain HTML, CSS and ES modules, copied into `dist/crestora/` by `build.mjs`; its pages are
+assembled from `crestora/src/` by `crestora/tools/pages.mjs`. See [`crestora/README.md`](crestora/README.md).
 
 ## Develop
 
@@ -196,7 +199,7 @@ vizen/                 separate project, no build step, published under /vizen/ 
 unorouter/             separate project, no build step, published under /unorouter/ (its README and tools/ stay behind)
 offform/               separate project, no build step, published under /offform/ (its README, CREDITS and tools/ stay behind)
 oquro/                 separate project, no build step, published under /oquro/ (its README and tools/ stay behind)
-crestora/              separate project, no build step, published under /crestora/ (its README and tools/ stay behind)
+crestora/              separate project, published under /crestora/ (its README, src/ and tools/ stay behind)
 ```
 
 ## Deploy
@@ -237,9 +240,9 @@ GitHub Pages (Settings → Pages → Source: GitHub Actions).
   `oquro/assets/fonts/`); [three.js](https://threejs.org) (MIT), cut down to what it uses.
 - Crestora: recreated from a footer shot signed "Made with love by Pranav", and its car picture is cut from that shot;
   [Michroma](https://github.com/googlefonts/Michroma-font) and [Inter](https://github.com/rsms/inter) (SIL Open Font
-  License, licences in `crestora/assets/fonts/`).
+  License, licences in `crestora/assets/fonts/`); GSAP with ScrollTrigger and SplitText, and Lenis (MIT), vendored.
 - Mist, its customers, people, quotes and numbers are fictional. The investor line in the hero comes
   from the original design. AsterPay, its people, reviews and figures are fictional too, and so are Vizen and its
   helmets. UnoRouter's hero copy and figures come from its shot; its models list, prices, rankings and routing are
   illustrative and simulated. OFFFORM, its products, prices, people and run club are fictional too, and so are OQURO,
-  its numbers and its threats. Crestora is fictional.
+  its numbers and its threats. Crestora, its people, customers, apps, prices and numbers are fictional.

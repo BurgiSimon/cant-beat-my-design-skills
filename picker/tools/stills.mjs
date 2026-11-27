@@ -141,13 +141,15 @@ const oquro = async (page, viewport) => {
   return tall ? { x: 1103 - 450, y: 0, width: 900, height: 1600 } : undefined;
 };
 
-// Crestora: its night as it rests (?still), the type hidden. Held upright, it is cut from a wider render, round the car
-// (2000 × 1600 is still wide enough for the picture layout, 6:5).
+// Crestora: its footer's night as it rests (?still), the type hidden. The home page above the footer is taken out
+// before the first paint, so the night lays out as it would alone on the screen. Held upright, it is cut from a wider
+// render, round the car (2000 × 1600 is still wide enough for the picture layout, 6:5).
 const crestora = async (page, viewport) => {
   const tall = viewport.height > viewport.width;
   if (tall) await page.setViewportSize({ width: 2000, height: 1600 });
+  const css = "body > :not(.footer), .footer::before { display: none !important; } .stage > :not(.road), .hint { visibility: hidden !important; }";
+  await page.addInitScript((css) => document.addEventListener("DOMContentLoaded", () => { const s = document.createElement("style"); s.textContent = css; document.head.append(s); }), css);
   await page.goto(`${site}/crestora/?still`, { waitUntil: "load" });
-  await page.addStyleTag({ content: ".stage > :not(.road), .hint { visibility: hidden !important; }" });
   await page.waitForFunction(() => document.documentElement.classList.contains("is-drawn"), null, { timeout: 60000 });
   await page.waitForTimeout(300);
   return tall ? { x: 618, y: 0, width: 900, height: 1600 } : undefined;
