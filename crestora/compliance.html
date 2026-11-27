@@ -25,11 +25,11 @@
 <link rel="stylesheet" href="css/site.css?v={{VERSION}}" />
 <script>
   // Scripts will run: the page may hide what they are about to bring in. A repeat visit in this tab gets short
-  // intros; reduced motion (or ?reduced) gets none.
+  // intros; reduced motion (or ?reduced, or ?still: a still of the resting page) gets none.
   (function (h) {
     h.className = h.className.replace("no-js", "js");
     try { if (sessionStorage.getItem("crestora:seen")) h.classList.add("is-repeat"); } catch (e) {}
-    if (matchMedia("(prefers-reduced-motion: reduce)").matches || /[?&]reduced/.test(location.search)) h.classList.add("is-calm");
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches || /[?&](reduced|still)(?![^&=])/.test(location.search)) h.classList.add("is-calm");
     setTimeout(function () { h.classList.add("is-ready"); }, 6000); // if the scripts never get there, show everything anyway
   })(document.documentElement);
 </script>
@@ -110,7 +110,7 @@
     </a>
     <nav class="nav" aria-label="Main">
       <div class="nav__item" data-menu>
-        <button class="nav__trigger" type="button" aria-expanded="false" aria-controls="menu-product">Product<svg aria-hidden="true"><use href="#i-chev-down"/></svg></button>
+        <button class="nav__trigger" type="button" aria-controls="menu-product">Product<svg aria-hidden="true"><use href="#i-chev-down"/></svg></button>
         <div class="dropdown" id="menu-product" style="--cols:2">
           <a href="index.html#features"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-layers"/></svg></span><strong>Features</strong><small>Six lanes from spark to launch</small></a>
           <a href="integrations.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-plug"/></svg></span><strong>Integrations</strong><small>120+ tools merge into your lane</small></a>
@@ -122,7 +122,7 @@
       </div>
       <a class="nav__link" href="index.html#creators" data-roll>Creators</a>
       <div class="nav__item" data-menu>
-        <button class="nav__trigger" type="button" aria-expanded="false" aria-controls="menu-resources">Resources<svg aria-hidden="true"><use href="#i-chev-down"/></svg></button>
+        <button class="nav__trigger" type="button" aria-controls="menu-resources">Resources<svg aria-hidden="true"><use href="#i-chev-down"/></svg></button>
         <div class="dropdown" id="menu-resources" style="--cols:2">
           <a href="blog.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-pen"/></svg></span><strong>Field Notes</strong><small>Launch stories and craft notes</small></a>
           <a href="docs.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-book"/></svg></span><strong>Documentation</strong><small>Lanes, stages and every tool</small></a>
@@ -130,11 +130,11 @@
           <a href="help.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-help"/></svg></span><strong>Help Center</strong><small>Answers, fast</small></a>
           <a href="community.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-users"/></svg></span><strong>Community</strong><small>Circles, swaps and Launch Night</small></a>
           <a href="tutorials.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-learn"/></svg></span><strong>Tutorials</strong><small>Short lessons from people who ship</small></a>
-          <a href="webinars.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-broadcast"/></svg></span><strong>Webinars</strong><small>Next: Dec 10, live</small></a>
+          <a href="webinars.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-broadcast"/></svg></span><strong>Webinars</strong><small>Next: Fri 4 Dec, live</small></a>
         </div>
       </div>
       <div class="nav__item" data-menu>
-        <button class="nav__trigger" type="button" aria-expanded="false" aria-controls="menu-company">Company<svg aria-hidden="true"><use href="#i-chev-down"/></svg></button>
+        <button class="nav__trigger" type="button" aria-controls="menu-company">Company<svg aria-hidden="true"><use href="#i-chev-down"/></svg></button>
         <div class="dropdown" id="menu-company" style="--cols:1">
           <a href="about.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-info"/></svg></span><strong>About</strong><small>Why we build roads for makers</small></a>
           <a href="careers.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-briefcase"/></svg></span><strong>Careers</strong><small>8 open roles, four hubs</small></a>
@@ -149,10 +149,12 @@
       <a class="header__signin" href="start.html#signin" data-roll>Sign in</a>
       <a class="btn btn--primary btn--sm" href="start.html" data-roll>Open a lane</a>
       <button class="header__burger" type="button" aria-expanded="false" aria-controls="menu" aria-label="Open menu"><span></span></button>
+      <!-- without scripts the menu can't open: the same burger takes you to every link, in the footer's columns -->
+      <a class="header__burger header__burger--link" href="#footer" aria-label="Menu: every link, at the foot of the page"><span></span></a>
     </div>
   </div>
 </header>
-<div class="menu" id="menu" role="dialog" aria-modal="true" aria-label="Menu">
+<div class="menu" id="menu" role="dialog" aria-label="Menu">
   <div class="menu__groups">
     <div class="menu__group">
       <h2>Product</h2>
@@ -276,12 +278,12 @@
             <p>What a security review usually wants to know, in six lines.</p>
           </div>
           <ul class="legal-short__list">
-            <li><span class="lane-chip" data-stage="spark">In place</span><p><strong>GDPR, UK GDPR and CCPA/CPRA,</strong> with a Data Processing Agreement already built into every plan.</p></li>
-            <li><span class="lane-chip" data-stage="shape">Audited</span><p><strong>A SOC 2 Type II report</strong> covering a full year of controls, shared under NDA in two working days.</p></li>
-            <li><span class="lane-chip" data-stage="make">Certified</span><p><strong>ISO/IEC 27001:2022</strong> for the whole company: people, offices and code, not just a data centre.</p></li>
-            <li><span class="lane-chip" data-stage="review">Listed</span><p><strong>Six subprocessors,</strong> named below, with 30 days’ notice and a right to object before anything changes.</p></li>
-            <li><span class="lane-chip" data-stage="launch">Your region</span><p><strong>Label workspaces stay in the EU or the US,</strong> backups and support access included.</p></li>
-            <li><span class="lane-chip" data-stage="afterglow">Accessible</span><p><strong>WCAG 2.2 AA is our bar</strong> for the product and this site, and we publish where we still fall short.</p></li>
+            <li><span class="lane-chip">In place</span><p><strong>GDPR, UK GDPR and CCPA/CPRA,</strong> with a Data Processing Agreement already built into every plan.</p></li>
+            <li><span class="lane-chip">Audited</span><p><strong>A SOC 2 Type II report</strong> covering a full year of controls, shared under NDA in two working days.</p></li>
+            <li><span class="lane-chip">Certified</span><p><strong>ISO/IEC 27001:2022</strong> for the whole company: people, offices and code, not just a data centre.</p></li>
+            <li><span class="lane-chip">Listed</span><p><strong>Six subprocessors,</strong> named below, with 30 days’ notice and a right to object before anything changes.</p></li>
+            <li><span class="lane-chip">Your region</span><p><strong>Label workspaces stay in the EU or the US,</strong> backups and support access included.</p></li>
+            <li><span class="lane-chip">Accessible</span><p><strong>WCAG 2.2 AA is our bar</strong> for the product and this site, and we publish where we still fall short.</p></li>
           </ul>
         </section>
 
@@ -314,7 +316,7 @@
             <dl class="legal-terms">
               <div><dt>Roles</dt><dd><strong>We’re your processor</strong>You control the personal data in your lanes; we process it only on your documented instructions.</dd></div>
               <div><dt>Transfers</dt><dd><strong>SCCs + UK Addendum</strong>Modules 2 and 3 of the EU Standard Contractual Clauses, with the UK Addendum attached.</dd></div>
-              <div><dt>Breach notice</dt><dd><strong>Within 48 hours</strong>Of confirming a personal data breach that affects your workspace, with what we know and what we’re doing.</dd></div>
+              <div><dt>Breach notice</dt><dd><strong>Within 72 hours</strong>Of confirming a personal data breach that affects your workspace, with what we know and what we’re doing.</dd></div>
               <div><dt>Subprocessors</dt><dd><strong>30 days’ notice</strong>Before a new one starts, with a right to object. If we can’t resolve it, you can leave with a pro rata refund.</dd></div>
               <div><dt>Audits</dt><dd><strong>Once a year</strong>Our SOC 2 report answers most questions. On Crew and Label you can audit us yearly, with 30 days’ notice.</dd></div>
               <div><dt>Deletion</dt><dd><strong>Within 30 days</strong>Of your contract ending, from live systems and backups, with a deletion certificate if you ask.</dd></div>
@@ -376,7 +378,7 @@
             <ul class="legal-docs">
               <li><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-shield"/></svg></span><strong>SOC 2 Type II report</strong><span>1 Jul 2025 – 30 Jun 2026, by an independent auditor</span><em>Under NDA</em></li>
               <li><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-doc"/></svg></span><strong>ISO/IEC 27001 certificate</strong><span>With our statement of applicability</span><em>Same day</em></li>
-              <li><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-key"/></svg></span><strong>Penetration test summary</strong><span>Independent and annual; the latest finished in October 2026</span><em>Under NDA</em></li>
+              <li><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-key"/></svg></span><strong>Penetration test summary</strong><span>Independent and annual; the latest finished in September 2026</span><em>Under NDA</em></li>
               <li><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-scale"/></svg></span><strong>Countersigned DPA</strong><span>With the SCCs, the UK Addendum and the subprocessor annex</span><em>2 working days</em></li>
               <li><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-check"/></svg></span><strong>Security questionnaire</strong><span>Yours, or a standard one we keep filled in</span><em>5 working days</em></li>
               <li><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-users"/></svg></span><strong>Accessibility conformance report</strong><span>For the web app, against WCAG 2.2 AA</span><em>Same day</em></li>
@@ -393,7 +395,7 @@
           <p class="legal-gist"><span class="legal-gist__label">In short</span>Every change to the list, newest first. Subscribe and you’ll hear 30 days before the next one.</p>
           <div class="prose legal-sec__body">
             <ul class="legal-log">
-              <li><time datetime="2026-11-01">1 Nov 2026</time><p><strong>New support tooling, in the EU.</strong> Conversations with our crew now stay in the EU. Notice given today; it takes effect on 1 December 2026, when the old help desk is retired.</p></li>
+              <li><time datetime="2026-11-01">1 Nov 2026</time><p><strong>New support tooling, in the EU.</strong> Conversations with our crew will stay in the EU. Notice given on 1 November; it takes effect on 1 December 2026, when the old help desk is retired.</p></li>
               <li><time datetime="2026-06-12">12 Jun 2026</time><p><strong>Error monitoring moved to the EU.</strong> Crash reports from every workspace are now processed in the EU only.</p></li>
               <li><time datetime="2026-02-03">3 Feb 2026</time><p><strong>Payments added a US entity,</strong> so customers in the Americas are invoiced locally.</p></li>
               <li><time datetime="2025-10-09">9 Oct 2025</time><p><strong>A second email delivery route</strong> in the EU, as a fallback so sign-in links always arrive.</p></li>
@@ -426,7 +428,7 @@
           <div class="prose legal-sec__body">
             <p>Crestora should work for everyone who makes things, however they see, hear, move or think. Our target for the apps and for this website is WCAG 2.2 level AA. We were last tested in October 2026, by an independent auditor and by three disabled creators who are paid for their time.</p>
             <ul>
-              <li>Everything works from a keyboard, with a visible focus, and with VoiceOver, NVDA and TalkBack.</li>
+              <li>Everything works from a keyboard, with a visible focus, and with the screen readers built into desktop and mobile systems.</li>
               <li>Review Room shows captions on video and transcribes audio notes.</li>
               <li>Ask your system for reduced motion and Crestora, this site included, comes to rest: no intros, no reveals, nothing moving on its own.</li>
             </ul>
@@ -479,7 +481,7 @@
       <a class="btn btn--primary btn--lg" href="start.html" data-roll>Open your first lane</a>
       <a class="btn btn--lg" href="pricing.html" data-roll>See plans</a>
     </div>
-    <p class="small">Free for 3 lanes · No card · Export everything, always.</p>
+    <p class="small fine-print"><span>Free for 3 lanes</span> <span class="fine-print__sep" aria-hidden="true">·</span> <span>No card</span> <span class="fine-print__sep fine-print__sep--2" aria-hidden="true">·</span> <span>Export everything, always.</span></p>
   </div>
 </section>
 </main>
@@ -561,7 +563,7 @@
 
     <div class="base">
       <p class="copy">© <span class="year">2026</span> Crestora. All rights reserved.</p>
-      <p class="love"><button class="heart" type="button" aria-label="Send some love"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19.6S4.4 15.1 4.4 9.6A4.2 4.2 0 0 1 12 7.2a4.2 4.2 0 0 1 7.6 2.4c0 5.5-7.6 10-7.6 10Z"/></svg></button><span>Made with love by Pranav</span></p>
+      <p class="love"><button class="heart" type="button" aria-label="Send some love" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19.6S4.4 15.1 4.4 9.6A4.2 4.2 0 0 1 12 7.2a4.2 4.2 0 0 1 7.6 2.4c0 5.5-7.6 10-7.6 10Z"/></svg></button><span>Made with love by Pranav</span></p>
     </div>
 
     <!-- the road: where the car is; holding it down puts your foot down -->

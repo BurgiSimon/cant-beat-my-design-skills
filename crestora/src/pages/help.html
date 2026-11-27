@@ -20,7 +20,7 @@ nav: resources
       <div class="hc-hero__intro">
         <p class="eyebrow" data-reveal="fade">Help Center</p>
         <h1 class="title-1" id="hc-title" data-split>How can we help?</h1>
-        <p class="lede" data-reveal data-delay="0.15">Straight answers from the people who build Crestora. Type what’s in your way, or pick a topic below.</p>
+        <p class="lede" data-reveal data-delay="0.15">Straight answers from the people who build Crestora. <span class="hc-js">Type what’s in your way, or pick a topic below.</span><span class="hc-nojs">Pick a topic below, or start with what’s popular this week.</span></p>
 
         <form class="hc-search" role="search" action="#answers" data-reveal data-delay="0.25">
           <label class="sr" for="hc-q">Search the Help Center</label>
@@ -168,7 +168,7 @@ nav: resources
             <details class="hc-a" id="first-lane" data-keywords="new create open begin start blank template">
               <summary>How do I open my first lane?</summary>
               <div class="accordion__body hc-a__body">
-                <p>Press <kbd>N</kbd> anywhere in Crestora, or choose <strong>New lane</strong> at the top of the sidebar. Give it a name, say what you’re making, and pick a Blueprint template or start blank. Every lane starts in Spark, so drop in whatever you have: a voice memo, a screenshot, one good sentence.</p>
+                <p>Choose <strong>Open a lane</strong> at the top of the sidebar. Give it a working title, say what you’re making, and pick a Blueprint template or start blank. Every lane starts in Spark, so drop in whatever you have: a voice memo, a screenshot, one good sentence.</p>
                 <p>On Solo you can keep three lanes active at once, free, for as long as you like.</p>
                 <p class="hc-a__foot"><a class="hc-a__more" href="{{ROOT}}docs.html#getting-started">Your first lane in four steps<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a><button class="hc-a__copy" type="button" data-copy-answer><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg>Copy link</button></p>
               </div>
@@ -221,8 +221,8 @@ nav: resources
             <details class="hc-a" id="active-lane" data-keywords="limit three 3 solo free archive slot count">
               <summary>What counts as an active lane?</summary>
               <div class="accordion__body hc-a__body">
-                <p>Any lane that isn’t archived, whatever stage it’s in. Solo includes three; Studio and Crew have no limit.</p>
-                <p>When a project has launched and its Afterglow recaps are in, archive it. It stays readable, searchable and exportable, and stops counting toward your three.</p>
+                <p>Any lane that hasn’t reached Launch or been archived. Solo includes three; Studio and Crew have no limit.</p>
+                <p>Once a lane reaches Launch it stops counting toward your three, and it stays readable, searchable and exportable. Archive it when its Afterglow recaps are in.</p>
                 <p class="hc-a__foot"><a class="hc-a__more" href="#archive-delete">Archiving and deleting<svg class="icon" aria-hidden="true"><use href="#i-arrow-down"/></svg></a><button class="hc-a__copy" type="button" data-copy-answer><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg>Copy link</button></p>
               </div>
             </details>
@@ -230,14 +230,14 @@ nav: resources
               <summary>Where do I find invoices and change billing details?</summary>
               <div class="accordion__body hc-a__body">
                 <p>In <strong>Settings</strong>, then <strong>Billing</strong>. Every invoice is there as a PDF, and you can add a VAT or tax ID, a company name and an address; changes apply from the next invoice.</p>
-                <p>Every plan can pay by card. Label can also pay by bank transfer against an annual invoice.</p>
+                <p>Every plan can pay by card or local bank transfer. Crew and Label can also pay against an invoice.</p>
                 <p class="hc-a__foot"><button class="hc-a__copy" type="button" data-copy-answer><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg>Copy link</button></p>
               </div>
             </details>
             <details class="hc-a" id="export-everything" data-keywords="export download backup leave take out zip data portability">
               <summary>How do I export everything?</summary>
               <div class="accordion__body hc-a__body">
-                <p>Go to <strong>Settings</strong>, then <strong>Export</strong>. Pick a few lanes or take the whole workspace: files at full quality, every version, notes as JSON and CSV, and recaps as PDFs. We email you a download link when it’s ready, usually within the hour.</p>
+                <p>Go to <strong>Settings</strong>, then <strong>Export</strong>. Pick a few lanes or take the whole workspace: every file and version at full quality, notes as JSON and CSV, Blueprints as Markdown and recaps as CSV. We email you a download link when it’s ready, usually within the hour.</p>
                 <p>It’s free, on every plan, as often as you like. Your work is yours.</p>
                 <p class="hc-a__foot"><a class="hc-a__more" href="{{ROOT}}docs.html#exporting">What an export contains<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a><button class="hc-a__copy" type="button" data-copy-answer><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg>Copy link</button></p>
               </div>
@@ -281,7 +281,7 @@ nav: resources
             <details class="hc-a" id="move-lane" data-keywords="move back backwards previous stage undo drag shortcut">
               <summary>Can a lane move backwards?</summary>
               <div class="accordion__body hc-a__body">
-                <p>Yes, and often it should. Drag the lane chip to any earlier stage, or press <kbd>⇧</kbd> <kbd>←</kbd>. Versions, notes and approvals travel with it, and the lane’s history records every move.</p>
+                <p>Yes, and often it should. Drag the lane’s marker back along its track, or press <kbd>[</kbd> to step it back one stage. Versions, notes and approvals travel with it, and the lane’s history records every move.</p>
                 <p>A second round of Review is never a step back. It’s just another stop.</p>
                 <p class="hc-a__foot"><a class="hc-a__more" href="{{ROOT}}docs.html#moving-a-lane">Moving a lane<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a><button class="hc-a__copy" type="button" data-copy-answer><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg>Copy link</button></p>
               </div>
@@ -290,14 +290,14 @@ nav: resources
               <summary>How do I merge two lanes?</summary>
               <div class="accordion__body hc-a__body">
                 <p>From the lane menu choose <strong>Merge into</strong>, then pick the lane to keep. Files, versions and notes come across in date order, and anything with the same name becomes a new version rather than a duplicate.</p>
-                <p>Merging arrived in v4.10, and a merge can be undone for seven days.</p>
+                <p>Merging arrived in v4.10, and a merge can be undone from the lane’s history for 30 days.</p>
                 <p class="hc-a__foot"><a class="hc-a__more" href="{{ROOT}}changelog.html#v4-10">Read the v4.10 notes<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a><button class="hc-a__copy" type="button" data-copy-answer><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg>Copy link</button></p>
               </div>
             </details>
             <details class="hc-a" id="archive-delete" data-keywords="archive delete remove trash restore recover">
               <summary>What happens when I archive or delete a lane?</summary>
               <div class="accordion__body hc-a__body">
-                <p>Archiving makes a lane read-only and frees its slot; you can restore it any time. Deleting moves it to Trash for 30 days. After that it leaves our live systems within 24 hours and our backups within 30 days.</p>
+                <p>Archiving makes a lane read-only and frees its slot; you can restore it any time. Deleting is for good: the lane leaves our live systems within 24 hours and our backups within 30 days, so export it first if you might want it back.</p>
                 <p>If in doubt, archive.</p>
                 <p class="hc-a__foot"><a class="hc-a__more" href="{{ROOT}}security.html#your-work">How we handle your work<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a><button class="hc-a__copy" type="button" data-copy-answer><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg>Copy link</button></p>
               </div>
@@ -327,7 +327,7 @@ nav: resources
             <details class="hc-a" id="pin-notes" data-keywords="comment note pin frame timecode audio waveform pixel pdf code video">
               <summary>Can I pin a note to a frame or a second of audio?</summary>
               <div class="accordion__body hc-a__body">
-                <p>Yes. Notes pin to a frame of video, a pixel of an image, a spot on a PDF page, a line of code and, since v4.12, a moment on an audio waveform. Press <kbd>C</kbd> to comment at the playhead.</p>
+                <p>Yes. Notes pin to a frame of video, a pixel of an image, a spot on a PDF page, a line of code and, since v4.12, a moment on an audio waveform. Press <kbd>N</kbd> to leave a note at the playhead.</p>
                 <p>Every note keeps its timecode, so the editor lands on the exact frame you meant.</p>
                 <p class="hc-a__foot"><a class="hc-a__more" href="{{ROOT}}docs.html#note-types">Every kind of note<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a><button class="hc-a__copy" type="button" data-copy-answer><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg>Copy link</button></p>
               </div>
@@ -373,7 +373,7 @@ nav: resources
             <details class="hc-a" id="launch-channels" data-keywords="channels publish schedule social newsletter store fourteen 14 post">
               <summary>Which channels can Countdown publish to?</summary>
               <div class="accordion__body hc-a__body">
-                <p>Studio and up schedule to 14 channels, from newsletters and online stores to social scheduling, live streams and app-store builds, through apps like Postbox, Shopfront and Clipdeck. Solo includes one channel.</p>
+                <p>Studio and up schedule to 14 channels, from newsletters and online stores to social scheduling, live streams and app-store builds, through apps like Postlark, Stallfront and Clipdeck. Solo includes one channel.</p>
                 <p>Every post sits in one schedule you can read at a glance, and moves if the date does.</p>
                 <p class="hc-a__foot"><a class="hc-a__more" href="{{ROOT}}docs.html#channels">Launch channels<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a><button class="hc-a__copy" type="button" data-copy-answer><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg>Copy link</button></p>
               </div>
@@ -507,7 +507,7 @@ nav: resources
             <details class="hc-a" id="sign-in-link" data-keywords="sign in login log in magic link email password locked out spam">
               <summary>My sign-in link didn’t arrive.</summary>
               <div class="accordion__body hc-a__body">
-                <p>Crestora signs you in with an emailed link, never a password. Links can take a minute to arrive, and they expire after 15 minutes. Check spam and any Promotions tab, then ask for a new one.</p>
+                <p>Crestora signs you in with an emailed link, never a password. Links can take a minute to arrive, and they expire after 15 minutes. Check your spam or junk folder, then ask for a new one.</p>
                 <p>If your company filters mail, add <span class="mono">signin@crestora.example</span> to your safe senders.</p>
                 <p class="hc-a__foot"><a class="hc-a__more" href="{{ROOT}}start.html#signin">Get a new sign-in link<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a><button class="hc-a__copy" type="button" data-copy-answer><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg>Copy link</button></p>
               </div>
@@ -565,11 +565,11 @@ nav: resources
           <p class="hc-door__text">A person on the support crew reads every message, in four time zones. Tell us the lane, what you expected and what happened instead, and you’ll hear back from them by name.</p>
           <div class="hc-door__crew">
             <span class="hc-door__faces" aria-hidden="true">
-              <span class="avatar" data-stage="shape">HJ</span>
+              <span class="avatar" data-stage="spark">OT</span>
               <span class="avatar" data-stage="make">KO</span>
               <span class="avatar" data-stage="afterglow">MS</span>
             </span>
-            <span class="small">Hye-jin, Kofi and Marta answer most of them.</span>
+            <span class="small">Owen, Kofi and Marta answer most of them.</span>
           </div>
           <div class="hc-door__foot">
             <a class="btn btn--primary" href="{{ROOT}}contact.html?topic=support" data-roll>Write to Support<svg class="arrow" aria-hidden="true"><use href="#i-arrow"/></svg></a>

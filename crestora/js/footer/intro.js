@@ -45,15 +45,31 @@ export async function intro(scene, foot) {
   const rule = foot.querySelector('.rule');
   const base = q('.base > *');
 
-  // the type waits where it will start from
-  gsap.set(mark, { rotation: -140, scale: 0.55, opacity: 0, transformOrigin: '50% 50%' });
-  gsap.set(letters, { yPercent: 115, opacity: 0 });
-  gsap.set(lines, { y: 14, opacity: 0 });
-  gsap.set(socials, { y: 16, opacity: 0, scale: 0.9 });
-  gsap.set(heads, { y: 14, opacity: 0 });
-  gsap.set(q('.col li'), { y: 12, opacity: 0 });
-  gsap.set(rule, { scaleX: 0, transformOrigin: '0% 50%' });
-  gsap.set(base, { y: 10, opacity: 0 });
+  const type = [mark, ...letters, ...lines, ...socials, ...heads, ...q('.col li'), rule, ...base].filter(Boolean);
+  // Keyboard first: focus that reaches the footer (or is already in it) before its type has come in shows the type at
+  // once, so nothing focused is ever invisible. The night still comes up as it would.
+  let typeShown = false;
+  const showType = () => {
+    if (typeShown) return;
+    typeShown = true;
+    foot.removeEventListener('focusin', showType);
+    gsap.killTweensOf(type);
+    gsap.set(type, { clearProps: 'transform,opacity' });
+  };
+
+  if (foot.contains(document.activeElement)) typeShown = true;
+  else {
+    // the type waits where it will start from
+    gsap.set(mark, { rotation: -140, scale: 0.55, opacity: 0, transformOrigin: '50% 50%' });
+    gsap.set(letters, { yPercent: 115, opacity: 0 });
+    gsap.set(lines, { y: 14, opacity: 0 });
+    gsap.set(socials, { y: 16, opacity: 0, scale: 0.9 });
+    gsap.set(heads, { y: 14, opacity: 0 });
+    gsap.set(q('.col li'), { y: 12, opacity: 0 });
+    gsap.set(rule, { scaleX: 0, transformOrigin: '0% 50%' });
+    gsap.set(base, { y: 10, opacity: 0 });
+    foot.addEventListener('focusin', showType);
+  }
   foot.classList.add('is-armed');
 
   // wait for the footer to come into view (most of it), then for the car's picture and the fonts
@@ -86,17 +102,19 @@ export async function intro(scene, foot) {
   }
 
   const T = repeat ? 0.35 : 0.9;
-  tl.to(mark, { rotation: 0, scale: 1, opacity: 1, duration: 1.5 * k }, T)
-    .to(letters, { yPercent: 0, opacity: 1, duration: 1.1 * k, stagger: 0.04 * k }, T + 0.12 * k)
-    .to(lines, { y: 0, opacity: 1, duration: 1.1 * k, stagger: 0.09 * k }, T + 0.3 * k)
-    .to(socials, { y: 0, opacity: 1, scale: 1, duration: 0.9 * k, stagger: 0.06 * k, ease: 'back.out(2.2)' }, T + 0.45 * k);
-  cols.forEach((col, i) => {
-    const at = T + (0.2 + i * 0.09) * k;
-    tl.to(heads[i], { y: 0, opacity: 1, duration: 1 * k }, at)
-      .to(col.querySelectorAll('li'), { y: 0, opacity: 1, duration: 0.9 * k, stagger: 0.035 * k }, at + 0.08 * k);
-  });
-  tl.to(rule, { scaleX: 1, duration: 1.5 * k, ease: 'expo.inOut' }, T + 0.5 * k)
-    .add(() => rule.dispatchEvent(new CustomEvent('sweep')), T + 1.1 * k)
-    .to(base, { y: 0, opacity: 1, duration: 1 * k, stagger: 0.08 * k }, T + 0.95 * k)
-    .add(() => gsap.set([mark, ...letters, ...lines, ...socials, ...heads, ...q('.col li'), rule, ...base], { clearProps: 'transform,opacity' }));
+  if (!typeShown) {
+    tl.to(mark, { rotation: 0, scale: 1, opacity: 1, duration: 1.5 * k }, T)
+      .to(letters, { yPercent: 0, opacity: 1, duration: 1.1 * k, stagger: 0.04 * k }, T + 0.12 * k)
+      .to(lines, { y: 0, opacity: 1, duration: 1.1 * k, stagger: 0.09 * k }, T + 0.3 * k)
+      .to(socials, { y: 0, opacity: 1, scale: 1, duration: 0.9 * k, stagger: 0.06 * k, ease: 'back.out(2.2)' }, T + 0.45 * k);
+    cols.forEach((col, i) => {
+      const at = T + (0.2 + i * 0.09) * k;
+      tl.to(heads[i], { y: 0, opacity: 1, duration: 1 * k }, at)
+        .to(col.querySelectorAll('li'), { y: 0, opacity: 1, duration: 0.9 * k, stagger: 0.035 * k }, at + 0.08 * k);
+    });
+    tl.to(rule, { scaleX: 1, duration: 1.5 * k, ease: 'expo.inOut' }, T + 0.5 * k)
+      .to(base, { y: 0, opacity: 1, duration: 1 * k, stagger: 0.08 * k }, T + 0.95 * k);
+  }
+  tl.add(() => rule.dispatchEvent(new CustomEvent('sweep')), T + 1.1 * k)
+    .add(() => { if (!typeShown) { typeShown = true; foot.removeEventListener('focusin', showType); gsap.set(type, { clearProps: 'transform,opacity' }); } });
 }

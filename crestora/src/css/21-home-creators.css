@@ -84,9 +84,10 @@
 .creators .cr-lane .stage-rail i:nth-child(2) { --k: 1; } .creators .cr-lane .stage-rail i:nth-child(3) { --k: 2; }
 .creators .cr-lane .stage-rail i:nth-child(4) { --k: 3; } .creators .cr-lane .stage-rail i:nth-child(5) { --k: 4; }
 .creators .cr-lane .stage-rail i:nth-child(6) { --k: 5; }
+/* each dot over the centre of its sixth, its name centred under it (the kit's inset for a rail over six names) */
+.creators .cr-lane .stage-rail { --rail-in: calc(100% / 12); }
 .creators .cr-stages { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); font-size: 11.5px; line-height: 1.2; color: var(--ink-faint); }
 .creators .cr-stages li { text-align: center; white-space: nowrap; }
-.creators .cr-stages li:first-child { text-align: left; } .creators .cr-stages li:last-child { text-align: right; }
 .creators .cr-stages .is-past { color: var(--ink-muted); }
 .creators .cr-stages .is-now { color: #fff; }
 .creators .cr-link { align-self: flex-start; margin-top: auto; }
@@ -151,6 +152,9 @@
 @keyframes cr-rise { from { transform: translateY(18px); opacity: 0.2; } }
 @keyframes cr-turn { to { stroke-dashoffset: calc(var(--p) * -1); } }
 @keyframes cr-settle { from { transform: scale(0.9); opacity: 0.3; } }
+
+/* a phone: the six names keep clear of each other */
+@media (max-width: 479.98px) { .creators .cr-stages { font-size: 10.5px; letter-spacing: -0.01em; } }
 
 /* reduced motion: the posters rest and the widths switch without moving */
 .is-calm .creators .cr-row, .is-calm .creators .cr-more, .is-calm .creators .cr-more__inner, .is-calm .creators .stage-rail::after, .is-calm .creators .stage-rail i { transition: none !important; }

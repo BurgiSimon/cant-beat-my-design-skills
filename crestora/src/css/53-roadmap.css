@@ -7,6 +7,7 @@
 [data-page="roadmap"] .rm-hero__intro { display: grid; gap: 26px; justify-items: start; }
 [data-page="roadmap"] .rm-hero__title { max-width: 11em; }
 [data-page="roadmap"] .rm-hero__intro .lede { max-width: 34em; }
+[data-page="roadmap"] .rm-hero__side { display: grid; gap: 16px; }
 [data-page="roadmap"] .rm-stats { display: grid; border-top: 1px solid var(--line-soft); }
 [data-page="roadmap"] .rm-stats__row { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 18px 0; border-bottom: 1px solid var(--line-faint); }
 [data-page="roadmap"] .rm-stats dt { font-size: 14px; color: var(--ink-muted); }
@@ -37,10 +38,12 @@
 /* ---- the board ---- */
 [data-page="roadmap"] .rm-jump { display: none; }
 [data-page="roadmap"] .rm-board { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(20px, 2.2vw, 32px); margin-top: clamp(40px, 4vw, 64px); align-items: start; }
-[data-page="roadmap"] .rm-col { min-width: 0; scroll-margin-top: calc(var(--header-h) + 24px); }
+[data-page="roadmap"] .rm-col { min-width: 0; }
 [data-page="roadmap"] .rm-col__head { display: flex; align-items: center; gap: 14px; min-height: 44px; }
 [data-page="roadmap"] .rm-col__title { font: 400 clamp(24px, 2.2vw, 32px)/1 var(--font-brand); color: #fff; letter-spacing: -0.015em; }
 [data-page="roadmap"] .rm-col__when { margin-right: auto; }
+/* "Building now" is a state, not a live feed: its dot holds still (no idle pulse) */
+[data-page="roadmap"] .rm-col__when .chip--live::before { animation: none; }
 [data-page="roadmap"] .rm-col__n { display: grid; place-items: center; min-width: 32px; height: 32px; padding: 0 8px; border-radius: 8px; font: 400 13px/1 var(--font-brand); color: var(--ink-soft); box-shadow: inset 0 0 0 1px var(--line-soft); }
 /* the road under the name: near is solid, further is dashed, furthest is dotted */
 [data-page="roadmap"] .rm-col__road { display: block; height: 0; margin: 20px 0 22px; border-top: 1px solid var(--line); }
@@ -65,15 +68,19 @@
 [data-page="roadmap"] .rm-chip-all { background: rgb(255 255 255 / 0.04); box-shadow: inset 0 0 0 1px var(--line-soft); }
 [data-page="roadmap"] .rm-chip-all::before { background: conic-gradient(var(--spectrum), #3a6dff); box-shadow: none; }
 
-[data-page="roadmap"] .rm-card__top { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-width: 0; }
-[data-page="roadmap"] .rm-card__status { font-size: 13px; color: var(--ink-muted); text-align: right; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-[data-page="roadmap"] .rm-card__title { font: 600 19px/1.3 var(--font); color: #fff; letter-spacing: -0.012em; margin-top: 6px; }
+[data-page="roadmap"] .rm-card__top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 12px; min-width: 0; }
+/* a status is never cut short: in a narrow card it drops under the chip */
+[data-page="roadmap"] .rm-card__status { margin-left: auto; font-size: 13px; line-height: 1.35; color: var(--ink-muted); text-align: right; }
+[data-page="roadmap"] .rm-card__title { font: 600 19px/1.3 var(--font); color: #fff; letter-spacing: -0.012em; margin-top: 6px; text-wrap: balance; }
 [data-page="roadmap"] .rm-card__why { font-size: 15px; line-height: 1.6; color: var(--ink-soft); text-wrap: pretty; }
 [data-page="roadmap"] .rm-card__foot { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 6px; padding-top: 16px; border-top: 1px solid var(--line-faint); }
 [data-page="roadmap"] .rm-card__added { font-size: 13px; color: var(--ink-muted); }
 
 /* the upvote: one of the footer's boxes; voting turns it white */
-[data-page="roadmap"] .rm-vote { gap: 9px; padding: 0 14px 0 11px; min-width: 96px; justify-content: space-between; font-variant-numeric: tabular-nums; }
+[data-page="roadmap"] .rm-vote { gap: 9px; padding: 0 14px 0 11px; min-width: 108px; justify-content: space-between; font-variant-numeric: tabular-nums; }
+/* without scripts a vote can't be cast: the box shows the count, quietly, and isn't a control */
+[data-page="roadmap"] .rm-vote:disabled { cursor: default; box-shadow: inset 0 0 0 1px var(--line-soft); color: var(--ink-soft); }
+[data-page="roadmap"] .rm-vote:disabled::before { content: none; }
 [data-page="roadmap"] .rm-vote svg { width: 18px; height: 18px; stroke-width: 1.7; transition: transform 0.45s var(--ease-spring); }
 [data-page="roadmap"] .rm-vote__n { font: 400 14px/1 var(--font-brand); letter-spacing: 0; }
 [data-page="roadmap"] .rm-vote__n.odo .odo__d { width: 0.88em; }
@@ -90,11 +97,11 @@
 [data-page="roadmap"] .rm-note .icon { width: 17px; height: 17px; margin-top: 1px; flex: none; }
 
 /* ---- recently shipped ---- */
-[data-page="roadmap"] .rm-shipped { padding: clamp(32px, 4vw, 64px) 0 clamp(96px, 10vw, 160px); }
+[data-page="roadmap"] .rm-shipped { padding: clamp(32px, 4vw, 64px) 0 clamp(80px, 8vw, 128px); }
 [data-page="roadmap"] .rm-ship { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(14px, 1.4vw, 20px); }
 [data-page="roadmap"] .rm-ship li { display: flex; }
 [data-page="roadmap"] .rm-ship__card {
-  position: relative; isolation: isolate; overflow: hidden; display: grid; grid-template-rows: auto 1fr auto; gap: 18px; width: 100%; min-height: 220px; padding: 24px 22px 22px; border-radius: var(--radius-lg);
+  position: relative; isolation: isolate; overflow: hidden; display: grid; grid-template-rows: auto 1fr auto; gap: 18px; width: 100%; min-height: 196px; padding: 24px 22px 22px; border-radius: var(--radius-lg);
   background: radial-gradient(90% 70% at 0% 0%, color-mix(in srgb, var(--stage) 10%, transparent), transparent 70%), var(--surface); box-shadow: inset 0 0 0 1px var(--line-faint);
   transition: box-shadow var(--dur) var(--ease-out), transform var(--dur) var(--ease-out);
 }
@@ -103,7 +110,7 @@
 [data-page="roadmap"] .rm-ship__card:focus-visible { outline-offset: 3px; border-radius: var(--radius-lg); }
 [data-page="roadmap"] .rm-ship__top { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; font-size: 13px; color: var(--ink-muted); }
 [data-page="roadmap"] .rm-ship__ver { font: 400 26px/1 var(--font-brand); color: #fff; letter-spacing: -0.02em; }
-[data-page="roadmap"] .rm-ship__title { font: 600 17px/1.35 var(--font); color: #fff; letter-spacing: -0.01em; max-width: 15em; }
+[data-page="roadmap"] .rm-ship__title { font: 600 17px/1.35 var(--font); color: #fff; letter-spacing: -0.01em; max-width: 15em; text-wrap: balance; }
 [data-page="roadmap"] .rm-ship__meta { display: flex; align-items: center; gap: 9px; font-size: 13px; color: var(--ink-muted); padding-right: 34px; }
 [data-page="roadmap"] .rm-ship__meta .dot { --c: var(--stage); width: 7px; height: 7px; box-shadow: 0 0 8px var(--stage); }
 [data-page="roadmap"] .rm-ship__go { position: absolute; right: 18px; bottom: 18px; width: 18px; height: 18px; color: var(--ink-soft); transition: transform var(--dur) var(--ease-out), color var(--dur); }
@@ -124,17 +131,20 @@
 [data-page="roadmap"] .rm-form .field__error:empty { display: none; }
 [data-page="roadmap"] .rm-form__opt { color: var(--ink-muted); font-weight: 400; }
 [data-page="roadmap"] .rm-form textarea.input { min-height: 120px; }
-[data-page="roadmap"] .rm-form__note { display: flex; align-items: center; justify-content: center; gap: 9px; margin-top: -4px; font-size: 13px; color: var(--ink-muted); text-align: center; }
-[data-page="roadmap"] .rm-form__note .icon { width: 16px; height: 16px; }
+/* the icon rides in the line, so a note that wraps stays centred as one block */
+[data-page="roadmap"] .rm-form__note { margin-top: -4px; font-size: 13px; line-height: 1.5; color: var(--ink-muted); text-align: center; text-wrap: balance; }
+[data-page="roadmap"] .rm-form__note .icon { display: inline-block; width: 16px; height: 16px; margin-right: 8px; vertical-align: -3px; }
 
 /* ---- narrower screens ---- */
 @media (max-width: 1180px) {
   [data-page="roadmap"] .rm-ship { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  /* the words keep a readable measure beside the form instead of a 280 px sliver */
+  [data-page="roadmap"] .rm-suggest__grid { grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); column-gap: 48px; }
   [data-page="roadmap"] .rm-count { margin-left: 0; width: 100%; }
 }
 @media (max-width: 960px) {
   [data-page="roadmap"] .rm-hero__grid, [data-page="roadmap"] .rm-suggest__grid { grid-template-columns: minmax(0, 1fr); }
-  [data-page="roadmap"] .rm-stats { max-width: 520px; width: 100%; }
+  [data-page="roadmap"] .rm-hero__side { max-width: 520px; width: 100%; }
 }
 /* phones and upright tablets: the columns become a swipeable row */
 @media (max-width: 899.98px) {

@@ -6,6 +6,8 @@
 
 /* ---- hero ---- */
 [data-page="docs"] .docs-hero { padding-bottom: clamp(48px, 6vw, 88px); }
+/* "Documentation." is one long Michroma word: under ~400 px it steps down with the screen instead of running past it */
+[data-page="docs"] .docs-hero .title-1 { font-size: min(clamp(34px, 4.6vw, 72px), calc((100vw - 2 * var(--gutter)) / 10.2)); }
 [data-page="docs"] .docs-hero__meta { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; }
 [data-page="docs"] .docs-hero__ver { height: 32px; padding: 0 13px 0 11px; color: var(--ink-soft); transition: color var(--dur) var(--ease-out), box-shadow var(--dur) var(--ease-out); }
 [data-page="docs"] .docs-hero__vdot { width: 6px; height: 6px; border-radius: 50%; background: #fff; box-shadow: 0 0 0 3px rgb(255 255 255 / 0.12); }
@@ -85,7 +87,10 @@
 [data-page="docs"] .docs-nav__subwrap { display: grid; grid-template-rows: 1fr; transition: grid-template-rows 0.45s var(--ease-out), visibility 0s linear 0s; }
 .js [data-page="docs"] .docs-nav__item:not(.is-open) > .docs-nav__subwrap { grid-template-rows: 0fr; visibility: hidden; transition: grid-template-rows 0.45s var(--ease-out), visibility 0s linear 0.45s; }
 .js [data-page="docs"] .docs-nav.is-searching .docs-nav__item > .docs-nav__subwrap { grid-template-rows: 1fr; visibility: visible; transition: none; }
-[data-page="docs"] .docs-nav__sub { min-height: 0; overflow: hidden; margin-left: 15px; padding: 2px 0 8px; border-left: 1px solid var(--line-faint); }
+[data-page="docs"] .docs-nav__sub { min-height: 0; overflow: hidden; margin-left: 15px; padding: 0; border-left: 1px solid var(--line-faint); }
+/* the gaps live inside the list, so a folded list folds to nothing (padding would stay behind) */
+[data-page="docs"] .docs-nav__sub > li:first-child { margin-top: 2px; }
+[data-page="docs"] .docs-nav__sub > li:last-child { margin-bottom: 8px; }
 [data-page="docs"] .docs-nav__sub a { display: block; margin-left: -1px; padding: 5px 10px 5px 16px; border-left: 1px solid transparent; font-size: 13.5px; line-height: 1.4; color: var(--ink-muted); transition: color var(--dur) var(--ease-out), border-color var(--dur) var(--ease-out); }
 [data-page="docs"] .docs-nav__sub a:hover { color: #fff; }
 [data-page="docs"] .docs-nav__sub a[aria-current] { color: #fff; border-left-color: var(--stage, #fff); }
@@ -100,8 +105,9 @@
 [data-page="docs"] .docs-body > .docs-sec { position: relative; margin-top: 0; padding-bottom: clamp(56px, 5.6vw, 84px); }
 [data-page="docs"] .docs-body > .docs-sec + .docs-sec { padding-top: clamp(56px, 5.6vw, 84px); border-top: 1px solid var(--line-faint); }
 [data-page="docs"] .docs-sec > * + * { margin-top: 1.1em; }
-[data-page="docs"] .docs-sec > h2 { margin-top: 16px; font-size: clamp(26px, 2.3vw, 34px); line-height: 1.15; scroll-margin-top: calc(var(--header-h) + 72px); }
-[data-page="docs"] .docs-sec > h3 { margin-top: 2.3em; font-size: 20px; letter-spacing: -0.012em; scroll-margin-top: calc(var(--header-h) + 40px); }
+/* a section's heading lands with its kicker line above it still in view (the kicker sits 16 + ~20 px above it) */
+[data-page="docs"] .docs-sec > h2 { margin-top: 16px; font-size: clamp(26px, 2.3vw, 34px); line-height: 1.15; scroll-margin-top: 36px; }
+[data-page="docs"] .docs-sec > h3 { margin-top: 2.3em; font-size: 20px; letter-spacing: -0.012em; }
 [data-page="docs"] .docs-sec > h2 + .docs-lead { margin-top: 22px; }
 [data-page="docs"] .docs-sec > h3 + * { margin-top: 0.75em; }
 [data-page="docs"] .docs-sec :is(h2, h3) .copy-link { translate: 0 -2px; }
@@ -116,6 +122,8 @@
 [data-page="docs"] .docs-kicker__mark { width: 16px; height: 1px; background: var(--line); }
 [data-page="docs"] .docs-lead { font-size: clamp(17px, 1.3vw, 19px); line-height: 1.65; color: var(--ink-soft); }
 [data-page="docs"] .docs-fine { font-size: 14.5px; line-height: 1.6; color: var(--ink-muted); }
+/* running text keeps a reading measure (about 75 characters); tables, code, notes and the stage strip use the full column */
+[data-page="docs"] .docs-sec > :is(p:not(.docs-kicker), .docs-steps) { max-width: 40rem; }
 [data-page="docs"] .docs-body kbd { font-size: 0.8em; }
 [data-page="docs"] :is(.docs-body, .docs-side) :is(code, pre, kbd) { font-variant-ligatures: none; font-feature-settings: "liga" 0, "calt" 0; }
 
@@ -272,13 +280,23 @@
   [data-page="docs"] .docs-start { grid-template-columns: 44px minmax(0, 1fr); grid-template-rows: auto auto; column-gap: 16px; row-gap: 3px; padding: 18px 44px 18px 18px; }
   [data-page="docs"] .docs-start > .icon-box, [data-page="docs"] .docs-start__rail { grid-row: span 2; margin: 0; align-self: center; }
   [data-page="docs"] .docs-start__rail { width: 44px; }
-  [data-page="docs"] .docs-start__rail .stage-rail { grid-template-columns: repeat(3, 1fr); row-gap: 8px; height: auto; }
+  [data-page="docs"] .docs-start__rail .stage-rail { display: grid; grid-template-columns: repeat(3, 1fr); row-gap: 8px; height: auto; }
   [data-page="docs"] .docs-start__rail .stage-rail::before, [data-page="docs"] .docs-start__rail .stage-rail::after { display: none; }
   [data-page="docs"] .docs-start__rail .stage-rail i { justify-self: center; }
   [data-page="docs"] .docs-start__t { font-size: 16px; }
   [data-page="docs"] .docs-start__d { font-size: 14px; }
   [data-page="docs"] .docs-start__go { top: 50%; right: 18px; margin-top: -8px; }
   [data-page="docs"] .docs-table--keys :is(th, td):nth-child(3) { display: none; }
+  /* prose tables: each row a small card (a name, then its cells, each with its column's label) */
+  [data-page="docs"] .docs-table--stack thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  [data-page="docs"] .docs-table--stack :is(table, tbody, tr, th, td) { display: block; }
+  [data-page="docs"] .docs-table--stack tbody tr { padding: 15px 16px 16px; border-bottom: 1px solid var(--line-faint); }
+  [data-page="docs"] .docs-table--stack tbody tr:last-child { border-bottom: 0; }
+  [data-page="docs"] .docs-table--stack tbody :is(th, td) { padding: 0; border: 0; }
+  [data-page="docs"] .docs-table--stack tbody th + td { margin-top: 4px; }
+  [data-page="docs"] .docs-table--stack td[data-label]::before { content: attr(data-label); content: attr(data-label) / ""; display: block; margin: 10px 0 4px; font: 400 9.5px/1.3 var(--font-brand); letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-muted); }
+  [data-page="docs"] .docs-table--stack tbody th + td[data-label]::before { margin-top: 8px; }
+  [data-page="docs"] .docs-table--stack code { white-space: nowrap; }
   [data-page="docs"] .docs-table :is(th, td) { padding: 13px 14px; }
   /* the permissions table: each row a card of four role cells (roles in the markup keep it a table for readers) */
   [data-page="docs"] .docs-table--perms thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }

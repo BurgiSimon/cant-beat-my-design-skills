@@ -54,7 +54,8 @@ export default function init({ calm, still }) {
     svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
     ramp.style.setProperty('--xs', `${XS}px`);
     ramps.forEach((p, k) => p.setAttribute('d', rampD(k)));
-    lanes.forEach((p, i) => p.setAttribute('d', `M${XS} ${laneY(i)}H${W}`));
+    // the lanes stop just short of the edge, so a lit lane's glow never peeks out past its label
+    lanes.forEach((p, i) => p.setAttribute('d', `M${XS} ${laneY(i)}H${W - 6}`));
     glows.forEach((r) => { r.setAttribute('x', XS); r.setAttribute('width', W - XS); });
     nodes.forEach((c) => c.setAttribute('cx', XS));
   }
@@ -68,7 +69,7 @@ export default function init({ calm, still }) {
   function run(k) {
     if (!moving || !drawn()) return;
     for (const a of runs) a.cancel();
-    const d = `${rampD(k)}H${W}`;
+    const d = `${rampD(k)}H${W - 6}`;
     dash.setAttribute('d', d); dashGlow.setAttribute('d', d);
     const len = dash.getTotalLength();
     const seg = 90;
@@ -103,7 +104,8 @@ export default function init({ calm, still }) {
       const ln = caption.querySelector('.ramp__caption-lane');
       ln.dataset.stage = stage;
       ln.textContent = `${a.dataset.lane} lane`;
-      caption.querySelector('.ramp__caption-says').textContent = ` · ${a.dataset.says}.`;
+      const says = a.dataset.says;
+      caption.querySelector('.ramp__caption-says').textContent = `${says[0].toUpperCase()}${says.slice(1)}.`;
     }
   }
   apps.forEach((a, k) => {

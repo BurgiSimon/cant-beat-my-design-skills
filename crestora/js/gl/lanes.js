@@ -93,20 +93,23 @@ const FLOW_ROWS = 145, FLOW_COLS = 320;
 // the ribbon lofted once (the mesh and the card's ride both read it)
 let flowLoft = null;
 const lofted = () => flowLoft || (flowLoft = loft(FLOW, { cols: FLOW_COLS, rows: FLOW_ROWS }));
-let centreLine = null;
-/** The ribbon's centre line (v = 0.5, the middle row of its mesh) at design x, in design px: the card rides on it. */
-export function flowCentre(x) {
-  if (!centreLine) {
-    const d = lofted().data, mid = (FLOW_ROWS - 1) / 2;
-    centreLine = Array.from({ length: FLOW_COLS }, (_, j) => [d[(mid * FLOW_COLS + j) * 5], d[(mid * FLOW_COLS + j) * 5 + 1]]);
-  }
-  const c = centreLine;
+const rowLines = {};
+function rowAt(row, x) {
+  const c = rowLines[row] || (rowLines[row] = (() => {
+    const d = lofted().data;
+    return Array.from({ length: FLOW_COLS }, (_, j) => [d[(row * FLOW_COLS + j) * 5], d[(row * FLOW_COLS + j) * 5 + 1]]);
+  })());
   if (x <= c[0][0]) return c[0][1];
   let lo = 0, hi = c.length - 1;
   if (x >= c[hi][0]) return c[hi][1];
   while (hi - lo > 1) { const m = (lo + hi) >> 1; if (c[m][0] < x) lo = m; else hi = m; }
   return c[lo][1] + ((c[hi][1] - c[lo][1]) * (x - c[lo][0])) / (c[hi][0] - c[lo][0]);
 }
+/** The ribbon's centre line (v = 0.5, the middle row of its mesh) at design x, in design px: the card rides on it. */
+export const flowCentre = (x) => rowAt((FLOW_ROWS - 1) / 2, x);
+/** The ribbon's top (Spark's outer lane) and bottom (Afterglow's) edges at design x, in design px: the page keeps
+ *  its type clear of them. */
+export const flowEdges = (x) => ({ top: rowAt(0, x), bottom: rowAt(FLOW_ROWS - 1, x) });
 
 // ================= shaders =================
 const GLSL = '#version 300 es\nprecision highp float;\n';
@@ -353,10 +356,30 @@ function createLanes(canvas, { calm = false, velocity = () => 0 }) {
   let time = 0, travel = 0, running = false, last = 0, raf = 0, vel = 0;
   const ticker = window.gsap?.ticker;
 
+  // ---- pause: the threads move for as long as they are on screen, so the reader can hold them (pauseButton below).
+  // Time and the running dashes stop; what the reader drives (scrolling, the pointer's lamp) still draws, and only
+  // when it changes. ----
+  let paused = false, lastSig = '';
+  const pauseFns = new Set();
+  // the numbers a view's state holds (GSAP keeps its own cache on a tweened object: that is skipped)
+  const nums = (o) => { let out = ''; for (const k in o) { if (k === '_gsap') continue; const v = o[k]; out += v && typeof v === 'object' ? nums(v) : `${typeof v === 'number' ? v.toFixed(4) : v},`; } return out; };
+  const sig = () => {
+    const v = mounted && views[mounted];
+    return v ? `${mounted}|${scrollY}|${innerWidth}x${innerHeight}|${ptr.cx},${ptr.cy},${ptr.on.toFixed(3)}|${nums(v.state)}` : '';
+  };
+  function pause(on) {
+    on = !!on;
+    if (on === paused) return;
+    paused = on; lastSig = '';
+    for (const fn of pauseFns) fn(paused);
+  }
+
   function update(dt) {
-    time += dt;
     vel = damp(vel, Math.min(40, Math.abs(velocity() || 0)), 6, dt);
-    travel += dt * 60 * (1 + vel * 0.12);           // dash speed: cruise + how fast the page is moving
+    if (!paused) {
+      time += dt;
+      travel += dt * 60 * (1 + vel * 0.12);         // dash speed: cruise + how fast the page is moving
+    }
     ptr.on = damp(ptr.on, ptr.want, 4, dt);
     ptr.par.x = damp(ptr.par.x, ptr.want ? (ptr.cx / Math.max(1, innerWidth) - 0.5) * -14 : 0, 2, dt);
     ptr.par.y = damp(ptr.par.y, ptr.want ? (ptr.cy / Math.max(1, innerHeight) - 0.5) * -8 : 0, 2, dt);
@@ -438,6 +461,12 @@ function createLanes(canvas, { calm = false, velocity = () => 0 }) {
     if (!running) return;
     const dt = Math.min(0.05, (dtMs ?? 16) / 1000 || 0.016);
     update(dt);
+    if (paused) {
+      if (sig() === lastSig) return;
+      draw();
+      lastSig = sig();
+      return;
+    }
     draw();
   }
   function rafTick(now) {
@@ -525,8 +554,32 @@ function createLanes(canvas, { calm = false, velocity = () => 0 }) {
     frameOf: (name) => frameOf(views[name]),
     get mounted() { return mounted; },
     draw, start, stop,
+    /** hold (true) or play (false) the threads; onPause(fn) hears every change, from any button */
+    pause,
+    get paused() { return paused; },
+    onPause(fn) { pauseFns.add(fn); return () => pauseFns.delete(fn); },
   };
   return api;
+}
+
+// ---- a pause / play button for the threads (they move for as long as they are on screen: WCAG 2.2.2) ----
+// Every button made here drives the one canvas, so holding the hero holds the #features ribbon too, and either button
+// plays it again. The page adds them only where the threads move (not under reduced motion or ?still).
+const PAUSE_ICON = '<svg viewBox="0 0 12 12" aria-hidden="true"><rect x="2" y="1.5" width="2.6" height="9" rx="0.8"/><rect x="7.4" y="1.5" width="2.6" height="9" rx="0.8"/></svg>';
+const PLAY_ICON = '<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3.2 1.6v8.8a.6.6 0 0 0 .9.5l7-4.4a.6.6 0 0 0 0-1L4.1 1.1a.6.6 0 0 0-.9.5Z"/></svg>';
+export function pauseButton(lanes, className = '') {
+  const b = document.createElement('button');
+  b.type = 'button';
+  b.className = `lanes-pause ${className}`.trim();
+  const show = (on) => {
+    b.innerHTML = on ? PLAY_ICON : PAUSE_ICON;
+    b.setAttribute('aria-label', on ? 'Play the background animation' : 'Pause the background animation');
+    b.classList.toggle('is-paused', on);
+  };
+  show(lanes.paused);
+  lanes.onPause(show);
+  b.addEventListener('click', () => lanes.pause(!lanes.paused));
+  return b;
 }
 
 // ---- one shared instance, made after the page's first paint (the hero's headline is what paints first) ----

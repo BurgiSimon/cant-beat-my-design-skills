@@ -1,7 +1,8 @@
 // webinars.html: every <time data-local> is rewritten into the visitor's own time zone (Intl); "Save a seat" ticks
 // that session in the form below; the form needs at least one session (the last box turns required when none is
 // ticked, so forms.js can say so); Play on a recording says plainly that this is a demo; and #rec-<id> opens that
-// recording's dialog.
+// recording's dialog (a card puts its #rec-<id> in the address bar while its dialog is open). The countdown is the
+// generic countdown module's (at rest, CSS drops its seconds).
 import { toast, $, $$ } from '../core.js';
 
 function zone() {
@@ -12,7 +13,19 @@ export default function init() {
   localTimes();
   seats();
   for (const b of $$('[data-wb-play]')) b.addEventListener('click', () => toast('Recordings aren’t hosted on this demo site.', 'Demo'));
+  recordings();
   deepLink();
+}
+
+// a recording card is a link to its #rec-<id> (the details sit on the page without scripts); with scripts the dialog
+// module opens it (the kit's anchor glide leaves [data-dialog-open] links alone), and its #rec-<id> rides in the
+// address bar while it is open, without stacking a history entry
+function recordings() {
+  const clean = () => history.replaceState(null, '', location.pathname + location.search);
+  for (const d of $$('dialog.wb-dialog')) {
+    d.addEventListener('dialog:open', () => history.replaceState(null, '', `#${d.id}`));
+    d.addEventListener('close', () => { if (location.hash === `#${d.id}`) clean(); });
+  }
 }
 
 function localTimes() {

@@ -30,7 +30,8 @@
 [data-page="security"] .sec-part { max-width: none; }
 [data-page="security"] .sec-part > :is(p, ul, ol):not([class]) { max-width: 66ch; }
 [data-page="security"] .sec-part + .sec-part { margin-top: clamp(64px, 6vw, 96px); padding-top: clamp(64px, 6vw, 96px); border-top: 1px solid var(--line-faint); }
-[data-page="security"] .sec-part > h2 { margin-top: 0; font-size: clamp(24px, 2.3vw, 34px); }
+/* balanced, a heading that wraps on a phone keeps its link button beside its last word instead of alone on a line */
+[data-page="security"] .sec-part > h2 { margin-top: 0; font-size: clamp(24px, 2.3vw, 34px); text-wrap: balance; }
 [data-page="security"] .sec-part > h2 + p { margin-top: 0.9em; }
 [data-page="security"] .sec-part > [class] { margin-top: 32px; }
 [data-page="security"] .sec-part > [class] + :is(ul, p):not([class]) { margin-top: 28px; }
@@ -116,6 +117,7 @@
 [data-page="security"] .sec-uptime__axis { display: flex; justify-content: space-between; margin-top: 12px; font-size: 12.5px; color: var(--ink-muted); }
 [data-page="security"] .sec-uptime__legend { margin-top: 14px; font-size: 13.5px; line-height: 1.5; color: var(--ink-muted); }
 .no-js [data-page="security"] .sec-uptime__kbd { display: none; }
+.no-js [data-page="security"] .sec-contact__actions [data-copy] { display: none; }
 /* the day under the pointer (or focus) */
 [data-page="security"] .sec-tip {
   position: absolute; z-index: 3; bottom: calc(100% - 4px); left: 0; width: max-content; max-width: min(300px, 80vw); padding: 10px 12px; border-radius: 10px; pointer-events: none;
@@ -183,7 +185,7 @@
 @media (max-width: 640px) {
   [data-page="security"] .sec-band__item { padding: 26px 14px 28px; }
   [data-page="security"] .sec-band__item:nth-child(odd) { padding-left: 0; }
-  [data-page="security"] .sec-band__n { font-size: clamp(22px, 7vw, 30px); }
+  [data-page="security"] .sec-band__n { font-size: clamp(22px, 6.6vw, 30px); }
   [data-page="security"] .sec-band__l { font-size: 13.5px; }
   [data-page="security"] .sec-toc { grid-template-columns: minmax(0, 1fr); }
   [data-page="security"] .sec-specs, [data-page="security"] .sec-regions, [data-page="security"] .sec-tools, [data-page="security"] .sec-more { grid-template-columns: minmax(0, 1fr); }

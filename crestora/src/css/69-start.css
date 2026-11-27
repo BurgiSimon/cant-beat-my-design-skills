@@ -23,8 +23,7 @@
 [data-page="start"] .start-hero__title { max-width: 9em; }
 [data-page="start"] .start-hero__lede { max-width: 30em; }
 [data-page="start"] .start-hero__preview { grid-area: preview; width: 100%; max-width: 500px; }
-[data-page="start"] .start-hero__fine { margin-top: 18px; font-size: 14px; line-height: 1.5; color: var(--ink-muted); }
-[data-page="start"] .start-hero__fine span { margin: 0 0.35em; opacity: 0.6; }
+[data-page="start"] .start-hero__fine { margin-top: 18px; font-size: 14px; line-height: 1.5; color: var(--ink-muted); text-wrap: balance; }
 
 /* ---- the form panel ---- */
 [data-page="start"] .start-box { grid-area: box; padding: clamp(20px, 2.3vw, 32px); border-radius: 20px; }
@@ -40,6 +39,9 @@
 [data-page="start"] .start-form .field__error:empty { display: none; }
 [data-page="start"] .start-form .input { height: 50px; font-size: 16px; }
 [data-page="start"] .start-form__pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px 14px; }
+/* a two-line error under one field must not push its neighbour's input down */
+[data-page="start"] .start-form__pair .field { align-content: start; }
+[data-page="start"] .start-form .field__error { text-wrap: pretty; }
 [data-page="start"] .start-form__go { margin-top: 4px; }
 [data-page="start"] .start-form__note { display: flex; align-items: center; justify-content: center; gap: 9px; font-size: 13px; line-height: 1.4; color: var(--ink-muted); }
 [data-page="start"] .start-form__note .icon { width: 16px; height: 16px; }
@@ -94,7 +96,8 @@
 /* the success state */
 [data-page="start"] .start-done { display: grid; gap: 18px; justify-items: start; padding: 8px 0 4px; }
 [data-page="start"] .start-done[hidden] { display: none; }
-[data-page="start"] .start-done:focus-visible { outline-offset: 10px; border-radius: 12px; }
+/* the success state takes focus after a keyboard submit: unlike a section an anchor lands on, it keeps a ring */
+[data-page="start"] .start-done:focus-visible { outline: 1px solid rgb(255 255 255 / 0.9); outline-offset: 10px; border-radius: 12px; }
 [data-page="start"] .start-done__no { display: flex; align-items: center; gap: 14px; font: 400 10.5px/1 var(--font-brand); letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-soft); }
 [data-page="start"] .start-done__no .stage-rail { width: 112px; }
 [data-page="start"] .start-done__title { margin-top: 6px; font-size: clamp(30px, 2.8vw, 44px); }
@@ -110,10 +113,12 @@
 }
 [data-page="start"] .start-card__stages i { width: 8px; height: 8px; border-radius: 50%; box-shadow: inset 0 0 0 1px var(--line-soft); transition: background-color 0.4s var(--ease-out), box-shadow 0.4s var(--ease-out); }
 [data-page="start"] .start-card__stages b { font: 400 10.5px/1 var(--font-brand); letter-spacing: 0.04em; color: var(--ink-faint); transition: color 0.4s var(--ease-out); }
-[data-page="start"] .start-card__stages em { display: inline-flex; align-items: center; gap: 10px; font-style: normal; font-size: 13px; color: var(--ink-faint); transition: color 0.4s var(--ease-out); }
+/* the stops still to come are quieter, but their tools stay readable (about 4.8:1 on the card) */
+[data-page="start"] .start-card__stages em { display: inline-flex; align-items: center; gap: 10px; font-style: normal; font-size: 13px; color: rgb(220 228 237 / 0.56); transition: color 0.4s var(--ease-out); }
 [data-page="start"] .start-card__stages li.is-lit { color: var(--ink-soft); }
 [data-page="start"] .start-card__stages li.is-lit i { background: var(--stage); box-shadow: 0 0 10px -1px var(--stage); }
-[data-page="start"] .start-card__stages li.is-lit b, [data-page="start"] .start-card__stages li.is-lit em { color: var(--ink-muted); }
+[data-page="start"] .start-card__stages li.is-lit b { color: var(--ink-muted); }
+[data-page="start"] .start-card__stages li.is-lit em { color: var(--ink-soft); }
 [data-page="start"] .start-card__stages li.is-now { color: #fff; }
 [data-page="start"] .start-card__stages li.is-now em::after { content: "Now"; padding: 4px 7px; border-radius: 999px; font: 600 9.5px/1 var(--font); letter-spacing: 0.08em; text-transform: uppercase; color: #000; background: #fff; }
 [data-page="start"] .lane-card.is-open .start-card__stages li em::after { content: none; }
@@ -122,6 +127,8 @@
 [data-page="start"] .start-card__tags { display: flex; gap: 6px; margin-left: auto; flex: none; }
 [data-page="start"] .start-card__tag { display: inline-flex; align-items: center; height: 24px; padding: 0 9px; border-radius: 999px; font: 500 12px/1 var(--font); color: var(--ink-soft); box-shadow: inset 0 0 0 1px var(--line-soft); }
 [data-page="start"] .start-card__tag[hidden] { display: none; }
+/* beside the plan tag the hint wraps rather than trailing off */
+[data-page="start"] .start-card .lane-card__mail { white-space: normal; overflow-wrap: anywhere; }
 .is-calm [data-page="start"] .start-card__stages *, .is-calm [data-page="start"] .start-card__stages li { transition: none !important; }
 
 /* ---- what happens next: three stops on a lane ---- */
@@ -143,13 +150,21 @@
 .no-js [data-page="start"] .start-tabs, .no-js [data-page="start"] .start-signin__new { display: none; }
 .no-js [data-page="start"] .start-panel[hidden] { display: block; }
 .no-js [data-page="start"] .start-panel { margin-top: 0; }
-.no-js [data-page="start"] #signin { margin-top: 40px; padding-top: 32px; border-top: 1px solid var(--line-faint); }
+.no-js [data-page="start"] #signin { position: relative; margin-top: 40px; padding-top: 32px; border-top: 1px solid var(--line-faint); }
+/* the sign-in form comes back to #signin-sent and says what happened */
+[data-page="start"] .start-signin__anchor { position: absolute; top: 0; left: 0; width: 1px; height: 1px; }
+[data-page="start"] .start-signin__sent--nojs { display: none; }
+.no-js [data-page="start"] #signin:has(#signin-sent:target) .start-signin__sent--nojs { display: block; }
 
 /* ---- a tablet or a phone: one column (the words, the form, then the card) ---- */
 @media (max-width: 1099.98px) {
   [data-page="start"] .start-hero__grid { grid-template-columns: minmax(0, 1fr); grid-template-areas: "intro" "box" "preview"; grid-template-rows: none; }
-  [data-page="start"] .start-box { max-width: 640px; }
-  [data-page="start"] .start-hero__preview { max-width: 640px; }
+  [data-page="start"] .start-hero__preview { max-width: none; }
+}
+/* a landscape tablet: the form and the card side by side under the words, filling the container to both edges */
+@media (min-width: 900px) and (max-width: 1099.98px) {
+  [data-page="start"] .start-hero__grid { grid-template-columns: minmax(0, 1fr) minmax(0, 340px); grid-template-areas: "intro intro" "box preview"; column-gap: 28px; }
+  [data-page="start"] .start-hero__preview { position: sticky; top: calc(var(--header-h) + 24px); }
 }
 @media (max-width: 900px) {
   [data-page="start"] .start-steps { grid-template-columns: minmax(0, 1fr); gap: 44px; padding: 0 0 0 34px; }

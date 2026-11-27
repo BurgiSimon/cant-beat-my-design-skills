@@ -25,11 +25,11 @@
 <link rel="stylesheet" href="../css/site.css?v={{VERSION}}" />
 <script>
   // Scripts will run: the page may hide what they are about to bring in. A repeat visit in this tab gets short
-  // intros; reduced motion (or ?reduced) gets none.
+  // intros; reduced motion (or ?reduced, or ?still: a still of the resting page) gets none.
   (function (h) {
     h.className = h.className.replace("no-js", "js");
     try { if (sessionStorage.getItem("crestora:seen")) h.classList.add("is-repeat"); } catch (e) {}
-    if (matchMedia("(prefers-reduced-motion: reduce)").matches || /[?&]reduced/.test(location.search)) h.classList.add("is-calm");
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches || /[?&](reduced|still)(?![^&=])/.test(location.search)) h.classList.add("is-calm");
     setTimeout(function () { h.classList.add("is-ready"); }, 6000); // if the scripts never get there, show everything anyway
   })(document.documentElement);
 </script>
@@ -110,7 +110,7 @@
     </a>
     <nav class="nav" aria-label="Main">
       <div class="nav__item" data-menu>
-        <button class="nav__trigger" type="button" aria-expanded="false" aria-controls="menu-product">Product<svg aria-hidden="true"><use href="#i-chev-down"/></svg></button>
+        <button class="nav__trigger" type="button" aria-controls="menu-product">Product<svg aria-hidden="true"><use href="#i-chev-down"/></svg></button>
         <div class="dropdown" id="menu-product" style="--cols:2">
           <a href="../index.html#features"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-layers"/></svg></span><strong>Features</strong><small>Six lanes from spark to launch</small></a>
           <a href="../integrations.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-plug"/></svg></span><strong>Integrations</strong><small>120+ tools merge into your lane</small></a>
@@ -122,7 +122,7 @@
       </div>
       <a class="nav__link" href="../index.html#creators" data-roll>Creators</a>
       <div class="nav__item" data-menu>
-        <button class="nav__trigger is-current" type="button" aria-expanded="false" aria-controls="menu-resources">Resources<svg aria-hidden="true"><use href="#i-chev-down"/></svg></button>
+        <button class="nav__trigger is-current" type="button" aria-controls="menu-resources">Resources<svg aria-hidden="true"><use href="#i-chev-down"/></svg></button>
         <div class="dropdown" id="menu-resources" style="--cols:2">
           <a href="../blog.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-pen"/></svg></span><strong>Field Notes</strong><small>Launch stories and craft notes</small></a>
           <a href="../docs.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-book"/></svg></span><strong>Documentation</strong><small>Lanes, stages and every tool</small></a>
@@ -130,11 +130,11 @@
           <a href="../help.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-help"/></svg></span><strong>Help Center</strong><small>Answers, fast</small></a>
           <a href="../community.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-users"/></svg></span><strong>Community</strong><small>Circles, swaps and Launch Night</small></a>
           <a href="../tutorials.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-learn"/></svg></span><strong>Tutorials</strong><small>Short lessons from people who ship</small></a>
-          <a href="../webinars.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-broadcast"/></svg></span><strong>Webinars</strong><small>Next: Dec 10, live</small></a>
+          <a href="../webinars.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-broadcast"/></svg></span><strong>Webinars</strong><small>Next: Fri 4 Dec, live</small></a>
         </div>
       </div>
       <div class="nav__item" data-menu>
-        <button class="nav__trigger" type="button" aria-expanded="false" aria-controls="menu-company">Company<svg aria-hidden="true"><use href="#i-chev-down"/></svg></button>
+        <button class="nav__trigger" type="button" aria-controls="menu-company">Company<svg aria-hidden="true"><use href="#i-chev-down"/></svg></button>
         <div class="dropdown" id="menu-company" style="--cols:1">
           <a href="../about.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-info"/></svg></span><strong>About</strong><small>Why we build roads for makers</small></a>
           <a href="../careers.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-briefcase"/></svg></span><strong>Careers</strong><small>8 open roles, four hubs</small></a>
@@ -149,10 +149,12 @@
       <a class="header__signin" href="../start.html#signin" data-roll>Sign in</a>
       <a class="btn btn--primary btn--sm" href="../start.html" data-roll>Open a lane</a>
       <button class="header__burger" type="button" aria-expanded="false" aria-controls="menu" aria-label="Open menu"><span></span></button>
+      <!-- without scripts the menu can't open: the same burger takes you to every link, in the footer's columns -->
+      <a class="header__burger header__burger--link" href="#footer" aria-label="Menu: every link, at the foot of the page"><span></span></a>
     </div>
   </div>
 </header>
-<div class="menu" id="menu" role="dialog" aria-modal="true" aria-label="Menu">
+<div class="menu" id="menu" role="dialog" aria-label="Menu">
   <div class="menu__groups">
     <div class="menu__group">
       <h2>Product</h2>
@@ -218,7 +220,7 @@
           <span class="avatar fn-byline__avatar" aria-hidden="true">RM</span>
           <p class="fn-byline__who"><span class="fn-byline__name">Rafael Mendes</span><span class="fn-byline__role">Engineer, Countdown, Lisbon</span></p>
           <p class="fn-byline__meta"><time datetime="2026-11-06">6 Nov 2026</time><span aria-hidden="true">·</span><span>4 min read</span><span aria-hidden="true">·</span><span class="fn-byline__stage"><i aria-hidden="true"></i>Filed in Shape</span></p>
-          <button class="btn btn--sm fn-copy" type="button" data-fn-copy hidden><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg>Copy link</button>
+          <button class="btn btn--sm fn-copy" type="button" data-fn-copy><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg>Copy link</button>
         </div>
       </div>
     </header>
@@ -238,7 +240,7 @@
 <p>He didn’t post it anywhere else. He didn’t need to. Everyone who wanted to be there heard about it from the one place they already trusted him.</p>
 <p>The rest of the lane was just as small. On the Monday he cooked the whole menu for six friends and let them pin notes to it: less salt in the clams, the dessert too sweet after that much wine, a jumper for anyone who forgot that Lisbon gets cold after ten. By the morning after the dinner he had thirty-one replies, two of them asking to help with the next one. The next one is already on his Sparkboard.</p>
 <h2>Small is a decision</h2>
-<p>A smaller launch is not a launch with less effort. It is a launch with fewer things left to chance. When you choose one channel, you can make that channel good. When you choose forty people, you can know who they are. When you choose one night, you can be there for all of it. A big launch tells everyone. A small launch tells the right people, properly.</p>
+<p>A smaller launch is not a launch with less effort. It is a launch with fewer things left to chance. When you choose one channel, you can make that channel good. When you choose forty people, you can know who they are. When you choose one night, you can be there for all of it.</p>
 <p>Countdown is happy to schedule one channel. The checklist gets shorter, the launch room gets quieter, and you can read every reply that comes back. That is not a lesser launch. It is one you can actually pay attention to.</p>
 <p>Here are the four questions I ask before I schedule anything in Countdown, my own work included:</p>
 <ol>
@@ -253,7 +255,7 @@
 <figcaption>Rafael Mendes</figcaption>
 </figure>
 <h2>Three hundred copies</h2>
-<p>I am taking my own advice. Outside work I make records, and on 27 November a 7-inch of fado covers comes out: two songs, pressed in Porto, three hundred copies. It will not go to fourteen channels. It goes to one: a letter to the people who came to the four gigs I played this year, with a link and a date. If they buy a hundred, I’ll be thrilled. If they buy three hundred, I will press more and tell a few more people.</p>
+<p>I am taking my own advice. Outside work I make records, and on Friday 4&nbsp;December a 7&#8209;inch of fado covers comes out: two songs, pressed in Porto, three hundred copies. It will not go to fourteen channels. It goes to one: a letter to the people who came to the four gigs I played this year, with a link and a date. If they buy a hundred, I’ll be thrilled. If they buy three hundred, I will press more and tell a few more people.</p>
 <h2>Small launches compound</h2>
 <p>Here is the part that surprised me. Looking across thousands of lanes in Afterglow, creators whose first launch went to a single channel launched their second thing much sooner: a median of 19 days later, against 47 days for first launches sent to five channels or more. A small launch is survivable. You learn, you fix, you go again. A huge launch that lands softly can take a year to get over.</p>
 <p>So use all fourteen channels when the work is ready for the whole world. But the next time you’re about to launch something you made, ask whether it would be better as a dinner for forty. It usually is.</p>
@@ -303,11 +305,11 @@
           <span class="avatar fn-author__avatar" aria-hidden="true">RM</span>
           <div>
             <p class="fn-author__name">Rafael Mendes</p>
-            <p class="fn-author__bio">Rafael works on Countdown from the Lisbon hub. His 7-inch of fado covers was pressed in Porto: three hundred copies, one letter, out on 27 November.</p>
+            <p class="fn-author__bio">Rafael works on Countdown from the Lisbon hub. His 7&#8209;inch of fado covers was pressed in Porto: three hundred copies, one letter, out on Friday 4&nbsp;December.</p>
           </div>
         </div>
         <div class="fn-end__row">
-          <button class="btn btn--sm fn-copy" type="button" data-fn-copy hidden><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg>Copy link</button>
+          <button class="btn btn--sm fn-copy" type="button" data-fn-copy><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg>Copy link</button>
           <a class="link-arrow" href="../blog.html">All field notes<svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
         </div>
         <p class="fiction">Crestora is a fictional company; figures are illustrative.</p>
@@ -347,7 +349,7 @@
       <a class="btn btn--primary btn--lg" href="../start.html" data-roll>Open your first lane</a>
       <a class="btn btn--lg" href="../pricing.html" data-roll>See plans</a>
     </div>
-    <p class="small">Free for 3 lanes · No card · Export everything, always.</p>
+    <p class="small fine-print"><span>Free for 3 lanes</span> <span class="fine-print__sep" aria-hidden="true">·</span> <span>No card</span> <span class="fine-print__sep fine-print__sep--2" aria-hidden="true">·</span> <span>Export everything, always.</span></p>
   </div>
 </section>
 </main>
@@ -429,7 +431,7 @@
 
     <div class="base">
       <p class="copy">© <span class="year">2026</span> Crestora. All rights reserved.</p>
-      <p class="love"><button class="heart" type="button" aria-label="Send some love"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19.6S4.4 15.1 4.4 9.6A4.2 4.2 0 0 1 12 7.2a4.2 4.2 0 0 1 7.6 2.4c0 5.5-7.6 10-7.6 10Z"/></svg></button><span>Made with love by Pranav</span></p>
+      <p class="love"><button class="heart" type="button" aria-label="Send some love" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19.6S4.4 15.1 4.4 9.6A4.2 4.2 0 0 1 12 7.2a4.2 4.2 0 0 1 7.6 2.4c0 5.5-7.6 10-7.6 10Z"/></svg></button><span>Made with love by Pranav</span></p>
     </div>
 
     <!-- the road: where the car is; holding it down puts your foot down -->

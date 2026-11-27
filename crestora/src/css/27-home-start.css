@@ -63,8 +63,11 @@
 .home-start__input.is-swapping::placeholder { color: transparent; }
 .home-start__field .field__error:empty { display: none; }
 .home-start__go { height: 56px; margin-top: 6px; font-size: 16px; }
+/* the fine print, as the hero sets it: its phrases never break, and where it can't keep to one line it breaks at its
+   second dot, which goes, never leaving a dot at the end of a line */
 .home-start__fine { color: var(--ink-muted); }
-.home-start__fine span { margin: 0 0.35em; opacity: 0.6; }
+.home-start__fine > span { white-space: nowrap; }
+.home-start__fine .home-start__sep { margin: 0 0.35em; opacity: 0.6; }
 .home-start__done { display: flex; align-items: center; gap: 10px; font-size: 14px; line-height: 1.5; color: var(--ink-soft); }
 .home-start__done[hidden] { display: none; }
 .home-start__done .icon { width: 16px; height: 16px; color: #fff; }
@@ -116,8 +119,9 @@
 :is(.home-start, [data-page="start"]) .lane-card .stage-rail i { transition-delay: 0s; }
 :is(.home-start, [data-page="start"]) .lane-card__names { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); font-size: 11.5px; line-height: 1.2; color: var(--ink-faint); }
 :is(.home-start, [data-page="start"]) .lane-card__names li { text-align: center; white-space: nowrap; transition: color 0.4s var(--ease-out); }
-:is(.home-start, [data-page="start"]) .lane-card__names li:first-child { text-align: left; }
-:is(.home-start, [data-page="start"]) .lane-card__names li:last-child { text-align: right; }
+/* with names under the rail (home), each dot sits over the centre of its name; without (the start page), the kit's
+   rail runs edge to edge */
+.home-start .lane-card .stage-rail { --rail-in: calc(100% / 12); }
 :is(.home-start, [data-page="start"]) .lane-card__names li.is-lit { color: var(--ink-soft); }
 :is(.home-start, [data-page="start"]) .lane-card__names li.is-now { color: #fff; }
 
@@ -156,7 +160,13 @@
   .home-start { min-height: 0; }
   .home-start__head .eyebrow { font-size: 10px; }
   .home-start__title { font-size: clamp(30px, 9vw, 44px); }
-  .home-start__horizon { height: 120px; }
+  /* the arc stays a low horizon, wider than the screen, rather than a narrow rainbow */
+  .home-start__horizon { left: 50%; width: 260%; max-width: none; height: 110px; translate: -50% 0; }
+}
+/* the fine print's one line needs about 380 px */
+@media (max-width: 479.98px) {
+  .home-start__fine .home-start__sep--2 { display: none; }
+  .home-start__fine > span:last-child { display: block; margin-top: 4px; }
 }
 @media (max-width: 420px) {
   :is(.home-start, [data-page="start"]) .lane-card__names { font-size: 10.5px; letter-spacing: -0.01em; }

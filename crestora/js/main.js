@@ -1,6 +1,6 @@
 // Crestora: the entry on every page. The shared runtime first (smooth scroll, header, reveals), then the page's own
 // modules (named in <body data-modules>, from js/modules/<name>.js, each exporting a default init), then the footer.
-import { boot, calm } from './core.js';
+import { boot, calm, modulesStarted } from './core.js';
 
 const params = new URLSearchParams(location.search);
 const still = params.has('still');                       // a still of the resting page (for stills and the poster)
@@ -15,6 +15,7 @@ const loads = names.map((name) => import(`./modules/${name}.js`).catch((e) => { 
     const m = await load;
     try { m?.default?.({ calm, still }); } catch (e) { console.error(`[crestora] module ${names[i]}`, e); }
   }
+  modulesStarted();   // a deep link lands once they have (they may open, filter or claim its target)
 })();
 
 // The footer (its WebGL night, the car's picture) loads once it is within a screen and a half, so a long page's first

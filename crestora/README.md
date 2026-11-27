@@ -20,11 +20,12 @@ A colour always means its stage, and the full spectrum means the whole flow.
 | Spark | blue `#3a6dff` | ideas, references, a moodboard |
 | Shape | cyan `#23d3ff` | the brief, milestones, the plan |
 | Make | green `#20d69b` | versions, renders, the work itself |
-| Review Room | amber `#ffb13d` | notes pinned to frames, approvals |
-| Countdown | red `#ff3b3b` | the launch checklist, the clock |
+| Review (Review Room) | amber `#ffb13d` | notes pinned to frames, approvals |
+| Launch (Countdown) | red `#ff3b3b` | the launch checklist, the clock |
 | Afterglow | pink `#ff7ad9` | what the launch did: views, comments, a recap |
 
-The running example is Amara's short film *Night Bloom*, followed from its moodboard to launch day on Fri 11 Dec 2026.
+The running example is Amara's short film *Night Bloom*, followed from its moodboard to a rooftop premiere in Lagos on
+Fri 30 Oct 2026; its festival cut launches online on Fri 11 Dec.
 
 ## Pages
 

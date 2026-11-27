@@ -96,11 +96,15 @@
 [data-page="tutorials"] .tu-path__next svg { display: inline-block; margin-left: 6px; vertical-align: -3px; }
 
 /* ---- the featured lesson ---- */
-[data-page="tutorials"] .tu-feature__grid { display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(320px, 1fr); gap: clamp(24px, 3vw, 48px); align-items: start; }
-[data-page="tutorials"] .tu-feature__main { min-width: 0; }
+/* source order is player, lesson card (with the chapters), transcript; on a wide screen the card rides beside both */
+[data-page="tutorials"] .tu-feature__grid { display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(320px, 1fr); grid-template-rows: auto 1fr; column-gap: clamp(24px, 3vw, 48px); align-items: start; }
+[data-page="tutorials"] .tu-feature__main { grid-area: 1 / 1; min-width: 0; }
+[data-page="tutorials"] .tu-feature__side { grid-area: 1 / 2 / span 2; }
+[data-page="tutorials"] .tu-transcript { grid-area: 2 / 1; min-width: 0; }
 [data-page="tutorials"] .tu-player { margin: 0; }
 [data-page="tutorials"] .tu-player .mock__bar { gap: 12px; }
-[data-page="tutorials"] .tu-player__file span { opacity: 0.5; margin: 0 4px; }
+[data-page="tutorials"] .tu-player__file > span[aria-hidden] { opacity: 0.5; margin: 0 4px; }
+[data-page="tutorials"] .tu-player__tool { white-space: nowrap; }
 [data-page="tutorials"] .tu-player__chip { margin-left: auto; height: 24px; font-size: 12px; }
 
 [data-page="tutorials"] .tu-poster { position: relative; aspect-ratio: 16 / 9; overflow: hidden; isolation: isolate; background: radial-gradient(46% 62% at 51% 42%, rgb(58 109 255 / 0.12), rgb(255 122 217 / 0.05) 50%, transparent 75%), #020305; }
@@ -206,11 +210,11 @@
 }
 [data-page="tutorials"] .tu-chapters button::before { content: ""; position: absolute; left: 0; top: 12px; bottom: 12px; width: 1px; background: var(--review); box-shadow: 0 0 8px var(--review); opacity: 0; transition: opacity var(--dur) var(--ease-out); }
 [data-page="tutorials"] .tu-chapters button:hover { background: rgb(255 255 255 / 0.04); }
-[data-page="tutorials"] .tu-chapters button[aria-current="true"] { background: rgb(255 255 255 / 0.06); box-shadow: inset 0 0 0 1px var(--line-faint); }
-[data-page="tutorials"] .tu-chapters button[aria-current="true"]::before { opacity: 1; }
+[data-page="tutorials"] .tu-chapters button[aria-current] { background: rgb(255 255 255 / 0.06); box-shadow: inset 0 0 0 1px var(--line-faint); }
+[data-page="tutorials"] .tu-chapters button[aria-current]::before { opacity: 1; }
 [data-page="tutorials"] .tu-chapters__n, [data-page="tutorials"] .tu-chapters__at { padding-top: 3px; font: 400 10.5px/1.2 var(--font-brand); letter-spacing: 0.04em; color: var(--ink-muted); }
 [data-page="tutorials"] .tu-chapters__t { font-size: 15px; font-weight: 500; line-height: 1.35; color: #fff; }
-[data-page="tutorials"] .tu-chapters__t small { display: block; margin-top: 3px; font-size: 13px; font-weight: 400; color: var(--ink-muted); }
+[data-page="tutorials"] .tu-chapters__t small { display: block; margin-top: 3px; font-size: 13px; font-weight: 400; color: var(--ink-muted); text-wrap: pretty; }
 [data-page="tutorials"] .tu-feature__foot { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-top: 18px; border-top: 1px solid var(--line-faint); }
 [data-page="tutorials"] .tu-feature__foot .link-arrow { font-size: 14.5px; }
 
@@ -242,9 +246,18 @@
 [data-page="tutorials"] .tu-chip[data-filter="all"][aria-pressed="true"] { background: #fff; color: #000; box-shadow: none; }
 [data-page="tutorials"] .tu-count { margin-left: auto; font-size: 14px; color: var(--ink-muted); white-space: nowrap; }
 .no-js [data-page="tutorials"] .tu-bar { display: none; }
+/* without scripts nothing can be marked done or played: the progress, the checks and the count step back, and the
+   chapters and transcript times read as a list instead of buttons that do nothing */
+.no-js [data-page="tutorials"] :is(.tu-stats__row--done, .tu-progress, .tu-done) { display: none; }
+.no-js [data-page="tutorials"] .tu-step input { display: none; }
+.no-js [data-page="tutorials"] .tu-step { grid-template-columns: 24px minmax(0, 1fr) auto; cursor: default; }
+/* (they are disabled in the page and page-tutorials.js turns them on, so without scripts they are out of the tab order) */
+.no-js [data-page="tutorials"] :is(.tu-chapters button, .tu-lines__t) { pointer-events: none; cursor: default; }
+.no-js [data-page="tutorials"] .tu-lines__t { padding-inline: 0; box-shadow: none; }
+.no-js [data-page="tutorials"] .tu-js { display: none; }
 
 [data-page="tutorials"] .tu-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(16px, 1.6vw, 24px); }
-[data-page="tutorials"] .tu-grid__item { min-width: 0; scroll-margin-top: calc(var(--header-h) + 24px); }
+[data-page="tutorials"] .tu-grid__item { min-width: 0; }
 [data-page="tutorials"] .tu-grid__item[hidden] { display: none; }
 [data-page="tutorials"] .tu-card { display: flex; flex-direction: column; height: 100%; box-shadow: inset 0 0 0 1px var(--line-faint); transition: box-shadow var(--dur) var(--ease-out); }
 [data-page="tutorials"] .tu-card:hover { box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.2); }
@@ -283,7 +296,7 @@
 [data-page="tutorials"] .tu-more__card:hover { box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.22); }
 [data-page="tutorials"] .tu-more__card .icon-box { margin-bottom: 6px; }
 [data-page="tutorials"] .tu-more__name { font: 600 19px/1.3 var(--font); color: #fff; letter-spacing: -0.012em; }
-[data-page="tutorials"] .tu-more__desc { font-size: 15px; line-height: 1.6; color: var(--ink-soft); }
+[data-page="tutorials"] .tu-more__desc { font-size: 15px; line-height: 1.6; color: var(--ink-soft); text-wrap: pretty; }
 [data-page="tutorials"] .tu-more__card .link-arrow { margin-top: 6px; font-size: 14.5px; }
 
 /* ---- reduced motion: everything at rest ---- */
@@ -300,13 +313,22 @@
   [data-page="tutorials"] .tu-path__next { align-self: end; }
 }
 @media (max-width: 1080px) {
-  [data-page="tutorials"] .tu-feature__grid { grid-template-columns: 1fr; }
+  /* one column, in source order: the chapters come straight after the player they move, the transcript after them */
+  [data-page="tutorials"] .tu-feature__grid { grid-template-columns: minmax(0, 1fr); grid-template-rows: none; row-gap: clamp(24px, 3vw, 36px); }
+  [data-page="tutorials"] :is(.tu-feature__main, .tu-feature__side, .tu-transcript) { grid-area: auto; }
   [data-page="tutorials"] .tu-feature__side { position: static; }
+  [data-page="tutorials"] .tu-transcript { margin-top: 12px; }
   [data-page="tutorials"] .tu-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 900px) {
   [data-page="tutorials"] .tu-hero__grid { grid-template-columns: 1fr; }
   [data-page="tutorials"] .tu-more__grid { grid-template-columns: 1fr; }
+}
+@media (min-width: 560px) and (max-width: 900px) {
+  /* one card a row: the icon beside the words, not over a wide empty card */
+  [data-page="tutorials"] .tu-more__card { grid-template-columns: auto minmax(0, 1fr); column-gap: 22px; row-gap: 10px; }
+  [data-page="tutorials"] .tu-more__card .icon-box { grid-row: span 3; margin-bottom: 0; }
+  [data-page="tutorials"] .tu-more__card .link-arrow { margin-top: 2px; }
 }
 @media (max-width: 720px) {
   [data-page="tutorials"] .tu-path { grid-template-columns: 1fr; grid-template-areas: "head" "title" "desc" "guide" "progress" "steps" "next"; grid-template-rows: none; }
@@ -318,7 +340,8 @@
   [data-page="tutorials"] .tu-count { margin-left: 0; }
   [data-page="tutorials"] .tu-player__bar { flex-wrap: wrap; height: auto; padding: 12px 14px 14px; gap: 10px 14px; }
   [data-page="tutorials"] .tu-player__now { flex-basis: 100%; max-width: none; }
-  [data-page="tutorials"] .tu-player__file { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  [data-page="tutorials"] .tu-player__file { min-width: 0; line-height: 1.3; }
+  [data-page="tutorials"] .tu-player .mock__bar { height: auto; min-height: 40px; padding-block: 7px; }
   [data-page="tutorials"] .tu-poster__brief { display: none; }
   [data-page="tutorials"] .tu-poster__tag { left: 10px; top: 10px; font-size: 10px; }
   [data-page="tutorials"] .tu-pin { width: 22px; height: 22px; margin: -11px 0 0 -11px; }
@@ -331,7 +354,7 @@
   [data-page="tutorials"] .tu-lines p { display: block; font-size: 16px; }
   [data-page="tutorials"] .tu-lines b { margin-right: 6px; }
   /* the chips ride in one swipeable row each, edge to edge */
-  [data-page="tutorials"] .tu-chips { align-self: stretch; flex-wrap: nowrap; overflow-x: auto; margin-inline: calc(-1 * var(--gutter)); padding: 2px var(--gutter); scrollbar-width: none; }
+  [data-page="tutorials"] .tu-chips { align-self: stretch; flex-wrap: nowrap; overflow-x: auto; margin-inline: calc(-1 * var(--gutter)); padding: 2px var(--gutter); scrollbar-width: none; scroll-padding-inline: var(--gutter); }
   [data-page="tutorials"] .tu-chips::-webkit-scrollbar { display: none; }
   [data-page="tutorials"] .tu-chip { flex: none; }
   [data-page="tutorials"] .tu-bar__group { width: 100%; }

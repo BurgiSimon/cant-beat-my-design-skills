@@ -25,11 +25,11 @@
 <link rel="stylesheet" href="css/site.css?v={{VERSION}}" />
 <script>
   // Scripts will run: the page may hide what they are about to bring in. A repeat visit in this tab gets short
-  // intros; reduced motion (or ?reduced) gets none.
+  // intros; reduced motion (or ?reduced, or ?still: a still of the resting page) gets none.
   (function (h) {
     h.className = h.className.replace("no-js", "js");
     try { if (sessionStorage.getItem("crestora:seen")) h.classList.add("is-repeat"); } catch (e) {}
-    if (matchMedia("(prefers-reduced-motion: reduce)").matches || /[?&]reduced/.test(location.search)) h.classList.add("is-calm");
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches || /[?&](reduced|still)(?![^&=])/.test(location.search)) h.classList.add("is-calm");
     setTimeout(function () { h.classList.add("is-ready"); }, 6000); // if the scripts never get there, show everything anyway
   })(document.documentElement);
 </script>
@@ -110,7 +110,7 @@
     </a>
     <nav class="nav" aria-label="Main">
       <div class="nav__item" data-menu>
-        <button class="nav__trigger" type="button" aria-expanded="false" aria-controls="menu-product">Product<svg aria-hidden="true"><use href="#i-chev-down"/></svg></button>
+        <button class="nav__trigger" type="button" aria-controls="menu-product">Product<svg aria-hidden="true"><use href="#i-chev-down"/></svg></button>
         <div class="dropdown" id="menu-product" style="--cols:2">
           <a href="index.html#features"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-layers"/></svg></span><strong>Features</strong><small>Six lanes from spark to launch</small></a>
           <a href="integrations.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-plug"/></svg></span><strong>Integrations</strong><small>120+ tools merge into your lane</small></a>
@@ -122,7 +122,7 @@
       </div>
       <a class="nav__link" href="index.html#creators" data-roll>Creators</a>
       <div class="nav__item" data-menu>
-        <button class="nav__trigger" type="button" aria-expanded="false" aria-controls="menu-resources">Resources<svg aria-hidden="true"><use href="#i-chev-down"/></svg></button>
+        <button class="nav__trigger" type="button" aria-controls="menu-resources">Resources<svg aria-hidden="true"><use href="#i-chev-down"/></svg></button>
         <div class="dropdown" id="menu-resources" style="--cols:2">
           <a href="blog.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-pen"/></svg></span><strong>Field Notes</strong><small>Launch stories and craft notes</small></a>
           <a href="docs.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-book"/></svg></span><strong>Documentation</strong><small>Lanes, stages and every tool</small></a>
@@ -130,11 +130,11 @@
           <a href="help.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-help"/></svg></span><strong>Help Center</strong><small>Answers, fast</small></a>
           <a href="community.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-users"/></svg></span><strong>Community</strong><small>Circles, swaps and Launch Night</small></a>
           <a href="tutorials.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-learn"/></svg></span><strong>Tutorials</strong><small>Short lessons from people who ship</small></a>
-          <a href="webinars.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-broadcast"/></svg></span><strong>Webinars</strong><small>Next: Dec 10, live</small></a>
+          <a href="webinars.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-broadcast"/></svg></span><strong>Webinars</strong><small>Next: Fri 4 Dec, live</small></a>
         </div>
       </div>
       <div class="nav__item" data-menu>
-        <button class="nav__trigger is-current" type="button" aria-expanded="false" aria-controls="menu-company">Company<svg aria-hidden="true"><use href="#i-chev-down"/></svg></button>
+        <button class="nav__trigger is-current" type="button" aria-controls="menu-company">Company<svg aria-hidden="true"><use href="#i-chev-down"/></svg></button>
         <div class="dropdown" id="menu-company" style="--cols:1">
           <a href="about.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-info"/></svg></span><strong>About</strong><small>Why we build roads for makers</small></a>
           <a href="careers.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-briefcase"/></svg></span><strong>Careers</strong><small>8 open roles, four hubs</small></a>
@@ -149,10 +149,12 @@
       <a class="header__signin" href="start.html#signin" data-roll>Sign in</a>
       <a class="btn btn--primary btn--sm" href="start.html" data-roll>Open a lane</a>
       <button class="header__burger" type="button" aria-expanded="false" aria-controls="menu" aria-label="Open menu"><span></span></button>
+      <!-- without scripts the menu can't open: the same burger takes you to every link, in the footer's columns -->
+      <a class="header__burger header__burger--link" href="#footer" aria-label="Menu: every link, at the foot of the page"><span></span></a>
     </div>
   </div>
 </header>
-<div class="menu" id="menu" role="dialog" aria-modal="true" aria-label="Menu">
+<div class="menu" id="menu" role="dialog" aria-label="Menu">
   <div class="menu__groups">
     <div class="menu__group">
       <h2>Product</h2>
@@ -222,7 +224,7 @@
       <div class="ct-hero__aside" data-reveal data-delay="0.3">
         <dl class="ct-stats">
           <div class="ct-stats__row"><dt>Median first reply</dt><dd><span class="ct-stats__n" data-odometer="3.2" data-decimals="1" data-suffix=" h">3.2 h</span></dd></div>
-          <div class="ct-stats__row"><dt>Replies written by a person</dt><dd><span class="ct-stats__n" data-odometer="100" data-suffix="%">100%</span></dd></div>
+          <div class="ct-stats__row"><dt>Replies written by a person</dt><dd><span class="ct-stats__n" data-odometer="100" data-suffix="%">100<span class="odo__u">%</span></span></dd></div>
           <div class="ct-stats__row ct-stats__row--live" data-open-row><dt>Hubs open right now</dt><dd><span class="ct-stats__n"><span data-open-count>2</span><span class="ct-stats__of"> of 4</span></span></dd></div>
         </dl>
         <p class="fiction">Crestora is a fictional company; figures are illustrative.</p>
@@ -236,7 +238,7 @@
       <div class="section-head">
         <div>
           <p class="eyebrow" data-reveal="fade">Who to write to</p>
-          <h2 class="title-2" id="ct-topics-title" data-split>Seven doors, one crew.</h2>
+          <h2 class="title-2" id="ct-topics-title" data-split>Eight doors, one crew.</h2>
         </div>
         <div class="section-head__aside" data-reveal>
           <p class="lede">Write straight to the people who can help. Every inbox is read by a person, and the reply comes from them, with their name on it.</p>
@@ -547,7 +549,7 @@
             </div>
             <p class="ct-hub__hours"><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg>Mon–Fri, 09:00–18:00 local time</p>
             <address class="ct-hub__addr">88 Lantern Mews, Studio 4<br />Toronto, ON M6J 1X2<br />Canada</address>
-            <p class="ct-hub__does">iOS, partnerships and support for the Americas.</p>
+            <p class="ct-hub__does">Engineering, partnerships and support for the Americas.</p>
           </article>
         </li>
         <li class="ct-hub" data-hub="seoul" data-tz="Asia/Seoul" data-city="Seoul">
@@ -564,7 +566,7 @@
             </div>
             <p class="ct-hub__hours"><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg>Mon–Fri, 09:00–18:00 local time</p>
             <address class="ct-hub__addr">4F, 27 Dalbit-ro, Mapo-gu<br />Seoul 04044<br />South Korea</address>
-            <p class="ct-hub__does">Sync, infrastructure and support for Asia-Pacific.</p>
+            <p class="ct-hub__does">Design, iOS and support for Asia-Pacific.</p>
           </article>
         </li>
         <li class="ct-hub" data-hub="nairobi" data-tz="Africa/Nairobi" data-city="Nairobi">
@@ -581,7 +583,7 @@
             </div>
             <p class="ct-hub__hours"><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg>Mon–Fri, 09:00–18:00 local time</p>
             <address class="ct-hub__addr">Taa House, 3rd floor, 14 Mwangaza Road<br />Westlands, Nairobi 00800<br />Kenya</address>
-            <p class="ct-hub__does">Tutorials, community and support for Africa.</p>
+            <p class="ct-hub__does">Sync, data and support for Africa.</p>
           </article>
         </li>
       </ul>
@@ -599,7 +601,7 @@
       <a class="btn btn--primary btn--lg" href="start.html" data-roll>Open your first lane</a>
       <a class="btn btn--lg" href="pricing.html" data-roll>See plans</a>
     </div>
-    <p class="small">Free for 3 lanes · No card · Export everything, always.</p>
+    <p class="small fine-print"><span>Free for 3 lanes</span> <span class="fine-print__sep" aria-hidden="true">·</span> <span>No card</span> <span class="fine-print__sep fine-print__sep--2" aria-hidden="true">·</span> <span>Export everything, always.</span></p>
   </div>
 </section>
 </main>
@@ -681,7 +683,7 @@
 
     <div class="base">
       <p class="copy">© <span class="year">2026</span> Crestora. All rights reserved.</p>
-      <p class="love"><button class="heart" type="button" aria-label="Send some love"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19.6S4.4 15.1 4.4 9.6A4.2 4.2 0 0 1 12 7.2a4.2 4.2 0 0 1 7.6 2.4c0 5.5-7.6 10-7.6 10Z"/></svg></button><span>Made with love by Pranav</span></p>
+      <p class="love"><button class="heart" type="button" aria-label="Send some love" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19.6S4.4 15.1 4.4 9.6A4.2 4.2 0 0 1 12 7.2a4.2 4.2 0 0 1 7.6 2.4c0 5.5-7.6 10-7.6 10Z"/></svg></button><span>Made with love by Pranav</span></p>
     </div>
 
     <!-- the road: where the car is; holding it down puts your foot down -->

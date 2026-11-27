@@ -26,7 +26,7 @@
 [data-page="about"] .ab-lane__facts div { display: flex; justify-content: space-between; gap: 16px; padding: 11px 0; border-bottom: 1px solid var(--line-faint); font-size: 14px; }
 [data-page="about"] .ab-lane__facts dt { color: var(--ink-muted); }
 [data-page="about"] .ab-lane__facts dd { margin: 0; color: #fff; text-align: right; }
-[data-page="about"] .ab-lane__cap { font-size: 12.5px; line-height: 1.5; color: var(--ink-muted); }
+[data-page="about"] .ab-lane__cap { font-size: 12.5px; line-height: 1.5; color: var(--ink-muted); text-wrap: pretty; }
 
 [data-page="about"] .ab-story__body { display: grid; gap: clamp(40px, 4vw, 56px); padding-top: 6px; }
 [data-page="about"] .ab-story__text { display: grid; gap: 1.15em; font-size: 18px; line-height: 1.7; color: var(--ink-soft); max-width: 36em; }
@@ -86,7 +86,7 @@
 [data-page="about"] .ab-miles { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); }
 [data-page="about"] .ab-mile { display: grid; align-content: start; gap: 10px; padding: 26px clamp(14px, 1.6vw, 26px) 6px clamp(14px, 1.4vw, 22px); border-left: 1px solid var(--line-soft); transition: border-color 0.5s var(--ease-out); }
 [data-page="about"] .ab-mile__year { font: 400 clamp(22px, 2vw, 30px)/1 var(--font-brand); letter-spacing: -0.02em; color: #fff; transition: color 0.5s var(--ease-out); }
-[data-page="about"] .ab-mile__title { margin-top: 6px; font: 600 16px/1.3 var(--font); color: #fff; letter-spacing: -0.01em; transition: color 0.5s var(--ease-out); }
+[data-page="about"] .ab-mile__title { margin-top: 6px; font: 600 16px/1.3 var(--font); color: #fff; letter-spacing: -0.01em; text-wrap: balance; transition: color 0.5s var(--ease-out); }
 [data-page="about"] .ab-mile__text { font-size: 14px; line-height: 1.55; color: var(--ink-muted); }
 [data-page="about"] .ab-mile__text em { font-style: italic; }
 [data-page="about"] .ab-mile__lanes { display: flex; flex-wrap: wrap; gap: 6px 14px; margin-top: 4px; font-size: 12.5px; color: var(--ink-soft); }
@@ -146,6 +146,7 @@
 [data-page="about"] .ab-hubs__city { display: inline-flex; align-items: center; gap: 10px; font: 400 12px/1 var(--font-brand); letter-spacing: 0.14em; text-transform: uppercase; color: #fff; }
 [data-page="about"] .ab-hubs__city::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: #fff; box-shadow: 0 0 0 3px rgb(255 255 255 / 0.1); }
 [data-page="about"] .ab-hubs__note { font-size: 13.5px; color: var(--ink-muted); }
+[data-page="about"] .ab-hubs__since { white-space: nowrap; }
 [data-page="about"] .ab-fiction { margin-top: 18px; }
 
 /* ---- the crew: cards that turn over ---- */
@@ -178,20 +179,25 @@
 /* turned: on hover, on keyboard focus, or pressed (a tap) */
 [data-page="about"] .ab-person__card[aria-pressed="true"], [data-page="about"] .ab-person__card:focus-visible { transform: rotateY(180deg); }
 [data-page="about"] .ab-person__card[aria-pressed="true"] .ab-person__avatar, [data-page="about"] .ab-person__card:focus-visible .ab-person__avatar { box-shadow: 0 0 0 1px #000, 0 0 0 2.5px var(--stage), 0 0 26px -2px var(--stage); }
+/* hover is read from the card's slot, which never moves, not from the card as it turns (no flicker at its edges) */
 @media (hover: hover) {
-  [data-page="about"] .ab-person__card:hover { transform: rotateY(180deg); }
-  [data-page="about"] .ab-person__card:hover .ab-person__avatar { box-shadow: 0 0 0 1px #000, 0 0 0 2.5px var(--stage), 0 0 26px -2px var(--stage); }
+  [data-page="about"] .ab-person:hover .ab-person__card { transform: rotateY(180deg); }
+  [data-page="about"] .ab-person:hover .ab-person__avatar { box-shadow: 0 0 0 1px #000, 0 0 0 2.5px var(--stage), 0 0 26px -2px var(--stage); }
 }
+/* without scripts nothing sets aria-pressed: a tap turns the card instead (a touch screen gives the tapped card
+   :hover, and focus, though not :focus-visible); it turns back when the reader taps elsewhere */
+.no-js [data-page="about"] .ab-person:is(:hover, :focus-within) .ab-person__card { transform: rotateY(180deg); }
+.no-js [data-page="about"] .ab-person:is(:hover, :focus-within) .ab-person__avatar { box-shadow: 0 0 0 1px #000, 0 0 0 2.5px var(--stage), 0 0 26px -2px var(--stage); }
 /* the keyboard's ring sits on the card's edge, round the turned face */
 [data-page="about"] .ab-person__card:focus-visible .ab-person__back { box-shadow: inset 0 0 0 1px #fff, 0 0 0 4px color-mix(in srgb, var(--stage) 30%, transparent); }
 /* reduced motion: the card doesn't turn; the back simply replaces the front */
-.is-calm [data-page="about"] .ab-person__card, .is-calm [data-page="about"] .ab-person__card:hover { transform: none; transition: none; }
+.is-calm [data-page="about"] .ab-person__card, .is-calm [data-page="about"] .ab-person:hover .ab-person__card { transform: none; transition: none; }
 .is-calm [data-page="about"] .ab-person__back { transform: none; opacity: 0; }
 .is-calm [data-page="about"] .ab-person__card:is([aria-pressed="true"], :focus-visible) .ab-person__back { opacity: 1; }
 .is-calm [data-page="about"] .ab-person__card:is([aria-pressed="true"], :focus-visible) .ab-person__front { opacity: 0; }
 @media (hover: hover) {
-  .is-calm [data-page="about"] .ab-person__card:hover .ab-person__back { opacity: 1; }
-  .is-calm [data-page="about"] .ab-person__card:hover .ab-person__front { opacity: 0; }
+  .is-calm [data-page="about"] .ab-person:hover .ab-person__back { opacity: 1; }
+  .is-calm [data-page="about"] .ab-person:hover .ab-person__front { opacity: 0; }
 }
 [data-page="about"] .ab-crew__more { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 20px; margin-top: 32px; font-size: 15px; }
 
@@ -215,6 +221,10 @@
   [data-page="about"] .ab-crew__grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   [data-page="about"] .ab-values__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   [data-page="about"] .ab-value { min-height: 0; }
+}
+/* beside the story, the founders' column is too narrow for a name beside its avatar: the avatar goes on top */
+@media (min-width: 961px) and (max-width: 1279px) {
+  [data-page="about"] .ab-founder { flex-direction: column; align-items: flex-start; gap: 12px; }
 }
 @media (max-width: 960px) {
   [data-page="about"] .ab-story__grid { grid-template-columns: 1fr; }
@@ -241,9 +251,14 @@
   [data-page="about"] .ab-next__grid { grid-template-columns: 1fr; }
   [data-page="about"] .ab-next__card { min-height: 0; }
   [data-page="about"] .ab-story__text { font-size: 17px; }
+  /* the hub's founding year on its own line */
+  [data-page="about"] .ab-hubs__since { display: block; margin-top: 2px; }
+  [data-page="about"] .ab-hubs__since::first-letter { text-transform: uppercase; }
+  [data-page="about"] .ab-hubs__dot { display: none; }
 }
 @media (max-width: 420px) {
-  [data-page="about"] .ab-band__n { font-size: 34px; }
+  /* sized to the column: set as plain text (reduced motion, no scripts) "38,000+" is wider than its odometer cells */
+  [data-page="about"] .ab-band__n { font-size: min(34px, 6.8vw); }
   [data-page="about"] .ab-band__item { padding-inline: 14px; }
   [data-page="about"] .ab-band__item:nth-child(odd) { padding-left: 0; }
   [data-page="about"] .ab-hubs li { padding-inline: 14px; }

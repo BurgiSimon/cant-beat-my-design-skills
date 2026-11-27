@@ -25,11 +25,11 @@
 <link rel="stylesheet" href="css/site.css?v={{VERSION}}" />
 <script>
   // Scripts will run: the page may hide what they are about to bring in. A repeat visit in this tab gets short
-  // intros; reduced motion (or ?reduced) gets none.
+  // intros; reduced motion (or ?reduced, or ?still: a still of the resting page) gets none.
   (function (h) {
     h.className = h.className.replace("no-js", "js");
     try { if (sessionStorage.getItem("crestora:seen")) h.classList.add("is-repeat"); } catch (e) {}
-    if (matchMedia("(prefers-reduced-motion: reduce)").matches || /[?&]reduced/.test(location.search)) h.classList.add("is-calm");
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches || /[?&](reduced|still)(?![^&=])/.test(location.search)) h.classList.add("is-calm");
     setTimeout(function () { h.classList.add("is-ready"); }, 6000); // if the scripts never get there, show everything anyway
   })(document.documentElement);
 </script>
@@ -110,7 +110,7 @@
     </a>
     <nav class="nav" aria-label="Main">
       <div class="nav__item" data-menu>
-        <button class="nav__trigger" type="button" aria-expanded="false" aria-controls="menu-product">Product<svg aria-hidden="true"><use href="#i-chev-down"/></svg></button>
+        <button class="nav__trigger" type="button" aria-controls="menu-product">Product<svg aria-hidden="true"><use href="#i-chev-down"/></svg></button>
         <div class="dropdown" id="menu-product" style="--cols:2">
           <a href="index.html#features"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-layers"/></svg></span><strong>Features</strong><small>Six lanes from spark to launch</small></a>
           <a href="integrations.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-plug"/></svg></span><strong>Integrations</strong><small>120+ tools merge into your lane</small></a>
@@ -122,7 +122,7 @@
       </div>
       <a class="nav__link" href="index.html#creators" data-roll>Creators</a>
       <div class="nav__item" data-menu>
-        <button class="nav__trigger" type="button" aria-expanded="false" aria-controls="menu-resources">Resources<svg aria-hidden="true"><use href="#i-chev-down"/></svg></button>
+        <button class="nav__trigger" type="button" aria-controls="menu-resources">Resources<svg aria-hidden="true"><use href="#i-chev-down"/></svg></button>
         <div class="dropdown" id="menu-resources" style="--cols:2">
           <a href="blog.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-pen"/></svg></span><strong>Field Notes</strong><small>Launch stories and craft notes</small></a>
           <a href="docs.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-book"/></svg></span><strong>Documentation</strong><small>Lanes, stages and every tool</small></a>
@@ -130,11 +130,11 @@
           <a href="help.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-help"/></svg></span><strong>Help Center</strong><small>Answers, fast</small></a>
           <a href="community.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-users"/></svg></span><strong>Community</strong><small>Circles, swaps and Launch Night</small></a>
           <a href="tutorials.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-learn"/></svg></span><strong>Tutorials</strong><small>Short lessons from people who ship</small></a>
-          <a href="webinars.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-broadcast"/></svg></span><strong>Webinars</strong><small>Next: Dec 10, live</small></a>
+          <a href="webinars.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-broadcast"/></svg></span><strong>Webinars</strong><small>Next: Fri 4 Dec, live</small></a>
         </div>
       </div>
       <div class="nav__item" data-menu>
-        <button class="nav__trigger" type="button" aria-expanded="false" aria-controls="menu-company">Company<svg aria-hidden="true"><use href="#i-chev-down"/></svg></button>
+        <button class="nav__trigger" type="button" aria-controls="menu-company">Company<svg aria-hidden="true"><use href="#i-chev-down"/></svg></button>
         <div class="dropdown" id="menu-company" style="--cols:1">
           <a href="about.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-info"/></svg></span><strong>About</strong><small>Why we build roads for makers</small></a>
           <a href="careers.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-briefcase"/></svg></span><strong>Careers</strong><small>8 open roles, four hubs</small></a>
@@ -149,10 +149,12 @@
       <a class="header__signin" href="start.html#signin" data-roll>Sign in</a>
       <a class="btn btn--primary btn--sm" href="start.html" data-roll>Open a lane</a>
       <button class="header__burger" type="button" aria-expanded="false" aria-controls="menu" aria-label="Open menu"><span></span></button>
+      <!-- without scripts the menu can't open: the same burger takes you to every link, in the footer's columns -->
+      <a class="header__burger header__burger--link" href="#footer" aria-label="Menu: every link, at the foot of the page"><span></span></a>
     </div>
   </div>
 </header>
-<div class="menu" id="menu" role="dialog" aria-modal="true" aria-label="Menu">
+<div class="menu" id="menu" role="dialog" aria-label="Menu">
   <div class="menu__groups">
     <div class="menu__group">
       <h2>Product</h2>
@@ -243,7 +245,7 @@
         <a class="btn btn--primary btn--lg" href="start.html" data-magnetic="0.18">Open your first lane<svg class="arrow" aria-hidden="true"><use href="#i-arrow"/></svg></a>
         <a class="btn btn--lg" href="#features">Watch a launch, start to finish<svg aria-hidden="true"><use href="#i-arrow-down"/></svg></a>
       </div>
-      <p class="small home-hero__fine" data-reveal="fade" data-delay="0.7">Free for 3 lanes <span aria-hidden="true">·</span> No card <span aria-hidden="true">·</span> Export everything, always.</p>
+      <p class="small home-hero__fine" data-reveal="fade" data-delay="0.7"><span>Free for 3 lanes</span> <span class="home-hero__sep" aria-hidden="true">·</span> <span>No card</span> <span class="home-hero__sep home-hero__sep--2" aria-hidden="true">·</span> <span>Export everything, always.</span></p>
     </div>
   </div>
 
@@ -251,7 +253,7 @@
   <div class="home-hero__chip" aria-hidden="true">
     <div class="home-hero__chip-card" data-stage="spark">
       <span class="home-hero__chip-dot"></span>
-      <span class="home-hero__chip-text"><strong>Night Bloom</strong><span> · storyboard v3</span></span>
+      <span class="home-hero__chip-text"><strong>Night Bloom</strong><span> · voice memo</span></span>
       <span class="home-hero__chip-foot"><span class="stage-rail" data-n="1"><i></i><i></i><i></i><i></i><i></i><i></i></span><span>01 Spark</span></span>
     </div>
   </div>
@@ -273,6 +275,7 @@
       </div>
       <div class="section-head__aside">
         <p class="lede">Thousands of them already ride with Crestora. Three let us follow one project from the first note to launch night.</p>
+        <p class="fiction">Crestora is a fictional company; figures are illustrative.</p>
       </div>
     </header>
     <ul class="cr-row" data-open="0" data-reveal-stagger="0.12">
@@ -328,7 +331,7 @@
               <div class="cr-more__inner">
                 <blockquote class="cr-quote"><p>“Spec, tickets, beta notes and the launch post sit in one lane. I ship on Fridays now, on purpose.”</p></blockquote>
                 <ul class="cr-facts">
-                  <li><b>214</b><span>builds so far, the latest one passing</span></li>
+                  <li><b>215</b><span>the latest build, every check passing</span></li>
                   <li><b>1,900</b><span>beta testers</span></li>
                   <li><b>Fri 09:00</b><span>when the next build ships</span></li>
                 </ul>
@@ -369,7 +372,7 @@
                   <div class="stage-rail" data-n="4" data-to="4"><i></i><i></i><i></i><i></i><i></i><i></i></div>
                   <ol class="cr-stages"><li class="is-past">Spark</li><li class="is-past">Shape</li><li class="is-past">Make</li><li class="is-now">Review</li><li>Launch</li><li>Afterglow</li></ol>
                 </div>
-                <a class="link-arrow cr-link" href="blog/sixty-pots-in-three-hours.html">Read the launch story<span class="sr"> of Kiln &amp; Co. spring drop</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+                <a class="link-arrow cr-link" href="blog/sixty-pots-in-three-hours.html">Read how the last drop sold out<span class="sr">, Kiln &amp; Co.’s autumn drop</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
               </div>
             </div>
           </div>
@@ -409,10 +412,10 @@
       <!-- the card's glass, riding the ribbon (the pinned stage only; each state below fills it) -->
       <div class="home-flow__ride" aria-hidden="true"></div>
 
-      <ol class="home-flow__list" data-reveal-stagger="0.06">
+      <div class="home-flow__list" role="list" data-reveal-stagger="0.06">
 
         <!-- 01 Spark -->
-        <li class="home-flow__block" id="flow-spark" data-stage="spark" style="--i:0">
+        <div class="home-flow__block" role="listitem" id="flow-spark" data-stage="spark" style="--i:0">
           <div class="home-flow__copy">
             <div class="home-flow__meta">
               <span class="icon-box"><svg class="icon icon--lg" aria-hidden="true"><use href="#i-spark"/></svg></span>
@@ -432,16 +435,16 @@
               <li class="hf-mood__tile" style="--i:0"><span class="hf-mood__wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span><span class="hf-mood__cap">Memo · 0:42</span></li>
               <li class="hf-mood__tile" style="--i:1"><svg class="hf-mood__sketch" viewBox="0 0 80 40" aria-hidden="true"><path d="M40 34V18M40 18c-6-8-15-8-17-3 5 3 11 4 17 3Zm0 0c6-8 15-8 17-3-5 3-11 4-17 3Zm0 0c-3-7-1-13 0-15 1 2 3 8 0 15Z"/><path d="M33 34h14"/></svg><span class="hf-mood__cap">Sketch · 2 a.m.</span></li>
               <li class="hf-mood__tile hf-mood__tile--bus" style="--i:2"><span class="hf-mood__bus" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span class="hf-mood__cap">Last bus, Lagos</span></li>
-              <li class="hf-mood__tile" style="--i:3"><span class="hf-mood__link"><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg>moonflower timelapse</span><span class="hf-mood__cap">Link</span></li>
+              <li class="hf-mood__tile" style="--i:3"><span class="hf-mood__link"><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg><span>moonflower timelapse</span></span><span class="hf-mood__cap">Link</span></li>
               <li class="hf-mood__tile" style="--i:4"><span class="hf-mood__swatches" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span class="hf-mood__cap">Palette</span></li>
-              <li class="hf-mood__tile hf-mood__tile--note" style="--i:5"><span class="hf-mood__note">“It only opens for the night bus.”</span></li>
+              <li class="hf-mood__tile hf-mood__tile--note" style="--i:5"><span class="hf-mood__note">“Nobody admits they go.”</span></li>
             </ul>
             <figcaption class="hf-card__foot"><span>6 sparks · 2 constellations</span><span class="stage-rail" data-n="1" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span></figcaption>
           </figure>
-        </li>
+        </div>
 
         <!-- 02 Shape -->
-        <li class="home-flow__block" id="flow-shape" data-stage="shape" style="--i:1">
+        <div class="home-flow__block" role="listitem" id="flow-shape" data-stage="shape" style="--i:1">
           <div class="home-flow__copy">
             <div class="home-flow__meta">
               <span class="icon-box"><svg class="icon icon--lg" aria-hidden="true"><use href="#i-shape"/></svg></span>
@@ -459,7 +462,7 @@
             <div class="hf-card__bar"><span class="hf-card__title">Night Bloom</span><span class="lane-chip">Now in: Shape</span></div>
             <div class="hf-brief">
               <p class="hf-brief__kicker">Blueprint · one page</p>
-              <p class="hf-brief__what">A seven-minute animated short about a flower that only opens for the night bus.</p>
+              <p class="hf-brief__what">A seven-minute animated short about a garden that only opens after dark.</p>
               <ol class="hf-brief__ms">
                 <li style="--i:0"><span>Storyboard</span><b>Day 6</b></li>
                 <li style="--i:1"><span>Animatic</span><b>Day 18</b></li>
@@ -468,10 +471,10 @@
             </div>
             <figcaption class="hf-card__foot"><span>3 riding along · shared by link</span><span class="stage-rail" data-n="2" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span></figcaption>
           </figure>
-        </li>
+        </div>
 
         <!-- 03 Make -->
-        <li class="home-flow__block" id="flow-make" data-stage="make" style="--i:2">
+        <div class="home-flow__block" role="listitem" id="flow-make" data-stage="make" style="--i:2">
           <div class="home-flow__copy">
             <div class="home-flow__meta">
               <span class="icon-box"><svg class="icon icon--lg" aria-hidden="true"><use href="#i-make"/></svg></span>
@@ -499,10 +502,10 @@
             </div>
             <figcaption class="hf-card__foot"><span>Changed since v6: petals, bus lights</span><span class="stage-rail" data-n="3" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span></figcaption>
           </figure>
-        </li>
+        </div>
 
         <!-- 04 Review -->
-        <li class="home-flow__block" id="flow-review" data-stage="review" style="--i:3">
+        <div class="home-flow__block" role="listitem" id="flow-review" data-stage="review" style="--i:3">
           <div class="home-flow__copy">
             <div class="home-flow__meta">
               <span class="icon-box"><svg class="icon icon--lg" aria-hidden="true"><use href="#i-review"/></svg></span>
@@ -530,10 +533,10 @@
             </div>
             <figcaption class="hf-card__foot"><span>3 notes · closed in 4 hours</span><span class="stage-rail" data-n="4" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span></figcaption>
           </figure>
-        </li>
+        </div>
 
         <!-- 05 Launch -->
-        <li class="home-flow__block" id="flow-launch" data-stage="launch" style="--i:4">
+        <div class="home-flow__block" role="listitem" id="flow-launch" data-stage="launch" style="--i:4">
           <div class="home-flow__copy">
             <div class="home-flow__meta">
               <span class="icon-box"><svg class="icon icon--lg" aria-hidden="true"><use href="#i-launch"/></svg></span>
@@ -563,10 +566,10 @@
             </div>
             <figcaption class="hf-card__foot"><span>Launch room: 3 crew watching</span><span class="stage-rail" data-n="5" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span></figcaption>
           </figure>
-        </li>
+        </div>
 
         <!-- 06 Afterglow -->
-        <li class="home-flow__block" id="flow-afterglow" data-stage="afterglow" style="--i:5">
+        <div class="home-flow__block" role="listitem" id="flow-afterglow" data-stage="afterglow" style="--i:5">
           <div class="home-flow__copy">
             <div class="home-flow__meta">
               <span class="icon-box"><svg class="icon icon--lg" aria-hidden="true"><use href="#i-afterglow"/></svg></span>
@@ -592,16 +595,18 @@
             </div>
             <figcaption class="hf-card__foot"><span>3 new sparks sent to the board</span><span class="stage-rail" data-n="6" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span></figcaption>
           </figure>
-        </li>
-      </ol>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 <!-- home #workspace: inside a lane. The app window is drawn in HTML/CSS at 1200 × 720 design px and scaled to its
-     frame with --u (1 design px), like the footer's --fu, so it is the same picture from a phone to a wall screen.
-     A real tablist switches its three views; a short scripted story plays in it (home-workspace.js): frame 118 waits in
-     Review, Lena approves it, its chip turns green and it rolls on to Launch. Without scripts, and under reduced motion,
-     the window rests on the story's last frame. Under 680 px the window is a pane you can pan, with its own tabs above. -->
+     frame with --u (1 design px), like the footer's --fu. Where that would shrink its type too far it sheds the
+     activity rail (under 1180 px) and the sidebar (under 900 px); under 680 px the lane keeps its design size and is a
+     pane you can pan, with its tabs repeated above it. A real tablist switches its three views; a short scripted story plays in it
+     (home-workspace.js): frame 118 waits in Review, Lena approves it, its chip turns green and it rolls on to Launch.
+     Without scripts, and under reduced motion, the window rests on the story's last frame; without scripts it is a
+     still picture of the lane, with no tabs. -->
 <section class="section workspace" id="workspace" aria-labelledby="workspace-title">
   <div class="container">
     <header class="section-head">
@@ -614,8 +619,8 @@
       </div>
     </header>
 
-    <!-- phones: the window's tabs at a size a thumb can use (kept in step with the ones inside the window) -->
-    <div class="ws-ptabs segmented" role="tablist" aria-label="Night Bloom’s lane, as" data-tabs-sync="ws-view">
+    <!-- under 680 px: the window's tabs at a size a thumb can use (kept in step with the ones inside the window) -->
+    <div class="ws-ptabs segmented" role="tablist" aria-label="The festival cut’s lane, as" data-tabs-sync="ws-view">
       <span class="segmented__thumb" aria-hidden="true"></span>
       <button type="button" role="tab" id="ws-ptab-lane" aria-controls="ws-view-lane" aria-selected="true" data-value="lane">Lane</button>
       <button type="button" role="tab" id="ws-ptab-board" aria-controls="ws-view-board" aria-selected="false" tabindex="-1" data-value="board">Board</button>
@@ -624,14 +629,14 @@
 
     <figure class="ws-frame" data-reveal="up">
       <div class="ws-pane">
-        <div class="ws-mock mock is-approved is-moved is-logged" data-spotlight role="group" aria-label="The Crestora app, open on the Night Bloom lane">
+        <div class="ws-mock mock is-approved is-moved is-logged" data-spotlight role="group" aria-label="The Crestora app, open on the lane for Night Bloom’s festival cut">
 
           <!-- the title bar -->
           <div class="ws-bar">
-            <p class="ws-bar__crumbs"><span class="mark" aria-hidden="true"></span><span>Late Shift</span><svg class="icon" aria-hidden="true"><use href="#i-chev-right"/></svg><span>Lanes</span><svg class="icon" aria-hidden="true"><use href="#i-chev-right"/></svg><b>Night Bloom</b></p>
+            <p class="ws-bar__crumbs"><span class="mark" aria-hidden="true"></span><span>Late Shift</span><svg class="icon" aria-hidden="true"><use href="#i-chev-right"/></svg><span>Lanes</span><svg class="icon" aria-hidden="true"><use href="#i-chev-right"/></svg><b>Night Bloom: festival cut</b></p>
             <p class="ws-bar__search"><svg class="icon" aria-hidden="true"><use href="#i-search"/></svg><span>Search lanes, files and people</span><kbd>⌘ K</kbd></p>
             <div class="ws-bar__end">
-              <p class="ws-bar__count" data-stage="launch"><i aria-hidden="true"></i>Premiere in <b>2</b> days</p>
+              <p class="ws-bar__count" data-stage="launch"><i aria-hidden="true"></i>Online launch in <b>8</b> days</p>
               <span class="ws-bar__btn">Share</span>
             </div>
           </div>
@@ -652,10 +657,10 @@
             </ul>
             <p class="ws-side__label">Lanes <span>4</span></p>
             <ul class="ws-lanes">
-              <li class="is-current" data-stage="review" aria-current="true"><i aria-hidden="true"></i><span>Night Bloom</span><small>Review</small></li>
-              <li data-stage="launch"><i aria-hidden="true"></i><span>Tidepool 1.0</span><small>Launch</small></li>
+              <li class="is-current" data-stage="review" aria-current="true"><i aria-hidden="true"></i><span>Night Bloom: festival cut</span><small>Review</small></li>
+              <li data-stage="launch"><i aria-hidden="true"></i><span>Tidepool 1.1</span><small>Launch</small></li>
               <li data-stage="review"><i aria-hidden="true"></i><span>Kiln spring drop</span><small>Review</small></li>
-              <li data-stage="make"><i aria-hidden="true"></i><span>Small Hours ep. 49</span><small>Make</small></li>
+              <li data-stage="review"><i aria-hidden="true"></i><span>Small Hours ep. 49</span><small>Review</small></li>
             </ul>
             <div class="ws-store">
               <p>Pooled storage<span>212 GB of 1 TB</span></p>
@@ -671,9 +676,9 @@
           <div class="ws-main">
             <div class="ws-head">
               <div class="ws-head__text">
-                <p class="ws-head__kicker">Lane 014 · Started 3 Nov</p>
+                <p class="ws-head__kicker">Lane 014 · Festival cut · Started 1 Nov</p>
                 <p class="ws-head__title">Night Bloom</p>
-                <p class="ws-head__sub">A seven-minute animated short · Amara Okafor, Lagos</p>
+                <p class="ws-head__sub">A new score by Tunde Bello · Amara Okafor, Lagos</p>
               </div>
               <div class="ws-head__where">
                 <p class="ws-chip" data-stage="review">Now in: Review</p>
@@ -688,7 +693,7 @@
                 <button type="button" role="tab" id="ws-tab-board" aria-controls="ws-view-board" aria-selected="false" tabindex="-1" data-value="board">Board</button>
                 <button type="button" role="tab" id="ws-tab-cal" aria-controls="ws-view-cal" aria-selected="false" tabindex="-1" data-value="calendar">Calendar</button>
               </div>
-              <p class="ws-tools__meta"><span>37 days on the road</span><span class="ws-stack" aria-hidden="true"><span class="ws-av" data-stage="afterglow">AO</span><span class="ws-av" data-stage="make">TB</span><span class="ws-av" data-stage="review">LK</span></span></p>
+              <p class="ws-tools__meta"><span>Day 33 of 41</span><span class="ws-stack" aria-hidden="true"><span class="ws-av" data-stage="afterglow">AO</span><span class="ws-av" data-stage="make">TB</span><span class="ws-av" data-stage="review">LK</span></span></p>
             </div>
 
             <div class="ws-views">
@@ -704,17 +709,18 @@
                   <li data-stage="afterglow"><b>06</b>Afterglow</li>
                 </ol>
                 <ul class="ws-lane__items">
-                  <li class="ws-item" data-stage="spark" style="--col:0;--y:62"><span class="ws-item__name">night-bus.m4a</span><span class="ws-item__meta">Voice memo · 0:42 · 3 Nov</span></li>
+                  <li class="ws-item" data-stage="spark" style="--col:0;--y:62"><span class="ws-item__name">gate-theme.m4a</span><span class="ws-item__meta">Voice memo · 1:06 · 1 Nov</span></li>
                   <li class="ws-item" data-stage="shape" style="--col:1;--y:120"><span class="ws-item__name">storyboard_v3.pdf</span><span class="ws-item__meta">v3 · Amara · 12 Nov</span></li>
                   <li class="ws-item" data-stage="make" style="--col:2;--y:178"><span class="ws-item__name">render_v7.mov</span><span class="ws-item__meta">v7 · Amara · this morning</span></li>
                   <li class="ws-item ws-item--story ws-story" data-stage="review" style="--y:236">
                     <span class="ws-item__name">frame 118 note</span>
-                    <span class="ws-item__meta">3 notes · the bloom opens</span>
+                    <span class="ws-item__meta">3 notes · the gate opens</span>
                     <span class="ws-status"><span class="ws-swap ws-swap--a">Waiting on Lena</span><span class="ws-swap ws-swap--b"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Approved</span></span>
                   </li>
-                  <li class="ws-item" data-stage="launch" style="--col:4;--y:326"><span class="ws-item__name ws-item__name--text">Festival upload</span><span class="ws-item__meta">Due Thu 11 Dec</span></li>
+                  <li class="ws-item ws-item--narrow" data-stage="review" style="--col:3;--y:326"><span class="ws-item__name ws-item__name--text">Mix pass</span><span class="ws-item__meta">Reel 2 · Lena</span></li>
+                  <li class="ws-item" data-stage="launch" style="--col:4;--y:326"><span class="ws-item__name ws-item__name--text">Festival upload</span><span class="ws-item__meta">Due Thu 10 Dec</span></li>
                   <li class="ws-item" data-stage="launch" style="--col:4;--y:384"><span class="ws-item__name ws-item__name--text">Press kit</span><span class="ws-item__meta">Draft · 4 files</span></li>
-                  <li class="ws-item ws-item--ghost" data-stage="afterglow" style="--col:5;--y:442"><span class="ws-item__name ws-item__name--text">Day 1 recap</span><span class="ws-item__meta">Sat 13 Dec</span></li>
+                  <li class="ws-item ws-item--ghost" data-stage="afterglow" style="--col:5;--y:442"><span class="ws-item__name ws-item__name--text">Day 1 recap</span><span class="ws-item__meta">Sat 12 Dec</span></li>
                 </ul>
               </div>
 
@@ -723,7 +729,7 @@
                 <div class="ws-col" data-stage="spark">
                   <p class="ws-col__head"><i aria-hidden="true"></i>Spark<span>3</span></p>
                   <ul class="ws-col__cards">
-                    <li class="ws-card"><span class="ws-card__t">Night bus memo</span><span class="ws-card__m"><span class="ws-av" data-stage="afterglow" aria-hidden="true">AO</span>0:42</span></li>
+                    <li class="ws-card"><span class="ws-card__t">Gate theme memo</span><span class="ws-card__m"><span class="ws-av" data-stage="make" aria-hidden="true">TB</span>1:06</span></li>
                     <li class="ws-card"><span class="ws-card__t">Moonflower timelapse</span><span class="ws-card__m"><span class="ws-av" data-stage="afterglow" aria-hidden="true">AO</span>Link</span></li>
                     <li class="ws-card"><span class="ws-card__t">Blue-hour palette</span><span class="ws-card__m"><span class="ws-av" data-stage="afterglow" aria-hidden="true">AO</span>4 tones</span></li>
                   </ul>
@@ -750,7 +756,7 @@
                 <div class="ws-col ws-col--from" data-stage="review">
                   <p class="ws-col__head"><i aria-hidden="true"></i>Review<span><span class="ws-swap ws-swap--a">2</span><span class="ws-swap ws-swap--b">1</span></span></p>
                   <ul class="ws-col__cards">
-                    <li class="ws-card"><span class="ws-card__t">Colour pass, reel 2</span><span class="ws-card__m"><span class="ws-av" data-stage="review" aria-hidden="true">LK</span>2 notes</span></li>
+                    <li class="ws-card"><span class="ws-card__t">Mix pass, reel 2</span><span class="ws-card__m"><span class="ws-av" data-stage="review" aria-hidden="true">LK</span>2 notes</span></li>
                   </ul>
                   <p class="ws-col__add" aria-hidden="true">+ Add a card</p>
                 </div>
@@ -765,7 +771,7 @@
                 <div class="ws-col" data-stage="afterglow">
                   <p class="ws-col__head"><i aria-hidden="true"></i>Afterglow<span>0</span></p>
                   <ul class="ws-col__cards">
-                    <li class="ws-card ws-card--ghost"><span class="ws-card__t">Recaps start after the premiere</span></li>
+                    <li class="ws-card ws-card--ghost"><span class="ws-card__t">Recaps start after launch</span></li>
                   </ul>
                   <p class="ws-col__add" aria-hidden="true">+ Add a card</p>
                 </div>
@@ -780,26 +786,26 @@
               <div class="ws-view ws-cal" role="tabpanel" id="ws-view-cal" aria-labelledby="ws-tab-cal" tabindex="0" hidden>
                 <div class="ws-cal__head">
                   <p class="ws-cal__month">December 2026</p>
-                  <p class="ws-cal__range">Mon 1 – Sun 14 Dec</p>
+                  <p class="ws-cal__range">Mon 30 Nov – Sun 13 Dec</p>
                   <span class="ws-cal__nav" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24"><path d="m14.5 6-6 6 6 6"/></svg><svg class="icon"><use href="#i-chev-right"/></svg></span>
                 </div>
                 <div class="ws-cal__dows" aria-hidden="true"><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span></div>
                 <div class="ws-week">
-                  <ol class="ws-days" aria-hidden="true"><li>1</li><li>2</li><li>3</li><li>4</li><li>5</li><li class="is-off">6</li><li class="is-off">7</li></ol>
+                  <ol class="ws-days" aria-hidden="true"><li class="is-prev">30</li><li>1</li><li>2</li><li class="is-today"><span>3</span></li><li>4</li><li class="is-off">5</li><li class="is-off">6</li></ol>
                   <ul class="ws-ms-list">
-                    <li class="ws-ms" data-stage="make" style="--d:0;--n:3;--s:0">Colour pass</li>
-                    <li class="ws-ms" data-stage="make" style="--d:1;--n:2;--s:1">Render v7</li>
-                    <li class="ws-ms" data-stage="make" style="--d:3;--n:1;--s:0">Score lock</li>
-                    <li class="ws-ms" data-stage="review" style="--d:4;--n:1;--s:0">Reel 2 notes</li>
-                    <li class="ws-ms" data-stage="review" style="--d:3;--n:1;--s:1">Mix review</li>
+                    <li class="ws-ms" data-stage="make" style="--d:0;--n:2;--s:0">Colour pass</li>
+                    <li class="ws-ms" data-stage="make" style="--d:2;--n:1;--s:0">Score lock</li>
+                    <li class="ws-ms ws-ms--story ws-story" data-stage="review" style="--d:3;--n:2;--s:0"><span class="ws-swap ws-swap--a">Frame 118 review</span><span class="ws-swap ws-swap--b"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Frame 118 approved</span></li>
+                    <li class="ws-ms" data-stage="make" style="--d:1;--n:3;--s:1">Render v7</li>
+                    <li class="ws-ms" data-stage="review" style="--d:4;--n:1;--s:1">Mix review</li>
                   </ul>
                 </div>
                 <div class="ws-week">
-                  <ol class="ws-days" aria-hidden="true"><li>8</li><li>9</li><li class="is-today"><span>10</span></li><li>11</li><li class="is-launch">12</li><li class="is-off">13</li><li class="is-off">14</li></ol>
+                  <ol class="ws-days" aria-hidden="true"><li>7</li><li>8</li><li>9</li><li>10</li><li class="is-launch">11</li><li class="is-off">12</li><li class="is-off">13</li></ol>
                   <ul class="ws-ms-list">
-                    <li class="ws-ms ws-ms--story ws-story" data-stage="review" style="--d:0;--n:3;--s:0"><span class="ws-swap ws-swap--a">Frame 118 review</span><span class="ws-swap ws-swap--b"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Frame 118 approved</span></li>
+                    <li class="ws-ms" data-stage="review" style="--d:0;--n:2;--s:0">Reel 2 notes</li>
                     <li class="ws-ms" data-stage="launch" style="--d:3;--n:1;--s:0">Fest upload</li>
-                    <li class="ws-ms ws-ms--day" data-stage="launch" style="--d:4;--n:1;--s:0"><svg class="icon" aria-hidden="true"><use href="#i-launch"/></svg>Premiere</li>
+                    <li class="ws-ms ws-ms--day" data-stage="launch" style="--d:4;--n:1;--s:0"><svg class="icon" aria-hidden="true"><use href="#i-launch"/></svg>Online</li>
                     <li class="ws-ms" data-stage="launch" style="--d:4;--n:1;--s:1">Press kit out</li>
                     <li class="ws-ms" data-stage="make" style="--d:0;--n:2;--s:1">Final grade</li>
                     <li class="ws-ms" data-stage="launch" style="--d:3;--n:1;--s:1">Trailer</li>
@@ -818,14 +824,14 @@
           <div class="ws-rail" role="group" aria-label="Activity">
             <p class="ws-rail__head">Activity<span>All lanes</span></p>
             <ol class="ws-feed">
-              <li class="ws-feed__item ws-feed__item--story"><span class="ws-av" data-stage="review" aria-hidden="true">LK</span><p><b>Lena</b> approved frame 118<span>Night Bloom · just now</span></p></li>
-              <li class="ws-feed__item"><span class="ws-av" data-stage="launch" aria-hidden="true">TL</span><p><b>Theo</b> pushed build 215<span>Tidepool 1.0 · 12 min</span></p></li>
-              <li class="ws-feed__item"><span class="ws-av ws-av--icon" data-stage="launch" aria-hidden="true"><svg class="icon"><use href="#i-launch"/></svg></span><p><b>Countdown:</b> 2 days to launch<span>Night Bloom · 1 h</span></p></li>
+              <li class="ws-feed__item ws-feed__item--story"><span class="ws-av" data-stage="review" aria-hidden="true">LK</span><p><b>Lena</b> approved frame 118<span>Festival cut · just now</span></p></li>
+              <li class="ws-feed__item"><span class="ws-av" data-stage="launch" aria-hidden="true">TL</span><p><b>Theo</b> queued the release notes<span>Tidepool 1.1 · 12 min</span></p></li>
+              <li class="ws-feed__item"><span class="ws-av ws-av--icon" data-stage="launch" aria-hidden="true"><svg class="icon"><use href="#i-launch"/></svg></span><p><b>Countdown:</b> 8 days to launch<span>Festival cut · 1 h</span></p></li>
               <li class="ws-feed__item"><span class="ws-av" data-stage="review" aria-hidden="true">IN</span><p><b>Inés</b> added 6 photos to the drop<span>Kiln spring drop · 3 h</span></p></li>
-              <li class="ws-feed__item"><span class="ws-av" data-stage="review" aria-hidden="true">LK</span><p><b>Lena</b> left 3 notes on frame 118<span>Night Bloom · 4 h</span></p></li>
-              <li class="ws-feed__item"><span class="ws-av" data-stage="afterglow" aria-hidden="true">AO</span><p><b>Amara</b> uploaded render_v7.mov<span>Night Bloom · 6 h</span></p></li>
-              <li class="ws-feed__item"><span class="ws-av" data-stage="make" aria-hidden="true">TB</span><p><b>Tunde</b> locked the score<span>Night Bloom · yesterday</span></p></li>
-              <li class="ws-feed__item"><span class="ws-av" data-stage="make" aria-hidden="true">LK</span><p><b>Lena</b> opened Small Hours ep. 49<span>Small Hours · yesterday</span></p></li>
+              <li class="ws-feed__item"><span class="ws-av" data-stage="review" aria-hidden="true">LK</span><p><b>Lena</b> left 3 notes on frame 118<span>Festival cut · 4 h</span></p></li>
+              <li class="ws-feed__item"><span class="ws-av" data-stage="afterglow" aria-hidden="true">AO</span><p><b>Amara</b> uploaded render_v7.mov<span>Festival cut · 6 h</span></p></li>
+              <li class="ws-feed__item"><span class="ws-av" data-stage="make" aria-hidden="true">TB</span><p><b>Tunde</b> locked the score<span>Festival cut · yesterday</span></p></li>
+              <li class="ws-feed__item"><span class="ws-av" data-stage="review" aria-hidden="true">LK</span><p><b>Lena</b> uploaded master_v4.wav<span>Small Hours ep. 49 · yesterday</span></p></li>
             </ol>
             <div class="ws-crew">
               <p class="ws-rail__head">On this lane</p>
@@ -840,7 +846,7 @@
         </div>
       </div>
       <figcaption class="ws-caption">
-        <p class="small">Two days before its premiere, Lena signs off frame 118 and it rolls on to Launch.<span class="ws-caption__loop" hidden> A scripted moment, played on a loop.</span></p>
+        <p class="small">Eight days before the festival cut goes online, Lena signs off frame 118 and it rolls on to Launch.<span class="ws-caption__loop" hidden> A scripted moment, played on a loop.</span></p>
         <button class="btn btn--sm ws-pause" type="button" hidden>
           <svg class="icon ws-pause__off" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6.5v11M15 6.5v11"/></svg>
           <svg class="icon ws-pause__on" aria-hidden="true"><use href="#i-play"/></svg>
@@ -910,12 +916,12 @@
           <rect data-stage="afterglow" x="749" y="311" width="543" height="30" fill="url(#ramp-glow-afterglow)"/>
         </g>
         <g class="ramp__lanes">
-          <path data-stage="spark" d="M749 176H1292"/>
-          <path data-stage="shape" d="M749 206H1292"/>
-          <path class="is-on" data-stage="make" d="M749 236H1292"/>
-          <path data-stage="review" d="M749 266H1292"/>
-          <path data-stage="launch" d="M749 296H1292"/>
-          <path data-stage="afterglow" d="M749 326H1292"/>
+          <path data-stage="spark" d="M749 176H1286"/>
+          <path data-stage="shape" d="M749 206H1286"/>
+          <path class="is-on" data-stage="make" d="M749 236H1286"/>
+          <path data-stage="review" d="M749 266H1286"/>
+          <path data-stage="launch" d="M749 296H1286"/>
+          <path data-stage="afterglow" d="M749 326H1286"/>
         </g>
         <g class="ramp__ramps">
           <path data-stage="spark" d="M149 42H400C574.5 42 574.5 176 749 176"/>
@@ -957,7 +963,7 @@
           </a>
         </li>
         <li class="ramp__stop" data-stage="shape" style="--k:2;--col:0">
-          <a class="ramp__app" href="integrations.html#dayplan" data-lane="Shape" data-says="dates become milestones" data-lands="Premiere · Fri 12 Dec">
+          <a class="ramp__app" href="integrations.html#dayplan" data-lane="Shape" data-says="dates become milestones" data-lands="Online launch · Fri 11 Dec">
             <span class="ramp__box" data-magnetic="0.35"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 5h4.6a7 7 0 0 1 0 14H6.5Z"/><circle class="f" cx="11" cy="12" r="1.6"/></svg></span>
             <span class="ramp__text"><span class="ramp__name">Dayplan</span><span class="ramp__kind">Calendar</span><span class="ramp__lane">Shape lane</span></span>
           </a>
@@ -987,21 +993,21 @@
           </a>
         </li>
         <li class="ramp__stop" data-stage="review" style="--k:7;--col:1">
-          <a class="ramp__app" href="integrations.html#chatter" data-lane="Review" data-says="threads become review notes" data-lands="3 notes from #crew">
+          <a class="ramp__app" href="integrations.html#crosstalk" data-lane="Review" data-says="threads become review notes" data-lands="3 notes from #crew">
             <span class="ramp__box" data-magnetic="0.35"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.4 7A7 7 0 1 0 17.4 16"/><path d="M7.2 16.6 5.4 20.3l4.2-2.1"/></svg></span>
-            <span class="ramp__text"><span class="ramp__name">Chatter</span><span class="ramp__kind">Team chat</span><span class="ramp__lane">Review lane</span></span>
+            <span class="ramp__text"><span class="ramp__name">Crosstalk</span><span class="ramp__kind">Team chat</span><span class="ramp__lane">Review lane</span></span>
           </a>
         </li>
         <li class="ramp__stop" data-stage="launch" style="--k:8;--col:0">
-          <a class="ramp__app" href="integrations.html#postbox" data-lane="Launch" data-says="the launch letter goes out on cue" data-lands="Launch letter · 2,140">
+          <a class="ramp__app" href="integrations.html#postlark" data-lane="Launch" data-says="the launch letter goes out on cue" data-lands="Launch letter · 2,140">
             <span class="ramp__box" data-magnetic="0.35"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.5 20V4.5H13a4.6 4.6 0 0 1 0 9.2H7.5"/><path d="M10.4 9.1h3.2"/></svg></span>
-            <span class="ramp__text"><span class="ramp__name">Postbox</span><span class="ramp__kind">Newsletters</span><span class="ramp__lane">Launch lane</span></span>
+            <span class="ramp__text"><span class="ramp__name">Postlark</span><span class="ramp__kind">Newsletters</span><span class="ramp__lane">Launch lane</span></span>
           </a>
         </li>
         <li class="ramp__stop" data-stage="launch" style="--k:9;--col:1">
-          <a class="ramp__app" href="integrations.html#shopfront" data-lane="Launch" data-says="the drop opens on the minute" data-lands="60 pieces · live 09:00">
+          <a class="ramp__app" href="integrations.html#stallfront" data-lane="Launch" data-says="the drop opens on the minute" data-lands="60 pieces · live 10:00">
             <span class="ramp__box" data-magnetic="0.35"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8.2 6.3 4.5h11.4L19 8.2Z"/><path d="M14.7 12.3c-.5-.7-1.4-1.1-2.6-1.1-1.5 0-2.5.7-2.5 1.7 0 2.4 5.4 1.3 5.4 3.7 0 1.1-1.1 1.9-2.8 1.9-1.4 0-2.4-.5-2.9-1.2"/></svg></span>
-            <span class="ramp__text"><span class="ramp__name">Shopfront</span><span class="ramp__kind">Online store</span><span class="ramp__lane">Launch lane</span></span>
+            <span class="ramp__text"><span class="ramp__name">Stallfront</span><span class="ramp__kind">Online store</span><span class="ramp__lane">Launch lane</span></span>
           </a>
         </li>
         <li class="ramp__stop" data-stage="launch" style="--k:10;--col:0">
@@ -1028,13 +1034,14 @@
         <li data-stage="afterglow" style="--ly:326"><b>06</b>Afterglow</li>
       </ol>
       <p class="ramp__arrival" data-stage="make" style="--ly:236" aria-hidden="true"><span>render_v8.mov</span></p>
-      <p class="ramp__caption" aria-live="polite"><span class="ramp__caption-app">Framewright</span><span class="ramp__caption-to" aria-hidden="true">→</span><span class="sr"> into the </span><span class="ramp__caption-lane" data-stage="make">Make lane</span><span class="ramp__caption-says"> · renders land as versions.</span></p>
+      <p class="ramp__caption" aria-live="polite"><span class="ramp__caption-app">Framewright</span><span class="ramp__caption-to" aria-hidden="true">→</span><span class="sr"> into the </span><span class="ramp__caption-lane" data-stage="make">Make lane</span><span class="sr">: </span><span class="ramp__caption-says">Renders land as versions.</span></p>
     </div>
   </div>
 </section>
 <!-- home #work: the mileage, then a filterable wall of twelve launches (the generic filter module's data attributes;
      home-work.js adds the result line, leaving tiles and the art's parallax). The night posters are drawn from lane lines
-     (generated, so edit with care). -->
+     (generated, so edit with care): white light, or all six stage colours in their order (s1–s6), for a launch that has
+     ridden the whole flow; only the lane still on the road (data-now) is drawn in its stage's colour. -->
 <section class="section work" id="work" aria-labelledby="work-title">
   <div class="container">
     <header class="section-head">
@@ -1043,8 +1050,8 @@
         <h2 class="title-2" id="work-title" data-split>The work is the point.</h2>
       </div>
       <div class="section-head__aside">
-        <p class="lede">A few of the 1.2 million things launched from a Crestora lane.</p>
-        <p class="chip chip--live work-live"><span><b>2,140</b> launches went live this week</span></p>
+        <p class="lede">A few of the 1.2 million things launched from a Crestora lane, and one still on its way.</p>
+        <p class="chip chip--live work-live" data-stage="launch"><span><b>2,140</b> launches went live this week</span></p>
       </div>
     </header>
 
@@ -1071,7 +1078,7 @@
         <p class="work-count" data-work-count aria-live="polite">Showing all 12 projects.</p>
       </div>
       <ul class="work-grid" data-filter-list>
-        <li class="work-tile work-tile--big" data-tags="film" data-stage="afterglow">
+        <li class="work-tile work-tile--big" data-tags="film">
           <article class="work-card work-card--link" aria-labelledby="wk-nightbloom">
             <div class="work-art"><svg class="work-poster" viewBox="0 0 400 370" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><path class="st" d="M268.9 295.7h0M19.6 123.9h0M30.1 338.6h0M265.4 89.2h0M229.1 125.8h0M19 242.8h0M337.8 76.6h0M333.3 267.9h0M382.8 218h0M14 41.3h0M281.3 75h0M269.5 215.7h0M327.4 294.9h0M132.4 111.7h0M162.5 7.7h0M354.8 358h0M326.9 170.5h0M59.9 350.1h0M385.1 286.8h0M320 120.7h0M318.3 333.9h0M147.9 308.6h0M311 110.4h0M335.7 168.6h0M192.8 142.2h0M132.6 25.8h0M185.8 161.8h0M226.4 44.1h0M350 141.9h0M130.9 43.6h0M146.1 4.5h0M244 129.9h0M43.1 13.8h0M195.7 183.3h0M155.6 343.5h0M188.1 98.8h0M273.8 0.7h0M82.5 296.4h0M284.1 119.8h0M8.1 222.5h0M89.7 315.9h0M101.6 67.6h0M80 323.1h0M165.1 97.5h0M392.7 37h0M153.9 196.7h0M202 31h0M331.1 217.2h0M40.4 251h0M40.6 6h0M322.1 38.8h0M182.3 293.8h0M126.9 97.7h0M129.4 97.1h0M190.3 223.4h0M213.9 252.3h0M54.9 260.8h0M290.3 62.7h0M116.7 127.9h0M69.2 302.5h0M6.9 357.4h0M106 74.8h0M238.9 206.9h0"/><path class="st st--b" d="M27.3 295.4h0M43.6 336.4h0M320.5 188.6h0M73.5 190.9h0M187.1 1.8h0M299.6 87h0M157.5 16.9h0"/><g class="bloom-stem"><path class="s1" opacity=".85" d="M-33.9 397.6C85.4 364.1 217.8 296.7 236.5 149.8"/><path class="s1" opacity=".4" d="M-33.3 399.5C86.1 365.2 218.4 297.2 236.7 149.9"/><path class="s2" opacity=".85" d="M-32.5 402.2C87.1 367 219.3 297.9 237 149.9"/><path class="s2" opacity=".4" d="M-31.9 404.1C87.8 368.2 220 298.4 237.3 149.9"/><path class="s3" opacity=".85" d="M-31 406.8C88.8 369.9 220.9 299.2 237.6 150"/><path class="s3" opacity=".4" d="M-30.4 408.6C89.5 371.1 221.5 299.6 237.8 150"/><path class="s4" opacity=".85" d="M-29.6 411.4C90.5 372.9 222.5 300.4 238.2 150"/><path class="s4" opacity=".4" d="M-29 413.2C91.2 374.1 223.1 300.8 238.4 150"/><path class="s5" opacity=".85" d="M-28.1 415.9C92.2 375.8 224 301.6 238.7 150.1"/><path class="s5" opacity=".4" d="M-27.5 417.8C92.9 377 224.7 302.1 239 150.1"/><path class="s6" opacity=".85" d="M-26.7 420.5C93.9 378.8 225.6 302.8 239.3 150.1"/><path class="s6" opacity=".4" d="M-26.1 422.4C94.6 379.9 226.2 303.3 239.5 150.2"/><path class="w" opacity=".55" stroke-dasharray="2 9" d="M-30 410C90 372 222 300 238 150"/></g><g transform="translate(238 150)"><g class="bloom"><path class="w" opacity=".28" transform="rotate(30)" d="M0 0C20.6 -15 12.8 -44.9 0 -49.9C-12.8 -44.9 -20.6 -15 0 0"/><path class="w" opacity=".28" transform="rotate(90)" d="M0 0C20.6 -15 12.8 -44.9 0 -49.9C-12.8 -44.9 -20.6 -15 0 0"/><path class="w" opacity=".28" transform="rotate(150)" d="M0 0C20.6 -15 12.8 -44.9 0 -49.9C-12.8 -44.9 -20.6 -15 0 0"/><path class="w" opacity=".28" transform="rotate(210)" d="M0 0C20.6 -15 12.8 -44.9 0 -49.9C-12.8 -44.9 -20.6 -15 0 0"/><path class="w" opacity=".28" transform="rotate(270)" d="M0 0C20.6 -15 12.8 -44.9 0 -49.9C-12.8 -44.9 -20.6 -15 0 0"/><path class="w" opacity=".28" transform="rotate(330)" d="M0 0C20.6 -15 12.8 -44.9 0 -49.9C-12.8 -44.9 -20.6 -15 0 0"/><g class="s1 bloom-petal" style="--i:0" transform="rotate(0)"><path opacity=".95" d="M0 0C39.7 -28.8 24.6 -86.4 0 -96C-24.6 -86.4 -39.7 -28.8 0 0"/><path opacity=".7" d="M0 0C32.5 -23.6 20.2 -70.8 0 -78.7C-20.2 -70.8 -32.5 -23.6 0 0"/><path opacity=".5" d="M0 0C25.4 -18.4 15.7 -55.3 0 -61.4C-15.7 -55.3 -25.4 -18.4 0 0"/><path opacity=".35" d="M0 0C18.3 -13.2 11.3 -39.7 0 -44.2C-11.3 -39.7 -18.3 -13.2 0 0"/></g><g class="s2 bloom-petal" style="--i:1" transform="rotate(60)"><path opacity=".95" d="M0 0C39.7 -28.8 24.6 -86.4 0 -96C-24.6 -86.4 -39.7 -28.8 0 0"/><path opacity=".7" d="M0 0C32.5 -23.6 20.2 -70.8 0 -78.7C-20.2 -70.8 -32.5 -23.6 0 0"/><path opacity=".5" d="M0 0C25.4 -18.4 15.7 -55.3 0 -61.4C-15.7 -55.3 -25.4 -18.4 0 0"/><path opacity=".35" d="M0 0C18.3 -13.2 11.3 -39.7 0 -44.2C-11.3 -39.7 -18.3 -13.2 0 0"/></g><g class="s3 bloom-petal" style="--i:2" transform="rotate(120)"><path opacity=".95" d="M0 0C39.7 -28.8 24.6 -86.4 0 -96C-24.6 -86.4 -39.7 -28.8 0 0"/><path opacity=".7" d="M0 0C32.5 -23.6 20.2 -70.8 0 -78.7C-20.2 -70.8 -32.5 -23.6 0 0"/><path opacity=".5" d="M0 0C25.4 -18.4 15.7 -55.3 0 -61.4C-15.7 -55.3 -25.4 -18.4 0 0"/><path opacity=".35" d="M0 0C18.3 -13.2 11.3 -39.7 0 -44.2C-11.3 -39.7 -18.3 -13.2 0 0"/></g><g class="s4 bloom-petal" style="--i:3" transform="rotate(180)"><path opacity=".95" d="M0 0C39.7 -28.8 24.6 -86.4 0 -96C-24.6 -86.4 -39.7 -28.8 0 0"/><path opacity=".7" d="M0 0C32.5 -23.6 20.2 -70.8 0 -78.7C-20.2 -70.8 -32.5 -23.6 0 0"/><path opacity=".5" d="M0 0C25.4 -18.4 15.7 -55.3 0 -61.4C-15.7 -55.3 -25.4 -18.4 0 0"/><path opacity=".35" d="M0 0C18.3 -13.2 11.3 -39.7 0 -44.2C-11.3 -39.7 -18.3 -13.2 0 0"/></g><g class="s5 bloom-petal" style="--i:4" transform="rotate(240)"><path opacity=".95" d="M0 0C39.7 -28.8 24.6 -86.4 0 -96C-24.6 -86.4 -39.7 -28.8 0 0"/><path opacity=".7" d="M0 0C32.5 -23.6 20.2 -70.8 0 -78.7C-20.2 -70.8 -32.5 -23.6 0 0"/><path opacity=".5" d="M0 0C25.4 -18.4 15.7 -55.3 0 -61.4C-15.7 -55.3 -25.4 -18.4 0 0"/><path opacity=".35" d="M0 0C18.3 -13.2 11.3 -39.7 0 -44.2C-11.3 -39.7 -18.3 -13.2 0 0"/></g><g class="s6 bloom-petal" style="--i:5" transform="rotate(300)"><path opacity=".95" d="M0 0C39.7 -28.8 24.6 -86.4 0 -96C-24.6 -86.4 -39.7 -28.8 0 0"/><path opacity=".7" d="M0 0C32.5 -23.6 20.2 -70.8 0 -78.7C-20.2 -70.8 -32.5 -23.6 0 0"/><path opacity=".5" d="M0 0C25.4 -18.4 15.7 -55.3 0 -61.4C-15.7 -55.3 -25.4 -18.4 0 0"/><path opacity=".35" d="M0 0C18.3 -13.2 11.3 -39.7 0 -44.2C-11.3 -39.7 -18.3 -13.2 0 0"/></g><circle class="w" opacity=".35" r="14.1"/><circle class="w" opacity=".6" stroke-dasharray="1.5 4" r="8.3"/><circle class="fw" r="2.6"/></g></g></svg></div>
             <p class="work-kind">Film · Animated short</p>
@@ -1083,9 +1090,9 @@
             </div>
           </article>
         </li>
-        <li class="work-tile" data-tags="film" data-stage="spark">
+        <li class="work-tile" data-tags="film">
           <article class="work-card" aria-labelledby="wk-northbound" tabindex="0" aria-describedby="wk-northbound-m wk-northbound-d wk-northbound-r">
-            <div class="work-art"><svg class="work-poster" viewBox="0 0 400 370" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><path class="st" d="M340.4 60.2h0M216.5 114.6h0M283.8 111.2h0M136.6 132.5h0M85.1 26.4h0M323.8 32.4h0M216.2 20.7h0M60.3 55.7h0M15 114.4h0M12.4 83.8h0M199.3 98.8h0M287.4 52.7h0M71.6 17.7h0M217.1 26.5h0M93.7 0h0M158 118.7h0M80.2 68.5h0M364.8 73.6h0M113.7 74h0M242.9 29.2h0M369 78.5h0M82.7 133.6h0M291.2 12.6h0M245.9 29.2h0M277.3 75.4h0M18.2 128.3h0M206.9 4.4h0M243.9 25.5h0M113.5 77.9h0M72.7 26.8h0M127.7 2.2h0M199.6 118.9h0M191.8 94.1h0M88.6 27.4h0M214.8 57.1h0M91.7 56.1h0M132.1 90h0M134 107.1h0M261.6 118.9h0M34.5 8.6h0M326 125.1h0M59.8 91.5h0M259.7 25.9h0M378.7 0.9h0M8.3 0.4h0M37.9 36.3h0M202.2 114.9h0M301.7 90.6h0M262.5 27.1h0M204.1 24.5h0M344.2 114.5h0M263.8 2.4h0"/><path class="st st--b" d="M365.7 50.6h0M285.3 22.6h0M73.4 68.2h0M156.5 110.8h0M396.8 16.8h0M149.6 20.1h0M30.7 71.8h0M199.7 7.4h0"/><path class="w" opacity=".22" d="M0 152L0 127.6L20 127L40 129.2L60 134.6L80 140L100 140.2L120 136.2L140 128.8L160 126.4L180 128.5L200 132.4L220 136.5L240 144.5L260 135.7L280 129.8L300 129.6L320 129.2L340 131.3L360 136L380 143.1L400 139.6L400 152"/><path class="w" opacity=".45" d="M0 152H400"/><g class="north-lanes"><path class="s1" opacity=".9" d="M-96.5 380L189.6 152"/><path class="s1" opacity=".45" d="M-36.8 380L191.7 152"/><path class="w" opacity=".35" stroke-dasharray="7 11" d="M-13.3 380L192.5 152"/><path class="s2" opacity=".9" d="M10.1 380L193.4 152"/><path class="s2" opacity=".45" d="M69.9 380L195.4 152"/><path class="w" opacity=".35" stroke-dasharray="7 11" d="M93.3 380L196.3 152"/><path class="s3" opacity=".9" d="M116.8 380L197.1 152"/><path class="s3" opacity=".45" d="M176.5 380L199.2 152"/><path class="w" opacity=".35" stroke-dasharray="7 11" d="M200 380L200 152"/><path class="s4" opacity=".9" d="M223.5 380L200.8 152"/><path class="s4" opacity=".45" d="M283.2 380L202.9 152"/><path class="w" opacity=".35" stroke-dasharray="7 11" d="M306.7 380L203.7 152"/><path class="s5" opacity=".9" d="M330.1 380L204.6 152"/><path class="s5" opacity=".45" d="M389.9 380L206.6 152"/><path class="w" opacity=".35" stroke-dasharray="7 11" d="M413.3 380L207.5 152"/><path class="s6" opacity=".9" d="M436.8 380L208.3 152"/><path class="s6" opacity=".45" d="M496.5 380L210.4 152"/></g><path class="w" opacity=".3" d="M136 86H264M200 56V126"/><path class="w" d="M200 73C201.5 82 204 84.5 213 86C204 87.5 201.5 90 200 99C198.5 90 196 87.5 187 86C196 84.5 198.5 82 200 73Z"/><circle class="s1" opacity=".6" cx="200" cy="86" r="21"/><circle class="s2" opacity=".3" stroke-dasharray="2 5" cx="200" cy="86" r="30"/></svg></div>
+            <div class="work-art"><svg class="work-poster" viewBox="0 0 400 370" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><path class="st" d="M340.4 60.2h0M216.5 114.6h0M283.8 111.2h0M136.6 132.5h0M85.1 26.4h0M323.8 32.4h0M216.2 20.7h0M60.3 55.7h0M15 114.4h0M12.4 83.8h0M199.3 98.8h0M287.4 52.7h0M71.6 17.7h0M217.1 26.5h0M93.7 0h0M158 118.7h0M80.2 68.5h0M364.8 73.6h0M113.7 74h0M242.9 29.2h0M369 78.5h0M82.7 133.6h0M291.2 12.6h0M245.9 29.2h0M277.3 75.4h0M18.2 128.3h0M206.9 4.4h0M243.9 25.5h0M113.5 77.9h0M72.7 26.8h0M127.7 2.2h0M199.6 118.9h0M191.8 94.1h0M88.6 27.4h0M214.8 57.1h0M91.7 56.1h0M132.1 90h0M134 107.1h0M261.6 118.9h0M34.5 8.6h0M326 125.1h0M59.8 91.5h0M259.7 25.9h0M378.7 0.9h0M8.3 0.4h0M37.9 36.3h0M202.2 114.9h0M301.7 90.6h0M262.5 27.1h0M204.1 24.5h0M344.2 114.5h0M263.8 2.4h0"/><path class="st st--b" d="M365.7 50.6h0M285.3 22.6h0M73.4 68.2h0M156.5 110.8h0M396.8 16.8h0M149.6 20.1h0M30.7 71.8h0M199.7 7.4h0"/><path class="w" opacity=".22" d="M0 152L0 127.6L20 127L40 129.2L60 134.6L80 140L100 140.2L120 136.2L140 128.8L160 126.4L180 128.5L200 132.4L220 136.5L240 144.5L260 135.7L280 129.8L300 129.6L320 129.2L340 131.3L360 136L380 143.1L400 139.6L400 152"/><path class="w" opacity=".45" d="M0 152H400"/><g class="north-lanes"><path class="s1" opacity=".9" d="M-96.5 380L189.6 152"/><path class="s1" opacity=".45" d="M-36.8 380L191.7 152"/><path class="w" opacity=".35" stroke-dasharray="7 11" d="M-13.3 380L192.5 152"/><path class="s2" opacity=".9" d="M10.1 380L193.4 152"/><path class="s2" opacity=".45" d="M69.9 380L195.4 152"/><path class="w" opacity=".35" stroke-dasharray="7 11" d="M93.3 380L196.3 152"/><path class="s3" opacity=".9" d="M116.8 380L197.1 152"/><path class="s3" opacity=".45" d="M176.5 380L199.2 152"/><path class="w" opacity=".35" stroke-dasharray="7 11" d="M200 380L200 152"/><path class="s4" opacity=".9" d="M223.5 380L200.8 152"/><path class="s4" opacity=".45" d="M283.2 380L202.9 152"/><path class="w" opacity=".35" stroke-dasharray="7 11" d="M306.7 380L203.7 152"/><path class="s5" opacity=".9" d="M330.1 380L204.6 152"/><path class="s5" opacity=".45" d="M389.9 380L206.6 152"/><path class="w" opacity=".35" stroke-dasharray="7 11" d="M413.3 380L207.5 152"/><path class="s6" opacity=".9" d="M436.8 380L208.3 152"/><path class="s6" opacity=".45" d="M496.5 380L210.4 152"/></g><path class="w" opacity=".3" d="M136 86H264M200 56V126"/><path class="w" d="M200 73C201.5 82 204 84.5 213 86C204 87.5 201.5 90 200 99C198.5 90 196 87.5 187 86C196 84.5 198.5 82 200 73Z"/><circle class="w" opacity=".45" cx="200" cy="86" r="21"/><circle class="w" opacity=".25" stroke-dasharray="2 5" cx="200" cy="86" r="30"/></svg></div>
             <p class="work-kind">Film · Docuseries</p>
             <div class="work-info">
               <h3 class="work-title" id="wk-northbound">Northbound</h3>
@@ -1095,10 +1102,10 @@
             </div>
           </article>
         </li>
-        <li class="work-tile" data-tags="apps" data-stage="launch">
+        <li class="work-tile" data-tags="apps">
           <article class="work-card work-card--link" aria-labelledby="wk-tidepool">
-            <div class="work-art"><svg class="work-poster" viewBox="0 0 400 370" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><path class="st" d="M399.9 32.1h0M23.6 5.1h0M17.4 5h0M75.9 29.6h0M374 4.4h0M109 45h0M279.9 147.2h0M23 147.1h0M251.9 54.8h0M270.4 88.3h0M100.3 82.5h0M5.3 126h0M205.1 141.6h0M317.2 159.8h0M286 35.4h0M318.7 4.4h0M204.9 111.3h0M390 40.1h0M22.2 53.8h0M328.9 140.9h0M315.2 112.8h0M285.4 128.5h0M383.4 149.2h0M149.9 39.2h0M12.4 49.5h0M64.1 80h0M302.8 131.4h0M123 107.3h0M119.4 68.6h0M159.8 105.9h0M162.6 60.1h0M71.5 10.6h0M308.9 125.5h0M391.4 28.1h0M98.4 106.1h0M225.6 155.8h0M87.4 48.5h0M380.5 130.2h0M351.3 141.7h0M390.3 67.9h0"/><path class="st st--b" d="M76.8 112.7h0M380.4 137.5h0M252.9 19.7h0M180.1 104.6h0M354 94.6h0M181.3 30.5h0M268.8 41.6h0M197.2 132.4h0M260 97.2h0M234.6 65.1h0"/><g class="tide-moon"><circle class="w" opacity="0.75" cx="200" cy="102" r="12.8"/><circle class="w" opacity="0.5" cx="200" cy="102" r="19.2"/><circle class="s5" opacity="0.8" cx="200" cy="102" r="25.6"/><circle class="s5" opacity="0.55" stroke-dasharray="2 5" cx="200" cy="102" r="32"/><circle class="s5" opacity="0.35" cx="200" cy="102" r="40"/><circle class="s5" opacity="0.2" cx="200" cy="102" r="49.6"/><circle class="fw" cx="200" cy="102" r="4"/></g><path class="w" opacity=".4" d="M0 170H400"/><g class="tide-sea"><path class="s5 tide-wave" opacity="0.31" style="--l:-29.5px;--d:13.4s" d="M-29.5 176.3Q-22.1 175.1 -14.7 176.3T0 176.3T14.7 176.3T29.5 176.3T44.2 176.3T58.9 176.3T73.6 176.3T88.4 176.3T103.1 176.3T117.8 176.3T132.5 176.3T147.3 176.3T162 176.3T176.7 176.3T191.5 176.3T206.2 176.3T220.9 176.3T235.6 176.3T250.4 176.3T265.1 176.3T279.8 176.3T294.5 176.3T309.3 176.3T324 176.3T338.7 176.3T353.5 176.3T368.2 176.3T382.9 176.3T397.6 176.3T412.4 176.3T427.1 176.3"/><path class="s5 tide-wave" opacity="0.38" style="--l:-33.7px;--d:12.7s" d="M-33.7 183.7Q-25.3 182.1 -16.9 183.7T0 183.7T16.9 183.7T33.7 183.7T50.6 183.7T67.4 183.7T84.3 183.7T101.1 183.7T118 183.7T134.8 183.7T151.7 183.7T168.5 183.7T185.4 183.7T202.3 183.7T219.1 183.7T236 183.7T252.8 183.7T269.7 183.7T286.5 183.7T303.4 183.7T320.2 183.7T337.1 183.7T353.9 183.7T370.8 183.7T387.7 183.7T404.5 183.7T421.4 183.7"/><path class="w tide-wave" opacity="0.20" style="--l:-38px;--d:12.1s" d="M-38 194.3Q-28.5 192.3 -19 194.3T0 194.3T19 194.3T38 194.3T56.9 194.3T75.9 194.3T94.9 194.3T113.9 194.3T132.9 194.3T151.9 194.3T170.8 194.3T189.8 194.3T208.8 194.3T227.8 194.3T246.8 194.3T265.7 194.3T284.7 194.3T303.7 194.3T322.7 194.3T341.7 194.3T360.7 194.3T379.6 194.3T398.6 194.3T417.6 194.3T436.6 194.3"/><path class="s5 tide-wave" opacity="0.50" style="--l:-42.2px;--d:11.5s" d="M-42.2 207.7Q-31.7 205.3 -21.1 207.7T0 207.7T21.1 207.7T42.2 207.7T63.3 207.7T84.4 207.7T105.5 207.7T126.7 207.7T147.8 207.7T168.9 207.7T190 207.7T211.1 207.7T232.2 207.7T253.3 207.7T274.4 207.7T295.5 207.7T316.6 207.7T337.7 207.7T358.9 207.7T380 207.7T401.1 207.7T422.2 207.7"/><path class="s5 tide-wave" opacity="0.57" style="--l:-46.5px;--d:10.8s" d="M-46.5 223.8Q-34.9 221 -23.2 223.8T0 223.8T23.2 223.8T46.5 223.8T69.7 223.8T92.9 223.8T116.2 223.8T139.4 223.8T162.7 223.8T185.9 223.8T209.1 223.8T232.4 223.8T255.6 223.8T278.8 223.8T302.1 223.8T325.3 223.8T348.5 223.8T371.8 223.8T395 223.8T418.3 223.8T441.5 223.8"/><path class="s5 tide-wave" opacity="0.63" style="--l:-50.7px;--d:10.2s" d="M-50.7 242.2Q-38 239 -25.4 242.2T0 242.2T25.4 242.2T50.7 242.2T76.1 242.2T101.5 242.2T126.8 242.2T152.2 242.2T177.5 242.2T202.9 242.2T228.3 242.2T253.6 242.2T279 242.2T304.4 242.2T329.7 242.2T355.1 242.2T380.5 242.2T405.8 242.2T431.2 242.2"/><path class="w tide-wave" opacity="0.32" style="--l:-55px;--d:9.5s" d="M-55 263Q-41.2 259.4 -27.5 263T0 263T27.5 263T55 263T82.5 263T110 263T137.5 263T164.9 263T192.4 263T219.9 263T247.4 263T274.9 263T302.4 263T329.9 263T357.4 263T384.9 263T412.4 263T439.9 263"/><path class="s5 tide-wave" opacity="0.76" style="--l:-59.2px;--d:8.9s" d="M-59.2 285.9Q-44.4 281.9 -29.6 285.9T0 285.9T29.6 285.9T59.2 285.9T88.9 285.9T118.5 285.9T148.1 285.9T177.7 285.9T207.3 285.9T236.9 285.9T266.6 285.9T296.2 285.9T325.8 285.9T355.4 285.9T385 285.9T414.7 285.9T444.3 285.9"/><path class="s5 tide-wave" opacity="0.82" style="--l:-63.5px;--d:8.3s" d="M-63.5 310.9Q-47.6 306.5 -31.7 310.9T0 310.9T31.7 310.9T63.5 310.9T95.2 310.9T127 310.9T158.7 310.9T190.5 310.9T222.2 310.9T254 310.9T285.7 310.9T317.5 310.9T349.2 310.9T380.9 310.9T412.7 310.9T444.4 310.9"/><path class="s5 tide-wave" opacity="0.89" style="--l:-67.7px;--d:7.6s" d="M-67.7 338Q-50.8 333.2 -33.9 338T0 338T33.9 338T67.7 338T101.6 338T135.5 338T169.4 338T203.2 338T237.1 338T271 338T304.9 338T338.7 338T372.6 338T406.5 338T440.3 338"/><path class="w tide-wave" opacity="0.43" style="--l:-72px;--d:7s" d="M-72 367Q-54 361.8 -36 367T0 367T36 367T72 367T108 367T144 367T180 367T216 367T252 367T288 367T324 367T360 367T396 367T432 367T468 367"/></g><path class="w tide-glint" opacity=".7" stroke-dasharray="3 6" d="M193.5 176.3h12.9M191.1 183.7h17.9M188.6 194.3h22.8M186.1 207.7h27.8M183.6 223.8h32.7M181.2 242.2h37.7M178.7 263h42.6M176.2 285.9h47.6M173.7 310.9h52.5M171.3 338h57.5M168.8 367h62.4"/></svg></div>
-            <p class="work-kind">App · Tides & swell</p>
+            <div class="work-art"><svg class="work-poster" viewBox="0 0 400 370" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><path class="st" d="M399.9 32.1h0M23.6 5.1h0M17.4 5h0M75.9 29.6h0M374 4.4h0M109 45h0M279.9 147.2h0M23 147.1h0M251.9 54.8h0M270.4 88.3h0M100.3 82.5h0M5.3 126h0M205.1 141.6h0M317.2 159.8h0M286 35.4h0M318.7 4.4h0M204.9 111.3h0M390 40.1h0M22.2 53.8h0M328.9 140.9h0M315.2 112.8h0M285.4 128.5h0M383.4 149.2h0M149.9 39.2h0M12.4 49.5h0M64.1 80h0M302.8 131.4h0M123 107.3h0M119.4 68.6h0M159.8 105.9h0M162.6 60.1h0M71.5 10.6h0M308.9 125.5h0M391.4 28.1h0M98.4 106.1h0M225.6 155.8h0M87.4 48.5h0M380.5 130.2h0M351.3 141.7h0M390.3 67.9h0"/><path class="st st--b" d="M76.8 112.7h0M380.4 137.5h0M252.9 19.7h0M180.1 104.6h0M354 94.6h0M181.3 30.5h0M268.8 41.6h0M197.2 132.4h0M260 97.2h0M234.6 65.1h0"/><g class="tide-moon"><circle class="w" opacity="0.75" cx="200" cy="102" r="12.8"/><circle class="w" opacity="0.5" cx="200" cy="102" r="19.2"/><circle class="w" opacity="0.8" cx="200" cy="102" r="25.6"/><circle class="w" opacity="0.55" stroke-dasharray="2 5" cx="200" cy="102" r="32"/><circle class="w" opacity="0.35" cx="200" cy="102" r="40"/><circle class="w" opacity="0.2" cx="200" cy="102" r="49.6"/><circle class="fw" cx="200" cy="102" r="4"/></g><path class="w" opacity=".4" d="M0 170H400"/><g class="tide-sea"><path class="w tide-wave" opacity="0.31" style="--l:-29.5px;--d:13.4s" d="M-29.5 176.3Q-22.1 175.1 -14.7 176.3T0 176.3T14.7 176.3T29.5 176.3T44.2 176.3T58.9 176.3T73.6 176.3T88.4 176.3T103.1 176.3T117.8 176.3T132.5 176.3T147.3 176.3T162 176.3T176.7 176.3T191.5 176.3T206.2 176.3T220.9 176.3T235.6 176.3T250.4 176.3T265.1 176.3T279.8 176.3T294.5 176.3T309.3 176.3T324 176.3T338.7 176.3T353.5 176.3T368.2 176.3T382.9 176.3T397.6 176.3T412.4 176.3T427.1 176.3"/><path class="w tide-wave" opacity="0.38" style="--l:-33.7px;--d:12.7s" d="M-33.7 183.7Q-25.3 182.1 -16.9 183.7T0 183.7T16.9 183.7T33.7 183.7T50.6 183.7T67.4 183.7T84.3 183.7T101.1 183.7T118 183.7T134.8 183.7T151.7 183.7T168.5 183.7T185.4 183.7T202.3 183.7T219.1 183.7T236 183.7T252.8 183.7T269.7 183.7T286.5 183.7T303.4 183.7T320.2 183.7T337.1 183.7T353.9 183.7T370.8 183.7T387.7 183.7T404.5 183.7T421.4 183.7"/><path class="w tide-wave" opacity="0.20" style="--l:-38px;--d:12.1s" d="M-38 194.3Q-28.5 192.3 -19 194.3T0 194.3T19 194.3T38 194.3T56.9 194.3T75.9 194.3T94.9 194.3T113.9 194.3T132.9 194.3T151.9 194.3T170.8 194.3T189.8 194.3T208.8 194.3T227.8 194.3T246.8 194.3T265.7 194.3T284.7 194.3T303.7 194.3T322.7 194.3T341.7 194.3T360.7 194.3T379.6 194.3T398.6 194.3T417.6 194.3T436.6 194.3"/><path class="w tide-wave" opacity="0.50" style="--l:-42.2px;--d:11.5s" d="M-42.2 207.7Q-31.7 205.3 -21.1 207.7T0 207.7T21.1 207.7T42.2 207.7T63.3 207.7T84.4 207.7T105.5 207.7T126.7 207.7T147.8 207.7T168.9 207.7T190 207.7T211.1 207.7T232.2 207.7T253.3 207.7T274.4 207.7T295.5 207.7T316.6 207.7T337.7 207.7T358.9 207.7T380 207.7T401.1 207.7T422.2 207.7"/><path class="w tide-wave" opacity="0.57" style="--l:-46.5px;--d:10.8s" d="M-46.5 223.8Q-34.9 221 -23.2 223.8T0 223.8T23.2 223.8T46.5 223.8T69.7 223.8T92.9 223.8T116.2 223.8T139.4 223.8T162.7 223.8T185.9 223.8T209.1 223.8T232.4 223.8T255.6 223.8T278.8 223.8T302.1 223.8T325.3 223.8T348.5 223.8T371.8 223.8T395 223.8T418.3 223.8T441.5 223.8"/><path class="w tide-wave" opacity="0.63" style="--l:-50.7px;--d:10.2s" d="M-50.7 242.2Q-38 239 -25.4 242.2T0 242.2T25.4 242.2T50.7 242.2T76.1 242.2T101.5 242.2T126.8 242.2T152.2 242.2T177.5 242.2T202.9 242.2T228.3 242.2T253.6 242.2T279 242.2T304.4 242.2T329.7 242.2T355.1 242.2T380.5 242.2T405.8 242.2T431.2 242.2"/><path class="w tide-wave" opacity="0.32" style="--l:-55px;--d:9.5s" d="M-55 263Q-41.2 259.4 -27.5 263T0 263T27.5 263T55 263T82.5 263T110 263T137.5 263T164.9 263T192.4 263T219.9 263T247.4 263T274.9 263T302.4 263T329.9 263T357.4 263T384.9 263T412.4 263T439.9 263"/><path class="w tide-wave" opacity="0.76" style="--l:-59.2px;--d:8.9s" d="M-59.2 285.9Q-44.4 281.9 -29.6 285.9T0 285.9T29.6 285.9T59.2 285.9T88.9 285.9T118.5 285.9T148.1 285.9T177.7 285.9T207.3 285.9T236.9 285.9T266.6 285.9T296.2 285.9T325.8 285.9T355.4 285.9T385 285.9T414.7 285.9T444.3 285.9"/><path class="w tide-wave" opacity="0.82" style="--l:-63.5px;--d:8.3s" d="M-63.5 310.9Q-47.6 306.5 -31.7 310.9T0 310.9T31.7 310.9T63.5 310.9T95.2 310.9T127 310.9T158.7 310.9T190.5 310.9T222.2 310.9T254 310.9T285.7 310.9T317.5 310.9T349.2 310.9T380.9 310.9T412.7 310.9T444.4 310.9"/><path class="w tide-wave" opacity="0.89" style="--l:-67.7px;--d:7.6s" d="M-67.7 338Q-50.8 333.2 -33.9 338T0 338T33.9 338T67.7 338T101.6 338T135.5 338T169.4 338T203.2 338T237.1 338T271 338T304.9 338T338.7 338T372.6 338T406.5 338T440.3 338"/><path class="w tide-wave" opacity="0.43" style="--l:-72px;--d:7s" d="M-72 367Q-54 361.8 -36 367T0 367T36 367T72 367T108 367T144 367T180 367T216 367T252 367T288 367T324 367T360 367T396 367T432 367T468 367"/></g><path class="w tide-glint" opacity=".7" stroke-dasharray="3 6" d="M193.5 176.3h12.9M191.1 183.7h17.9M188.6 194.3h22.8M186.1 207.7h27.8M183.6 223.8h32.7M181.2 242.2h37.7M178.7 263h42.6M176.2 285.9h47.6M173.7 310.9h52.5M171.3 338h57.5M168.8 367h62.4"/></svg></div>
+            <p class="work-kind">App · Tides &amp; swell</p>
             <div class="work-info">
               <h3 class="work-title" id="wk-tidepool"><a class="work-link" href="blog/why-theo-ships-on-fridays.html">Tidepool 1.0<span class="sr">: read the launch story</span></a></h3>
               <p class="work-maker" id="wk-tidepool-m">Theo Lindqvist · Malmö</p>
@@ -1107,7 +1114,7 @@
             </div>
           </article>
         </li>
-        <li class="work-tile" data-tags="apps" data-stage="shape">
+        <li class="work-tile" data-tags="apps">
           <article class="work-card" aria-labelledby="wk-orbit" tabindex="0" aria-describedby="wk-orbit-m wk-orbit-d wk-orbit-r">
             <div class="work-art"><svg class="work-poster" viewBox="0 0 400 370" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><path class="st" d="M251.8 19.9h0M217.8 155.8h0M142 55.7h0M191.5 278.7h0M282.4 213.7h0M41.6 176.4h0M312 210h0M8.1 281.3h0M89.7 5h0M56.7 1.3h0M238.1 51.3h0M227.6 222.6h0M41.8 70.4h0M358.3 95.9h0M114.2 90.4h0M12.4 214h0M114.2 159.5h0M372.9 131h0M85.3 6.4h0M13.6 228.1h0M61.6 349.6h0M93.6 355.7h0M282.4 181.6h0M243 0.3h0M130 83.1h0M83.4 332.3h0M40.2 8.3h0M19.8 113.6h0M281.9 105h0M357.3 30.6h0M60.9 18.3h0M72.3 270.1h0M24.4 130h0M91 229.2h0M102.1 323.4h0M332.5 80.7h0M391 58h0M218.4 77.1h0M245.3 239.1h0M368.1 36.4h0M138.1 95.4h0M392.1 351.5h0M269.5 206h0M280.4 296.8h0M217 331.3h0M110.2 158.4h0M73.9 12.2h0M126.3 95h0M341.2 41.4h0M249.1 0.6h0"/><path class="st st--b" d="M269.5 194.3h0M225.5 26.8h0M281 266.6h0M64 265.8h0M108.7 9h0M389.3 39.4h0M194.3 349.3h0M269.3 220.7h0M385.2 95.2h0M269.7 211.4h0"/><g transform="rotate(-18 200 130)"><ellipse class="s1" opacity="0.90" cx="200" cy="130" rx="36" ry="13"/><circle class="f1" cx="233.8" cy="134.4" r="3.4"/><ellipse class="s2" opacity="0.81" stroke-dasharray="1 0" cx="200" cy="130" rx="59" ry="21.2"/><rect class="f2" x="199.6" y="147.7" width="7" height="7" rx="1.6" transform="rotate(18 203.1 151.2)"/><ellipse class="s3" opacity="0.72" cx="200" cy="130" rx="82" ry="29.5"/><circle class="f3" cx="126.3" cy="142.9" r="3.4"/><ellipse class="s4" opacity="0.63" stroke-dasharray="1 0" cx="200" cy="130" rx="105" ry="37.8"/><rect class="f4" x="117.3" y="101.7" width="7" height="7" rx="1.6" transform="rotate(18 120.8 105.2)"/><ellipse class="s5" opacity="0.54" cx="200" cy="130" rx="128" ry="46.1"/><circle class="f5" cx="239.6" cy="86.2" r="3.4"/><ellipse class="s6" opacity="0.45" stroke-dasharray="1 0" cx="200" cy="130" rx="151" ry="54.4"/><rect class="f6" x="346.9" y="121.8" width="7" height="7" rx="1.6" transform="rotate(18 350.4 125.3)"/><circle class="w" opacity=".55" cx="200" cy="130" r="14" stroke-dasharray="2 4"/><circle class="w" cx="200" cy="130" r="7"/><circle class="fw" cx="200" cy="130" r="2.6"/></g></svg></div>
             <p class="work-kind">App · Open source</p>
@@ -1119,9 +1126,9 @@
             </div>
           </article>
         </li>
-        <li class="work-tile" data-tags="apps" data-stage="make">
+        <li class="work-tile" data-tags="apps">
           <article class="work-card" aria-labelledby="wk-moth" tabindex="0" aria-describedby="wk-moth-m wk-moth-d wk-moth-r">
-            <div class="work-art"><svg class="work-poster" viewBox="0 0 400 370" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><path class="st" d="M386.3 16.4h0M29.7 268h0M381.5 214.8h0M293.8 293.6h0M231.9 34.5h0M35.8 165.6h0M378.4 279.2h0M89.7 228h0M55.2 13.7h0M70.4 31.6h0M118.5 281.5h0M43.2 348.2h0M192.4 22.2h0M325.6 174.2h0M313.8 19.9h0M364 302.9h0M130.8 213.8h0M252.7 4.6h0M177.7 316.1h0M82.3 142.1h0M60 80h0M195.8 3.5h0M76.7 63h0M163.5 118.8h0M235.4 369h0M74.8 281.1h0M350.2 22.3h0M20.7 27.9h0M200 83.2h0M92 52.8h0M378.1 185.9h0M140.4 86.3h0M210.9 28.6h0M167.5 174.9h0M172.9 70.5h0M72.7 287.2h0M150.1 1.6h0M248.2 97.5h0M138.8 307.3h0M317.2 24.2h0M108.9 181.9h0M165.6 43.7h0M124.5 94.9h0M19.1 278h0M58.4 303.6h0M298 29.2h0M357.2 84.6h0M361.9 307.8h0M177.8 0.3h0M52.6 365.1h0M130.3 127.4h0M42 309.1h0M129.5 31h0M264.2 1h0"/><path class="st st--b" d="M25.7 289.1h0M102.1 318.9h0M233.3 154.4h0M196.2 250.3h0M124.1 3.1h0M185.7 73.4h0"/><circle class="w" opacity="0.8" cx="200" cy="118" r="12"/><circle class="s3" opacity="0.85" stroke-dasharray="2 5" cx="200" cy="118" r="22"/><circle class="s3" opacity="0.45" cx="200" cy="118" r="36"/><circle class="s3" opacity="0.2" stroke-dasharray="2 5" cx="200" cy="118" r="54"/><circle class="fw" cx="200" cy="118" r="3.6"/><path class="w" opacity=".5" d="M184 108L191 94H209L216 108M200 94V44"/><path class="w" opacity="0.3" stroke-dasharray="0.1 5.5" stroke-width="1.6" d="M-5.7 209.6L-17 198.6L-27.1 186.9L-35.6 174.4L-42.2 161.2L-46.8 147.5L-49.1 133.5L-49.1 119.4L-46.7 105.4L-42 91.8L-35.2 78.8L-26.3 66.6L-15.6 55.4L-3.6 45.2L9.7 36.1L23.7 28.2L38.3 21.4L53 15.6L67.9 10.7L82.5 6.6L96.9 3.1L110.9 0.2L124.6 -2.4L138.1 -4.7L151.3 -6.7L164.4 -8.6L177.6 -10.3L190.8 -11.7L204.2 -12.7L217.8 -13.3L231.6 -13.3L245.6 -12.6L259.5 -11L273.3 -8.5L286.8 -4.9L299.7 -0.2"/><path class="w" opacity="0.45" stroke-dasharray="0.1 5.5" stroke-width="1.6" d="M299.7 -0.2L311.9 5.5L323 12.2L332.9 20L341.4 28.5L348.3 37.8L353.6 47.5L357.2 57.6L359.3 67.8L359.7 78L358.8 88L356.6 97.7L353.3 106.9L349.2 115.7L344.5 123.9L339.3 131.6L333.8 138.9L328.2 145.7L322.5 152.2L316.8 158.4L311.1 164.3L305.3 170.1L299.4 175.8L293.3 181.3L286.9 186.7L280.1 191.9L272.9 196.8L265.1 201.4L256.8 205.6L248 209.2L238.6 212.1L228.9 214.3L218.9 215.7L208.7 216.1L198.6 215.6L188.7 214.2"/><path class="w" opacity="0.65" stroke-dasharray="0.1 5.5" stroke-width="1.6" d="M188.7 214.2L179.1 211.9L170.1 208.7L161.7 204.8L154.1 200.3L147.2 195.2L141.3 189.8L136.2 184.1L131.9 178.2L128.3 172.3L125.5 166.5L123.1 160.8L121.3 155.2L119.8 149.8L118.7 144.6L117.7 139.5L116.9 134.6L116.3 129.7L115.8 124.9L115.6 120.2L115.6 115.4L115.9 110.6L116.6 105.9L117.8 101.1L119.5 96.5L121.8 91.9L124.7 87.6L128.2 83.5L132.3 79.7L136.9 76.4L142.1 73.4L147.6 71L153.5 69.1L159.5 67.7L165.7 66.9L171.9 66.5"/><path class="w" opacity="0.9" stroke-dasharray="0.1 5.5" stroke-width="1.6" d="M171.9 66.5L177.9 66.7L183.8 67.2L189.4 68.1L194.8 69.3L199.8 70.8L204.5 72.4L208.9 74.1L213 76L216.9 77.9L220.5 79.8L223.9 81.8L227.1 83.8L230.1 85.9L233 88L235.7 90.2L238.1 92.5L240.4 94.9L242.4 97.3L244.1 99.9L245.5 102.6L246.6 105.3L247.3 108.1L247.6 110.8L247.6 113.6L247.2 116.3L246.4 119L245.3 121.5L244 124L242.4 126.2L240.6 128.4L238.7 130.4L236.6 132.3L234.5 134.1L232.3 135.8L230.2 137.4"/><g transform="translate(230.2 137.4) rotate(231.5)"><path class="w" d="M0 0C4 -3 12 -9 13 -3C13 2 6 3 0 0M0 0C-4 -3 -12 -9 -13 -3C-13 2 -6 3 0 0"/><path class="w" d="M0 -5V6"/><path class="s3" opacity=".9" d="M2 -4l3 -5M-2 -4l-3 -5"/></g></svg></div>
+            <div class="work-art"><svg class="work-poster" viewBox="0 0 400 370" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><path class="st" d="M386.3 16.4h0M29.7 268h0M381.5 214.8h0M293.8 293.6h0M231.9 34.5h0M35.8 165.6h0M378.4 279.2h0M89.7 228h0M55.2 13.7h0M70.4 31.6h0M118.5 281.5h0M43.2 348.2h0M192.4 22.2h0M325.6 174.2h0M313.8 19.9h0M364 302.9h0M130.8 213.8h0M252.7 4.6h0M177.7 316.1h0M82.3 142.1h0M60 80h0M195.8 3.5h0M76.7 63h0M163.5 118.8h0M235.4 369h0M74.8 281.1h0M350.2 22.3h0M20.7 27.9h0M200 83.2h0M92 52.8h0M378.1 185.9h0M140.4 86.3h0M210.9 28.6h0M167.5 174.9h0M172.9 70.5h0M72.7 287.2h0M150.1 1.6h0M248.2 97.5h0M138.8 307.3h0M317.2 24.2h0M108.9 181.9h0M165.6 43.7h0M124.5 94.9h0M19.1 278h0M58.4 303.6h0M298 29.2h0M357.2 84.6h0M361.9 307.8h0M177.8 0.3h0M52.6 365.1h0M130.3 127.4h0M42 309.1h0M129.5 31h0M264.2 1h0"/><path class="st st--b" d="M25.7 289.1h0M102.1 318.9h0M233.3 154.4h0M196.2 250.3h0M124.1 3.1h0M185.7 73.4h0"/><circle class="w" opacity="0.8" cx="200" cy="118" r="12"/><circle class="w" opacity="0.85" stroke-dasharray="2 5" cx="200" cy="118" r="22"/><circle class="w" opacity="0.45" cx="200" cy="118" r="36"/><circle class="w" opacity="0.2" stroke-dasharray="2 5" cx="200" cy="118" r="54"/><circle class="fw" cx="200" cy="118" r="3.6"/><path class="w" opacity=".5" d="M184 108L191 94H209L216 108M200 94V44"/><path class="w" opacity="0.3" stroke-dasharray="0.1 5.5" stroke-width="1.6" d="M-5.7 209.6L-17 198.6L-27.1 186.9L-35.6 174.4L-42.2 161.2L-46.8 147.5L-49.1 133.5L-49.1 119.4L-46.7 105.4L-42 91.8L-35.2 78.8L-26.3 66.6L-15.6 55.4L-3.6 45.2L9.7 36.1L23.7 28.2L38.3 21.4L53 15.6L67.9 10.7L82.5 6.6L96.9 3.1L110.9 0.2L124.6 -2.4L138.1 -4.7L151.3 -6.7L164.4 -8.6L177.6 -10.3L190.8 -11.7L204.2 -12.7L217.8 -13.3L231.6 -13.3L245.6 -12.6L259.5 -11L273.3 -8.5L286.8 -4.9L299.7 -0.2"/><path class="w" opacity="0.45" stroke-dasharray="0.1 5.5" stroke-width="1.6" d="M299.7 -0.2L311.9 5.5L323 12.2L332.9 20L341.4 28.5L348.3 37.8L353.6 47.5L357.2 57.6L359.3 67.8L359.7 78L358.8 88L356.6 97.7L353.3 106.9L349.2 115.7L344.5 123.9L339.3 131.6L333.8 138.9L328.2 145.7L322.5 152.2L316.8 158.4L311.1 164.3L305.3 170.1L299.4 175.8L293.3 181.3L286.9 186.7L280.1 191.9L272.9 196.8L265.1 201.4L256.8 205.6L248 209.2L238.6 212.1L228.9 214.3L218.9 215.7L208.7 216.1L198.6 215.6L188.7 214.2"/><path class="w" opacity="0.65" stroke-dasharray="0.1 5.5" stroke-width="1.6" d="M188.7 214.2L179.1 211.9L170.1 208.7L161.7 204.8L154.1 200.3L147.2 195.2L141.3 189.8L136.2 184.1L131.9 178.2L128.3 172.3L125.5 166.5L123.1 160.8L121.3 155.2L119.8 149.8L118.7 144.6L117.7 139.5L116.9 134.6L116.3 129.7L115.8 124.9L115.6 120.2L115.6 115.4L115.9 110.6L116.6 105.9L117.8 101.1L119.5 96.5L121.8 91.9L124.7 87.6L128.2 83.5L132.3 79.7L136.9 76.4L142.1 73.4L147.6 71L153.5 69.1L159.5 67.7L165.7 66.9L171.9 66.5"/><path class="w" opacity="0.9" stroke-dasharray="0.1 5.5" stroke-width="1.6" d="M171.9 66.5L177.9 66.7L183.8 67.2L189.4 68.1L194.8 69.3L199.8 70.8L204.5 72.4L208.9 74.1L213 76L216.9 77.9L220.5 79.8L223.9 81.8L227.1 83.8L230.1 85.9L233 88L235.7 90.2L238.1 92.5L240.4 94.9L242.4 97.3L244.1 99.9L245.5 102.6L246.6 105.3L247.3 108.1L247.6 110.8L247.6 113.6L247.2 116.3L246.4 119L245.3 121.5L244 124L242.4 126.2L240.6 128.4L238.7 130.4L236.6 132.3L234.5 134.1L232.3 135.8L230.2 137.4"/><g transform="translate(230.2 137.4) rotate(231.5)"><path class="w" d="M0 0C4 -3 12 -9 13 -3C13 2 6 3 0 0M0 0C-4 -3 -12 -9 -13 -3C-13 2 -6 3 0 0"/><path class="w" d="M0 -5V6"/><path class="w" opacity=".9" d="M2 -4l3 -5M-2 -4l-3 -5"/></g></svg></div>
             <p class="work-kind">App · Game demo</p>
             <div class="work-info">
               <h3 class="work-title" id="wk-moth">Moth &amp; Lamp</h3>
@@ -1131,9 +1138,9 @@
             </div>
           </article>
         </li>
-        <li class="work-tile" data-tags="audio" data-stage="shape">
+        <li class="work-tile" data-tags="audio">
           <article class="work-card" aria-labelledby="wk-saltwater" tabindex="0" aria-describedby="wk-saltwater-m wk-saltwater-d wk-saltwater-r">
-            <div class="work-art"><svg class="work-poster" viewBox="0 0 400 370" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><path class="st" d="M158.1 65.2h0M63.2 9.9h0M107.8 29.7h0M10.1 15.2h0M122.9 61.2h0M70.3 50h0M276.3 42.3h0M130.6 3.7h0M171.6 76.6h0M201.2 109.9h0M312.6 71.6h0M131.7 9.2h0M275.9 54.6h0M146.7 100.9h0M327.6 0.5h0M93 80h0M180.4 58.2h0M243.2 30.3h0M319.7 31.9h0M239.2 12.7h0M8.2 36.5h0M128.1 60.7h0M138.7 88h0M84 9.6h0M152.2 25.8h0M197.8 5.5h0M190.7 65.9h0M1.3 20.8h0M174.2 73.5h0M237.2 98h0M183.1 2.9h0M235.9 1.6h0M205.3 26.3h0M184.6 69.4h0M204.7 20.2h0M61.6 7.9h0M391.5 56.9h0M232 62.4h0M214.9 1h0M30.8 16.3h0M152.1 74.9h0M355.7 26.9h0"/><path class="st st--b" d="M195.3 13.2h0M334.4 6.4h0M198.5 15.1h0M312.8 69.2h0M317 91h0M221.1 5h0M211.3 18h0M351.6 10.6h0"/><path class="s1" opacity=".9" d="M26 128V132M31.6 125.2V132M37.2 124.4V132M42.8 119.4V132M48.4 118V132M54 115.1V132M59.6 112.1V132M65.2 103.4V132M70.8 91.9V132M76.4 97.4V132M82 99.7V132"/><path class="s2" opacity=".9" d="M87.6 102.6V132M93.2 93.8V132M98.8 100.6V132M104.4 100.3V132M110 106.9V132M115.6 96.2V132M121.2 94.3V132M126.8 74.2V132M132.4 69.5V132M138 86.1V132"/><path class="s3" opacity=".9" d="M143.6 103.6V132M149.2 67.8V132M154.8 66.8V132M160.4 70V132M166 88.3V132M171.6 95.9V132M177.2 80.2V132M182.8 99.9V132M188.4 93.2V132M194 75.9V132M199.6 97.4V132"/><path class="s4" opacity=".9" d="M205.2 77.3V132M210.8 48.4V132M216.4 58.6V132M222 70.3V132M227.6 97.4V132M233.2 72.4V132M238.8 68.1V132M244.4 72.1V132M250 91V132M255.6 93.2V132"/><path class="s5" opacity=".9" d="M261.2 93V132M266.8 91.5V132M272.4 76.2V132M278 80.5V132M283.6 99.2V132M289.2 88.5V132M294.8 79.1V132M300.4 86.7V132M306 85.7V132M311.6 106.3V132"/><path class="s6" opacity=".9" d="M317.2 108.5V132M322.8 104.2V132M328.4 115.3V132M334 114.4V132M339.6 112.1V132M345.2 117.3V132M350.8 111V132M356.4 115.9V132M362 119V132M367.6 123.8V132M373.2 127.6V132"/><path class="s1" opacity=".28" d="M26 135V136.7M31.6 135V137.9M37.2 135V138.2M42.8 135V140.3M48.4 135V140.9M54 135V142.1M59.6 135V143.4M65.2 135V147M70.8 135V151.9M76.4 135V149.5M82 135V148.5"/><path class="s2" opacity=".28" d="M87.6 135V147.3M93.2 135V151.1M98.8 135V148.2M104.4 135V148.3M110 135V145.6M115.6 135V150M121.2 135V150.8M126.8 135V159.3M132.4 135V161.2M138 135V154.3"/><path class="s3" opacity=".28" d="M143.6 135V146.9M149.2 135V162M154.8 135V162.4M160.4 135V161M166 135V153.4M171.6 135V150.2M177.2 135V156.7M182.8 135V148.5M188.4 135V151.3M194 135V158.5M199.6 135V149.5"/><path class="s4" opacity=".28" d="M205.2 135V158M210.8 135V170.1M216.4 135V165.8M222 135V160.9M227.6 135V149.5M233.2 135V160M238.8 135V161.8M244.4 135V160.2M250 135V152.2M255.6 135V151.3"/><path class="s5" opacity=".28" d="M261.2 135V151.4M266.8 135V152M272.4 135V158.5M278 135V156.6M283.6 135V148.8M289.2 135V153.3M294.8 135V157.2M300.4 135V154M306 135V154.4M311.6 135V145.8"/><path class="s6" opacity=".28" d="M317.2 135V144.9M322.8 135V146.7M328.4 135V142M334 135V142.4M339.6 135V143.3M345.2 135V141.2M350.8 135V143.8M356.4 135V141.7M362 135V140.4M367.6 135V138.5M373.2 135V136.9"/><path class="w" opacity=".35" d="M0 133.5H400"/><path class="s2" opacity="0.55" d="M-30 196Q-21.5 194.8 -13 196T4 196T21 196T38 196T55 196T72 196T89 196T106 196T123 196T140 196T157 196T174 196T191 196T208 196T225 196T242 196T259 196T276 196T293 196T310 196T327 196T344 196T361 196T378 196T395 196T412 196T429 196"/><path class="s2" opacity="0.47" d="M-30 208Q-19 205.9 -8 208T14 208T36 208T58 208T80 208T102 208T124 208T146 208T168 208T190 208T212 208T234 208T256 208T278 208T300 208T322 208T344 208T366 208T388 208T410 208"/><path class="s2" opacity="0.39" d="M-30 226Q-16.5 223 -3 226T24 226T51 226T78 226T105 226T132 226T159 226T186 226T213 226T240 226T267 226T294 226T321 226T348 226T375 226T402 226T429 226"/><path class="s2" opacity="0.31" d="M-30 250Q-14 246.1 2 250T34 250T66 250T98 250T130 250T162 250T194 250T226 250T258 250T290 250T322 250T354 250T386 250T418 250"/></svg></div>
+            <div class="work-art"><svg class="work-poster" viewBox="0 0 400 370" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><path class="st" d="M158.1 65.2h0M63.2 9.9h0M107.8 29.7h0M10.1 15.2h0M122.9 61.2h0M70.3 50h0M276.3 42.3h0M130.6 3.7h0M171.6 76.6h0M201.2 109.9h0M312.6 71.6h0M131.7 9.2h0M275.9 54.6h0M146.7 100.9h0M327.6 0.5h0M93 80h0M180.4 58.2h0M243.2 30.3h0M319.7 31.9h0M239.2 12.7h0M8.2 36.5h0M128.1 60.7h0M138.7 88h0M84 9.6h0M152.2 25.8h0M197.8 5.5h0M190.7 65.9h0M1.3 20.8h0M174.2 73.5h0M237.2 98h0M183.1 2.9h0M235.9 1.6h0M205.3 26.3h0M184.6 69.4h0M204.7 20.2h0M61.6 7.9h0M391.5 56.9h0M232 62.4h0M214.9 1h0M30.8 16.3h0M152.1 74.9h0M355.7 26.9h0"/><path class="st st--b" d="M195.3 13.2h0M334.4 6.4h0M198.5 15.1h0M312.8 69.2h0M317 91h0M221.1 5h0M211.3 18h0M351.6 10.6h0"/><path class="s1" opacity=".9" d="M26 128V132M31.6 125.2V132M37.2 124.4V132M42.8 119.4V132M48.4 118V132M54 115.1V132M59.6 112.1V132M65.2 103.4V132M70.8 91.9V132M76.4 97.4V132M82 99.7V132"/><path class="s2" opacity=".9" d="M87.6 102.6V132M93.2 93.8V132M98.8 100.6V132M104.4 100.3V132M110 106.9V132M115.6 96.2V132M121.2 94.3V132M126.8 74.2V132M132.4 69.5V132M138 86.1V132"/><path class="s3" opacity=".9" d="M143.6 103.6V132M149.2 67.8V132M154.8 66.8V132M160.4 70V132M166 88.3V132M171.6 95.9V132M177.2 80.2V132M182.8 99.9V132M188.4 93.2V132M194 75.9V132M199.6 97.4V132"/><path class="s4" opacity=".9" d="M205.2 77.3V132M210.8 48.4V132M216.4 58.6V132M222 70.3V132M227.6 97.4V132M233.2 72.4V132M238.8 68.1V132M244.4 72.1V132M250 91V132M255.6 93.2V132"/><path class="s5" opacity=".9" d="M261.2 93V132M266.8 91.5V132M272.4 76.2V132M278 80.5V132M283.6 99.2V132M289.2 88.5V132M294.8 79.1V132M300.4 86.7V132M306 85.7V132M311.6 106.3V132"/><path class="s6" opacity=".9" d="M317.2 108.5V132M322.8 104.2V132M328.4 115.3V132M334 114.4V132M339.6 112.1V132M345.2 117.3V132M350.8 111V132M356.4 115.9V132M362 119V132M367.6 123.8V132M373.2 127.6V132"/><path class="s1" opacity=".28" d="M26 135V136.7M31.6 135V137.9M37.2 135V138.2M42.8 135V140.3M48.4 135V140.9M54 135V142.1M59.6 135V143.4M65.2 135V147M70.8 135V151.9M76.4 135V149.5M82 135V148.5"/><path class="s2" opacity=".28" d="M87.6 135V147.3M93.2 135V151.1M98.8 135V148.2M104.4 135V148.3M110 135V145.6M115.6 135V150M121.2 135V150.8M126.8 135V159.3M132.4 135V161.2M138 135V154.3"/><path class="s3" opacity=".28" d="M143.6 135V146.9M149.2 135V162M154.8 135V162.4M160.4 135V161M166 135V153.4M171.6 135V150.2M177.2 135V156.7M182.8 135V148.5M188.4 135V151.3M194 135V158.5M199.6 135V149.5"/><path class="s4" opacity=".28" d="M205.2 135V158M210.8 135V170.1M216.4 135V165.8M222 135V160.9M227.6 135V149.5M233.2 135V160M238.8 135V161.8M244.4 135V160.2M250 135V152.2M255.6 135V151.3"/><path class="s5" opacity=".28" d="M261.2 135V151.4M266.8 135V152M272.4 135V158.5M278 135V156.6M283.6 135V148.8M289.2 135V153.3M294.8 135V157.2M300.4 135V154M306 135V154.4M311.6 135V145.8"/><path class="s6" opacity=".28" d="M317.2 135V144.9M322.8 135V146.7M328.4 135V142M334 135V142.4M339.6 135V143.3M345.2 135V141.2M350.8 135V143.8M356.4 135V141.7M362 135V140.4M367.6 135V138.5M373.2 135V136.9"/><path class="w" opacity=".35" d="M0 133.5H400"/><path class="w" opacity="0.55" d="M-30 196Q-21.5 194.8 -13 196T4 196T21 196T38 196T55 196T72 196T89 196T106 196T123 196T140 196T157 196T174 196T191 196T208 196T225 196T242 196T259 196T276 196T293 196T310 196T327 196T344 196T361 196T378 196T395 196T412 196T429 196"/><path class="w" opacity="0.47" d="M-30 208Q-19 205.9 -8 208T14 208T36 208T58 208T80 208T102 208T124 208T146 208T168 208T190 208T212 208T234 208T256 208T278 208T300 208T322 208T344 208T366 208T388 208T410 208"/><path class="w" opacity="0.39" d="M-30 226Q-16.5 223 -3 226T24 226T51 226T78 226T105 226T132 226T159 226T186 226T213 226T240 226T267 226T294 226T321 226T348 226T375 226T402 226T429 226"/><path class="w" opacity="0.31" d="M-30 250Q-14 246.1 2 250T34 250T66 250T98 250T130 250T162 250T194 250T226 250T258 250T290 250T322 250T354 250T386 250T418 250"/></svg></div>
             <p class="work-kind">Music · EP</p>
             <div class="work-info">
               <h3 class="work-title" id="wk-saltwater">Saltwater EP</h3>
@@ -1143,9 +1150,9 @@
             </div>
           </article>
         </li>
-        <li class="work-tile" data-tags="audio" data-stage="spark">
+        <li class="work-tile" data-tags="audio">
           <article class="work-card" aria-labelledby="wk-smallhours" tabindex="0" aria-describedby="wk-smallhours-m wk-smallhours-d wk-smallhours-r">
-            <div class="work-art"><svg class="work-poster" viewBox="0 0 400 370" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><path class="st" d="M80.2 184.4h0M315.6 206.6h0M159.3 253.5h0M340 147.5h0M338.1 341.5h0M56.4 349h0M268.5 54.3h0M333 142.9h0M42.2 54.5h0M228.1 10.1h0M102.5 179.3h0M343.2 309.6h0M300.3 325.6h0M325 254.1h0M122.8 250.5h0M173.3 0.3h0M304.2 265.2h0M309.8 56.9h0M99.9 191.2h0M126.3 313.4h0M76.3 270.8h0M335.4 55h0M317.7 3h0M262.7 3.8h0M13.2 82.4h0M88.8 102.5h0M201 357.7h0M161.3 270.1h0M73.1 75.9h0M85.8 194.2h0M375 107.7h0M355.4 11.2h0M398.8 0.6h0M72.2 326h0M211.9 353.8h0M381.1 58.9h0M311.8 83.9h0M154.9 327.7h0M355.2 73.7h0M289.6 236.5h0"/><path class="st st--b" d="M352.3 250.3h0M386.9 50.1h0M346.3 49.6h0M14.2 246.3h0M386.4 318.6h0M291 311.7h0M42.5 77.8h0"/><path class="w" opacity=".3" d="M200 63L200 56.3M276.3 121.6L282.8 119.8M279 142L285.7 142M276.3 162.4L282.8 164.2M268.4 181.5L274.2 184.8M255.8 197.8L260.6 202.6M239.5 210.4L242.8 216.2M220.4 218.3L222.2 224.8M200 221L200 227.7M179.6 218.3L177.8 224.8M160.5 210.4L157.2 216.2M144.2 197.8L139.4 202.6M131.6 181.5L125.8 184.8M123.7 162.4L117.2 164.2M121 142L114.3 142M123.7 121.6L117.2 119.8M131.6 102.5L125.8 99.2M144.2 86.2L139.4 81.4M160.5 73.6L157.2 67.8M179.6 65.7L177.8 59.2"/><path class="s1" d="M218.7 72.2L222.2 59.2M236.1 79.4L242.8 67.8M251.1 90.9L260.6 81.4M262.6 105.9L274.2 99.2"/><path class="s1" opacity=".95" d="M200 49.6A92.4 92.4 0 0 1 280 95.8"/><path class="s2" opacity=".6" d="M200 45.4A96.6 96.6 0 0 1 283.7 93.7"/><path class="w" opacity=".35" d="M200 41.2A100.8 100.8 0 0 1 287.3 91.6"/><path class="w" opacity="0.95" d="M237.1 161.7A42 42 0 1 1 195.6 100.2"/><path class="s1" opacity="0.85" d="M228.4 166.7A37.6 37.6 0 1 1 188.4 106.2"/><path class="s1" opacity="0.6" d="M220 168.6A33.3 33.3 0 1 1 182.9 113.5"/><path class="s2" opacity="0.55" d="M210.8 168.8A28.9 28.9 0 0 1 179.6 121.6"/><path class="s2" opacity="0.35" d="M201.7 166.5A24.5 24.5 0 0 1 178.1 130.9"/><path class="s2" opacity="0.25" d="M191.2 160.1A20.2 20.2 0 0 1 179.9 143.1"/></svg></div>
+            <div class="work-art"><svg class="work-poster" viewBox="0 0 400 370" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><path class="st" d="M80.2 184.4h0M315.6 206.6h0M159.3 253.5h0M340 147.5h0M338.1 341.5h0M56.4 349h0M268.5 54.3h0M333 142.9h0M42.2 54.5h0M228.1 10.1h0M102.5 179.3h0M343.2 309.6h0M300.3 325.6h0M325 254.1h0M122.8 250.5h0M173.3 0.3h0M304.2 265.2h0M309.8 56.9h0M99.9 191.2h0M126.3 313.4h0M76.3 270.8h0M335.4 55h0M317.7 3h0M262.7 3.8h0M13.2 82.4h0M88.8 102.5h0M201 357.7h0M161.3 270.1h0M73.1 75.9h0M85.8 194.2h0M375 107.7h0M355.4 11.2h0M398.8 0.6h0M72.2 326h0M211.9 353.8h0M381.1 58.9h0M311.8 83.9h0M154.9 327.7h0M355.2 73.7h0M289.6 236.5h0"/><path class="st st--b" d="M352.3 250.3h0M386.9 50.1h0M346.3 49.6h0M14.2 246.3h0M386.4 318.6h0M291 311.7h0M42.5 77.8h0"/><path class="w" opacity=".3" d="M200 63L200 56.3M276.3 121.6L282.8 119.8M279 142L285.7 142M276.3 162.4L282.8 164.2M268.4 181.5L274.2 184.8M255.8 197.8L260.6 202.6M239.5 210.4L242.8 216.2M220.4 218.3L222.2 224.8M200 221L200 227.7M179.6 218.3L177.8 224.8M160.5 210.4L157.2 216.2M144.2 197.8L139.4 202.6M131.6 181.5L125.8 184.8M123.7 162.4L117.2 164.2M121 142L114.3 142M123.7 121.6L117.2 119.8M131.6 102.5L125.8 99.2M144.2 86.2L139.4 81.4M160.5 73.6L157.2 67.8M179.6 65.7L177.8 59.2"/><path class="w" d="M218.7 72.2L222.2 59.2M236.1 79.4L242.8 67.8M251.1 90.9L260.6 81.4M262.6 105.9L274.2 99.2"/><path class="w" opacity=".95" d="M200 49.6A92.4 92.4 0 0 1 280 95.8"/><path class="w" opacity=".6" d="M200 45.4A96.6 96.6 0 0 1 283.7 93.7"/><path class="w" opacity=".35" d="M200 41.2A100.8 100.8 0 0 1 287.3 91.6"/><path class="w" opacity="0.95" d="M237.1 161.7A42 42 0 1 1 195.6 100.2"/><path class="w" opacity="0.85" d="M228.4 166.7A37.6 37.6 0 1 1 188.4 106.2"/><path class="w" opacity="0.6" d="M220 168.6A33.3 33.3 0 1 1 182.9 113.5"/><path class="w" opacity="0.55" d="M210.8 168.8A28.9 28.9 0 0 1 179.6 121.6"/><path class="w" opacity="0.35" d="M201.7 166.5A24.5 24.5 0 0 1 178.1 130.9"/><path class="w" opacity="0.25" d="M191.2 160.1A20.2 20.2 0 0 1 179.9 143.1"/></svg></div>
             <p class="work-kind">Audio · Podcast</p>
             <div class="work-info">
               <h3 class="work-title" id="wk-smallhours">Small Hours ep. 48</h3>
@@ -1155,7 +1162,7 @@
             </div>
           </article>
         </li>
-        <li class="work-tile" data-tags="writing" data-stage="make">
+        <li class="work-tile" data-tags="writing">
           <article class="work-card" aria-labelledby="wk-fieldnotes" tabindex="0" aria-describedby="wk-fieldnotes-m wk-fieldnotes-d wk-fieldnotes-r">
             <div class="work-art"><svg class="work-poster" viewBox="0 0 400 370" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><path class="st" d="M392.8 128.8h0M182.6 89.2h0M206.3 114.7h0M56.5 197.5h0M328.6 84h0M122.3 167.8h0M152.7 17.2h0M147.1 17.4h0M110.1 168.8h0M324.1 49.6h0M144.3 324.7h0M391.9 299.4h0M77.6 147.6h0M300.1 273.6h0M267.5 357.7h0M168.4 361.8h0M311.4 33.9h0M73.4 1.2h0M84.8 361.9h0M39.5 322.7h0M41.2 135.7h0M273.8 2.4h0M169.7 163.5h0M373.6 223h0M311.6 30.3h0M310.8 290.3h0M391.9 34.8h0M66.7 299.2h0M304.5 18.5h0M64.8 320.2h0M147.7 138.7h0M67.9 145.4h0M5.5 322.9h0M3.1 189.4h0M387.4 255.7h0M292.4 138h0M23.4 94.9h0M12.8 192.1h0M87.9 152.5h0M172.5 59.2h0M221.4 130.2h0M22.2 38.3h0M145.4 203h0M383.6 16.7h0M191.5 169.9h0M387.4 10.4h0M105.4 21.9h0M324.8 86.3h0M13.1 189.7h0"/><path class="st st--b" d="M149 229.2h0M347.7 282.8h0M328.6 297.1h0M359.4 21.8h0M40.2 300.8h0M289.5 276.7h0M295.3 336.1h0M130.8 7.3h0M316.1 12.9h0M372.5 71.5h0M85.7 255.2h0"/><rect class="s1" opacity="0.50" x="144" y="102" width="112" height="150" rx="3" transform="rotate(-26 200 292)"/><rect class="s2" opacity="0.60" x="144" y="102" width="112" height="150" rx="3" transform="rotate(-17 200 292)"/><rect class="s3" opacity="0.70" x="144" y="102" width="112" height="150" rx="3" transform="rotate(-8 200 292)"/><rect class="s4" opacity="0.80" x="144" y="102" width="112" height="150" rx="3" transform="rotate(1 200 292)"/><rect class="s5" opacity="0.90" x="144" y="102" width="112" height="150" rx="3" transform="rotate(10 200 292)"/><g transform="rotate(19 200 292)"><rect class="w" x="144" y="102" width="112" height="150" rx="3"/><path class="w" opacity=".5" d="M158 122h46M158 140h62M158 151h80M158 162h74M158 173h84M158 184h58M158 195h78M158 206h66M158 217h40"/><path class="s6" d="M158 122h46"/><circle class="s6" opacity=".8" cx="232" cy="122" r="7"/></g></svg></div>
             <p class="work-kind">Writing · Zine</p>
@@ -1167,9 +1174,9 @@
             </div>
           </article>
         </li>
-        <li class="work-tile" data-tags="writing" data-stage="launch">
+        <li class="work-tile" data-tags="writing">
           <article class="work-card" aria-labelledby="wk-lanterns" tabindex="0" aria-describedby="wk-lanterns-m wk-lanterns-d wk-lanterns-r">
-            <div class="work-art"><svg class="work-poster" viewBox="0 0 400 370" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><path class="st" d="M305.1 37.3h0M78.3 227h0M172.3 343.9h0M216.3 173.2h0M210.6 349.5h0M267.8 171.9h0M42.8 193.4h0M27.9 0.6h0M272.1 32.7h0M17 108.7h0M100.9 129.2h0M219.8 65.2h0M236.5 93h0M332.1 108.2h0M190.9 22.6h0M236.6 54.8h0M82.3 122.7h0M345.7 79.4h0M91.7 53.9h0M83.8 178h0M313 97.3h0M237.3 44.4h0M160.4 80.1h0M121.3 306.8h0M222.5 309.8h0M311.3 237.2h0M314.7 145.2h0M155.6 360.5h0M46.6 76.8h0M152.2 1.3h0M43.5 192.5h0M312.9 353.2h0M162.4 40.8h0M361.5 16.7h0M334 339.4h0M343.9 338.6h0M142.9 131.3h0M239.6 212.1h0M53.5 275h0M106.5 171.7h0M102.8 211h0M110.4 226h0M242.5 182h0M38.5 166.6h0M356.4 74.3h0M183.5 229.6h0M15.5 30.1h0M355.8 82h0M10.1 212.5h0M19.1 159.3h0M207.3 291.2h0M217.2 322.6h0M213.8 15h0M110.6 225.9h0M276.8 241.8h0"/><path class="st st--b" d="M271.4 151.4h0M39.3 252.1h0M250.5 17.2h0M286.9 220.3h0M361.2 187.7h0"/><path class="w" opacity=".18" d="M104 95V0"/><ellipse class="s5" opacity=".95" cx="104" cy="128" rx="21" ry="27"/><ellipse class="s5" opacity=".45" cx="104" cy="128" rx="12.2" ry="27"/><path class="s5" opacity=".4" d="M104 101V155"/><path class="w" opacity=".75" d="M96 100h16M96 156h16M104 156v9"/><circle class="f4" cx="104" cy="134.8" r="2.2"/><path class="w" opacity=".18" d="M204 57.1V0"/><ellipse class="s4" opacity=".95" cx="204" cy="100" rx="27.3" ry="35.1"/><ellipse class="s4" opacity=".45" cx="204" cy="100" rx="15.8" ry="35.1"/><path class="s4" opacity=".4" d="M204 64.9V135.1"/><path class="w" opacity=".75" d="M193.6 63.9h20.8M193.6 136.1h20.8M204 136.1v11.7"/><circle class="f4" cx="204" cy="108.8" r="2.9"/><path class="w" opacity=".18" d="M306 108.3V0"/><ellipse class="s6" opacity=".95" cx="306" cy="142" rx="21.4" ry="27.5"/><ellipse class="s6" opacity=".45" cx="306" cy="142" rx="12.4" ry="27.5"/><path class="s6" opacity=".4" d="M306 114.5V169.5"/><path class="w" opacity=".75" d="M297.8 113.5h16.3M297.8 170.5h16.3M306 170.5v9.2"/><circle class="f4" cx="306" cy="148.9" r="2.2"/><path class="w" opacity=".18" d="M156 182.9V0"/><ellipse class="s5" opacity=".95" cx="156" cy="206" rx="14.7" ry="18.9"/><ellipse class="s5" opacity=".45" cx="156" cy="206" rx="8.5" ry="18.9"/><path class="s5" opacity=".4" d="M156 187.1V224.9"/><path class="w" opacity=".75" d="M150.4 186.1h11.2M150.4 225.9h11.2M156 225.9v6.3"/><circle class="f4" cx="156" cy="210.7" r="1.5"/><path class="w" opacity=".18" d="M262 193.5V0"/><ellipse class="s4" opacity=".95" cx="262" cy="214" rx="13" ry="16.7"/><ellipse class="s4" opacity=".45" cx="262" cy="214" rx="7.6" ry="16.7"/><path class="s4" opacity=".4" d="M262 197.3V230.7"/><path class="w" opacity=".75" d="M257 196.3h9.9M257 231.7h9.9M262 231.7v5.6"/><circle class="f4" cx="262" cy="218.2" r="1.4"/><path class="w" opacity=".18" d="M352 51.5V0"/><ellipse class="s6" opacity=".95" cx="352" cy="72" rx="13" ry="16.7"/><ellipse class="s6" opacity=".45" cx="352" cy="72" rx="7.6" ry="16.7"/><path class="s6" opacity=".4" d="M352 55.3V88.7"/><path class="w" opacity=".75" d="M347 54.3h9.9M347 89.7h9.9M352 89.7v5.6"/><circle class="f4" cx="352" cy="76.2" r="1.4"/><path class="w" opacity=".18" d="M52 69.5V0"/><ellipse class="s5" opacity=".95" cx="52" cy="86" rx="10.5" ry="13.5"/><ellipse class="s5" opacity=".45" cx="52" cy="86" rx="6.1" ry="13.5"/><path class="s5" opacity=".4" d="M52 72.5V99.5"/><path class="w" opacity=".75" d="M48 71.5h8M48 100.5h8M52 100.5v4.5"/><circle class="f4" cx="52" cy="89.4" r="1.1"/></svg></div>
+            <div class="work-art"><svg class="work-poster" viewBox="0 0 400 370" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><path class="st" d="M305.1 37.3h0M78.3 227h0M172.3 343.9h0M216.3 173.2h0M210.6 349.5h0M267.8 171.9h0M42.8 193.4h0M27.9 0.6h0M272.1 32.7h0M17 108.7h0M100.9 129.2h0M219.8 65.2h0M236.5 93h0M332.1 108.2h0M190.9 22.6h0M236.6 54.8h0M82.3 122.7h0M345.7 79.4h0M91.7 53.9h0M83.8 178h0M313 97.3h0M237.3 44.4h0M160.4 80.1h0M121.3 306.8h0M222.5 309.8h0M311.3 237.2h0M314.7 145.2h0M155.6 360.5h0M46.6 76.8h0M152.2 1.3h0M43.5 192.5h0M312.9 353.2h0M162.4 40.8h0M361.5 16.7h0M334 339.4h0M343.9 338.6h0M142.9 131.3h0M239.6 212.1h0M53.5 275h0M106.5 171.7h0M102.8 211h0M110.4 226h0M242.5 182h0M38.5 166.6h0M356.4 74.3h0M183.5 229.6h0M15.5 30.1h0M355.8 82h0M10.1 212.5h0M19.1 159.3h0M207.3 291.2h0M217.2 322.6h0M213.8 15h0M110.6 225.9h0M276.8 241.8h0"/><path class="st st--b" d="M271.4 151.4h0M39.3 252.1h0M250.5 17.2h0M286.9 220.3h0M361.2 187.7h0"/><path class="w" opacity=".18" d="M104 95V0"/><ellipse class="w" opacity=".95" cx="104" cy="128" rx="21" ry="27"/><ellipse class="w" opacity=".45" cx="104" cy="128" rx="12.2" ry="27"/><path class="w" opacity=".4" d="M104 101V155"/><path class="w" opacity=".75" d="M96 100h16M96 156h16M104 156v9"/><circle class="fw" cx="104" cy="134.8" r="2.2"/><path class="w" opacity=".18" d="M204 57.1V0"/><ellipse class="w" opacity=".95" cx="204" cy="100" rx="27.3" ry="35.1"/><ellipse class="w" opacity=".45" cx="204" cy="100" rx="15.8" ry="35.1"/><path class="w" opacity=".4" d="M204 64.9V135.1"/><path class="w" opacity=".75" d="M193.6 63.9h20.8M193.6 136.1h20.8M204 136.1v11.7"/><circle class="fw" cx="204" cy="108.8" r="2.9"/><path class="w" opacity=".18" d="M306 108.3V0"/><ellipse class="w" opacity=".95" cx="306" cy="142" rx="21.4" ry="27.5"/><ellipse class="w" opacity=".45" cx="306" cy="142" rx="12.4" ry="27.5"/><path class="w" opacity=".4" d="M306 114.5V169.5"/><path class="w" opacity=".75" d="M297.8 113.5h16.3M297.8 170.5h16.3M306 170.5v9.2"/><circle class="fw" cx="306" cy="148.9" r="2.2"/><path class="w" opacity=".18" d="M156 182.9V0"/><ellipse class="w" opacity=".95" cx="156" cy="206" rx="14.7" ry="18.9"/><ellipse class="w" opacity=".45" cx="156" cy="206" rx="8.5" ry="18.9"/><path class="w" opacity=".4" d="M156 187.1V224.9"/><path class="w" opacity=".75" d="M150.4 186.1h11.2M150.4 225.9h11.2M156 225.9v6.3"/><circle class="fw" cx="156" cy="210.7" r="1.5"/><path class="w" opacity=".18" d="M262 193.5V0"/><ellipse class="w" opacity=".95" cx="262" cy="214" rx="13" ry="16.7"/><ellipse class="w" opacity=".45" cx="262" cy="214" rx="7.6" ry="16.7"/><path class="w" opacity=".4" d="M262 197.3V230.7"/><path class="w" opacity=".75" d="M257 196.3h9.9M257 231.7h9.9M262 231.7v5.6"/><circle class="fw" cx="262" cy="218.2" r="1.4"/><path class="w" opacity=".18" d="M352 51.5V0"/><ellipse class="w" opacity=".95" cx="352" cy="72" rx="13" ry="16.7"/><ellipse class="w" opacity=".45" cx="352" cy="72" rx="7.6" ry="16.7"/><path class="w" opacity=".4" d="M352 55.3V88.7"/><path class="w" opacity=".75" d="M347 54.3h9.9M347 89.7h9.9M352 89.7v5.6"/><circle class="fw" cx="352" cy="76.2" r="1.4"/><path class="w" opacity=".18" d="M52 69.5V0"/><ellipse class="w" opacity=".95" cx="52" cy="86" rx="10.5" ry="13.5"/><ellipse class="w" opacity=".45" cx="52" cy="86" rx="6.1" ry="13.5"/><path class="w" opacity=".4" d="M52 72.5V99.5"/><path class="w" opacity=".75" d="M48 71.5h8M48 100.5h8M52 100.5v4.5"/><circle class="fw" cx="52" cy="89.4" r="1.1"/></svg></div>
             <p class="work-kind">Writing · Picture book</p>
             <div class="work-info">
               <h3 class="work-title" id="wk-lanterns">Paper Lanterns</h3>
@@ -1179,21 +1186,21 @@
             </div>
           </article>
         </li>
-        <li class="work-tile work-tile--big" data-tags="objects" data-stage="review">
+        <li class="work-tile work-tile--big" data-tags="objects" data-stage="review" data-now="review">
           <article class="work-card work-card--link" aria-labelledby="wk-kiln">
             <div class="work-art"><svg class="work-poster" viewBox="0 0 400 370" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><path class="st" d="M299 318.7h0M90.6 26.4h0M123.8 27.4h0M180.2 124.1h0M159.5 9.3h0M25.6 40.7h0M184 77.7h0M363.3 163.9h0M189.4 357.1h0M209.8 236.9h0M276.9 39.3h0M314.7 125.5h0M298.9 268.6h0M72.6 13.8h0M272.8 305.2h0M224.3 6.1h0M141.9 92.4h0M264.6 253.1h0M155.5 114.9h0M90.1 74.3h0M37.7 184.6h0M120.6 170.3h0M36.7 38.2h0M367.6 106.4h0M104 1.2h0M171.3 312.3h0M257.3 185.2h0M98.6 138h0M257.6 265.7h0M162.5 369.7h0M134.6 143.1h0M306.9 340.2h0M228 235.8h0M88.7 309.1h0M206.3 352.9h0M392.1 187.8h0M127.9 26.3h0M294 4.7h0M0.1 175.5h0M366.1 246.1h0M299.2 218.6h0M105.5 338.6h0M331.3 143.9h0M329.9 128h0M99.3 36.4h0M307.4 39.7h0M329.1 315.1h0M89.9 140.7h0M158 137.8h0M130.5 348.1h0M292.2 6.3h0M354.7 310.3h0M372.3 275.4h0M40.7 348.7h0M122.5 190.8h0M220.9 117.4h0M309.1 38.1h0M157.8 58.3h0M1.2 311.2h0M59.2 4.8h0M302.5 25.3h0M36.3 188.2h0M182.8 1h0"/><path class="st st--b" d="M76.5 316.1h0M231.1 306.9h0M48.5 325.4h0M87.4 65.1h0M262 26.1h0M101.9 324.2h0M311.9 25.8h0"/><g class="kiln-wheel"><ellipse class="w" opacity="0.6" cx="200" cy="249.8" rx="123" ry="16"/><ellipse class="s4" opacity="0.5" cx="200" cy="252.3" rx="144.3" ry="18.8"/><ellipse class="s4" opacity="0.35" stroke-dasharray="3 7" cx="200" cy="254.8" rx="167.3" ry="21.7"/><ellipse class="s4" opacity="0.22" cx="200" cy="257.2" rx="193.5" ry="25.2"/><ellipse class="s4" opacity="0.12" cx="200" cy="259.7" rx="223" ry="29"/></g><path class="s4" opacity=".28" d="M159.2 73.4A40.8 6.9 0 0 1 240.8 73.4M165.8 83.2A34.2 5.8 0 0 1 234.2 83.2M162.9 93A37.1 6.3 0 0 1 237.1 93M152.8 102.8A47.2 8 0 0 1 247.2 102.8M141.1 112.6A58.9 10 0 0 1 258.9 112.6M132.5 122.4A67.5 11.5 0 0 1 267.5 122.4M124.5 132.2A75.5 12.8 0 0 1 275.5 132.2M117.4 142A82.6 14 0 0 1 282.6 142M112 151.8A88 15 0 0 1 288 151.8M108.6 161.6A91.4 15.5 0 0 1 291.4 161.6M107.9 171.4A92.1 15.7 0 0 1 292.1 171.4M109.4 181.2A90.6 15.4 0 0 1 290.6 181.2M113.5 191A86.5 14.7 0 0 1 286.5 191M118.8 200.8A81.2 13.8 0 0 1 281.2 200.8M126.1 210.6A73.9 12.6 0 0 1 273.9 210.6M134.1 220.4A65.9 11.2 0 0 1 265.9 220.4M143.2 230.2A56.8 9.7 0 0 1 256.8 230.2M150.8 240A49.2 8.4 0 0 1 249.2 240"/><path class="s4" opacity=".85" d="M159.2 73.4A40.8 6.9 0 0 0 240.8 73.4M165.8 83.2A34.2 5.8 0 0 0 234.2 83.2M162.9 93A37.1 6.3 0 0 0 237.1 93M152.8 102.8A47.2 8 0 0 0 247.2 102.8M141.1 112.6A58.9 10 0 0 0 258.9 112.6M132.5 122.4A67.5 11.5 0 0 0 267.5 122.4M124.5 132.2A75.5 12.8 0 0 0 275.5 132.2M117.4 142A82.6 14 0 0 0 282.6 142M112 151.8A88 15 0 0 0 288 151.8M108.6 161.6A91.4 15.5 0 0 0 291.4 161.6M107.9 171.4A92.1 15.7 0 0 0 292.1 171.4M109.4 181.2A90.6 15.4 0 0 0 290.6 181.2M113.5 191A86.5 14.7 0 0 0 286.5 191M118.8 200.8A81.2 13.8 0 0 0 281.2 200.8M126.1 210.6A73.9 12.6 0 0 0 273.9 210.6M134.1 220.4A65.9 11.2 0 0 0 265.9 220.4M143.2 230.2A56.8 9.7 0 0 0 256.8 230.2M150.8 240A49.2 8.4 0 0 0 249.2 240"/><g class="kiln-turn"><path class="w" opacity=".55" style="--p:13.9px" stroke-dasharray="3.1 10.8" d="M159.2 73.4A40.8 6.9 0 0 0 240.8 73.4"/><path class="w" opacity=".55" style="--p:11.6px" stroke-dasharray="2.6 9.1" d="M165.8 83.2A34.2 5.8 0 0 0 234.2 83.2"/><path class="w" opacity=".55" style="--p:12.6px" stroke-dasharray="2.8 9.8" d="M162.9 93A37.1 6.3 0 0 0 237.1 93"/><path class="w" opacity=".55" style="--p:16px" stroke-dasharray="3.5 12.5" d="M152.8 102.8A47.2 8 0 0 0 247.2 102.8"/><path class="w" opacity=".55" style="--p:20px" stroke-dasharray="4.4 15.6" d="M141.1 112.6A58.9 10 0 0 0 258.9 112.6"/><path class="w" opacity=".55" style="--p:23px" stroke-dasharray="5.1 17.9" d="M132.5 122.4A67.5 11.5 0 0 0 267.5 122.4"/><path class="w" opacity=".55" style="--p:25.7px" stroke-dasharray="5.6 20" d="M124.5 132.2A75.5 12.8 0 0 0 275.5 132.2"/><path class="w" opacity=".55" style="--p:28.1px" stroke-dasharray="6.2 21.9" d="M117.4 142A82.6 14 0 0 0 282.6 142"/><path class="w" opacity=".55" style="--p:29.9px" stroke-dasharray="6.6 23.3" d="M112 151.8A88 15 0 0 0 288 151.8"/><path class="w" opacity=".55" style="--p:31.1px" stroke-dasharray="6.8 24.2" d="M108.6 161.6A91.4 15.5 0 0 0 291.4 161.6"/><path class="w" opacity=".55" style="--p:31.3px" stroke-dasharray="6.9 24.4" d="M107.9 171.4A92.1 15.7 0 0 0 292.1 171.4"/><path class="w" opacity=".55" style="--p:30.8px" stroke-dasharray="6.8 24" d="M109.4 181.2A90.6 15.4 0 0 0 290.6 181.2"/><path class="w" opacity=".55" style="--p:29.4px" stroke-dasharray="6.5 22.9" d="M113.5 191A86.5 14.7 0 0 0 286.5 191"/><path class="w" opacity=".55" style="--p:27.6px" stroke-dasharray="6.1 21.5" d="M118.8 200.8A81.2 13.8 0 0 0 281.2 200.8"/><path class="w" opacity=".55" style="--p:25.1px" stroke-dasharray="5.5 19.6" d="M126.1 210.6A73.9 12.6 0 0 0 273.9 210.6"/><path class="w" opacity=".55" style="--p:22.4px" stroke-dasharray="4.9 17.5" d="M134.1 220.4A65.9 11.2 0 0 0 265.9 220.4"/><path class="w" opacity=".55" style="--p:19.3px" stroke-dasharray="4.2 15.1" d="M143.2 230.2A56.8 9.7 0 0 0 256.8 230.2"/><path class="w" opacity=".55" style="--p:16.7px" stroke-dasharray="3.7 13" d="M150.8 240A49.2 8.4 0 0 0 249.2 240"/></g><path class="w" opacity=".7" d="M157.4 70L161.6 77.1L166.3 84.2L164.2 91.3L157.9 98.3L149.6 105.4L141.2 112.5L134.8 119.6L129 126.7L123.3 133.8L118.1 140.8L114 147.9L110.6 155L108.5 162.1L107.8 169.2L108.3 176.3L110.1 183.3L113.2 190.4L117 197.5L121.3 204.6L126.9 211.7L132.8 218.8L138.8 225.8L145.8 232.9L150.8 240"/><path class="w" opacity=".7" d="M242.6 70L238.4 77.1L233.7 84.2L235.8 91.3L242.1 98.3L250.4 105.4L258.8 112.5L265.2 119.6L271 126.7L276.7 133.8L281.9 140.8L286 147.9L289.4 155L291.5 162.1L292.2 169.2L291.7 176.3L289.9 183.3L286.8 190.4L283 197.5L278.7 204.6L273.1 211.7L267.2 218.8L261.2 225.8L254.2 232.9L249.2 240"/><ellipse class="w" opacity=".9" cx="200" cy="70" rx="42.6" ry="7.2"/></svg></div>
             <p class="work-kind">Objects · Ceramics</p>
             <div class="work-info">
-              <h3 class="work-title" id="wk-kiln"><a class="work-link" href="blog/sixty-pots-in-three-hours.html">Kiln &amp; Co. spring drop<span class="sr">: read the launch story</span></a></h3>
+              <h3 class="work-title" id="wk-kiln"><a class="work-link" href="blog/sixty-pots-in-three-hours.html">Kiln &amp; Co. spring drop<span class="sr">: read how the last drop sold out</span></a></h3>
               <p class="work-maker" id="wk-kiln-m">Inés Navarro · Valencia</p>
-              <div class="work-more"><div class="work-more__in"><p class="work-desc" id="wk-kiln-d">Sixty hand-thrown pieces in one online sale, planned from a single Blueprint and four notes from her sister.</p><p class="work-story" aria-hidden="true">Read the launch story<svg><use href="#i-arrow"/></svg></p></div></div>
-              <p class="work-run" id="wk-kiln-r"><span class="work-bar" aria-hidden="true"><i style="--a:0%;--w:7.7%"></i><i style="--a:7.7%;--w:11.6%"></i><i style="--a:19.3%;--w:38.6%"></i><i style="--a:58%;--w:15.5%"></i><i style="--a:73.4%;--w:11.6%"></i><i style="--a:85%;--w:15%"></i></span><span>Spark → launch in 22 days</span></p>
+              <div class="work-more"><div class="work-more__in"><p class="work-desc" id="wk-kiln-d">Sixty hand-thrown pieces for one online sale, planned in a single Blueprint. In Review now, with four notes from her sister.</p><p class="work-story" aria-hidden="true">Read how the last drop sold out<svg><use href="#i-arrow"/></svg></p></div></div>
+              <p class="work-run" id="wk-kiln-r"><span class="work-bar work-bar--open" aria-hidden="true"><i style="--a:0%;--w:9%"></i><i style="--a:9%;--w:14%"></i><i style="--a:23%;--w:44%"></i><i class="is-now" style="--a:67%;--w:16%"></i><i style="--a:83%;--w:0%"></i><i style="--a:85%;--w:0%"></i></span><span>Now in Review · day 22</span></p>
             </div>
           </article>
         </li>
-        <li class="work-tile work-tile--wide" data-tags="objects" data-stage="review">
+        <li class="work-tile work-tile--wide" data-tags="objects">
           <article class="work-card" aria-labelledby="wk-gridlock" tabindex="0" aria-describedby="wk-gridlock-m wk-gridlock-d wk-gridlock-r">
-            <div class="work-art"><svg class="work-poster" viewBox="0 0 800 360" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><path class="st" d="M25.4 357.6h0M314.6 325.8h0M35.9 45.4h0M214.8 60.5h0M392.8 62h0M567.3 199.8h0M783.3 65.6h0M633.2 106.9h0M672.8 210.1h0M731.8 338.3h0M717.5 151.6h0M190.2 53.8h0M157.1 43.5h0M108.6 23.5h0M377.8 29.6h0M8.6 309.8h0M357.3 120.5h0M190.8 181h0M482 25.6h0M400.8 84.2h0M121.8 125.1h0M9.6 29.7h0M163.8 172.9h0M249.2 359.9h0M119.5 4.9h0M53.1 15.1h0M67.1 130.9h0M300.6 300h0M794.2 158.4h0M598 122.3h0M579.1 206.1h0M498.4 33.2h0M619.4 348.1h0M749.5 235.1h0M627.5 195.8h0M606.4 4h0M278.5 1.4h0M322 112.2h0M737.4 184.6h0M691.2 313.8h0M201.9 1.2h0M26 337.9h0M151.5 126.3h0M303.6 112.8h0M525.9 49.7h0M468.3 352.6h0M632.1 357.6h0M57.7 102.7h0M391.2 175.8h0"/><path class="st st--b" d="M739.5 156.1h0M784.1 12.3h0M527.8 327.6h0M47.2 54.8h0M131.2 174.7h0M418.7 88.1h0M652.3 6.1h0M258.8 74.9h0M790.6 340.1h0M612.9 33.7h0M680.8 218.6h0"/><path class="w" opacity=".07" d="M16 0V360M48 0V360M80 0V360M112 0V360M144 0V360M176 0V360M208 0V360M240 0V360M272 0V360M304 0V360M336 0V360M368 0V360M400 0V360M432 0V360M464 0V360M496 0V360M528 0V360M560 0V360M592 0V360M624 0V360M656 0V360M688 0V360M720 0V360M752 0V360M784 0V360M0 12H800M0 44H800M0 76H800M0 108H800M0 140H800M0 172H800M0 204H800M0 236H800M0 268H800M0 300H800M0 332H800"/><path class="s1" opacity=".42" d="M0 46H800"/><path class="s2" opacity=".42" d="M0 58H800"/><path class="s3" opacity=".42" d="M0 109.2H800"/><path class="s4" opacity=".8" d="M0 218H800"/><path class="s5" opacity=".42" d="M0 250H800"/><path class="s6" opacity=".42" d="M0 262H800"/><path class="w" opacity=".18" stroke-dasharray="2 4" d="M540 58V218M584 58V218M628 58V218M672 58V218M716 58V218M760 58V218"/><path class="s1" d="M389.5 84.5A80 80 0 1 0 410 138"/><path class="s1" opacity=".9" d="M410 138H336"/><path class="s2" d="M385.4 88.1A74.5 74.5 0 1 0 404.5 138"/><path class="s2" opacity=".9" d="M410 143.5H336"/><path class="s3" d="M381.3 91.8A69 69 0 1 0 399 138"/><path class="s3" opacity=".9" d="M410 149H336"/><path class="s4" d="M377.2 95.5A63.5 63.5 0 1 0 393.5 138"/><path class="s4" opacity=".9" d="M410 154.5H336"/><path class="s5" d="M373.1 99.2A58 58 0 1 0 388 138"/><path class="s5" opacity=".9" d="M410 160H336"/><path class="s6" d="M369 102.9A52.5 52.5 0 1 0 382.5 138"/><path class="s6" opacity=".9" d="M410 165.5H336"/><path class="w" opacity=".6" d="M410 138V165.5"/></svg></div>
+            <div class="work-art"><svg class="work-poster" viewBox="0 0 800 360" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><path class="st" d="M25.4 357.6h0M314.6 325.8h0M35.9 45.4h0M214.8 60.5h0M392.8 62h0M567.3 199.8h0M783.3 65.6h0M633.2 106.9h0M672.8 210.1h0M731.8 338.3h0M717.5 151.6h0M190.2 53.8h0M157.1 43.5h0M108.6 23.5h0M377.8 29.6h0M8.6 309.8h0M357.3 120.5h0M190.8 181h0M482 25.6h0M400.8 84.2h0M121.8 125.1h0M9.6 29.7h0M163.8 172.9h0M249.2 359.9h0M119.5 4.9h0M53.1 15.1h0M67.1 130.9h0M300.6 300h0M794.2 158.4h0M598 122.3h0M579.1 206.1h0M498.4 33.2h0M619.4 348.1h0M749.5 235.1h0M627.5 195.8h0M606.4 4h0M278.5 1.4h0M322 112.2h0M737.4 184.6h0M691.2 313.8h0M201.9 1.2h0M26 337.9h0M151.5 126.3h0M303.6 112.8h0M525.9 49.7h0M468.3 352.6h0M632.1 357.6h0M57.7 102.7h0M391.2 175.8h0"/><path class="st st--b" d="M739.5 156.1h0M784.1 12.3h0M527.8 327.6h0M47.2 54.8h0M131.2 174.7h0M418.7 88.1h0M652.3 6.1h0M258.8 74.9h0M790.6 340.1h0M612.9 33.7h0M680.8 218.6h0"/><path class="w" opacity=".07" d="M16 0V360M48 0V360M80 0V360M112 0V360M144 0V360M176 0V360M208 0V360M240 0V360M272 0V360M304 0V360M336 0V360M368 0V360M400 0V360M432 0V360M464 0V360M496 0V360M528 0V360M560 0V360M592 0V360M624 0V360M656 0V360M688 0V360M720 0V360M752 0V360M784 0V360M0 12H800M0 44H800M0 76H800M0 108H800M0 140H800M0 172H800M0 204H800M0 236H800M0 268H800M0 300H800M0 332H800"/><path class="s1" opacity=".42" d="M0 46H800"/><path class="s2" opacity=".42" d="M0 58H800"/><path class="s3" opacity=".42" d="M0 109.2H800"/><path class="s4" opacity=".42" d="M0 218H800"/><path class="s5" opacity=".42" d="M0 250H800"/><path class="s6" opacity=".42" d="M0 262H800"/><path class="w" opacity=".18" stroke-dasharray="2 4" d="M540 58V218M584 58V218M628 58V218M672 58V218M716 58V218M760 58V218"/><path class="s1" d="M389.5 84.5A80 80 0 1 0 410 138"/><path class="s1" opacity=".9" d="M410 138H336"/><path class="s2" d="M385.4 88.1A74.5 74.5 0 1 0 404.5 138"/><path class="s2" opacity=".9" d="M410 143.5H336"/><path class="s3" d="M381.3 91.8A69 69 0 1 0 399 138"/><path class="s3" opacity=".9" d="M410 149H336"/><path class="s4" d="M377.2 95.5A63.5 63.5 0 1 0 393.5 138"/><path class="s4" opacity=".9" d="M410 154.5H336"/><path class="s5" d="M373.1 99.2A58 58 0 1 0 388 138"/><path class="s5" opacity=".9" d="M410 160H336"/><path class="s6" d="M369 102.9A52.5 52.5 0 1 0 382.5 138"/><path class="s6" opacity=".9" d="M410 165.5H336"/><path class="w" opacity=".6" d="M410 138V165.5"/></svg></div>
             <p class="work-kind">Objects · Type family</p>
             <div class="work-info">
               <h3 class="work-title" id="wk-gridlock">Gridlock</h3>
@@ -1203,9 +1210,9 @@
             </div>
           </article>
         </li>
-        <li class="work-tile work-tile--wide work-tile--end" data-tags="objects" data-stage="afterglow">
+        <li class="work-tile work-tile--wide" data-tags="objects">
           <article class="work-card" aria-labelledby="wk-longtable" tabindex="0" aria-describedby="wk-longtable-m wk-longtable-d wk-longtable-r">
-            <div class="work-art"><svg class="work-poster" viewBox="0 0 800 360" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><path class="st" d="M564.9 27.6h0M469.1 91.4h0M727.8 64.1h0M631.9 96.7h0M357.5 54.4h0M160.4 75.9h0M609.3 121.2h0M760.9 9.4h0M180.8 5.9h0M50.2 51.6h0M342 17.5h0M296.3 13.3h0M790.6 18.8h0M344.7 125.9h0M11.7 50.4h0M368.1 30.8h0M383.6 95.4h0M547.7 37.8h0M655.4 147.7h0M446.8 97.9h0M265.5 39h0M692.5 120.5h0M24.9 105h0M403.7 144.9h0M175.2 51.7h0M133.2 60.6h0M372.1 55.2h0M733.9 81.6h0M722.8 30.2h0M709.7 26.4h0M135.4 38.1h0M410.6 24.3h0M679.1 44.7h0M474.7 124.9h0M744.9 10.3h0M106.2 72.6h0M747.8 71.2h0M116.7 0.8h0M681.6 48.4h0M259.4 42.2h0M512.8 15.1h0M715.6 112h0M735.4 2.2h0M615.7 61.1h0M405.2 73.9h0M77.7 64.1h0M396.8 37h0M143.9 84h0M267.1 5.8h0M318.2 33.6h0M600.9 93.4h0M553.3 26.1h0M159.7 10.4h0M200.5 100.7h0M668.8 22.5h0M125.2 34.2h0M649.6 39.9h0"/><path class="st st--b" d="M167.3 41.1h0M422.6 57.8h0M395.2 119.1h0M62.9 136.8h0M149.1 13.9h0M6.4 126.4h0M438.3 100h0M756.8 107.1h0M385.3 146.6h0M492.3 109.1h0M744.1 59.3h0M472.2 75.9h0M204.4 32.2h0"/><path class="w" opacity=".35" d="M-10 34Q400 150 810 34"/><circle class="fw" cx="41.3" cy="51.6" r="2.1"/><circle class="fw" cx="92.5" cy="63.4" r="2.1"/><circle class="f4" cx="143.8" cy="73.3" r="2.1"/><circle class="fw" cx="195" cy="81.5" r="2.1"/><circle class="fw" cx="246.3" cy="87.8" r="2.1"/><circle class="f4" cx="297.5" cy="92.4" r="2.1"/><circle class="fw" cx="348.8" cy="95.1" r="2.1"/><circle class="fw" cx="400" cy="96" r="2.1"/><circle class="f4" cx="451.3" cy="95.1" r="2.1"/><circle class="fw" cx="502.5" cy="92.4" r="2.1"/><circle class="fw" cx="553.8" cy="87.8" r="2.1"/><circle class="f4" cx="605" cy="81.5" r="2.1"/><circle class="fw" cx="656.3" cy="73.3" r="2.1"/><circle class="fw" cx="707.5" cy="63.4" r="2.1"/><circle class="f4" cx="758.8" cy="51.6" r="2.1"/><path class="s1" opacity=".9" d="M110 178H690"/><path class="s2" opacity=".9" d="M110 180.3H690"/><path class="s3" opacity=".9" d="M110 182.6H690"/><path class="s4" opacity=".9" d="M110 184.9H690"/><path class="s5" opacity=".9" d="M110 187.2H690"/><path class="s6" opacity=".9" d="M110 189.5H690"/><path class="w" opacity=".7" d="M80 190H720M120 190V310M680 190V310"/><path class="w" opacity=".6" d="M170 177V156M262 177V156M354 177V156M446 177V156M538 177V156M630 177V156"/><path class="s4" d="M170 142C174 148 173 152 170 153C167 152 166 148 170 142ZM262 142C266 148 265 152 262 153C259 152 258 148 262 142ZM354 142C358 148 357 152 354 153C351 152 350 148 354 142ZM446 142C450 148 449 152 446 153C443 152 442 148 446 142ZM538 142C542 148 541 152 538 153C535 152 534 148 538 142ZM630 142C634 148 633 152 630 153C627 152 626 148 630 142Z"/><circle class="s4" opacity=".28" cx="170" cy="148" r="11"/><circle class="s4" opacity=".28" cx="262" cy="148" r="11"/><circle class="s4" opacity=".28" cx="354" cy="148" r="11"/><circle class="s4" opacity=".28" cx="446" cy="148" r="11"/><circle class="s4" opacity=".28" cx="538" cy="148" r="11"/><circle class="s4" opacity=".28" cx="630" cy="148" r="11"/><ellipse class="w" opacity=".5" cx="216" cy="175" rx="17" ry="3.4"/><ellipse class="w" opacity=".5" cx="308" cy="175" rx="17" ry="3.4"/><ellipse class="w" opacity=".5" cx="400" cy="175" rx="17" ry="3.4"/><ellipse class="w" opacity=".5" cx="492" cy="175" rx="17" ry="3.4"/><ellipse class="w" opacity=".5" cx="584" cy="175" rx="17" ry="3.4"/></svg></div>
+            <div class="work-art"><svg class="work-poster" viewBox="0 0 800 360" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><path class="st" d="M564.9 27.6h0M469.1 91.4h0M727.8 64.1h0M631.9 96.7h0M357.5 54.4h0M160.4 75.9h0M609.3 121.2h0M760.9 9.4h0M180.8 5.9h0M50.2 51.6h0M342 17.5h0M296.3 13.3h0M790.6 18.8h0M344.7 125.9h0M11.7 50.4h0M368.1 30.8h0M383.6 95.4h0M547.7 37.8h0M655.4 147.7h0M446.8 97.9h0M265.5 39h0M692.5 120.5h0M24.9 105h0M403.7 144.9h0M175.2 51.7h0M133.2 60.6h0M372.1 55.2h0M733.9 81.6h0M722.8 30.2h0M709.7 26.4h0M135.4 38.1h0M410.6 24.3h0M679.1 44.7h0M474.7 124.9h0M744.9 10.3h0M106.2 72.6h0M747.8 71.2h0M116.7 0.8h0M681.6 48.4h0M259.4 42.2h0M512.8 15.1h0M715.6 112h0M735.4 2.2h0M615.7 61.1h0M405.2 73.9h0M77.7 64.1h0M396.8 37h0M143.9 84h0M267.1 5.8h0M318.2 33.6h0M600.9 93.4h0M553.3 26.1h0M159.7 10.4h0M200.5 100.7h0M668.8 22.5h0M125.2 34.2h0M649.6 39.9h0"/><path class="st st--b" d="M167.3 41.1h0M422.6 57.8h0M395.2 119.1h0M62.9 136.8h0M149.1 13.9h0M6.4 126.4h0M438.3 100h0M756.8 107.1h0M385.3 146.6h0M492.3 109.1h0M744.1 59.3h0M472.2 75.9h0M204.4 32.2h0"/><path class="w" opacity=".35" d="M-10 34Q400 150 810 34"/><circle class="fw" cx="41.3" cy="51.6" r="2.1"/><circle class="fw" cx="92.5" cy="63.4" r="2.1"/><circle class="fw" cx="143.8" cy="73.3" r="2.1"/><circle class="fw" cx="195" cy="81.5" r="2.1"/><circle class="fw" cx="246.3" cy="87.8" r="2.1"/><circle class="fw" cx="297.5" cy="92.4" r="2.1"/><circle class="fw" cx="348.8" cy="95.1" r="2.1"/><circle class="fw" cx="400" cy="96" r="2.1"/><circle class="fw" cx="451.3" cy="95.1" r="2.1"/><circle class="fw" cx="502.5" cy="92.4" r="2.1"/><circle class="fw" cx="553.8" cy="87.8" r="2.1"/><circle class="fw" cx="605" cy="81.5" r="2.1"/><circle class="fw" cx="656.3" cy="73.3" r="2.1"/><circle class="fw" cx="707.5" cy="63.4" r="2.1"/><circle class="fw" cx="758.8" cy="51.6" r="2.1"/><path class="s1" opacity=".9" d="M110 178H690"/><path class="s2" opacity=".9" d="M110 180.3H690"/><path class="s3" opacity=".9" d="M110 182.6H690"/><path class="s4" opacity=".9" d="M110 184.9H690"/><path class="s5" opacity=".9" d="M110 187.2H690"/><path class="s6" opacity=".9" d="M110 189.5H690"/><path class="w" opacity=".7" d="M80 190H720M120 190V310M680 190V310"/><path class="w" opacity=".6" d="M170 177V156M262 177V156M354 177V156M446 177V156M538 177V156M630 177V156"/><path class="w" d="M170 142C174 148 173 152 170 153C167 152 166 148 170 142ZM262 142C266 148 265 152 262 153C259 152 258 148 262 142ZM354 142C358 148 357 152 354 153C351 152 350 148 354 142ZM446 142C450 148 449 152 446 153C443 152 442 148 446 142ZM538 142C542 148 541 152 538 153C535 152 534 148 538 142ZM630 142C634 148 633 152 630 153C627 152 626 148 630 142Z"/><circle class="w" opacity=".16" cx="170" cy="148" r="11"/><circle class="w" opacity=".16" cx="262" cy="148" r="11"/><circle class="w" opacity=".16" cx="354" cy="148" r="11"/><circle class="w" opacity=".16" cx="446" cy="148" r="11"/><circle class="w" opacity=".16" cx="538" cy="148" r="11"/><circle class="w" opacity=".16" cx="630" cy="148" r="11"/><ellipse class="w" opacity=".5" cx="216" cy="175" rx="17" ry="3.4"/><ellipse class="w" opacity=".5" cx="308" cy="175" rx="17" ry="3.4"/><ellipse class="w" opacity=".5" cx="400" cy="175" rx="17" ry="3.4"/><ellipse class="w" opacity=".5" cx="492" cy="175" rx="17" ry="3.4"/><ellipse class="w" opacity=".5" cx="584" cy="175" rx="17" ry="3.4"/></svg></div>
             <p class="work-kind">Objects · Supper club</p>
             <div class="work-info">
               <h3 class="work-title" id="wk-longtable">Long Table</h3>
@@ -1368,7 +1375,7 @@
           <p class="field__error" id="hs-email-error"></p>
         </div>
         <button class="btn btn--primary btn--lg btn--block home-start__go" type="submit">Hit the green light<svg class="arrow" aria-hidden="true"><use href="#i-arrow"/></svg></button>
-        <p class="small home-start__fine">Free for 3 lanes <span aria-hidden="true">·</span> No card <span aria-hidden="true">·</span> Export everything, always.</p>
+        <p class="small home-start__fine"><span>Free for 3 lanes</span> <span class="home-start__sep" aria-hidden="true">·</span> <span>No card</span> <span class="home-start__sep home-start__sep--2" aria-hidden="true">·</span> <span>Export everything, always.</span></p>
         <p class="home-start__done" hidden><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg><span><span data-done-lane>Lane 001</span> is open. Type a new idea to start <span data-done-next>Lane 002</span>.</span></p>
       </form>
 
@@ -1470,7 +1477,7 @@
 
     <div class="base">
       <p class="copy">© <span class="year">2026</span> Crestora. All rights reserved.</p>
-      <p class="love"><button class="heart" type="button" aria-label="Send some love"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19.6S4.4 15.1 4.4 9.6A4.2 4.2 0 0 1 12 7.2a4.2 4.2 0 0 1 7.6 2.4c0 5.5-7.6 10-7.6 10Z"/></svg></button><span>Made with love by Pranav</span></p>
+      <p class="love"><button class="heart" type="button" aria-label="Send some love" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19.6S4.4 15.1 4.4 9.6A4.2 4.2 0 0 1 12 7.2a4.2 4.2 0 0 1 7.6 2.4c0 5.5-7.6 10-7.6 10Z"/></svg></button><span>Made with love by Pranav</span></p>
     </div>
 
     <!-- the road: where the car is; holding it down puts your foot down -->

@@ -147,7 +147,8 @@ const oquro = async (page, viewport) => {
 const crestora = async (page, viewport) => {
   const tall = viewport.height > viewport.width;
   if (tall) await page.setViewportSize({ width: 2000, height: 1600 });
-  const css = "body > :not(.footer), .footer::before { display: none !important; } .stage > :not(.road), .hint { visibility: hidden !important; }";
+  // the footer alone, its night filling the frame (as the footer stood when it was the whole page)
+  const css = "body > :not(.footer), .footer::before { display: none !important; } .footer { height: 100svh !important; } .stage > :not(.road), .hint { visibility: hidden !important; }";
   await page.addInitScript((css) => document.addEventListener("DOMContentLoaded", () => { const s = document.createElement("style"); s.textContent = css; document.head.append(s); }), css);
   await page.goto(`${site}/crestora/?still`, { waitUntil: "load" });
   await page.waitForFunction(() => document.documentElement.classList.contains("is-drawn"), null, { timeout: 60000 });

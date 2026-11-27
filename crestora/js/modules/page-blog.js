@@ -3,7 +3,8 @@
 //   - On a post, the header's spectrum line measures the reading of the text (not the whole page), and the lane recap
 //     lights its six stages one by one as the reader moves through the story (on narrow screens, where it sits after
 //     the text, as it comes into view); the hairline between two stages fills in their colours as the second is reached.
-//   - Copy-link buttons (hidden until scripts run) copy the post's address and say so in the toast.
+//   - Copy-link buttons (hidden by CSS under html.no-js, so they take their place from the first paint) copy the
+//     post's address and say so in the toast.
 // Reduced motion: the covers stay still and the recap rests with every stage lit; the header line still follows the
 // reading, without animating.
 import { $, $$, toast, fine, lenis, clamp } from '../core.js';
@@ -17,8 +18,7 @@ export default function init({ calm, still }) {
 
 function copyLinks() {
   for (const b of $$('[data-fn-copy]')) {
-    b.hidden = false;
-    b.setAttribute('aria-label', 'Copy a link to this note');
+    b.setAttribute('aria-label', 'Copy link to this note');
     b.addEventListener('click', async () => {
       const ok = await copyText(`${location.origin}${location.pathname}`);
       toast(ok ? 'Link to this note copied' : 'Copy is blocked here', ok ? 'Copied' : 'Oops');

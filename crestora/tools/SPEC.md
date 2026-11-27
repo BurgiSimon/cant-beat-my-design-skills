@@ -56,6 +56,27 @@ CTA (#start) can launch it: on submit it dispatches `window.dispatchEvent(new Cu
 footer glides into view and (if its intro has not played) plays it, or (if it has) replays the road's warp reveal and a
 1.6 s boost. Built into `js/footer/index.js` by the lead; sections only dispatch the event.
 
+**Later decisions (made in review; these win over anything below).**
+- *Night Bloom* premiered at a rooftop screening in Yaba, Lagos, on Fri 30 Oct 2026, forty-one days after its spark
+  (Sat 19 Sep); its day-7 recap was Fri 6 Nov and that lane is in Afterglow. Its **festival cut** (a new score by Tunde
+  Bello) rides its own lane, Lane 014, from Sun 1 Nov: in Review now, launching online on Fri 11 Dec 2026. The home
+  workspace mock and the home on-ramps show the festival cut.
+- *Tidepool 1.1* (Theo ships on Fridays) is in Launch and launches Fri 4 Dec 2026; the "Launch day, live" webinar is
+  that day at 17:00 UTC. Kiln & Co.'s spring drop is in Review. Webinars run on Thursdays, plus the odd launch-day special.
+- Integrations whose names matched real products were renamed: Crosstalk (team chat), Postlark (newsletters),
+  Stallfront (online store), Sketchloft (drawing).
+- Anchors: `html { scroll-padding-top: var(--anchor-offset) }` is the one offset; a target's own `scroll-margin-top`
+  adds to it only when a page wants a different landing. `core.js` mirrors the browser: `anchorOffset(el)`,
+  `restingTop(el)` (ignores a reveal still in flight), `scrollToTarget(el | selector | y)` lands where a native
+  #anchor would unless an offset is given, deep links land again as late layout settles (until the reader moves), and
+  `landing(fn)` lets a module say where a link to its element lands (a pin's start, a card centred).
+- Motion that runs on its own stops on its own or can be stopped (WCAG 2.2.2). The footer night and the home
+  threads (`js/gl/lanes.js`, hero and #features ribbon, one canvas) each have a pause button (`pauseButton(lanes)`; the
+  same 36 px glass circle); the brand mark's sheen turns once on arrival and again on hover or focus, never on a loop;
+  `?still` puts a page at rest like `?reduced`.
+- Fine print in phrases uses the kit's `.fine-print` (phrase spans, `.fine-print__sep`, `--2` hidden under 480 px), so
+  no dot ends a line. A `.chip--live` dot is white unless the chip is about one stage (`data-stage`).
+
 ## 2. How the site is built
 
 - **No build step for the site itself.** `crestora/tools/pages.mjs` assembles `src/pages/**/*.html` with the shared
@@ -86,7 +107,8 @@ footer glides into view and (if its intro has not played) plays it, or (if it ha
   selectors at top level. Use the tokens in `00-tokens.css` and the kit in `03-components.css` before inventing.
 - **JS.** ES modules in `js/modules/<name>.js`, each `export default function init({ calm, still }) {}`, listed in the
   page's `modules:` (they run in order). Import helpers from `../core.js` (gsap, ScrollTrigger, SplitText, lenis, calm,
-  fine, $, $$, whenVisible, scrollToTarget, lockScroll/unlockScroll, countTo, toast, odometer, store) and generic
+  fine, $, $, whenVisible, scrollToTarget, lockScroll/unlockScroll, countTo, toast, odometer, store, and for anchors
+  anchorOffset, restingTop and landing: see "Later decisions" in section 1) and generic
   modules can be listed per page. Everything must work without JS (content readable, forms submit somewhere sensible or
   are clearly demo) and under reduced motion (`.is-calm`, `calm` = true: no motion, final states shown).
 
@@ -104,7 +126,7 @@ Classes (`03-components.css`): `.container`, `.container--narrow`, `.section`, `
 type `.display` (hero H1 only), `.title-1` (page H1), `.title-2` (section H2), `.title-3` (card/stage titles),
 `.title-4`, `.lede`, `.body-l`, `.body`, `.small`, `.mono`, `.ink-spectrum`, `.eyebrow`; `.section-head`
 (+ `__aside`, `--center`); buttons `.btn` (+ `--primary --lg --sm --block`), `.btn-row`, `.link-arrow`; surfaces
-`.panel`, `.panel--raised`, `[data-spotlight]`; `.chip` (+ `--live`), `.dot` (`--c`), `.streak`, `.icon`, `.icon--lg`,
+`.panel`, `.panel--raised`, `[data-spotlight]`; `.chip` (+ `--live`: a white status dot, or its stage's with `data-stage`), `.dot` (`--c`), `.streak`, `.icon`, `.icon--lg`,
 `.icon-box`; forms `.field __label __hint __error`, `.input` (input/select/textarea), `.check`, `.segmented`
 (+ `__thumb`); `.page-hero` (+ `__inner`, `__lanes`), `.breadcrumb`; `.prose`, `.toc`, `.with-toc`; `.accordion`
 (details/summary + `.accordion__body`); `.toast`; `.stage-rail` (`<div class="stage-rail" data-n="3"><i></i>×6</div>`: six dots on a hairline, the first n lit);
@@ -129,7 +151,7 @@ Generic modules (`js/modules/`, list them in `modules:`): `filter` (chips + sear
 and reset; `data-demo` forms never send anything), `copy` (`[data-copy="text"]` buttons copy and toast), `tabs`
 (`[role=tablist]` with `[role=tab][aria-controls]`, arrow keys, optional `data-tabs-store` key), `toc` (a `.toc` of
 links to `.prose` headings gets scrollspy via aria-current; `[data-copy-link]` on headings), `countdown`
-(`[data-countdown="2026-12-10T17:00:00Z"]` fills `[data-unit=d|h|m|s]` children with odometer digits), `ics`
+(`[data-countdown="2026-12-04T17:00:00Z"]` fills `[data-unit=d|h|m|s]` children with odometer digits), `ics`
 (`[data-ics]` buttons download a calendar file from `data-title data-start data-end data-location`), `dialog`
 (`[data-dialog-open="id"]` opens `<dialog id>`; Escape/backdrop closes), `billing` (the shared Monthly/Yearly
 `.segmented[data-billing]`; prices in `[data-price-monthly][data-price-yearly]` roll).
@@ -161,7 +183,7 @@ reuse the footer's km/h hint or heart burst, it dispatches `crestora:launch` and
 
 **Copy.** Eyebrow: "For creators, builders & dreamers". H1 (.display, 2 lines): "Every idea / gets a lane." with "lane" in spectrum ink. Lede: "Crestora carries your work from first spark to launch day: the brief, the files, the feedback and the release, flowing in one place instead of fifteen tabs." Buttons: [Open your first lane] (primary, start.html) and [Watch a launch, start to finish ↓] (to #features). Fine print: "Free for 3 lanes · No card · Export everything, always." Scroll cue at the bottom: a small vertical hairline with a running dash and the label "Follow the flow".
 
-**Content.** Full viewport (100svh, min 720px). Text sits left in the container. Behind it, the WebGL "loose threads" canvas fills the screen over the star field (the same star shader as the footer, at a lower density). Six threads, one per stage colour, wave across the right 60%, each a few lanes wide with sparks along it. Three glass work chips (.panel--raised, 14px, with stage dot and stage rail) ride the threads: "Night Bloom · storyboard v3" (Spark, blue), "Tidepool 1.0 · build 214 passing" (Make, green) and "Kiln & Co. spring drop · 4 notes" (Review, amber). The no-WebGL and no-JS fallback is a lightweight SVG poster of the same threads.
+**Content.** Full viewport (100svh, min 720px). Text sits left in the container. Behind it, the WebGL "loose threads" canvas fills the screen over the star field (the same star shader as the footer, at a lower density). Six threads, one per stage colour, wave across the right 60%, each a few lanes wide with sparks along it. Three glass work chips (.panel--raised, 14px, with stage dot and stage rail) ride the threads: "Night Bloom · voice memo" (Spark, blue), "Tidepool 1.1 · build 214 passing" (Make, green) and "Kiln & Co. spring drop · 4 notes" (Review, amber). The no-WebGL and no-JS fallback is a lightweight SVG poster of the same threads.
 
 **Interaction.** Intro (about 2.2s; shorter on a repeat visit through the existing is-repeat class): the stars fade up, the threads draw in from the left, the H1 lines rise out of a mask (SplitText through data-split), then the lede and buttons follow and the chips pop in one by one onto their threads. The pointer lamp brightens the threads near it and gently parts them. The chips drift along their lanes with slight pointer parallax and are data-tilt cards. Scrolling through the hero tightens the threads (uWave falls to 0) and pinches them into one thread at bottom-left, which becomes the spine's first lane. The scene pauses when off screen and the canvas initialises after first paint, so the LCP is the H1 text.
 
@@ -185,7 +207,7 @@ reuse the footer's km/h hint or heart burst, it dispatches `crestora:launch` and
 
 **Copy.** Eyebrow: "Inside a lane". H2: "Your whole project on one road." Lede: "See every piece of work where it actually is, not buried in a folder, a thread or somebody's head." Three small features under the mock, each with an icon box: "Crew roles": Owner, Maker, Reviewer and Guest, so everyone sees what they need. "Share Pages": a public launch page on your own domain, live the moment you are. "Works offline on iOS": capture on the train; it syncs when you surface.
 
-**Content.** A large HTML/CSS app-window mock on #07080c, not an image. Sidebar: the lanes Night Bloom, Tidepool 1.0, Kiln spring drop and Small Hours ep. 49, each with a stage dot. The main area has a segmented control [Lane | Board | Calendar]. LANE view: a horizontal six-segment stage track with work items as chips on their segments (storyboard_v3.pdf, render_v7.mov, frame 118 note, "Festival upload", "Press kit"). BOARD view: six narrow columns with cards. CALENDAR view: two weeks with milestones and a red-flagged launch day, "Fri 12 Dec". Right rail: an activity feed ("Lena approved frame 118", "Theo pushed build 215", "Countdown: 2 days to launch") and avatars. A collaborator cursor labelled "Lena" moves across the mock.
+**Content.** A large HTML/CSS app-window mock on #07080c, not an image. Sidebar: the lanes Night Bloom (the festival cut, Lane 014), Tidepool 1.1 (in Launch), Kiln spring drop and Small Hours ep. 49, each with a stage dot. The main area has a segmented control [Lane | Board | Calendar]. LANE view: a horizontal six-segment stage track with work items as chips on their segments (storyboard_v3.pdf, render_v7.mov, frame 118 note, "Festival upload", "Press kit"). BOARD view: six narrow columns with cards. CALENDAR view: two weeks with milestones and a red-flagged launch day, "Fri 11 Dec" (the festival cut's online launch). Right rail: an activity feed ("Lena approved frame 118", "Theo pushed build 215", "Countdown: 2 days to launch") and avatars. (No collaborator cursor: cut, see section 1.)
 
 **Interaction.** The segmented control is a real tablist (aria-controls) and switches views with a 0.4s crossfade and a slight lift; items keep their stage colour across views so the eye can follow them. Hovering an item shows a tooltip (file, version, who, when). The whole window uses data-tilt at 2° and data-spotlight. Lena's cursor follows a CSS motion path and pauses to drop a comment pin that pops; it is hidden under reduced motion. The mock is aria-hidden=false with sensible labels, and under 700px it becomes a horizontally scrollable window with a fade edge.
 
@@ -193,7 +215,7 @@ reuse the footer's km/h hint or heart burst, it dispatches `crestora:launch` and
 
 **Copy.** Eyebrow: "Integrations". H2: "Bring your tools along for the ride." Lede: "Crestora connects to the apps you already make with. Their work merges into your lane: renders, builds, mixes and orders arrive as versions and stats, not as another inbox." Link: "Browse all 120+ integrations →" (integrations.html). Caption line, live: "Framewright → Make lane · renders land as versions."
 
-**Content.** An SVG on-ramp diagram. Twelve 44px icon boxes (self-drawn monograms) sit in two staggered rows on the left: Moodwell (moodboards, Spark), Inkwell (writing, Shape), Dayplan (calendar, Shape), Framewright (video editing, Make), Pixelmill (design, Make), Tapedeck (audio, Make), Gitloom (code, Make), Chatter (team chat, Review), Postbox (newsletters, Launch), Shopfront (online store, Launch), Clipdeck (social scheduling, Launch), Pulse (analytics, Afterglow). From each, a hairline on-ramp curves into a horizontal six-lane strip on the right, joining the lane of its stage. Mobile: a 3- or 4-column icon grid with captions under each.
+**Content.** An SVG on-ramp diagram. Twelve 44px icon boxes (self-drawn monograms) sit in two staggered rows on the left: Moodwell (moodboards, Spark), Inkwell (writing, Shape), Dayplan (calendar, Shape), Framewright (video editing, Make), Pixelmill (design, Make), Tapedeck (audio, Make), Gitloom (code, Make), Crosstalk (team chat, Review), Postlark (newsletters, Launch), Stallfront (online store, Launch), Clipdeck (social scheduling, Launch), Pulse (analytics, Afterglow). From each, a hairline on-ramp curves into a horizontal six-lane strip on the right, joining the lane of its stage. Mobile: a 3- or 4-column icon grid with captions under each.
 
 **Interaction.** The icon boxes are links to integrations.html?app=<name> with data-magnetic, as the footer's social boxes are. On hover or focus, the icon's on-ramp lights in its stage colour, a white dash runs along it into the strip (stroke-dashoffset, 0.9s), the target lane glows, the box gets the conic spectrum ring and the caption updates (aria-live=polite). Idle state: one random ramp lights every 2.4s while the section is visible (paused when off screen or under reduced motion).
 
@@ -228,7 +250,7 @@ Integration deep links are `#slug` anchors (each directory card has an id). No 4
 
 ### integrations.html — Integrations
 
-**Content.** Hero: eyebrow "Integrations", H1 "Bring your tools along for the ride.", lede "120+ apps merge into your lane. Their work arrives as versions, notes and stats, not one more inbox." A toolbar holds a search field and lane chips: All, Spark, Shape, Make, Review, Launch, Afterglow, Files & storage, Team. A featured row has three large cards (Framewright, Gitloom, Shopfront), each with a mini on-ramp diagram of what flows in ("renders → versions", "builds & PRs → versions + review", "orders → Afterglow"). The directory holds 24 cards; each has a monogram icon box, name, category, one line, lane chip, and an optional "Popular" or "New" badge. SPARK: Moodwell (moodboards), Snapjar (screenshots & clips), Murmur (voice memos). SHAPE: Inkwell (writing), Dayplan (calendar), Ledgerly (budgets & invoices). MAKE: Framewright (video editing), Pixelmill (design), Tapedeck (audio), Gitloom (code), Sketchbook (drawing), Cloudshelf (storage). REVIEW: Chatter (team chat), Redline (PDF proofing), Captionist (captions). LAUNCH: Postbox (newsletters), Shopfront (online store), Clipdeck (social scheduling), Onair (live streams), Shipyard (app-store builds). AFTERGLOW: Pulse (analytics), Tipjar (supporters), Starboard (ratings & reviews), Formfold (surveys). Then a section "How connecting works" in three steps (pick a lane, connect in 30 seconds, work flows in). A band "Build your own" links to api.html and partners.html. A "Request an integration" form takes app name, what it should send, and email.
+**Content.** Hero: eyebrow "Integrations", H1 "Bring your tools along for the ride.", lede "120+ apps merge into your lane. Their work arrives as versions, notes and stats, not one more inbox." A toolbar holds a search field and lane chips: All, Spark, Shape, Make, Review, Launch, Afterglow, Files & storage, Team. A featured row has three large cards (Framewright, Gitloom, Stallfront), each with a mini on-ramp diagram of what flows in ("renders → versions", "builds & PRs → versions + review", "orders → Afterglow"). The directory holds 24 cards; each has a monogram icon box, name, category, one line, lane chip, and an optional "Popular" or "New" badge. SPARK: Moodwell (moodboards), Snapjar (screenshots & clips), Murmur (voice memos). SHAPE: Inkwell (writing), Dayplan (calendar), Ledgerly (budgets & invoices). MAKE: Framewright (video editing), Pixelmill (design), Tapedeck (audio), Gitloom (code), Sketchloft (drawing), Cloudshelf (storage). REVIEW: Crosstalk (team chat), Redline (PDF proofing), Captionist (captions). LAUNCH: Postlark (newsletters), Stallfront (online store), Clipdeck (social scheduling), Onair (live streams), Shipyard (app-store builds). AFTERGLOW: Pulse (analytics), Tipjar (supporters), Starboard (ratings & reviews), Formfold (surveys). Then a section "How connecting works" in three steps (pick a lane, connect in 30 seconds, work flows in). A band "Build your own" links to api.html and partners.html. A "Request an integration" form takes app name, what it should send, and email.
 
 **Interaction.** Live search plus chip filtering, combinable, with an aria-live count ("14 integrations") and an empty state that pre-fills the request form with the search term. ?lane=make and ?app=framewright preselect a filter or open that app's dialog. Clicking a card opens a native <dialog> with what flows in, the permissions requested, and a [Connect] button that shows the toast "Demo: connecting is off here." On card hover the top hairline lights in the lane colour with a running dash, and icon boxes are magnetic. The request form validates and shows a toast.
 
@@ -324,7 +346,7 @@ Integration deep links are `#slug` anchors (each directory card has an id). No 4
 
 ### webinars.html — Webinars
 
-**Content.** H1 "Live on the road.", lede "Monthly live sessions with creators and the Crestora crew. Bring questions." Next up, with a countdown: "Launch day, live: Theo ships Tidepool 1.1", 10 Dec 2026, 17:00 UTC. Upcoming: "Feedback without the fear" (17 Dec) · "Plan 2027 in one Blueprint" (14 Jan 2027) · "Pricing your work" (28 Jan 2027), each with hosts as initials avatars. On demand (6): Forty-one days to Night Bloom (46 min) · Review Room deep dive (38) · Crew roles for small studios (29) · Afterglow: reading the numbers (33) · From Sparkboard to Blueprint (25) · Selling out a ceramics drop (41). A register form.
+**Content.** H1 "Live on the road.", lede: live sessions on Thursdays, plus the odd launch-day special, with creators and the Crestora crew Next up, with a countdown: "Launch day, live: Theo ships Tidepool 1.1", Fri 4 Dec 2026, 17:00 UTC. Upcoming: "Feedback without the fear" (17 Dec) · "Plan 2027 in one Blueprint" (14 Jan 2027) · "Pricing your work" (28 Jan 2027), each with hosts as initials avatars. On demand (6): Forty-one days to Night Bloom (46 min) · Review Room deep dive (38) · Crew roles for small studios (29) · Afterglow: reading the numbers (33) · From Sparkboard to Blueprint (25) · Selling out a ceramics drop (41). A register form.
 
 **Interaction.** The countdown shows days:hours:minutes:seconds in Michroma, and times appear in the visitor's local zone through Intl. "Add to calendar" downloads an .ics file. Registering takes name, email and session checkboxes and shows a toast. On-demand cards open a <dialog> with a summary and chapters.
 

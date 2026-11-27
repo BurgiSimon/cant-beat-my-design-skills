@@ -25,11 +25,11 @@
 <link rel="stylesheet" href="../css/site.css?v={{VERSION}}" />
 <script>
   // Scripts will run: the page may hide what they are about to bring in. A repeat visit in this tab gets short
-  // intros; reduced motion (or ?reduced) gets none.
+  // intros; reduced motion (or ?reduced, or ?still: a still of the resting page) gets none.
   (function (h) {
     h.className = h.className.replace("no-js", "js");
     try { if (sessionStorage.getItem("crestora:seen")) h.classList.add("is-repeat"); } catch (e) {}
-    if (matchMedia("(prefers-reduced-motion: reduce)").matches || /[?&]reduced/.test(location.search)) h.classList.add("is-calm");
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches || /[?&](reduced|still)(?![^&=])/.test(location.search)) h.classList.add("is-calm");
     setTimeout(function () { h.classList.add("is-ready"); }, 6000); // if the scripts never get there, show everything anyway
   })(document.documentElement);
 </script>
@@ -110,7 +110,7 @@
     </a>
     <nav class="nav" aria-label="Main">
       <div class="nav__item" data-menu>
-        <button class="nav__trigger" type="button" aria-expanded="false" aria-controls="menu-product">Product<svg aria-hidden="true"><use href="#i-chev-down"/></svg></button>
+        <button class="nav__trigger" type="button" aria-controls="menu-product">Product<svg aria-hidden="true"><use href="#i-chev-down"/></svg></button>
         <div class="dropdown" id="menu-product" style="--cols:2">
           <a href="../index.html#features"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-layers"/></svg></span><strong>Features</strong><small>Six lanes from spark to launch</small></a>
           <a href="../integrations.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-plug"/></svg></span><strong>Integrations</strong><small>120+ tools merge into your lane</small></a>
@@ -122,7 +122,7 @@
       </div>
       <a class="nav__link" href="../index.html#creators" data-roll>Creators</a>
       <div class="nav__item" data-menu>
-        <button class="nav__trigger is-current" type="button" aria-expanded="false" aria-controls="menu-resources">Resources<svg aria-hidden="true"><use href="#i-chev-down"/></svg></button>
+        <button class="nav__trigger is-current" type="button" aria-controls="menu-resources">Resources<svg aria-hidden="true"><use href="#i-chev-down"/></svg></button>
         <div class="dropdown" id="menu-resources" style="--cols:2">
           <a href="../blog.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-pen"/></svg></span><strong>Field Notes</strong><small>Launch stories and craft notes</small></a>
           <a href="../docs.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-book"/></svg></span><strong>Documentation</strong><small>Lanes, stages and every tool</small></a>
@@ -130,11 +130,11 @@
           <a href="../help.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-help"/></svg></span><strong>Help Center</strong><small>Answers, fast</small></a>
           <a href="../community.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-users"/></svg></span><strong>Community</strong><small>Circles, swaps and Launch Night</small></a>
           <a href="../tutorials.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-learn"/></svg></span><strong>Tutorials</strong><small>Short lessons from people who ship</small></a>
-          <a href="../webinars.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-broadcast"/></svg></span><strong>Webinars</strong><small>Next: Dec 10, live</small></a>
+          <a href="../webinars.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-broadcast"/></svg></span><strong>Webinars</strong><small>Next: Fri 4 Dec, live</small></a>
         </div>
       </div>
       <div class="nav__item" data-menu>
-        <button class="nav__trigger" type="button" aria-expanded="false" aria-controls="menu-company">Company<svg aria-hidden="true"><use href="#i-chev-down"/></svg></button>
+        <button class="nav__trigger" type="button" aria-controls="menu-company">Company<svg aria-hidden="true"><use href="#i-chev-down"/></svg></button>
         <div class="dropdown" id="menu-company" style="--cols:1">
           <a href="../about.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-info"/></svg></span><strong>About</strong><small>Why we build roads for makers</small></a>
           <a href="../careers.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-briefcase"/></svg></span><strong>Careers</strong><small>8 open roles, four hubs</small></a>
@@ -149,10 +149,12 @@
       <a class="header__signin" href="../start.html#signin" data-roll>Sign in</a>
       <a class="btn btn--primary btn--sm" href="../start.html" data-roll>Open a lane</a>
       <button class="header__burger" type="button" aria-expanded="false" aria-controls="menu" aria-label="Open menu"><span></span></button>
+      <!-- without scripts the menu can't open: the same burger takes you to every link, in the footer's columns -->
+      <a class="header__burger header__burger--link" href="#footer" aria-label="Menu: every link, at the foot of the page"><span></span></a>
     </div>
   </div>
 </header>
-<div class="menu" id="menu" role="dialog" aria-modal="true" aria-label="Menu">
+<div class="menu" id="menu" role="dialog" aria-label="Menu">
   <div class="menu__groups">
     <div class="menu__group">
       <h2>Product</h2>
@@ -218,7 +220,7 @@
           <span class="avatar fn-byline__avatar" aria-hidden="true">HP</span>
           <p class="fn-byline__who"><span class="fn-byline__name">Hye-jin Park</span><span class="fn-byline__role">Design lead, Review Room, Seoul</span></p>
           <p class="fn-byline__meta"><time datetime="2026-11-20">20 Nov 2026</time><span aria-hidden="true">·</span><span>4 min read</span><span aria-hidden="true">·</span><span class="fn-byline__stage"><i aria-hidden="true"></i>Filed in Review</span></p>
-          <button class="btn btn--sm fn-copy" type="button" data-fn-copy hidden><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg>Copy link</button>
+          <button class="btn btn--sm fn-copy" type="button" data-fn-copy><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg>Copy link</button>
         </div>
       </div>
     </header>
@@ -233,10 +235,10 @@
 <p>Every creative project has a moment where it stops. The work is done, or nearly, and it goes out for feedback, and then nothing happens for nine days. Somebody is waiting on somebody. The file was the wrong version. The note said “the bit near the end”, and there are three bits near the end.</p>
 <p>When we started designing Review Room in 2023, we spent the first month not designing anything. We sat with eleven creators while they asked for feedback and got it, and we wrote down every time the work stopped moving. We counted forty-three stalls that month. Nearly all of them came down to one of three things.</p>
 <h2>A note belongs to a moment</h2>
-<p>The first was ambiguity. “Can the logo be bigger?” is a fine note on a poster and a useless one on a ninety-second film with the logo in eleven places. So the first rule of Review Room was that every note is pinned to something exact: a frame, a pixel, a second of audio, a line of code. You can’t leave a note in Review Room that isn’t <em>somewhere</em>.</p>
+<p>The first was ambiguity. “Can the logo be bigger?” is a fine note on a poster and a useless one on a ninety-second film with the logo in eleven places. So the first rule of Review Room was that every note is pinned to something exact: a frame, a pixel, a spot on a page, a line of code. You can’t leave a note in Review Room that isn’t <em>somewhere</em>.</p>
 <p>That one rule shaped everything else. Notes in a margin feel like a conversation; notes on the work feel like a list. We wanted the list. The maker opens a version and sees its notes in order, each one where it belongs, and ticks them off one by one. When a new version arrives, the open notes travel with it: a note on line 40 of a script follows its line to 52, and a note on frame 118 stays on frame 118 even after the edit shortens the cut.</p>
 <h2>Reviewers aren’t users</h2>
-<p>The second stall was access. The person whose opinion matters most is usually the one least likely to make an account: the client, the label, the director’s mother. In the first version of Review Room, a reviewer could open a link and watch, but had to sign in to leave a note. We told ourselves it was about knowing who said what.</p>
+<p>The second stall was access. The people whose opinions count most are the least likely to sign up for anything: the client, the label, the director’s mother. In the first version of Review Room, a reviewer could open a link and watch, but had to sign in to leave a note. We told ourselves it was about knowing who said what.</p>
 <p>It was a mistake, and the numbers told us so for two years before we listened. A third of review links were opened and never commented on. In August we <a href="../changelog.html#v4-5">removed the sign-in</a>. Reviewers now type their name and leave notes; the link can expire, ask for a password or watermark the work, and every note is still on the record. Comments on review links went up 58 % in the first month.</p>
 <figure class="fn-pull" data-reveal>
 <blockquote><p>The person whose opinion matters most is usually the one least likely to make an account.</p></blockquote>
@@ -249,7 +251,7 @@
 <p>This week’s release, <a href="../changelog.html#v4-12">v4.12</a>, adds what podcasters and musicians have asked for since the beginning. Review Room now draws audio as a waveform, and you can pin a note to a moment of sound: click anywhere on the wave, say what you heard, and the note sits at that exact second, with half a second either side so the maker hears it in context.</p>
 <p>It was harder than it sounds. Video has frames you can look at; sound only exists while it plays. Our first prototype paused playback for every note, and the forty podcasters testing it hated it: you lose the feel of a mix every time it stops. The version that shipped keeps playing while you type, and pins the note to where you clicked, not to wherever the playhead has reached by the time you press Enter. Open notes sit on the wave in amber; when the maker resolves one, it turns green, so a glance at the waveform tells you how much of the mix is settled.</p>
 <h2>What we’re still working on</h2>
-<p>Notes on 3D files are next on the <a href="../roadmap.html">roadmap</a>. So is something quieter: we want Review Room to notice when a review has stalled and nudge the right person, once, kindly. If you’ve had a review get stuck and you can tell us why, I would love to hear about it at hello@crestora.example.</p>
+<p>Notes on 3D files are next on the <a href="../roadmap.html#rm-now">roadmap</a>. So is something quieter: we want Review Room to notice when a review has stalled and nudge the right person, once, kindly. If you’ve had a review get stuck and you can tell us why, I would love to hear about it at <a href="mailto:hello@crestora.example">hello@crestora.example</a>.</p>
       </div>
 
       <aside class="fn-recap" aria-labelledby="fn-recap-title" data-fn-recap>
@@ -300,7 +302,7 @@
           </div>
         </div>
         <div class="fn-end__row">
-          <button class="btn btn--sm fn-copy" type="button" data-fn-copy hidden><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg>Copy link</button>
+          <button class="btn btn--sm fn-copy" type="button" data-fn-copy><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg>Copy link</button>
           <a class="link-arrow" href="../blog.html">All field notes<svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
         </div>
         <p class="fiction">Crestora is a fictional company; figures are illustrative.</p>
@@ -340,7 +342,7 @@
       <a class="btn btn--primary btn--lg" href="../start.html" data-roll>Open your first lane</a>
       <a class="btn btn--lg" href="../pricing.html" data-roll>See plans</a>
     </div>
-    <p class="small">Free for 3 lanes · No card · Export everything, always.</p>
+    <p class="small fine-print"><span>Free for 3 lanes</span> <span class="fine-print__sep" aria-hidden="true">·</span> <span>No card</span> <span class="fine-print__sep fine-print__sep--2" aria-hidden="true">·</span> <span>Export everything, always.</span></p>
   </div>
 </section>
 </main>
@@ -422,7 +424,7 @@
 
     <div class="base">
       <p class="copy">© <span class="year">2026</span> Crestora. All rights reserved.</p>
-      <p class="love"><button class="heart" type="button" aria-label="Send some love"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19.6S4.4 15.1 4.4 9.6A4.2 4.2 0 0 1 12 7.2a4.2 4.2 0 0 1 7.6 2.4c0 5.5-7.6 10-7.6 10Z"/></svg></button><span>Made with love by Pranav</span></p>
+      <p class="love"><button class="heart" type="button" aria-label="Send some love" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19.6S4.4 15.1 4.4 9.6A4.2 4.2 0 0 1 12 7.2a4.2 4.2 0 0 1 7.6 2.4c0 5.5-7.6 10-7.6 10Z"/></svg></button><span>Made with love by Pranav</span></p>
     </div>
 
     <!-- the road: where the car is; holding it down puts your foot down -->

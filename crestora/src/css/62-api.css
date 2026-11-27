@@ -17,7 +17,7 @@
 }
 
 /* ---- hero ---- */
-[data-page="api"] .api-hero__grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 580px); gap: 56px clamp(48px, 5vw, 88px); align-items: start; }
+[data-page="api"] .api-hero__grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 540px); gap: 56px clamp(48px, 4.4vw, 88px); align-items: start; }
 [data-page="api"] .api-hero__code { margin-top: -6px; }
 [data-page="api"] .api-base { display: inline-flex; align-items: center; gap: 14px; max-width: 100%; min-height: 54px; padding: 6px 7px 6px 18px; border-radius: 12px; background: rgb(255 255 255 / 0.035); box-shadow: inset 0 0 0 1px var(--line-soft); }
 [data-page="api"] .api-base__label { flex: none; display: flex; align-items: center; height: 22px; padding-right: 14px; border-right: 1px solid var(--line-soft); font: 400 10px/1 var(--font-brand); letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-muted); }
@@ -62,18 +62,26 @@
 [data-page="api"] .api-code code { font: inherit; }
 [data-page="api"] :is(.api-code, .api-base, .api-route, .api-doc) :is(pre, code) { font-variant-ligatures: none; font-feature-settings: "liga" 0, "calt" 0; }
 [data-page="api"] .api-code__res { border-top: 1px solid var(--line-faint); background: rgb(255 255 255 / 0.014); }
-[data-page="api"] .api-code__resbar { display: flex; align-items: center; gap: 12px; min-height: 48px; padding: 6px 7px 6px 18px; border-bottom: 1px solid var(--line-faint); }
+/* the copy button keeps its corner; on a narrow phone a long status (429 Too Many Requests) drops under the label */
+[data-page="api"] .api-code__resbar { position: relative; display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; min-height: 48px; padding: 9px 48px 9px 18px; border-bottom: 1px solid var(--line-faint); }
 [data-page="api"] .api-code__reslabel { font: 400 10px/1 var(--font-brand); letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-muted); }
 [data-page="api"] .api-code__resbar .api-copy, [data-page="api"] .api-code--single .api-code__bar .api-copy { width: 34px; height: 34px; border-radius: 8px; margin-left: auto; }
+[data-page="api"] .api-code__resbar .api-copy { position: absolute; top: 7px; right: 7px; }
+.no-js [data-page="api"] .api-code__resbar { padding-right: 18px; }
 [data-page="api"] .api-code__res pre, [data-page="api"] .api-code--single pre { max-height: 360px; }
 [data-page="api"] .api-status { display: inline-flex; align-items: center; gap: 7px; height: 24px; padding: 0 10px; border-radius: 999px; white-space: nowrap; font: 500 12px/1 var(--font); color: var(--ink-soft); box-shadow: inset 0 0 0 1px var(--line-soft); }
 [data-page="api"] .api-status b { font: 400 10.5px/1 var(--font-brand); letter-spacing: 0.04em; color: #fff; }
-[data-page="api"] .api-code--single .api-code__bar { padding-right: 7px; }
+/* a single panel's bar works the same way: the copy button keeps its corner, and the status drops under the title
+   before either is cut */
+[data-page="api"] .api-code--single .api-code__bar { position: relative; flex-wrap: wrap; row-gap: 6px; padding-right: 51px; }
+[data-page="api"] .api-code--single .api-code__bar .api-copy { position: absolute; top: 10px; right: 7px; }
+.no-js [data-page="api"] .api-code--single .api-code__bar { padding-right: 14px; }
 [data-page="api"] .api-code--single .api-code__title { font: 400 10px/1 var(--font-brand); letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-muted); }
 [data-page="api"] .api-code--single .api-code__bar .api-status + .api-copy { margin-left: 0; }
 [data-page="api"] .api-code--single .api-code__bar .api-status { margin-left: auto; }
 /* without scripts every language shows, one after another, each with its name */
 .no-js [data-page="api"] :is(.api-langs, .api-copy) { display: none; }
+.no-js [data-page="api"] .api-code__panel[hidden] { display: block; }
 .no-js [data-page="api"] .api-code__panel + .api-code__panel { border-top: 1px solid var(--line-faint); }
 .no-js [data-page="api"] .api-code__panel::before { content: attr(data-lang-label); display: block; padding: 16px 20px 0; font: 400 10px/1 var(--font-brand); letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-muted); }
 
@@ -82,7 +90,7 @@
 [data-page="api"] .tk-str { color: rgb(226 234 242 / 0.9); }
 [data-page="api"] .tk-kw, [data-page="api"] .tk-flag { color: rgb(220 228 237 / 0.58); }
 [data-page="api"] .tk-head { color: #fff; }
-[data-page="api"] .tk-com { color: rgb(220 228 237 / 0.5); font-style: italic; }
+[data-page="api"] .tk-com { color: rgb(220 228 237 / 0.54); font-style: italic; }
 /* a stage name carries its colour as a dot, never as coloured letters */
 [data-page="api"] .tk-stage::before, [data-page="api"] .api-stages code::before {
   content: ""; display: inline-block; width: 6px; height: 6px; margin: 0 7px 0 1px; border-radius: 50%; vertical-align: 0.1em;
@@ -124,7 +132,6 @@
 [data-page="api"] .api-sec:first-child .api-row--intro { padding-top: 22px; }
 [data-page="api"] .api-row--solo { grid-template-columns: minmax(0, 1fr); padding-bottom: clamp(36px, 3.6vw, 52px); }
 [data-page="api"] .api-row--solo .api-doc { max-width: 44rem; }
-[data-page="api"] :is(.api-sec, .api-ep) { scroll-margin-top: calc(var(--header-h) + 8px); }
 [data-page="api"] .api-aside { position: sticky; top: calc(var(--header-h) + 24px); align-self: start; min-width: 0; transition: top 0.5s var(--ease-out); }
 
 [data-page="api"] .api-doc { min-width: 0; font-size: 16px; line-height: 1.7; color: var(--ink-soft); }
@@ -171,7 +178,7 @@
 
 [data-page="api"] .api-list li { position: relative; padding-left: 22px; }
 [data-page="api"] .api-list li + li { margin-top: 10px; }
-[data-page="api"] .api-list li::before { content: ""; position: absolute; left: 0; top: 0.85em; width: 10px; height: 1px; background: var(--rainbow); }
+[data-page="api"] .api-list li::before { content: ""; position: absolute; left: 0; top: 0.85em; width: 10px; height: 1px; background: rgb(255 255 255 / 0.5); }
 [data-page="api"] .api-steps { counter-reset: step; }
 [data-page="api"] .api-steps li { position: relative; padding-left: 42px; counter-increment: step; }
 [data-page="api"] .api-steps li + li { margin-top: 12px; }
@@ -207,9 +214,15 @@
   [data-page="api"] .api-nav__more { grid-column: 1 / -1; margin-top: 0; padding-top: 18px; }
 }
 
+/* the hero's code panel needs room beside a Michroma H1 that is wider than the column under 1240 px: it stacks first */
+@media (max-width: 1239.98px) {
+  [data-page="api"] .api-hero__grid { grid-template-columns: minmax(0, 1fr); }
+  [data-page="api"] .api-hero__code { max-width: 720px; margin-top: 0; }
+  [data-page="api"] .api-facts { max-width: 720px; }
+}
+
 /* ---- narrow: code stacks under each description ---- */
 @media (max-width: 1023.98px) {
-  [data-page="api"] .api-hero__grid { grid-template-columns: minmax(0, 1fr); }
   [data-page="api"] .api-facts { max-width: none; }
   [data-page="api"] .api-row { grid-template-columns: minmax(0, 1fr); }
   [data-page="api"] .api-aside { position: static; }
@@ -236,7 +249,15 @@
   [data-page="api"] .api-langs { width: 100%; }
   [data-page="api"] .api-langs button { flex: 1; padding: 0 6px; }
   [data-page="api"] .api-code pre { padding: 16px 16px 18px; font-size: 12px; }
-  [data-page="api"] .api-code__panel pre { padding-right: 48px; }
+  /* the copy button moves up beside the language tabs, so it never sits on a line of code */
+  [data-page="api"] .api-code:not(.api-code--single) .api-code__bar { padding-right: 52px; }
+  [data-page="api"] .api-code:not(.api-code--single) .api-code__panel { position: static; }
+  [data-page="api"] .api-code__panel > .api-copy { top: 10px; right: 9px; }
+  [data-page="api"] .api-code__panel pre { padding-right: 16px; }
+  [data-page="api"] .api-code--single .api-code__title { white-space: normal; line-height: 1.5; }
+  /* without scripts there are no tabs or copy buttons, so the bar keeps its title */
+  .no-js [data-page="api"] .api-code:not(.api-code--single) .api-code__title { display: flex; }
+  .no-js [data-page="api"] .api-code:not(.api-code--single) .api-code__bar { padding: 8px 14px; }
   /* parameters: each row a name and type over its description */
   [data-page="api"] .api-params:not(.api-params--2) :is(tbody, tr) { display: block; }
   [data-page="api"] .api-params:not(.api-params--2) tr { display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--line-faint); }

@@ -1,9 +1,11 @@
 // Home #work: what the generic filter module leaves to the section. The result line ("Showing 2 film projects."),
 // the tiles that leave fading out where they stood (the filter itself glides the ones that stay), the posters leaning
-// toward the pointer, and the live chip's pulse resting while it is off screen.
+// toward the pointer, the live chip's pulse resting while it is off screen, and keyboard focus that brings a tile (or
+// a chip) fully into view, also inside the strips that scroll sideways on a phone.
 import { $, $$, gsap, fine, whenVisible } from '../core.js';
 
-const ADJ = { film: 'film', apps: 'app', audio: 'music & audio', writing: 'writing', objects: 'object' };
+// how the result line names what is showing: [one, many]
+const NOUN = { all: ['project', 'projects'], film: ['film project', 'film projects'], apps: ['app', 'apps'], audio: ['music & audio project', 'music & audio projects'], writing: ['writing project', 'writing projects'], objects: ['object', 'objects'] };
 
 export default function init({ calm, still }) {
   const section = $('#work');
@@ -19,8 +21,8 @@ export default function init({ calm, still }) {
   const say = () => {
     const f = group?.querySelector('[aria-pressed="true"]')?.dataset.filter || 'all';
     const n = tiles.filter((t) => !t.hidden).length;
-    const noun = `project${n === 1 ? '' : 's'}`;
-    count.textContent = f === 'all' ? `Showing all ${n} ${noun}.` : `Showing ${n} ${ADJ[f] || f} ${noun}.`;
+    const [one, many] = NOUN[f] || [`${f} project`, `${f} projects`];
+    count.textContent = f === 'all' ? `Showing all ${n} ${many}.` : `Showing ${n} ${n === 1 ? one : many}.`;
   };
 
   // the tiles that leave: note where everything stood just before the filter runs (capture phase), then fade a copy
@@ -71,6 +73,19 @@ export default function init({ calm, still }) {
       card.addEventListener('pointerleave', () => { card.style.setProperty('--px', 0); card.style.setProperty('--py', 0); });
     }
   }
+
+  // keyboard focus brings what it lands on fully into view. The browser leaves a tile alone while any of it shows, so
+  // at the foot of the screen, or one swipe along the phone's strip, the focused tile (or chip) was half hidden.
+  section.addEventListener('focusin', (e) => {
+    const el = e.target.closest('.work-tile, .work-chip');
+    if (!el || !e.target.matches(':focus-visible')) return;
+    const r = el.getBoundingClientRect();
+    const top = (parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--header-h')) || 72) + 8;
+    const scroller = el.closest('.work-grid, .work-chips');
+    const box = scroller && scroller.scrollWidth > scroller.clientWidth + 1 ? scroller.getBoundingClientRect() : { left: 0, right: innerWidth };
+    if (r.top >= top && r.bottom <= innerHeight && r.left >= box.left - 1 && r.right <= box.right + 1) return;
+    el.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: moving ? 'smooth' : 'auto' });
+  });
 
   // the live chip pulses only while it can be seen
   const live = $('.work-live', section);

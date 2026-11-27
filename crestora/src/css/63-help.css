@@ -72,7 +72,16 @@
 [data-page="help"] .hc-try__label { margin-right: 4px; font: 400 10.5px/1 var(--font-brand); letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-muted); }
 [data-page="help"] .hc-try__q { height: 32px; padding: 0 13px; border-radius: 999px; font: 500 13.5px/1 var(--font); color: var(--ink-soft); background: rgb(255 255 255 / 0.03); box-shadow: inset 0 0 0 1px var(--line-soft); transition: color var(--dur), box-shadow var(--dur), background-color var(--dur); }
 [data-page="help"] .hc-try__q:hover { color: #fff; box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.4); background: rgb(255 255 255 / 0.06); }
-.no-js [data-page="help"] :is(.hc-search, .hc-try) { display: none; }
+.no-js [data-page="help"] :is(.hc-search, .hc-try, .hc-js) { display: none; }
+[data-page="help"] .hc-nojs { display: none; }
+.no-js [data-page="help"] .hc-nojs { display: inline; }
+/* without the search the intro is shorter than the popular list beside it: it starts level with the list */
+.no-js [data-page="help"] .hc-hero__grid { align-items: start; }
+/* without scripts a link to an answer (Popular this week, or from another page) lands on it open */
+.no-js [data-page="help"] .hc-a:target:not([open])::details-content { display: block; content-visibility: visible; }
+.no-js [data-page="help"] .hc-a:target:not([open]) > summary { color: #fff; }
+.no-js [data-page="help"] .hc-a:target:not([open]) > summary::after { rotate: 135deg; }
+.no-js [data-page="help"] .hc-a:target:not([open]) > summary::before { opacity: 1; scale: 1 1; }
 
 [data-page="help"] .hc-hero__meta { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; margin-top: 6px; padding-top: 22px; border-top: 1px solid var(--line-faint); width: 100%; max-width: 760px; }
 [data-page="help"] .hc-status { transition: box-shadow var(--dur), color var(--dur); }
@@ -134,11 +143,11 @@
 /* ---- the answers ---- */
 [data-page="help"] .hc-answers__grid { display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: clamp(40px, 6vw, 112px); align-items: start; }
 [data-page="help"] .hc-nav a { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-[data-page="help"] .hc-nav__n { font: 400 10.5px/1 var(--font-brand); color: var(--ink-faint); letter-spacing: 0.04em; transition: color var(--dur); }
-[data-page="help"] .hc-nav a[aria-current="true"] .hc-nav__n { color: var(--ink-soft); }
+[data-page="help"] .hc-nav__n { font: 400 10.5px/1 var(--font-brand); color: var(--ink-muted); letter-spacing: 0.04em; transition: color var(--dur); }
+[data-page="help"] .hc-nav a[aria-current="true"] .hc-nav__n { color: #fff; }
 [data-page="help"] .hc-nav .hc-nav__stuck { margin-top: 14px; color: var(--ink-soft); border-left-color: transparent; }
-[data-page="help"] .hc-answers__body { display: grid; gap: clamp(72px, 7vw, 112px); max-width: 860px; }
-[data-page="help"] .hc-topic { scroll-margin-top: calc(var(--header-h) + 24px); }
+[data-page="help"] .hc-answers__body { display: grid; gap: clamp(72px, 7vw, 112px); min-width: 0; }
+[data-page="help"] .hc-topic { scroll-margin-top: 8px; }   /* its icon box rises 6 px above the section's top */
 [data-page="help"] .hc-topic__head { display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; gap: 8px 20px; align-items: start; margin-bottom: 28px; }
 [data-page="help"] .hc-topic__head .icon-box { margin-top: -6px; }
 [data-page="help"] .hc-topic__title { font: 400 clamp(22px, 2vw, 28px)/1.2 var(--font-brand); color: #fff; letter-spacing: -0.01em; }
@@ -147,7 +156,7 @@
 [data-page="help"] .hc-topic[data-stage] .hc-topic__head .icon-box { box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--stage) 55%, transparent), 0 0 24px -8px var(--stage); }
 
 /* one answer: the kit's accordion, with a white tick in the gutter while it's open */
-[data-page="help"] .hc-a { position: relative; scroll-margin-top: calc(var(--header-h) + 28px); }
+[data-page="help"] .hc-a { position: relative; }
 [data-page="help"] .hc-a > summary { position: relative; }
 [data-page="help"] .hc-a > summary::before { content: ""; position: absolute; left: -22px; top: 50%; width: 1px; height: 18px; margin-top: -9px; background: #fff; opacity: 0; scale: 1 0.4; transition: opacity var(--dur) var(--ease-out), scale 0.45s var(--ease-out); }
 [data-page="help"] .hc-a[open] > summary::before { opacity: 1; scale: 1 1; }
@@ -157,7 +166,8 @@
 [data-page="help"] .hc-a:not([open]) > summary { color: var(--ink-copy); }
 [data-page="help"] .hc-a > summary:focus-visible { outline-offset: 2px; border-radius: 6px; }
 [data-page="help"] .hc-a__body { display: grid; gap: 14px; font-size: 16px; }
-[data-page="help"] .hc-a__body > :not(.hc-a__foot) { max-width: 66ch; }
+[data-page="help"] .hc-a__body > :is(p:not(.hc-a__foot)) { max-width: 38rem; }
+[data-page="help"] .hc-a__body > :is(.hc-stages, .hc-roles) { max-width: 44rem; }
 [data-page="help"] .hc-a__body strong { color: #fff; font-weight: 600; }
 [data-page="help"] .hc-a__body kbd { margin-inline: 1px; }
 [data-page="help"] .hc-a__body .mono { font-size: 14px; color: #fff; }
@@ -246,5 +256,7 @@
   [data-page="help"] .hc-roles { grid-template-columns: minmax(0, 1fr); }
   [data-page="help"] .hc-a__copy { margin-left: 0; padding: 0; }
   [data-page="help"] .hc-more .fiction { margin-left: 0; }
-  [data-page="help"] .hc-door__stats { gap: 6px 28px; }
+  [data-page="help"] .hc-door__stats { grid-template-columns: repeat(2, minmax(0, max-content)); gap: 6px 28px; }
+  /* the chip may take two lines rather than run out of its card */
+  [data-page="help"] .hc-door__chip { height: auto; min-height: 28px; padding-block: 6px; line-height: 1.3; white-space: normal; }
 }

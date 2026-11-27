@@ -4,15 +4,18 @@
 //   - the ribbon (js/gl/lanes.js) lights band by band (uBands = p × 6) with the footer's bright reveal front;
 //   - Night Bloom's card rides the ribbon's centre line at u = p and crossfades into each stage's state;
 //   - the rail is a tablist: aria-selected follows the scroll, click/Enter scrolls to a stage, arrow keys move.
-// Deep links to #features land at the start of the pin. Everywhere else (phones, reduced motion, no scripts) the
-// section is the stacked list of stage blocks the markup already is, revealed by data-reveal-stagger.
-import { gsap, ScrollTrigger, lenis, clamp, damp } from '../core.js';
-import { getLanes, flowCentre } from '../gl/lanes.js';
+// Deep links to #features land at the start of the pin (and links to anything after it land where they point, once the
+// pin has added its length). On a short screen the ribbon drops (and, if it must, flattens) to pass under the copy,
+// and the card rides it to the right of the copy instead of under it. Everywhere else (phones, reduced motion, no
+// scripts) the section is the stacked list of stage blocks the markup already is, revealed by data-reveal-stagger.
+import { gsap, ScrollTrigger, lenis, clamp, damp, landing } from '../core.js';
+import { getLanes, flowCentre, flowEdges, pauseButton } from '../gl/lanes.js';
 
 const T = 0.07;      // the first stretch of the pin shows the section's title
 const TAIL = 0.05;   // the last holds Afterglow, every band lit
 const PIN = 3.4;     // the pin's length, in screen heights
 const CARD = { w: 320, h: 282 };
+const GAP = 28;      // between the copy and the ribbon's first lane
 
 export default function init({ calm, still }) {
   const section = document.getElementById('features');
@@ -27,7 +30,7 @@ export default function init({ calm, still }) {
 
   // The rail is a tablist driven by the scroll (data-tabs-manual keeps the generic tabs.js off it); the blocks it names
   // all stay shown.
-  let cur = -1, selected = 0, landed = false;
+  let cur = -1, selected = 0;
   function sync() {
     for (const b of blocks) b.hidden = false;
     const focused = tabs.includes(document.activeElement) ? document.activeElement : null;
@@ -49,8 +52,33 @@ export default function init({ calm, still }) {
     let alive = true;
     let p = 0, shown = 0, visible = false, push = 0, lastTf = '', lastFill = '';
     const head = section.querySelector('.home-flow__head');
+    const copies = [head, ...blocks.map((b) => b.querySelector('.home-flow__copy'))];
+
+    // Where the ribbon sits: it fills the stage (1600 × 900 design px) unless the copy reaches down into it, as on a
+    // laptop screen; then it drops to pass under the copy (y0) and, if its lowest lane would leave the screen,
+    // flattens (k: px per design px, vertically). If the card can't pass under the copy either, it starts its ride
+    // to the right of it (from).
+    let fit = { y0: 0, k: 1, from: 0 };
+    function refit() {
+      const W = stage.clientWidth, H = stage.clientHeight, sx = W / 1600, sy = H / 900;
+      const sr = stage.getBoundingClientRect();
+      const needs = copies.map((c) => {
+        const b = c.getBoundingClientRect();
+        return { bottom: b.bottom - sr.top + GAP, right: b.right - sr.left, top: flowEdges((b.right - sr.left) / sx).top };
+      });
+      const low = flowEdges(0).bottom, room = H + 6;
+      let k = sy;
+      let y0 = Math.max(0, ...needs.map((n) => n.bottom - n.top * k));
+      if (y0 + low * k > room) {
+        k = Math.max(sy * 0.6, Math.min(...needs.map((n) => (room - n.bottom) / (low - n.top))));
+        y0 = Math.max(0, ...needs.map((n) => n.bottom - n.top * k));
+      }
+      const under = Math.max(...needs.map((n) => n.bottom)) + CARD.h + 16 <= H;
+      fit = { y0, k, from: under ? 0 : Math.max(...needs.map((n) => n.right)) + 40 };
+    }
 
     section.classList.add('is-pinned', 'is-title');
+    // the list's blocks become the rail's tabpanels (they are divs, so either role is allowed on them)
     list.setAttribute('role', 'presentation');
     for (const b of blocks) { b.setAttribute('role', 'tabpanel'); b.setAttribute('aria-labelledby', `flow-tab-${b.dataset.stage}`); }
 
@@ -83,16 +111,17 @@ export default function init({ calm, still }) {
       const dt = Math.min(0.05, (dtMs || 16) / 1000);
       shown = Math.abs(p - shown) < 1e-4 ? p : damp(shown, p, 12, dt);
       const W = stage.clientWidth, H = stage.clientHeight;
-      const sx = W / 1600, sy = H / 900;
+      const sx = W / 1600;
       const sr = stage.getBoundingClientRect(), ir = inner.getBoundingClientRect();
       const left = ir.left - sr.left, top = ir.top - sr.top;
-      const xa = left + CARD.w / 2 + 6, xb = left + ir.width - CARD.w / 2;
+      const xb = left + ir.width - CARD.w / 2;
+      const xa = Math.min(xb, Math.max(left + CARD.w / 2 + 6, fit.from + CARD.w / 2));
       const x = xa + (xb - xa) * shown;
       const yd = flowCentre(x / sx);
-      // on a small screen the card keeps clear of the copy above it: it rides lower on the ribbon (still on it)
+      // the card keeps clear of the copy above it: it rides lower on the ribbon (still on it)
       const copy = cur < 0 ? head : blocks[cur].querySelector('.home-flow__copy');
       const cr = copy.getBoundingClientRect();
-      const cardTop = yd * sy - CARD.h / 2;
+      const cardTop = fit.y0 + yd * fit.k - CARD.h / 2;
       let want = x - CARD.w / 2 < cr.right - sr.left + 24 ? Math.max(0, cr.bottom - sr.top + 28 - cardTop) : 0;
       want = Math.max(0, Math.min(want, H - 16 - (cardTop + CARD.h)));
       push = damp(push, want, 7, dt);
@@ -104,20 +133,30 @@ export default function init({ calm, still }) {
       {
         const s = lanes.views.flow.state;
         s.bands = cur < 0 ? 0 : shown * 6;
-        s.card.x = x / sx; s.card.y = yd + push / sy; s.card.on = damp(s.card.on, cur < 0 ? 0 : 1, 4, dt);
+        s.card.x = x / sx; s.card.y = yd + push / fit.k; s.card.on = damp(s.card.on, cur < 0 ? 0 : 1, 4, dt);
       }
     }
     const io = new IntersectionObserver(([e]) => { visible = e.isIntersecting; }, { rootMargin: '200px 0px' });
     io.observe(section);
     gsap.ticker.add(frame);
 
-    lanes.attach('flow', stage, { frame: () => ({ x: 0, y: 0, sx: stage.clientWidth / 1600, sy: stage.clientHeight / 900 }) });
+    refit();
+    ScrollTrigger.addEventListener('refresh', refit);
+    document.fonts?.ready.then(() => { if (alive) refit(); });
+    lanes.attach('flow', stage, { frame: () => ({ x: 0, y: fit.y0, sx: stage.clientWidth / 1600, sy: fit.k }) });
+    // the ribbon's dashes run for as long as it is on screen: the reader can hold them here too (the hero's button
+    // drives the same canvas, so the two agree)
+    const hold = pauseButton(lanes, 'home-flow__pause');
+    stage.append(hold);
 
     // ---- the rail: click or Enter scrolls to a stage; arrow keys, Home and End move between the tabs ----
     const yOf = (k) => st.start + (T + ((k + 0.5) / 6) * (1 - T - TAIL)) * (st.end - st.start);
+    let gliding = false;
     const go = (y, smooth = true) => {
-      if (lenis) lenis.scrollTo(y, { duration: smooth ? 1.3 : 0, immediate: !smooth, easing: (t) => 1 - Math.pow(1 - t, 4) });
-      else scrollTo({ top: y, behavior: smooth ? 'smooth' : 'auto' });
+      if (lenis) {
+        gliding = smooth;
+        lenis.scrollTo(y, { duration: smooth ? 1.3 : 0, immediate: !smooth, easing: (t) => 1 - Math.pow(1 - t, 4), onComplete: () => { gliding = false; } });
+      } else scrollTo({ top: y, behavior: smooth ? 'smooth' : 'auto' });
     };
     const onClick = (e) => {
       const t = e.target.closest('[role="tab"]');
@@ -135,31 +174,39 @@ export default function init({ calm, still }) {
       tabs.forEach((x) => { x.tabIndex = x === t ? 0 : -1; });
       t.focus();
     };
-    const onLeave = (e) => { if (!rail.contains(e.relatedTarget)) sync(); };
+    // Focus leaving the rail while that glide still runs (Tab pressed again before it settles) stops it where it is:
+    // Lenis would otherwise keep steering the page to the stage over the browser's own scroll to the control that now
+    // has focus, and leave that control off screen. If the browser's scroll was overridden all the same, the control is
+    // brought into view.
+    const onLeave = (e) => {
+      if (rail.contains(e.relatedTarget)) return;
+      sync();
+      // (only for focus that went to another control: not a click on the page, nor the window losing focus)
+      if (!gliding || !lenis || !(e.relatedTarget instanceof Element)) return;
+      gliding = false;
+      if (!lenis.isStopped) { lenis.stop(); lenis.start(); }
+      requestAnimationFrame(() => {
+        const el = document.activeElement;
+        if (!alive || !el || el === document.body || rail.contains(el)) return;
+        const r = el.getBoundingClientRect();
+        if (r.bottom <= 0 || r.top >= innerHeight) el.scrollIntoView({ block: 'nearest' });
+      });
+    };
+    // tabbing into the rail from outside the pin brings the whole stage on screen, at the stage the rail shows
+    const onEnter = (e) => {
+      if (rail.contains(e.relatedTarget) || st.isActive) return;
+      // after the browser's own scroll to the focused tab, which would otherwise cut the glide short (and only if the
+      // focus is still in the rail by then)
+      requestAnimationFrame(() => { if (alive && !st.isActive && rail.contains(document.activeElement)) go(cur < 0 ? st.start + 2 : yOf(selected)); });
+    };
     rail.addEventListener('click', onClick, true);
     rail.addEventListener('keydown', onKey, true);
     rail.addEventListener('focusout', onLeave);
+    rail.addEventListener('focusin', onEnter);
 
-    // ---- deep links to #features land at the start of the pin (where the title is) ----
-    const home = (path) => path.replace(/index\.html$/, '');
-    const onLink = (e) => {
-      const a = e.target.closest?.('a[href*="#features"]');
-      if (!a || e.defaultPrevented || e.metaKey || e.ctrlKey || e.shiftKey || e.button) return;
-      const url = new URL(a.href, location.href);
-      if (url.hash !== '#features' || home(url.pathname) !== home(location.pathname)) return;
-      e.preventDefault();
-      go(st.start);
-      history.pushState(null, '', '#features');
-      if (!section.hasAttribute('tabindex')) section.setAttribute('tabindex', '-1');
-      section.focus({ preventScroll: true });
-    };
-    document.addEventListener('click', onLink, true);
-    const first = !landed;
-    landed = true;
-    if (location.hash === '#features' && first) {
-      const land = () => requestAnimationFrame(() => { if (alive) { ScrollTrigger.refresh(); go(st.start, false); } });
-      if (document.readyState === 'complete') land(); else addEventListener('load', land, { once: true });
-    }
+    // ---- links to #features (deep or in-page) land at the start of the pin, where the title is. (A deep link to
+    // anything after the section is landed again by the kit once the refresh below has given the pin its length.) ----
+    const unland = landing((t) => (t === section ? st.start : undefined));
 
     requestAnimationFrame(() => ScrollTrigger.refresh());
 
@@ -172,10 +219,13 @@ export default function init({ calm, still }) {
       rail.removeEventListener('click', onClick, true);
       rail.removeEventListener('keydown', onKey, true);
       rail.removeEventListener('focusout', onLeave);
-      document.removeEventListener('click', onLink, true);
+      rail.removeEventListener('focusin', onEnter);
+      ScrollTrigger.removeEventListener('refresh', refit);
+      unland();
       section.classList.remove('is-pinned', 'is-title');
-      list.removeAttribute('role');
-      for (const b of blocks) { b.removeAttribute('role'); b.removeAttribute('aria-labelledby'); b.classList.remove('is-current', 'is-past'); }
+      hold.remove();
+      list.setAttribute('role', 'list');
+      for (const b of blocks) { b.setAttribute('role', 'listitem'); b.removeAttribute('aria-labelledby'); b.classList.remove('is-current', 'is-past'); }
       for (const el of riders) el.style.transform = '';
       rail.style.setProperty('--rail', '0');
       cur = -1; selected = 0;

@@ -71,9 +71,10 @@
 .footer .copy { color: var(--ink-copy); letter-spacing: -0.005em; }
 .footer .love { display: flex; align-items: center; color: var(--ink-love); }
 .footer .heart { position: relative; display: grid; place-items: center; border-radius: 50%; }
+.footer .heart:disabled { cursor: default; }   /* (until the footer's script wakes it: without scripts it is only the drawn heart) */
 .footer .heart svg { width: 100%; height: 100%; fill: transparent; stroke: currentColor; stroke-width: 1.6; stroke-linejoin: round; overflow: visible; transition: fill 0.3s var(--ease-out), stroke 0.3s; }
 @media (hover: hover) {
-  .footer .heart:hover svg { animation: beat 0.9s var(--ease-out) infinite; }
+  .footer .heart:not(:disabled):hover svg { animation: beat 0.9s var(--ease-out) infinite; }
 }
 .footer .heart.is-loved svg { fill: #ff4d6d; stroke: #ff6b81; }
 @keyframes beat { 0%, 100% { transform: scale(1); } 15% { transform: scale(1.22); } 30% { transform: scale(0.96); } 45% { transform: scale(1.12); } }
@@ -96,6 +97,18 @@
 .footer .hint__text { font-variant-numeric: tabular-nums; min-width: 6.4em; }
 .footer .hint.is-held .hint__key { background: var(--rainbow); background-size: 200% 100%; animation: slide 0.8s linear infinite; color: #fff; }
 @keyframes slide { to { background-position: -200% 0; } }
+
+/* pause: the night moves for as long as it is on screen; this stops it (js/footer/ui.js adds it where it moves) */
+.footer .pause {
+  position: absolute; z-index: 3; right: max(16px, env(safe-area-inset-right)); bottom: max(16px, env(safe-area-inset-bottom));
+  display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%; color: #fff;
+  background: rgb(6 7 11 / 0.66); box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.22);
+  -webkit-backdrop-filter: blur(12px) saturate(1.3); backdrop-filter: blur(12px) saturate(1.3);
+  opacity: 0.85; transition: opacity var(--dur) var(--ease-out), box-shadow var(--dur) var(--ease-out);
+}
+.footer .pause svg { width: 12px; height: 12px; fill: currentColor; }
+.footer .pause:is(:hover, :focus-visible, .is-paused) { opacity: 1; box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.4); }
+.footer .pause:focus-visible { outline-offset: 3px; border-radius: 50%; }
 
 /* ================= the shot: a landscape screen big enough to read it at its own proportions ================= */
 @media (min-width: 1100px) and (min-aspect-ratio: 6/5) {
@@ -135,7 +148,9 @@
 }
 
 /* ================= flowing: phones, upright tablets, small landscape windows ================= */
-@media (max-width: 1099.98px), (max-aspect-ratio: 1199/1000) {
+/* (every screen the shot's query above doesn't take: written as its negation, so no window falls between the two, as
+   one between 1199:1000 and 6:5, or between 1099.98 and 1100 px wide, did) */
+@media not all and (min-width: 1100px) and (min-aspect-ratio: 6/5) {
   .footer { --fgutter: clamp(20px, 6vw, 48px); min-height: 100svh; display: flex; flex-direction: column; }
   .footer .stage { flex: 1; display: grid; grid-template-rows: repeat(4, auto) 1fr; padding: max(var(--fgutter), 72px) max(var(--fgutter), env(safe-area-inset-right)) 0 max(var(--fgutter), env(safe-area-inset-left)); }
   .footer .brand { display: grid; gap: 18px; }
@@ -154,9 +169,25 @@
   .footer .heart { width: 20px; height: 20px; }
   .footer .road { position: relative; min-height: clamp(300px, 78vw, 560px); margin: 8px calc(-1 * max(var(--fgutter), env(safe-area-inset-left))) 0; }
 }
-@media (min-width: 700px) and (max-width: 1099.98px), (min-width: 700px) and (max-aspect-ratio: 1199/1000) {
-  .footer .cols { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-  .footer .road { min-height: clamp(380px, 58vw, 620px); }
+@media (min-width: 700px) {
+  @media not all and (min-width: 1100px) and (min-aspect-ratio: 6/5) {
+    .footer .cols { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .footer .road { min-height: clamp(380px, 58vw, 620px); }
+  }
+}
+/* Without WebGL (or scripts) the still stands in for the night. Here the type sits on plain night and the still is set
+   in the road's window, as the scene sets the car (js/footer/index.js, frame()): the shot scaled so the window is 560
+   design px tall (or narrower, so its 610 px wide car spans 96 % of the window), its foot on the window's foot, the
+   car's middle (design x 852) in the window's middle; it fades in at the top. The box is the shot's width (the window's
+   height at 1597:560, at most 1597/610 × 96 % of its width) and the window's height. */
+@media not all and (min-width: 1100px) and (min-aspect-ratio: 6/5) {
+  :is(.no-webgl, .no-js) .footer .poster { background: #000; }
+  :is(.no-webgl, .no-js) .footer .road::before {
+    content: ""; position: absolute; z-index: -1; left: 50%; bottom: 0; height: 100%; aspect-ratio: 1597 / 560; max-width: 251.33%;
+    translate: -53.35% 0; pointer-events: none;
+    background: url(../assets/img/poster.jpg) 50% 100% / 100% auto no-repeat;
+    -webkit-mask: linear-gradient(transparent, #000 22%); mask: linear-gradient(transparent, #000 22%);
+  }
 }
 
 /* ---- before its intro: what it brings in waits, hidden (scripts arm it; the page's fallback shows it anyway) ---- */

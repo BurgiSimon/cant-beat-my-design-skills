@@ -21,6 +21,8 @@
  * {{CURRENT:<key>}}, which becomes aria-current="page" on links whose key is the page's path or nav value, and
  * {{CURRENTCLASS:<key>}}, which becomes " is-current" (for the header's menu triggers).
  * {{SITE_URL}} and {{VERSION}} are left for build.mjs.
+ * A literal % in the text of a [data-odometer] or [data-count] is wrapped in <span class="odo__u"> (Michroma draws it
+ * as "o/o"; .odo__u sets it in Inter), so the number reads right before core.js builds it and without scripts.
  */
 import { promises as fs, watch } from "node:fs";
 import path from "node:path";
@@ -60,6 +62,41 @@ function parse(source, file) {
 }
 
 const esc = (s) => s.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;");
+
+// Michroma (the counters' face) draws "%" as "o/o". core.js sets a % in Inter (.odo__u) once it builds an odometer's
+// digits; this does the same for the text a [data-odometer] or [data-count] shows before that (and without scripts):
+// a literal % in its text is wrapped in <span class="odo__u">, unless it already is.
+const ODO_OPEN = /<([a-z][\w-]*)\b[^>]*?\sdata-(?:odometer|count)\s*=[^>]*>/gi;
+function unitPercents(html) {
+  let out = "", last = 0, m;
+  ODO_OPEN.lastIndex = 0;
+  while ((m = ODO_OPEN.exec(html))) {
+    const tag = m[1].toLowerCase();
+    const from = m.index + m[0].length;
+    // the element's own closing tag (same-name elements may nest inside it)
+    const tags = new RegExp(`<(/?)${tag}\\b[^>]*>`, "gi");
+    tags.lastIndex = from;
+    let depth = 1, to = -1, t;
+    while ((t = tags.exec(html))) {
+      if (t[1]) { if (--depth === 0) { to = t.index; break; } } else if (!t[0].endsWith("/>")) depth++;
+    }
+    if (to < 0 || !html.slice(from, to).includes("%")) continue;
+    // walk its markup: text outside an .odo__u span gets its % wrapped
+    const units = [];   // for each open span: is it an .odo__u?
+    const inner = html.slice(from, to).replace(/<\/?[a-z][^>]*>|[^<]+/gi, (part) => {
+      if (part[0] === "<") {
+        if (/^<span\b/i.test(part)) units.push(/\bclass\s*=\s*"[^"]*\bodo__u\b/i.test(part));
+        else if (/^<\/span/i.test(part)) units.pop();
+        return part;
+      }
+      return units.includes(true) ? part : part.replace(/%/g, '<span class="odo__u">%</span>');
+    });
+    out += html.slice(last, from) + inner;
+    last = to;
+    ODO_OPEN.lastIndex = to;
+  }
+  return out + html.slice(last);
+}
 
 export async function assemble() {
   const started = Date.now();
@@ -102,7 +139,7 @@ export async function assemble() {
         .replace(/\{\{MODULES\}\}/g, esc(meta.modules || ""));
     const html =
       `<!doctype html>\n<!-- Assembled by tools/pages.mjs from src/pages/${rel}; edit that, not this. -->\n<html lang="en" class="no-js">\n<head>\n${fill(head).trim()}\n</head>\n` +
-      `<body data-page="${fill("{{PAGE}}")}" data-modules="${esc(meta.modules || "")}">\n${fill(header).trim()}\n\n${fill(body).trim()}\n\n${fill(footer).trim()}\n</body>\n</html>\n`;
+      `<body data-page="${fill("{{PAGE}}")}" data-modules="${esc(meta.modules || "")}">\n${fill(header).trim()}\n\n${unitPercents(fill(body).trim())}\n\n${fill(footer).trim()}\n</body>\n</html>\n`;
     await write(path.join(SITE, rel), html);
   }
   // sitemap.xml: every page ({{SITE_URL}} is filled in by build.mjs)

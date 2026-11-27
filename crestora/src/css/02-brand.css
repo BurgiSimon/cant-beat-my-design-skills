@@ -2,7 +2,8 @@
    font-size. */
 
 .mark { position: relative; display: block; flex: none; width: 53px; height: 53px; }
-/* the C: a white ring cut open on the right, with a slow blue-violet sheen turning round it like light round chrome */
+/* the C: a white ring cut open on the right, with a blue-violet sheen turning round it like light round chrome. It turns
+   once as the page arrives and once more each time the brand is pointed at or focused, never on a loop. */
 .mark, .mark__sheen {
   -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 53 53'%3E%3Cpath d='M48.62 11.9A26.5 26.5 0 1 0 48.62 41.1L40.9 36.5A16.05 16.05 0 1 1 40.9 16.5Z'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
   mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 53 53'%3E%3Cpath d='M48.62 11.9A26.5 26.5 0 1 0 48.62 41.1L40.9 36.5A16.05 16.05 0 1 1 40.9 16.5Z'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
@@ -18,12 +19,15 @@
   position: absolute; inset: 0;
   background: conic-gradient(from calc(var(--spin) + var(--look, 0deg)) at 50% 50%, transparent 0deg, rgb(255 255 255 / 0) 30deg, rgb(110 118 255 / 0.75) 62deg, rgb(190 200 255 / 0.4) 84deg, transparent 120deg, transparent 200deg, rgb(255 255 255 / 0.9) 228deg, transparent 260deg, transparent 360deg);
   mix-blend-mode: multiply; opacity: 0.55;
-  animation: sheen 9s linear infinite;
+  animation: sheen 4.6s var(--ease-in-out) 0.3s both;
 }
-@keyframes sheen { to { --spin: 360deg; } }
+@keyframes sheen { from { --spin: 0deg; } to { --spin: 360deg; } }
+/* (the arrival turn keeps its place in the list, so it doesn't play again when the pointer leaves) */
+:is(a, button):is(:hover, :focus-visible) .mark__sheen { animation: sheen 4.6s var(--ease-in-out) 0.3s both, sheen-again 1.6s var(--ease-in-out); }
+@keyframes sheen-again { from { --spin: 0deg; } to { --spin: 360deg; } }
 /* Michroma is a shade lighter than the shot's wordmark: a hairline of stroke brings it up to weight */
 .wordmark { display: block; font-family: var(--font-brand); font-weight: 400; color: #fff; white-space: nowrap; line-height: 1; -webkit-text-stroke: 0.042em #fff; paint-order: stroke fill; }
 .wordmark .ch { display: inline-block; }
 
 
-.is-calm .mark__sheen { animation: none; }
+:root.is-calm .mark__sheen { animation: none; }

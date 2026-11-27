@@ -25,11 +25,11 @@
 <link rel="stylesheet" href="css/site.css?v={{VERSION}}" />
 <script>
   // Scripts will run: the page may hide what they are about to bring in. A repeat visit in this tab gets short
-  // intros; reduced motion (or ?reduced) gets none.
+  // intros; reduced motion (or ?reduced, or ?still: a still of the resting page) gets none.
   (function (h) {
     h.className = h.className.replace("no-js", "js");
     try { if (sessionStorage.getItem("crestora:seen")) h.classList.add("is-repeat"); } catch (e) {}
-    if (matchMedia("(prefers-reduced-motion: reduce)").matches || /[?&]reduced/.test(location.search)) h.classList.add("is-calm");
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches || /[?&](reduced|still)(?![^&=])/.test(location.search)) h.classList.add("is-calm");
     setTimeout(function () { h.classList.add("is-ready"); }, 6000); // if the scripts never get there, show everything anyway
   })(document.documentElement);
 </script>
@@ -110,7 +110,7 @@
     </a>
     <nav class="nav" aria-label="Main">
       <div class="nav__item" data-menu>
-        <button class="nav__trigger is-current" type="button" aria-expanded="false" aria-controls="menu-product">Product<svg aria-hidden="true"><use href="#i-chev-down"/></svg></button>
+        <button class="nav__trigger is-current" type="button" aria-controls="menu-product">Product<svg aria-hidden="true"><use href="#i-chev-down"/></svg></button>
         <div class="dropdown" id="menu-product" style="--cols:2">
           <a href="index.html#features"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-layers"/></svg></span><strong>Features</strong><small>Six lanes from spark to launch</small></a>
           <a href="integrations.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-plug"/></svg></span><strong>Integrations</strong><small>120+ tools merge into your lane</small></a>
@@ -122,7 +122,7 @@
       </div>
       <a class="nav__link" href="index.html#creators" data-roll>Creators</a>
       <div class="nav__item" data-menu>
-        <button class="nav__trigger" type="button" aria-expanded="false" aria-controls="menu-resources">Resources<svg aria-hidden="true"><use href="#i-chev-down"/></svg></button>
+        <button class="nav__trigger" type="button" aria-controls="menu-resources">Resources<svg aria-hidden="true"><use href="#i-chev-down"/></svg></button>
         <div class="dropdown" id="menu-resources" style="--cols:2">
           <a href="blog.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-pen"/></svg></span><strong>Field Notes</strong><small>Launch stories and craft notes</small></a>
           <a href="docs.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-book"/></svg></span><strong>Documentation</strong><small>Lanes, stages and every tool</small></a>
@@ -130,11 +130,11 @@
           <a href="help.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-help"/></svg></span><strong>Help Center</strong><small>Answers, fast</small></a>
           <a href="community.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-users"/></svg></span><strong>Community</strong><small>Circles, swaps and Launch Night</small></a>
           <a href="tutorials.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-learn"/></svg></span><strong>Tutorials</strong><small>Short lessons from people who ship</small></a>
-          <a href="webinars.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-broadcast"/></svg></span><strong>Webinars</strong><small>Next: Dec 10, live</small></a>
+          <a href="webinars.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-broadcast"/></svg></span><strong>Webinars</strong><small>Next: Fri 4 Dec, live</small></a>
         </div>
       </div>
       <div class="nav__item" data-menu>
-        <button class="nav__trigger" type="button" aria-expanded="false" aria-controls="menu-company">Company<svg aria-hidden="true"><use href="#i-chev-down"/></svg></button>
+        <button class="nav__trigger" type="button" aria-controls="menu-company">Company<svg aria-hidden="true"><use href="#i-chev-down"/></svg></button>
         <div class="dropdown" id="menu-company" style="--cols:1">
           <a href="about.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-info"/></svg></span><strong>About</strong><small>Why we build roads for makers</small></a>
           <a href="careers.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-briefcase"/></svg></span><strong>Careers</strong><small>8 open roles, four hubs</small></a>
@@ -149,10 +149,12 @@
       <a class="header__signin" href="start.html#signin" data-roll>Sign in</a>
       <a class="btn btn--primary btn--sm" href="start.html" data-roll>Open a lane</a>
       <button class="header__burger" type="button" aria-expanded="false" aria-controls="menu" aria-label="Open menu"><span></span></button>
+      <!-- without scripts the menu can't open: the same burger takes you to every link, in the footer's columns -->
+      <a class="header__burger header__burger--link" href="#footer" aria-label="Menu: every link, at the foot of the page"><span></span></a>
     </div>
   </div>
 </header>
-<div class="menu" id="menu" role="dialog" aria-modal="true" aria-label="Menu">
+<div class="menu" id="menu" role="dialog" aria-label="Menu">
   <div class="menu__groups">
     <div class="menu__group">
       <h2>Product</h2>
@@ -293,7 +295,7 @@
           <dl class="sec-specs">
             <div><dt>At rest</dt><dd><strong>AES-256</strong>On every file, version and note, with keys held in a dedicated key service and rotated every year.</dd></div>
             <div><dt>In transit</dt><dd><strong>TLS 1.3</strong>On every connection, with HSTS and modern ciphers only. Older protocols are refused.</dd></div>
-            <div><dt>Backups</dt><dd><strong>Every 6 hours</strong>Encrypted copies, kept for 30 days in a second region, then deleted for good.</dd></div>
+            <div><dt>Backups</dt><dd><strong>Every 6 hours</strong>Encrypted copies, kept for 30 days in a second data centre in the same region, then deleted for good.</dd></div>
             <div><dt>Per-lane keys</dt><dd><strong>On Label</strong>Each lane can have its own key, so access to one lane never opens another.</dd></div>
           </dl>
         </div>
@@ -307,8 +309,8 @@
             <li><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-lock"/></svg></span><div><strong>Passkeys</strong><span>Sign in with your face, fingerprint or device PIN. Nothing to phish.</span></div><em>All plans</em></li>
             <li><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-users"/></svg></span><div><strong>SSO/SAML and SCIM</strong><span>Sign in through your identity provider; people join and leave with your directory.</span></div><em>Label</em></li>
             <li><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-layers"/></svg></span><div><strong>Crew roles</strong><span>Owner, Maker, Reviewer and Guest, each seeing only what it needs.</span></div><em>Crew &amp; Label</em></li>
-            <li><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-link"/></svg></span><div><strong>Review links you control</strong><span>Give any link an expiry date and a password, and revoke it in one click.</span></div><em>All plans</em></li>
-            <li><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-doc"/></svg></span><div><strong>Watermarked review copies</strong><span>Reviewers see copies stamped with their name, so a leak has a return address.</span></div><em>Studio and up</em></li>
+            <li><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-link"/></svg></span><div><strong>Review links you control</strong><span>Give any link an expiry date and a password, and revoke it in one click.</span></div><em>Studio and up</em></li>
+            <li><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-doc"/></svg></span><div><strong>Watermarked review copies</strong><span>Reviewers see copies stamped with their name, so a leak has a return address.</span></div><em>Crew &amp; Label</em></li>
           </ul>
         </div>
 
@@ -491,7 +493,7 @@
                 <i data-d="2026-11-27"></i>
               </div>
               <div class="sec-uptime__axis" aria-hidden="true"><span>30 Aug</span><span>90 days</span><span>Today</span></div>
-              <p class="sec-uptime__legend">Each line is a day. A coloured day touched one tool, in that tool’s stage colour.<span class="sec-uptime__kbd"> Hover or focus a day for its details.</span></p>
+              <p class="sec-uptime__legend">Each line is a day. A coloured day touched one tool, in that tool’s stage colour.<span class="sec-uptime__kbd"> Hover, tap or focus a day for its details.</span></p>
             </div>
             <ul class="sec-tools">
               <li data-stage="spark"><span class="dot" aria-hidden="true"></span>Sparkboard<em>Operational</em></li>
@@ -543,7 +545,7 @@
       <a class="btn btn--primary btn--lg" href="start.html" data-roll>Open your first lane</a>
       <a class="btn btn--lg" href="pricing.html" data-roll>See plans</a>
     </div>
-    <p class="small">Free for 3 lanes · No card · Export everything, always.</p>
+    <p class="small fine-print"><span>Free for 3 lanes</span> <span class="fine-print__sep" aria-hidden="true">·</span> <span>No card</span> <span class="fine-print__sep fine-print__sep--2" aria-hidden="true">·</span> <span>Export everything, always.</span></p>
   </div>
 </section>
 </main>
@@ -625,7 +627,7 @@
 
     <div class="base">
       <p class="copy">© <span class="year">2026</span> Crestora. All rights reserved.</p>
-      <p class="love"><button class="heart" type="button" aria-label="Send some love"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19.6S4.4 15.1 4.4 9.6A4.2 4.2 0 0 1 12 7.2a4.2 4.2 0 0 1 7.6 2.4c0 5.5-7.6 10-7.6 10Z"/></svg></button><span>Made with love by Pranav</span></p>
+      <p class="love"><button class="heart" type="button" aria-label="Send some love" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19.6S4.4 15.1 4.4 9.6A4.2 4.2 0 0 1 12 7.2a4.2 4.2 0 0 1 7.6 2.4c0 5.5-7.6 10-7.6 10Z"/></svg></button><span>Made with love by Pranav</span></p>
     </div>
 
     <!-- the road: where the car is; holding it down puts your foot down -->

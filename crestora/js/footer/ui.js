@@ -16,6 +16,35 @@ export function details(scene, { calm, wide, foot }) {
     a.innerHTML = `<span class="roll"><span>${t}</span></span>`;
   }
 
+  // ---- the heart: a click sends a few hearts up, in the road's colours (at rest, it simply fills). It is disabled in
+  // the markup, so without scripts it is no dead button in the Tab order; here it comes alive. ----
+  const heart = foot.querySelector('.heart');
+  if (heart) {
+    const COLORS = ['#ff3b5c', '#ff7ad9', '#ffb13d', '#23d3ff', '#3a6dff', '#20d69b'];
+    heart.disabled = false;
+    heart.addEventListener('click', () => {
+      heart.classList.add('is-loved');
+      heart.setAttribute('aria-label', 'Love sent');
+      if (calm || !gsap) return;
+      gsap.fromTo(heart, { scale: 0.7 }, { scale: 1, duration: 0.8, ease: 'elastic.out(1.2, 0.35)' });
+      const r = heart.getBoundingClientRect();
+      for (let i = 0; i < 12; i++) {
+        const s = document.createElement('span');
+        s.className = 'spark';
+        s.innerHTML = '<svg viewBox="0 0 24 24"><path d="M12 20s-7.6-4.5-7.6-10A4.2 4.2 0 0 1 12 7.6a4.2 4.2 0 0 1 7.6 2.4c0 5.5-7.6 10-7.6 10Z"/></svg>';
+        s.querySelector('path').setAttribute('fill', COLORS[i % COLORS.length]);
+        document.body.append(s);
+        const a = -Math.PI / 2 + (Math.random() - 0.5) * 1.9;
+        const d = 40 + Math.random() * 70;
+        const size = 7 + Math.random() * 9;
+        gsap.set(s, { x: r.left + r.width / 2 - size / 2, y: r.top + r.height / 2 - size / 2, width: size, height: size, rotation: (Math.random() - 0.5) * 40 });
+        gsap.timeline({ onComplete: () => s.remove() })
+          .to(s, { x: `+=${Math.cos(a) * d}`, y: `+=${Math.sin(a) * d}`, duration: 0.9 + Math.random() * 0.5, ease: 'expo.out' }, 0)
+          .to(s, { y: '-=24', opacity: 0, duration: 0.7, ease: 'power1.in' }, 0.5);
+      }
+    });
+  }
+
   if (calm) return;
 
   // ---- the mark: its chrome turns to the pointer; the logo spins it ----
@@ -77,7 +106,8 @@ export function details(scene, { calm, wide, foot }) {
         .to(g, { o: 0, duration: 0.4 }, 1.8);
     };
     rule.addEventListener('sweep', sweep);
-    setInterval(() => { if (!document.hidden) sweep(); }, 9000);
+    // (it loops only beside the moving night, and rests with it: without WebGL, or paused, nothing here keeps moving)
+    setInterval(() => { if (!document.hidden && scene && !scene.paused) sweep(); }, 9000);
     if (fine) {
       addEventListener('pointermove', (e) => {
         const r = rule.getBoundingClientRect();
@@ -91,33 +121,26 @@ export function details(scene, { calm, wide, foot }) {
     }
   }
 
-  // ---- the heart: a click sends a few hearts up, in the road's colours ----
-  const heart = foot.querySelector('.heart');
-  if (heart && gsap) {
-    const COLORS = ['#ff3b5c', '#ff7ad9', '#ffb13d', '#23d3ff', '#3a6dff', '#20d69b'];
-    heart.addEventListener('click', () => {
-      heart.classList.add('is-loved');
-      heart.setAttribute('aria-label', 'Love sent');
-      gsap.fromTo(heart, { scale: 0.7 }, { scale: 1, duration: 0.8, ease: 'elastic.out(1.2, 0.35)' });
-      const r = heart.getBoundingClientRect();
-      for (let i = 0; i < 12; i++) {
-        const s = document.createElement('span');
-        s.className = 'spark';
-        s.innerHTML = '<svg viewBox="0 0 24 24"><path d="M12 20s-7.6-4.5-7.6-10A4.2 4.2 0 0 1 12 7.6a4.2 4.2 0 0 1 7.6 2.4c0 5.5-7.6 10-7.6 10Z"/></svg>';
-        s.querySelector('path').setAttribute('fill', COLORS[i % COLORS.length]);
-        document.body.append(s);
-        const a = -Math.PI / 2 + (Math.random() - 0.5) * 1.9;
-        const d = 40 + Math.random() * 70;
-        const size = 7 + Math.random() * 9;
-        gsap.set(s, { x: r.left + r.width / 2 - size / 2, y: r.top + r.height / 2 - size / 2, width: size, height: size, rotation: (Math.random() - 0.5) * 40 });
-        gsap.timeline({ onComplete: () => s.remove() })
-          .to(s, { x: `+=${Math.cos(a) * d}`, y: `+=${Math.sin(a) * d}`, duration: 0.9 + Math.random() * 0.5, ease: 'expo.out' }, 0)
-          .to(s, { y: '-=24', opacity: 0, duration: 0.7, ease: 'power1.in' }, 0.5);
-      }
-    });
-  }
-
   if (!scene) return;
+
+  // ---- pause: the night moves for as long as it is on screen, so the reader can stop it (and play it again). It
+  // rests on the frame it is on; putting the foot down (holding the road, or Space) plays it again. ----
+  const pauseBtn = document.createElement('button');
+  pauseBtn.type = 'button';
+  pauseBtn.className = 'pause';
+  const PAUSE = '<svg viewBox="0 0 12 12" aria-hidden="true"><rect x="2" y="1.5" width="2.6" height="9" rx="0.8"/><rect x="7.4" y="1.5" width="2.6" height="9" rx="0.8"/></svg>';
+  const PLAY = '<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3.2 1.6v8.8a.6.6 0 0 0 .9.5l7-4.4a.6.6 0 0 0 0-1L4.1 1.1a.6.6 0 0 0-.9.5Z"/></svg>';
+  const showPaused = (on) => {
+    pauseBtn.innerHTML = on ? PLAY : PAUSE;
+    pauseBtn.setAttribute('aria-label', on ? 'Play the footer animation' : 'Pause the footer animation');
+    pauseBtn.classList.toggle('is-paused', on);
+  };
+  const setPaused = (on) => { if (scene.paused === on) return; scene.pause(on); showPaused(on); };
+  showPaused(false);
+  pauseBtn.addEventListener('click', () => setPaused(!scene.paused));
+  foot.append(pauseBtn);
+  // a launch from the page (index.js launch()) is the reader asking for the night to move: it plays again
+  addEventListener('crestora:launch', () => setPaused(false));
 
   // ---- the road: a lamp under the pointer, the throttle under a held button ----
   const road = foot.querySelector('.road');
@@ -154,6 +177,7 @@ export function details(scene, { calm, wide, foot }) {
 
   const press = (on) => {
     if (held === on) return;
+    if (on) setPaused(false);
     held = on;
     scene.boost(on);
     hint.classList.toggle('is-held', on);

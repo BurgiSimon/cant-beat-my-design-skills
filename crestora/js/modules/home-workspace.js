@@ -1,5 +1,5 @@
 // Home #workspace: the app window's life. The generic tabs module switches its views (and keeps the phone tabs in
-// step); this crossfades them, opens the phone pane on the lane rather than the sidebar, and plays the story: frame 118
+// step); this crossfades them, opens a pane narrower than the lane on the story, and plays the story: frame 118
 // waits in Review, a notice slides in ("Lena approved frame 118"), its chip turns green, the activity rail logs it and
 // the card rolls on to Launch, then it all resets and waits again. Each beat is a class on .ws-mock and CSS does the
 // moving, in every view at once. The story pauses off screen, while the tab is hidden, or when the viewer pauses it;
@@ -15,28 +15,38 @@ export default function init({ calm, still }) {
   const pane = $('.ws-pane', section);
   const main = $('.ws-main', mock);
 
-  // ---- the views: the one leaving fades out over the one arriving ----
+  // ---- the views: the one leaving fades out over the one arriving. While it fades it is still drawn, so it is made
+  // inert: Tab goes on to the view that is arriving, and a screen reader is never sent into the one on its way out ----
   const views = $$('.ws-view', mock);
   const leaving = new Map();
+  const settle = (v) => { clearTimeout(leaving.get(v)); leaving.delete(v); v.classList.remove('is-leaving'); v.removeAttribute('aria-hidden'); v.inert = false; };
   let current = views.find((v) => !v.hidden);
   section.addEventListener('tabs:change', (e) => {
     const next = document.getElementById(e.detail.tab.getAttribute('aria-controls'));
     if (!next || next === current || !views.includes(next)) return;
-    if (leaving.has(next)) { clearTimeout(leaving.get(next)); leaving.delete(next); next.classList.remove('is-leaving'); next.removeAttribute('aria-hidden'); }
+    if (leaving.has(next)) settle(next);
     const old = current;
     current = next;
     if (!old || calm) return;
     old.classList.add('is-leaving');
     old.setAttribute('aria-hidden', 'true');
-    leaving.set(old, setTimeout(() => { old.classList.remove('is-leaving'); old.removeAttribute('aria-hidden'); leaving.delete(old); }, 420));
+    old.inert = true;
+    leaving.set(old, setTimeout(() => settle(old), 420));
   });
 
-  // ---- phones: the pane opens on the lane itself; the sidebar is a swipe to the left ----
+  // ---- a pane narrower than the lane (phones) opens on Review and Launch, where the story plays; the start of the
+  // lane is a swipe to the right ----
+  // (only a touch on a pane that can pan keeps it where the reader left it: a click on the window's own tabs on a wide
+  // screen does not stop it opening on the story once the screen turns narrow)
   let touched = false;
-  pane?.addEventListener('pointerdown', () => { touched = true; }, { passive: true });
+  pane?.addEventListener('pointerdown', () => { if (pane.scrollWidth > pane.clientWidth + 2) touched = true; }, { passive: true });
   const openPane = () => {
     if (!pane || touched) return;
-    pane.scrollLeft = pane.scrollWidth > pane.clientWidth + 2 ? Math.max(0, main.offsetLeft - 12) : 0;
+    if (pane.scrollWidth <= pane.clientWidth + 2) { pane.scrollLeft = 0; return; }
+    // Review is the fourth of the lane's six columns: it starts halfway across the views
+    const views = $('.ws-views', main);
+    const x = views.getBoundingClientRect().left - pane.getBoundingClientRect().left + pane.scrollLeft + views.offsetWidth / 2;
+    pane.scrollLeft = Math.max(0, x - (parseFloat(getComputedStyle(pane).paddingLeft) || 0) - 12);
   };
   openPane();
   addEventListener('resize', openPane, { passive: true });

@@ -3,6 +3,7 @@
 // the poster mock, and Play runs a short preview through the chapters; links into the library clear its filters
 // first when the lesson they point at is filtered out.
 import { store, odometer, toast, whenVisible, clamp, $, $$ } from '../core.js';
+import { keepFocusInStrips } from './page-strips.js';
 
 const KEY = 'tutorials';
 const LENGTH = 720; // the featured lesson: 12:00
@@ -11,6 +12,7 @@ const PREVIEW = 60; // the preview plays at 60×: the whole lesson in twelve sec
 const mmss = (s) => `${String(Math.floor(s / 60)).padStart(2, '0')}:${String(Math.floor(s % 60)).padStart(2, '0')}`;
 
 export default function init({ calm }) {
+  keepFocusInStrips(...$$('.tu-chips'));
   progress();
   player(calm);
   libraryLinks();
@@ -74,6 +76,8 @@ function player(calm) {
   const pl = $('[data-tu-player]');
   if (!pl) return;
   const chapters = $$('[data-chapter]');
+  // the chapters and transcript times are disabled in the page (without scripts they do nothing): turn them on
+  for (const b of [...chapters, ...$$('[data-seek]')]) b.disabled = false;
   const starts = chapters.map((b) => Number(b.dataset.t));
   const names = chapters.map((b) => b.querySelector('.tu-chapters__t')?.firstChild?.textContent.trim() || '');
   const timeEl = $('[data-tu-time]', pl);

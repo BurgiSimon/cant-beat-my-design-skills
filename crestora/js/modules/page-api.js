@@ -6,6 +6,8 @@ import { calm, lenis, $, $$ } from '../core.js';
 
 const esc = (s) => s.replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' })[c]);
 const STAGE = /^(["'])(spark|shape|make|review|launch|afterglow)\1$/;
+// only a value that is a stage gets the dot ("object": "launch" is not one)
+const STAGE_KEYS = new Set(['stage', 'previous_stage', 'from', 'to']);
 
 // each language: [token class, pattern] in priority order; patterns must not capture
 const JSON_RULES = [
@@ -50,12 +52,14 @@ function highlight(code) {
   if (!rules || code.dataset.lit) return;
   const re = compiled[lang] ||= new RegExp(rules.map(([, r]) => `(${r.source})`).join('|'), 'gm');
   const text = code.textContent;
-  let out = '', last = 0, m;
+  let out = '', last = 0, m, key = '';
   re.lastIndex = 0;
   while ((m = re.exec(text))) {
     if (!m[0]) { re.lastIndex++; continue; }
     const kind = rules[m.slice(1).findIndex((g) => g !== undefined)][0];
-    const stage = kind === 'str' && STAGE.exec(m[0]);
+    const isKey = /^\s*:/.test(text.slice(m.index + m[0].length, m.index + m[0].length + 4));
+    const stage = !isKey && kind === 'str' && STAGE_KEYS.has(key) && STAGE.exec(m[0]);
+    key = isKey ? m[0].replace(/^["']|["']$/g, '') : '';
     out += esc(text.slice(last, m.index)) + (stage
       ? `<span class="tk-str tk-stage" data-stage="${stage[2]}">${esc(m[0])}</span>`
       : `<span class="tk-${kind}">${esc(m[0])}</span>`);

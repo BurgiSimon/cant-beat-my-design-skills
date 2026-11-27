@@ -106,7 +106,7 @@ export default function init() {
     const it = byId.get(id);
     if (!it) return false;
     it.d.open = true;
-    if (scroll) scrollToTarget(it.d, { offset: -104 });
+    if (scroll) scrollToTarget(it.d);   // where a link to it lands
     if (focus) $('summary', it.d).focus({ preventScroll: true });
     flash(it.d);
     return true;

@@ -12,7 +12,10 @@
 //   data-spotlight                               a soft light follows the pointer across it (sets --mx/--my)
 //   data-roll                                    its text rolls up into a white copy on hover (icons are kept)
 //
-// Helpers for modules: toast(text, key?), odometer(el, value, opts), store.get/set, countTo, whenVisible, …
+// Helpers for modules: toast(text, key?), odometer(el, value, opts), store.get/set, countTo, whenVisible,
+// scrollToTarget(el | selector | y, { offset?, immediate? }) (an element lands where a native #anchor would: html's
+// scroll-padding-top plus its scroll-margin-top, see anchorOffset), landing(fn) (a module says where a deep link or an
+// in-page link to one of its elements lands; returns a remove function), restingTop(el), …
 //
 // Everything resolves to the resting design under reduced motion (.is-calm) and without scripts.
 
@@ -38,31 +41,97 @@ export function whenVisible(el, fn, rootMargin = '120px') {
   return () => io.disconnect();
 }
 
-/** Scroll to an element or y, smoothly where Lenis runs. */
-export function scrollToTarget(target, { offset = -84, immediate = false } = {}) {
+/** How far below the top of the screen an #id lands: exactly where the browser's own anchor scrolling puts it (html's
+ *  scroll-padding-top, which keeps the header clear, plus the target's own scroll-margin-top), so a deep link, a click
+ *  on an in-page link and a native jump all agree. */
+export function anchorOffset(el) {
+  const px = (v) => { const n = parseFloat(v); return Number.isFinite(n) ? n : 0; };
+  const o = px(getComputedStyle(root).scrollPaddingTop) + (el instanceof Element ? px(getComputedStyle(el).scrollMarginTop) : 0);
+  return o > 0 ? o : 84;
+}
+
+/** Where an element's top will rest, relative to the screen: a target (or one of its ancestors) still waiting for its
+ *  reveal sits a little lower than that until it rises, and a landing must not be off by the rise. */
+export function restingTop(el) {
+  let top = el.getBoundingClientRect().top;
+  if (gsap) {
+    for (let n = el; n && n !== document.body; n = n.parentElement) {
+      if (n.matches('[data-reveal], [data-reveal-stagger] > *')) top -= Number(gsap.getProperty(n, 'y')) || 0;
+    }
+  }
+  return top;
+}
+
+// Lenis keeps its own idea of where the page is, and a native scroll (focus moving to a control off screen, the
+// browser's own jump to an #id) can leave it behind for a moment: anything measured against it would land off target.
+// Tell it where the page really is first.
+function syncLenis() {
+  if (lenis && Math.abs(lenis.scroll - scrollY) > 1) lenis.resize();
+}
+
+/** Scroll to an element (or a selector, or a y), smoothly where Lenis runs. An element lands where a native #anchor
+ *  would, unless an offset is given. */
+export function scrollToTarget(target, { offset, immediate = false } = {}) {
   const el = typeof target === 'string' ? document.querySelector(target) : target;
-  if (lenis) { lenis.scrollTo(el ?? 0, { offset, duration: 1.4, easing: (t) => 1 - Math.pow(1 - t, 4), immediate }); return; }
-  const y = el ? el.getBoundingClientRect().top + scrollY + offset : 0;
+  syncLenis();
+  let y = 0;
+  if (typeof el === 'number') y = el + (offset ?? 0);
+  else if (el) y = restingTop(el) + scrollY + (offset ?? -anchorOffset(el));
+  y = Math.max(0, Math.round(y));
+  if (lenis) { lenis.scrollTo(y, { duration: 1.4, easing: (t) => 1 - Math.pow(1 - t, 4), immediate }); return; }
   scrollTo({ top: y, behavior: calm || immediate ? 'auto' : 'smooth' });
 }
 
 // ---- the one toast: the footer's hint pill at the foot of the screen ----
-let toastEl = null, toastT = 0;
-export function toast(text, key = 'Demo') {
-  if (!toastEl) {
-    toastEl = document.createElement('div');
-    toastEl.className = 'toast';
-    toastEl.setAttribute('role', 'status');
-    toastEl.setAttribute('aria-live', 'polite');
+// It is a live region (role=status), and a screen reader only reads a change to a region it already knows: one that
+// arrives already filled is usually missed. So the regions are in place, empty, from the start (boot() calls
+// toastRegions): one on the page, and one inside each <dialog> (a modal dialog sits in the top layer and makes the page
+// behind it inert: while one is open the toast rides inside it). A message is written a frame after the region is
+// cleared, so even the same words twice are a change, and cleared once the toast has gone, so no stale line is left
+// for a reader to find.
+const toastEls = new Map();
+let toastT = 0, toastGen = 0;
+function toastRegion(host) {
+  let el = toastEls.get(host);
+  if (!el || !el.isConnected) {
+    el = document.createElement('div');
+    el.className = 'toast';
+    el.setAttribute('role', 'status');
+    el.setAttribute('aria-live', 'polite');
+    el.setAttribute('aria-atomic', 'true');
+    host.append(el);
+    toastEls.set(host, el);
   }
-  // a modal dialog sits in the top layer, above everything else: while one is open the toast rides inside it
-  const host = document.querySelector('dialog[open]') || document.body;
-  if (toastEl.parentElement !== host) host.append(toastEl);
-  toastEl.innerHTML = `${key ? `<span class="toast__key">${key}</span>` : ''}<span></span>`;
-  toastEl.lastChild.textContent = text;
-  requestAnimationFrame(() => toastEl.classList.add('is-on'));
+  return el;
+}
+function toastRegions() {
+  toastRegion(document.body);
+  for (const d of $$('dialog')) toastRegion(d);
+}
+export function toast(text, key = 'Demo') {
+  const el = toastRegion(document.querySelector('dialog[open]') || document.body);
+  for (const other of toastEls.values()) if (other !== el) { other.classList.remove('is-on'); other.replaceChildren(); }
+  const msg = document.createElement('span');
+  msg.textContent = text;
+  const parts = [msg];
+  if (key) {
+    const pill = document.createElement('span');
+    pill.className = 'toast__key';
+    pill.textContent = key;
+    parts.unshift(pill);
+  }
+  const gen = ++toastGen;
+  el.replaceChildren();
+  requestAnimationFrame(() => {
+    if (gen !== toastGen) return;
+    el.replaceChildren(...parts);
+    el.classList.add('is-on');
+  });
   clearTimeout(toastT);
-  toastT = setTimeout(() => toastEl.classList.remove('is-on'), 3600);
+  toastT = setTimeout(() => {
+    el.classList.remove('is-on');
+    setTimeout(() => { if (gen === toastGen) el.replaceChildren(); }, 450);   // once it has faded
+  }, 3600);
 }
 
 // ---- storage that never throws (private windows, blocked storage); keys are prefixed crestora: ----
@@ -88,13 +157,19 @@ export const formatNumber = (v, { decimals = 0, prefix = '', suffix = '', groupi
 // data-decimals, data-prefix, data-suffix and data-grouping="false" (a year: 2021, not 2,021)
 const numberOpts = (el) => ({ decimals: parseInt(el.dataset.decimals || 0, 10), prefix: el.dataset.prefix || '', suffix: el.dataset.suffix || '', grouping: el.dataset.grouping !== 'false' });
 const isDigit = (ch) => ch >= '0' && ch <= '9';
+// A screen reader reads the number from a visually hidden copy of it (.sr), kept up to date on every roll: the columns
+// of 0–9 are hidden from it, and an aria-label on a plain span would be ignored (a generic has no name), so the number
+// would be lost. Where the caller hides the whole odometer and says the number itself (an aria-hidden odometer beside
+// its own .sr), the copy is hidden with it.
 export function odometer(el, value, opts = {}) {
   const text = formatNumber(value, opts);
-  el.setAttribute('aria-label', text);
   el.classList.add('odo');
-  if ((el._odo || '').length !== text.length) {
+  if ((el._odo || '').length !== text.length || el._odoSr?.parentElement !== el) {
     // build one column per digit (and a plain span for commas, points, signs), starting at 0
     el.textContent = '';
+    el._odoSr = document.createElement('span');
+    el._odoSr.className = 'sr';
+    el.append(el._odoSr);
     for (const ch of text) {
       const cell = document.createElement('span');
       cell.setAttribute('aria-hidden', 'true');
@@ -112,9 +187,10 @@ export function odometer(el, value, opts = {}) {
     }
     el.getBoundingClientRect(); // lay out at 0 so the columns roll from there
   }
+  el._odoSr.textContent = text;          // the number it is (or is about to roll to), as text
   el._odo = text;
   if (opts.hold) return;                 // built, held at 0 until the next call rolls it
-  const cells = [...el.children];
+  const cells = [...el.children].filter((c) => c !== el._odoSr);
   [...text].forEach((ch, i) => {
     const cell = cells[i];
     if (!cell || !cell.classList.contains('odo__d')) return;
@@ -141,9 +217,11 @@ export function boot() {
     gsap.ticker.add((t) => lenis.raf(t * 1000));
     gsap.ticker.lagSmoothing(0);
   }
+  toastRegions();
   header();
   anchors();
   rolls();
+  deepLink();
   if (calm || !gsap) { root.classList.add('is-ready'); return; }
   reveals();
   splits();
@@ -151,20 +229,116 @@ export function boot() {
   odometers();
   marquees();
   if (fine) { magnetic(); tilt(); spotlight(); }
-  // deep links land where they point once the layout (fonts, images) has settled. The browser has already jumped to
-  // the #id natively, before Lenis knew; so the target is measured absolutely and Lenis is told where the page is.
-  if (location.hash.length > 1) addEventListener('load', () => land(decodeURIComponent(location.hash.slice(1))), { once: true });
-  addEventListener('load', () => ScrollTrigger?.refresh());
+  onLoad(() => ScrollTrigger?.refresh());
   document.fonts?.ready.then(() => ScrollTrigger?.refresh());
 }
 
-function land(id) {
-  const t = document.getElementById(id);
-  if (!t) return;
-  ScrollTrigger?.refresh();
-  const y = Math.max(0, t.getBoundingClientRect().top + scrollY - 84);
+const onLoad = (fn) => { if (document.readyState === 'complete') fn(); else addEventListener('load', () => fn(), { once: true }); };
+
+// main.js says when the page's modules have started (they may open, filter or claim the target of a deep link first)
+let markStarted = () => {};
+const started = new Promise((r) => { markStarted = r; });
+export function modulesStarted() { markStarted(); }
+
+// ---- deep links ----
+// A module can say where a deep link (or an in-page link) to one of its elements lands instead: the start of a pinned
+// section, a card in the middle of the screen. fn(target) returns a scroll y, or nothing to leave it to the default.
+// Returns a function that withdraws it.
+const landers = new Set();
+let reland = null;
+export function landing(fn) {
+  landers.add(fn);
+  reland?.();
+  return () => landers.delete(fn);
+}
+function landY(t) {
+  for (const fn of landers) {
+    const y = fn(t);
+    if (Number.isFinite(y)) return y;
+  }
+  return restingTop(t) + scrollY - anchorOffset(t);
+}
+function land(t) {
+  // a hidden target (a filtered card) or a dialog (its own module opens it) is not a place on the page
+  if (!t?.isConnected || !t.getClientRects().length || t.closest('dialog')) return;
+  syncLenis();
+  const y = Math.max(0, Math.round(landY(t)));
+  if (Math.abs(y - scrollY) < 1) return;
   if (lenis) lenis.scrollTo(y, { immediate: true, force: true });
   else scrollTo(0, y);
+}
+
+// The browser jumps to the #id natively while the page is still loading. Once the page's modules have started (they may
+// open, filter or claim the target first), or once it has loaded if they are slow to come, the target is landed where it
+// points, and landed again whenever late layout moves it: the load, the fonts, a pin that adds its length once its canvas
+// is up (every ScrollTrigger refresh), a module claiming the target. All of that stops the moment the reader moves the
+// page themselves. Under reduced motion it's the same, without Lenis.
+// A reload or a step back through history is the browser's to restore, as it does without scripts: the reader goes back
+// to where they were. Only if that was still where the link points is it landed again (late layout would move it).
+// (that is noted in the history entry itself, as the browser keeps its scroll position there: not in site storage)
+const histState = () => (history.state && typeof history.state === 'object' ? history.state : {});
+function deepLink() {
+  let id = '';
+  try { id = decodeURIComponent(location.hash.slice(1)); } catch {}
+  // whenever the page comes to rest: has the reader moved on from where the address's #id lands? (noted then, as the
+  // browser no longer takes a note once a reload has begun)
+  let rest = 0;
+  addEventListener('scroll', () => {
+    clearTimeout(rest);
+    rest = setTimeout(() => {
+      let at = '';
+      try { at = decodeURIComponent(location.hash.slice(1)); } catch {}
+      const t = at && document.getElementById(at);
+      if (!t || !t.getClientRects().length || t.closest('dialog')) return;
+      const away = Math.abs(landY(t) - scrollY) >= 8;
+      if (Boolean(histState().crestoraAway) !== away) try { history.replaceState({ ...histState(), crestoraAway: away }, ''); } catch {}
+    }, 200);
+  }, { passive: true });
+  // the #id changes without a reload (a typed #hash, a plain link the kit didn't glide, a step back to a link's entry):
+  // the browser jumps natively, measuring targets that a reveal may still be moving, so land it where it points. Not
+  // when the step goes back to a place the reader had moved on from: the browser restores that, as it should.
+  addEventListener('hashchange', () => {
+    if (histState().crestoraAway) return;
+    let at = '';
+    try { at = decodeURIComponent(location.hash.slice(1)); } catch {}
+    const t = at && document.getElementById(at);
+    if (!t) return;
+    const USER = ['wheel', 'touchstart', 'keydown', 'pointerdown'];
+    let over = false;
+    const stop = () => { over = true; for (const e of USER) removeEventListener(e, stop, true); };
+    for (const e of USER) addEventListener(e, stop, { capture: true, passive: true });
+    const again = () => { if (!over) land(t); };
+    requestAnimationFrame(again);
+    setTimeout(() => { again(); stop(); }, 900);   // once a reveal still rising under it has come to rest
+  });
+  if (!id) return;
+  const nav = performance.getEntriesByType?.('navigation')?.[0]?.type;
+  if ((nav === 'reload' || nav === 'back_forward') && histState().crestoraAway) return;
+  const USER = ['wheel', 'touchstart', 'keydown', 'pointerdown'];
+  let live = false, done = false;
+  const again = () => { if (live && !done) land(document.getElementById(id)); };
+  const stop = () => {
+    done = true; reland = null;
+    for (const t of USER) removeEventListener(t, stop, true);
+    ScrollTrigger?.removeEventListener('refresh', again);
+  };
+  for (const t of USER) addEventListener(t, stop, { capture: true, passive: true });
+  const go = () => {
+    if (done) return;
+    if (!live) {
+      live = true;
+      reland = again;
+      ScrollTrigger?.addEventListener('refresh', again);
+    }
+    again();
+    requestAnimationFrame(again);
+  };
+  started.then(go);
+  onLoad(() => {
+    go();
+    document.fonts?.ready.then(again);
+    setTimeout(stop, 10000);   // by then the page has long settled
+  });
 }
 
 // ---- the header: frosted once the page moves, out of the way while reading down, a progress line, a menu ----
@@ -200,31 +374,49 @@ function header() {
     scenes.forEach((s) => io.observe(s));
   }
 
-  // dropdowns: open on hover (with a short grace) and on click/Enter; Escape closes and returns focus
+  // dropdowns: open on hover (with a short grace) and on click/Enter; Escape closes and returns focus.
+  // A mouse that opened one by pointing at it and then clicks its trigger (the natural move) keeps it open: only a
+  // second click, or moving away, closes it. A tap is a click (a finger has no hover). The markup has no aria-expanded
+  // (without scripts CSS opens a dropdown on hover and focus, and nothing could keep it true): it is set, and kept, here.
   for (const item of $$('.nav__item[data-menu]', bar)) {
     const btn = $('.nav__trigger', item);
-    let t = 0;
-    const open = (v) => { item.classList.toggle('is-open', v); btn.setAttribute('aria-expanded', String(v)); };
-    btn.addEventListener('click', () => open(!item.classList.contains('is-open')));
+    let t = 0, byHover = false;
+    const open = (v, hover = false) => { byHover = v && hover; item.classList.toggle('is-open', v); btn.setAttribute('aria-expanded', String(v)); };
+    btn.setAttribute('aria-expanded', 'false');
+    btn.addEventListener('click', (e) => {
+      const isOpen = item.classList.contains('is-open');
+      if (isOpen && byHover && e.detail > 0) { byHover = false; return; }
+      open(!isOpen);
+    });
     if (fine) {
-      item.addEventListener('pointerenter', () => { clearTimeout(t); open(true); });
-      item.addEventListener('pointerleave', () => { t = setTimeout(() => open(false), 160); });
+      item.addEventListener('pointerenter', (e) => { if (e.pointerType === 'touch') return; clearTimeout(t); if (!item.classList.contains('is-open')) open(true, true); });
+      item.addEventListener('pointerleave', (e) => { if (e.pointerType === 'touch') return; t = setTimeout(() => open(false), 160); });
     }
     item.addEventListener('keydown', (e) => { if (e.key === 'Escape') { open(false); btn.focus(); } });
     item.addEventListener('focusout', (e) => { if (!item.contains(e.relatedTarget)) open(false); });
   }
 
-  // the menu on small screens: a real dialog (focus kept inside, Escape, scroll locked)
-  const toggle = $('.header__burger', bar);
+  // the menu on small screens: a real dialog (focus kept inside, Escape, scroll locked). Its close control is the
+  // burger, in the bar above it, so the dialog is not aria-modal (a screen reader that honours that would hide the
+  // burger with the rest of the page); instead everything but the bar and the menu is made inert while it is open.
+  const toggle = $('button.header__burger', bar);
   const panel = $('.menu', bar.parentElement) || $('.menu');
   if (!toggle || !panel) return;
   const focusables = () => $$('a, button', panel).filter((el) => !el.closest('[hidden]'));
+  let stilled = [];
   const set = (v) => {
     bar.classList.toggle('is-open', v);
     panel.classList.toggle('is-open', v);
     toggle.setAttribute('aria-expanded', String(v));
     toggle.setAttribute('aria-label', v ? 'Close menu' : 'Open menu');
     panel.inert = !v;
+    if (v) {
+      stilled = [...document.body.children].filter((el) => !el.inert && !el.contains(bar) && !el.contains(panel) && !el.matches('script, style'));
+      for (const el of stilled) el.inert = true;
+    } else {
+      for (const el of stilled) el.inert = false;
+      stilled = [];
+    }
     if (v) { lockScroll(); setTimeout(() => focusables()[0]?.focus(), 60); } else unlockScroll();
   };
   panel.inert = true;
@@ -242,17 +434,23 @@ function header() {
   matchMedia('(min-width: 1024px)').addEventListener('change', (m) => { if (m.matches && panel.classList.contains('is-open')) set(false); });
 }
 
-// ---- in-page anchors glide (and move focus to where they land) ----
+// ---- in-page anchors glide to where a deep link would land (and move focus there) ----
+// A link that opens a dialog ([data-dialog-open]) is the dialog module's: it doesn't glide anywhere.
 function anchors() {
+  const page = (p) => p.replace(/\/index\.html$/, '/');
   document.addEventListener('click', (e) => {
     const a = e.target.closest('a[href*="#"]');
-    if (!a || e.defaultPrevented || e.metaKey || e.ctrlKey || e.shiftKey || e.button) return;
+    if (!a || e.defaultPrevented || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button) return;
+    if (a.matches('[data-dialog-open]') || (a.target && a.target !== '_self') || a.hasAttribute('download')) return;
     const url = new URL(a.href, location.href);
-    if (url.pathname !== location.pathname || !url.hash || url.hash === '#') return;
-    const t = document.getElementById(decodeURIComponent(url.hash.slice(1)));
-    if (!t) return;
+    if (page(url.pathname) !== page(location.pathname) || !url.hash || url.hash === '#') return;
+    let id = '';
+    try { id = decodeURIComponent(url.hash.slice(1)); } catch { return; }
+    const t = document.getElementById(id);
+    if (!t || !t.getClientRects().length) return;
     e.preventDefault();
-    scrollToTarget(t);
+    syncLenis();
+    scrollToTarget(landY(t));
     history.pushState(null, '', url.hash);
     if (!t.hasAttribute('tabindex')) t.setAttribute('tabindex', '-1');
     t.focus({ preventScroll: true });
@@ -290,7 +488,8 @@ function reveals() {
     const from = FROM[el.dataset.reveal] || FROM.up;
     gsap.set(el, from);
     ScrollTrigger.create({
-      trigger: el, start: 'top 88%', once: true,
+      // measured from where it rests, not from where it waits (28 px lower)
+      trigger: el, start: from.y ? `top-=${from.y} 88%` : 'top 88%', once: true,
       onEnter: () => gsap.to(el, { x: 0, y: 0, scale: 1, opacity: 1, duration: 1.1, ease: 'expo.out', delay: parseFloat(el.dataset.delay || 0), clearProps: 'transform,opacity', onComplete: () => el.classList.add('is-in') }),
     });
   }
@@ -305,39 +504,109 @@ function reveals() {
   root.classList.add('is-ready');
 }
 
-// Lines are measured in the real font: split once the fonts are in (they're preloaded, so this is a frame or two).
-// Until then the heading is held hidden, so it never shows unsplit and then jumps.
+// Lines are measured in the real font: a heading is split once the face it is set in has loaded (it's preloaded, so
+// this is a frame or two), and held hidden until then, so it never shows unsplit and then jumps. Lines measured in a
+// stand-in face would break wrongly once the real one arrives (a line's words wrapping inside its mask), so a face that
+// is slow to come doesn't hold the headings back: after 1.5 s they show as plain text, and only those still below the
+// screen are split when it arrives. For the same reason a heading that hasn't risen yet is split again when the width
+// changes.
+const SPLIT = { type: 'lines', mask: 'lines', linesClass: 'split-line' };
 function splits() {
   if (!SplitText) return;
   const els = $$('[data-split]');
   if (!els.length) return;
   gsap.set(els, { autoAlpha: 0 });
-  const go = () => { gsap.set(els, { autoAlpha: 1 }); els.forEach(split); };
-  let done = false;
-  const once = () => { if (!done) { done = true; go(); } };
-  (document.fonts?.ready || Promise.resolve()).then(once);
-  setTimeout(once, 1500);   // a font that never arrives doesn't hold a heading back for long
+  const font = (el) => { const cs = getComputedStyle(el); return `${cs.fontStyle} ${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`; };
+  // the headings' own faces (asked for here, in case nothing has asked yet), then whatever else is still loading
+  const faces = document.fonts?.load
+    ? Promise.all(els.map((el) => document.fonts.load(font(el), el.textContent.trim() || 'A').catch(() => null))).then(() => document.fonts.ready)
+    : Promise.resolve();
+  let late = false;
+  const timer = setTimeout(() => { late = true; gsap.set(els, { autoAlpha: 1 }); }, 1500);
+  faces.then(() => {
+    clearTimeout(timer);
+    gsap.set(els, { autoAlpha: 1 });
+    for (const el of els) if (!late || el.getBoundingClientRect().top > innerHeight) split(el);
+  });
+  let w = innerWidth, t = 0;
+  addEventListener('resize', () => {
+    clearTimeout(t);
+    t = setTimeout(() => {
+      if (innerWidth === w) return;
+      w = innerWidth;
+      // a new width can ask for faces (or subsets) not needed before: measure once they are in
+      (document.fonts?.ready || Promise.resolve()).then(() => {
+        for (const el of els) {
+          const st = el._split;
+          if (!st || st.risen) continue;
+          st.s.revert();
+          st.s = new SplitText(el, SPLIT);
+          gsap.set(st.s.lines, { yPercent: 110 });
+        }
+      });
+    }, 120);
+  });
 }
 function split(el) {
-  const s = new SplitText(el, { type: 'lines', mask: 'lines', linesClass: 'split-line' });
-  gsap.set(s.lines, { yPercent: 110 });
+  if (el._split) return;
+  const st = { s: new SplitText(el, SPLIT), risen: false };
+  el._split = st;
+  gsap.set(st.s.lines, { yPercent: 110 });
   ScrollTrigger.create({
     trigger: el, start: 'top 88%', once: true,
-    onEnter: () => gsap.to(s.lines, { yPercent: 0, duration: 1.25, ease: 'expo.out', stagger: 0.08, delay: parseFloat(el.dataset.delay || 0), onComplete: () => s.revert() }),
+    onEnter: () => {
+      st.risen = true;
+      gsap.to(st.s.lines, { yPercent: 0, duration: 1.25, ease: 'expo.out', stagger: 0.08, delay: parseFloat(el.dataset.delay || 0), onComplete: () => st.s.revert() });
+    },
   });
 }
 
+// a number's text, with any % set in Inter (.odo__u: Michroma draws % as "o/o")
+function paintNumber(el, text) {
+  if (!text.includes('%')) { el.textContent = text; return; }
+  el.replaceChildren(...text.split(/(%)/).filter(Boolean).map((s) => {
+    if (s !== '%') return s;
+    const u = document.createElement('span');
+    u.className = 'odo__u';
+    u.textContent = s;
+    return u;
+  }));
+}
+// (as with the odometer, a screen reader gets the final number as text, not the count in flight)
 export function countTo(el, to, { decimals = 0, prefix = '', suffix = '', grouping = true, duration = 1.8 } = {}) {
   const n = { v: 0 };
   const fmt = (v) => formatNumber(v, { decimals, prefix, suffix, grouping });
-  el.setAttribute('aria-label', fmt(to));
-  gsap.to(n, { v: to, duration, ease: 'power3.out', onUpdate: () => { el.textContent = fmt(n.v); } });
+  const sr = document.createElement('span');
+  sr.className = 'sr';
+  sr.textContent = fmt(to);
+  const shown = document.createElement('span');
+  shown.setAttribute('aria-hidden', 'true');
+  paintNumber(shown, fmt(0));
+  el.replaceChildren(sr, shown);
+  gsap.to(n, { v: to, duration, ease: 'power3.out', onUpdate: () => paintNumber(shown, fmt(n.v)) });
+}
+
+// Numbers start when they are in view: wholly on screen, or with their top above the screen's lowest tenth. An
+// IntersectionObserver rather than a ScrollTrigger: it follows the number's real box as it changes, so one low on the
+// first screen that a reveal is still carrying up into place starts as soon as it gets there, without waiting for a
+// scroll.
+function whenSeen(el, fn) {
+  const io = new IntersectionObserver((entries) => {
+    for (const e of entries) {
+      const h = e.rootBounds?.height || innerHeight;
+      if (!e.isIntersecting || (e.intersectionRatio < 0.98 && e.boundingClientRect.top > h * 0.9)) continue;
+      io.disconnect();
+      fn();
+      return;
+    }
+  }, { threshold: [0, 0.25, 0.5, 0.75, 0.98] });
+  io.observe(el);
 }
 function counters() {
   for (const el of $$('[data-count]')) {
     const to = parseFloat(el.dataset.count);
     const opts = numberOpts(el);
-    ScrollTrigger.create({ trigger: el, start: 'top 90%', once: true, onEnter: () => countTo(el, to, opts) });
+    whenSeen(el, () => countTo(el, to, opts));
   }
 }
 
@@ -348,7 +617,7 @@ function odometers() {
     const opts = numberOpts(el);
     // built now, every column at 0 (the number's own shape), and rolled up when seen
     odometer(el, to, { ...opts, hold: true });
-    ScrollTrigger.create({ trigger: el, start: 'top 90%', once: true, onEnter: () => odometer(el, to, opts) });
+    whenSeen(el, () => odometer(el, to, opts));
   }
 }
 

@@ -3,9 +3,9 @@
 // front, and Night Bloom's chip pops onto the Spark thread and rides it. The pointer is a lamp that parts the threads;
 // scrolling through the hero calms them into one tight ribbon that bends away to the bottom left.
 // Without WebGL the hero keeps its SVG poster (the chip sits on the poster's thread); under reduced motion the night
-// is drawn once, at rest.
+// is drawn once, at rest. Where it moves, a pause button (bottom right) holds it.
 import { gsap, lenis, clamp } from '../core.js';
-import { getLanes } from '../gl/lanes.js';
+import { getLanes, pauseButton } from '../gl/lanes.js';
 
 const CHIP_X = 640;   // where the chip rides, in the threads' design px
 
@@ -72,6 +72,8 @@ export default async function init({ calm, still }) {
   addEventListener('resize', measure);
   const ride = () => { riding = true; chip?.classList.add('is-riding', 'is-on'); measure(); };
   lanes.attach('hero', hero, { frame, onFrame });
+  // where the threads move, the reader can hold them (it holds the #features ribbon too: one canvas)
+  if (!quiet) hero.append(pauseButton(lanes, 'home-hero__pause'));
 
   if (quiet || !gsap) {
     Object.assign(st, { fade: 1, reveal: 1.2 });
