@@ -5,6 +5,13 @@
 import { calm, on, once, emit, whenVisible, loop, fmt, ScrollTrigger } from './core.js';
 import * as V from './viz.js';
 
+// A status line for screen readers: emptied first, so the same words said twice are heard twice.
+function say(el, text) {
+  if (!el) return;
+  el.textContent = '';
+  setTimeout(() => { el.textContent = text; }, 120);
+}
+
 function running(el, tick) {
   const run = loop(tick);
   if (calm) { tick(0.016); return run; }
@@ -20,6 +27,7 @@ export function init() {
     const title = card.querySelector('[data-threat-title]');
     const time = card.querySelector('.widget__time');
     const risk = card.querySelector('[data-risk]');
+    const status = card.querySelector('[data-threat-status]'); // the card's text can't be live (its clock ticks), so this tells
     let clockMin = 2 * 60 + 45; let acc = 0;
     running(card, (dt) => {
       rd.tick(dt);
@@ -30,12 +38,14 @@ export function init() {
       card.classList.add('is-alarm');
       title.textContent = 'Vault Tampering'; time.textContent = 'Just now';
       risk.lastChild.textContent = 'High';
+      say(status, 'Alarm: vault tampering detected, high risk.');
       card.animate?.([{ transform: 'translateX(0)' }, { transform: 'translateX(-4px)' }, { transform: 'translateX(4px)' }, { transform: 'translateX(-2px)' }, { transform: 'translateX(0)' }], { duration: 380, easing: 'ease-out', composite: 'add' });
     });
     on('vault:close', () => {
       card.classList.remove('is-alarm');
       title.textContent = 'Suspicious Login'; time.textContent = V.clock(clockMin);
       risk.lastChild.textContent = 'Risk';
+      say(status, 'Alarm cleared.');
     });
     // the face in the card spins the wheel for those who can't drag it. Where there is no wheel to turn (no WebGL,
     // or reduced motion), it raises the alarm itself.
@@ -60,7 +70,11 @@ export function init() {
     const alert = panel.querySelector('[data-alert]');
     let shown = false; whenVisible(panel, (v) => { shown = v; });
     const ping = () => { if (!alert) return; alert.classList.remove('is-ping'); void alert.offsetWidth; alert.classList.add('is-ping'); };
-    alert?.addEventListener('click', () => { ping(); mx.heat(); dg.jump(); setTimeout(() => mx.calm(), 2400); });
+    const told = panel.querySelector('[data-alert-status]'); const what = panel.querySelector('[data-p="aTitle"]');
+    alert?.addEventListener('click', () => {
+      ping(); mx.heat(); dg.jump(); setTimeout(() => mx.calm(), 2400);
+      say(told, `Alert raised on the ${what ? what.textContent : 'matrix'}.`); // what it does is drawn
+    });
     on('tab', ({ index }) => { tl.start(14 * 60 + 27 + index * 41); dg.jump(); });
     if (!calm) setInterval(() => { if (shown) ping(); }, 5200);
   }

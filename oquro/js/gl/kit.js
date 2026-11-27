@@ -4,7 +4,7 @@
 // the pointer), rocks, the vault door, a chain link, a laptop and a soft sky to light them.
 
 import * as THREE from '../../vendor/three.min.js';
-import { GLSL_NOISE, GLSL_BUMP, makeNoise3, fbmJS } from './noise.js';
+import { GLSL_NOISE, GLSL_BUMP, makeNoise3, fbmJS, fbm3JS } from './noise.js';
 
 export { THREE };
 export const noise3 = makeNoise3(11);
@@ -24,14 +24,17 @@ export const shared = {
 const col = (c) => (c instanceof THREE.Color ? c : new THREE.Color(c));
 
 // ─────────────────────────── surfaces ───────────────────────────
-// The moss mask is one function, used by the surface (to paint moss green under the shells) and by the shells.
-const GLSL_MOSS = /* glsl */ `
+// The moss mask is one function, used by the surface (to paint moss green under the shells) and by the shells. Its
+// noise n = fbm3(obj * uMossScale + 3.7) the surface works out per pixel; the shells have it baked (see mossNoise).
+const GLSL_MOSS_N = /* glsl */ `
 uniform float uMoss; uniform float uMossUp; uniform float uMossY; uniform float uMossScale; uniform vec3 uMossDir;
-float mossMask(vec3 obj, vec3 wn){
-  float n = fbm3(obj * uMossScale + 3.7);
+float mossMaskN(float n, vec3 obj, vec3 wn){
   float facing = dot(wn, normalize(uMossDir));
   return smoothstep(-0.05, 0.4, n + (facing - 0.2) * uMossUp + obj.y * uMossY + uMoss - 0.5);
 }
+`;
+const GLSL_MOSS = /* glsl */ `${GLSL_MOSS_N}
+float mossMask(vec3 obj, vec3 wn){ return mossMaskN(fbm3(obj * uMossScale + 3.7), obj, wn); }
 `;
 
 const mossUniforms = (o = {}) => ({
@@ -68,8 +71,7 @@ export function surfaceMaterial(o = {}) {
     sh.vertexShader = sh.vertexShader
       .replace('#include <common>', `#include <common>
 varying vec3 vObj; varying vec3 vWN; varying vec4 vField; uniform vec3 uSeed; uniform float uScale; uniform float uTone;
-${GLSL_NOISE}
-${GLSL_MOSS}`)
+${GLSL_NOISE}`)
       // (three runs defaultnormal_vertex before begin_vertex: the normal first, then the fields that need both)
       .replace('#include <defaultnormal_vertex>', `#include <defaultnormal_vertex>
 #ifdef USE_INSTANCING
@@ -82,7 +84,7 @@ vObj = position * uScale + uSeed;
 #ifdef USE_INSTANCING
 vObj += instanceMatrix[3].xyz * 1.7;
 #endif
-vField = vec4(fbm3(vObj * uTone), snoise(vObj * 1.7 + 4.0), mossMask(vObj, vWN), snoise(vObj * 7.0 + 2.0));`);
+vField = vec4(fbm3(vObj * uTone), snoise(vObj * 1.7 + 4.0), 0.0, snoise(vObj * 7.0 + 2.0));   // (z free: the moss is per pixel)`);
     sh.fragmentShader = sh.fragmentShader
       .replace('#include <common>', `#include <common>
 varying vec3 vObj; varying vec3 vWN; varying vec4 vField;
@@ -113,11 +115,22 @@ float sH = (-sPit * 0.9 + sGrain * 0.22 * uGrain + sTone * 0.35 + sStreak * uStr
   return m;
 }
 
-/** Moss as shells over a mesh's geometry: `layers` thin copies pushed out along the normals, drawn in one instanced call. */
+// The moss mask's noise at every vertex, as GLSL_MOSS works it out: it is the same for every layer, so the shells
+// look it up instead of working it out again per layer (from the geometry as it is now, and seed, scale, mossScale).
+function mossNoise(geometry, o) {
+  const pos = geometry.attributes.position, n = new Float32Array(pos.count);
+  const [sx, sy, sz] = o.seed || [0, 0, 0], s = o.scale ?? 1, k = o.mossScale ?? 2.4;
+  for (let i = 0; i < pos.count; i++) n[i] = fbm3JS((pos.getX(i) * s + sx) * k + 3.7, (pos.getY(i) * s + sy) * k + 3.7, (pos.getZ(i) * s + sz) * k + 3.7);
+  return new THREE.Float32BufferAttribute(n, 1);
+}
+
+/** Moss as shells over a mesh's geometry: `layers` thin copies pushed out along the normals, drawn in one instanced call.
+ *  Shape the geometry first: its moss noise is worked out here (seed, scale and mossScale are fixed from then on). */
 export function mossShells(geometry, o = {}) {
   const g = new THREE.InstancedBufferGeometry();
   g.index = geometry.index;
   for (const k of ['position', 'normal', 'uv']) if (geometry.attributes[k]) g.setAttribute(k, geometry.attributes[k]);
+  g.setAttribute('aMossN', mossNoise(geometry, o));   // on the shells only: the source's attributes are shared
   g.instanceCount = o.layers ?? 18;
   g.boundingSphere = geometry.boundingSphere?.clone() || null;
   if (!g.boundingSphere) { geometry.computeBoundingSphere(); g.boundingSphere = geometry.boundingSphere.clone(); }
@@ -139,23 +152,23 @@ export function mossShells(geometry, o = {}) {
     uniforms: u,
     vertexShader: /* glsl */ `
       uniform float uLayers, uThick, uDroop, uScale; uniform vec3 uSeed;
-      varying vec3 vObj; varying vec3 vWN; varying vec2 vUv; varying float vLayer; varying float vMask;
-      ${GLSL_NOISE}
-      ${GLSL_MOSS}
+      attribute float aMossN;
+      varying vec3 vWN; varying vec2 vUv; varying float vLayer; varying float vMask;
+      ${GLSL_MOSS_N}
       void main(){
         float layer = (float(gl_InstanceID) + 1.0) / uLayers;
         vec3 n = normalize(normal);
         vec3 p = position + n * uThick * layer;
-        vObj = position * uScale + uSeed; vUv = uv; vLayer = layer;
+        vUv = uv; vLayer = layer;
         vWN = normalize(mat3(modelMatrix) * n);
-        vMask = mossMask(vObj, vWN);
+        vMask = mossMaskN(aMossN, position * uScale + uSeed, vWN);
         vec4 wp = modelMatrix * vec4(p, 1.0);
         wp.y -= uDroop * layer * layer;
         gl_Position = projectionMatrix * viewMatrix * wp;
       }`,
     fragmentShader: /* glsl */ `
       uniform vec3 uMossA, uMossB, uTip, uSunDir, uSunCol, uSkyCol, uGroundCol; uniform vec2 uDensity; uniform float uFill, uLight;
-      varying vec3 vObj; varying vec3 vWN; varying vec2 vUv; varying float vLayer; varying float vMask;
+      varying vec3 vWN; varying vec2 vUv; varying float vLayer; varying float vMask;
       float hash12(vec2 p){ vec3 p3 = fract(vec3(p.xyx) * 0.1031); p3 += dot(p3, p3.yzx + 33.33); return fract((p3.x + p3.y) * p3.z); }
       vec2 hash22(vec2 p){ vec3 p3 = fract(vec3(p.xyx) * vec3(0.1031, 0.1030, 0.0973)); p3 += dot(p3, p3.yzx + 33.33); return fract((p3.xx + p3.yz) * p3.zy); }
       void main(){

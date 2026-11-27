@@ -57,17 +57,22 @@ export function init() {
   if (!canvas || !gl) return;
   const ctx = canvas.getContext('webgl2', { antialias: false, alpha: false, depth: false, powerPreference: 'low-power', preserveDrawingBuffer: false });
   if (!ctx) return;
+  // built again when a lost context comes back (iOS drops them in the background, GPUs reset)
+  let uRes, uTime, uSoft, uScroll, uScale, uRip;
   const sh = (type, src) => { const s = ctx.createShader(type); ctx.shaderSource(s, src); ctx.compileShader(s); if (!ctx.getShaderParameter(s, ctx.COMPILE_STATUS)) throw new Error(ctx.getShaderInfoLog(s)); return s; };
-  const prog = ctx.createProgram();
-  ctx.attachShader(prog, sh(ctx.VERTEX_SHADER, VS)); ctx.attachShader(prog, sh(ctx.FRAGMENT_SHADER, FS));
-  ctx.linkProgram(prog);
-  if (!ctx.getProgramParameter(prog, ctx.LINK_STATUS)) throw new Error(ctx.getProgramInfoLog(prog));
-  ctx.useProgram(prog);
-  const buf = ctx.createBuffer(); ctx.bindBuffer(ctx.ARRAY_BUFFER, buf);
-  ctx.bufferData(ctx.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), ctx.STATIC_DRAW);
-  const loc = ctx.getAttribLocation(prog, 'p'); ctx.enableVertexAttribArray(loc); ctx.vertexAttribPointer(loc, 2, ctx.FLOAT, false, 0, 0);
-  const U = (n) => ctx.getUniformLocation(prog, n);
-  const uRes = U('uRes'), uTime = U('uTime'), uSoft = U('uSoft'), uScroll = U('uScroll'), uScale = U('uScale'), uRip = U('uRip');
+  const setup = () => {
+    const prog = ctx.createProgram();
+    ctx.attachShader(prog, sh(ctx.VERTEX_SHADER, VS)); ctx.attachShader(prog, sh(ctx.FRAGMENT_SHADER, FS));
+    ctx.linkProgram(prog);
+    if (!ctx.getProgramParameter(prog, ctx.LINK_STATUS)) throw new Error(ctx.getProgramInfoLog(prog));
+    ctx.useProgram(prog);
+    ctx.bindBuffer(ctx.ARRAY_BUFFER, ctx.createBuffer());
+    ctx.bufferData(ctx.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), ctx.STATIC_DRAW);
+    const loc = ctx.getAttribLocation(prog, 'p'); ctx.enableVertexAttribArray(loc); ctx.vertexAttribPointer(loc, 2, ctx.FLOAT, false, 0, 0);
+    const U = (n) => ctx.getUniformLocation(prog, n);
+    uRes = U('uRes'); uTime = U('uTime'); uSoft = U('uSoft'); uScroll = U('uScroll'); uScale = U('uScale'); uRip = U('uRip');
+  };
+  setup();
 
   const SCALE = 0.5;
   let w = 0, h = 0;
@@ -75,27 +80,34 @@ export function init() {
     w = Math.max(1, Math.round(innerWidth * SCALE)); h = Math.max(1, Math.round(innerHeight * SCALE));
     canvas.width = w; canvas.height = h; ctx.viewport(0, 0, w, h);
   };
-  resize(); addEventListener('resize', () => { resize(); if (!run.on) draw(); });
+  // a new size clears the canvas and the loop may skip (or not run) this frame: paint now, or a phone's toolbar
+  // sliding away flashes it black
+  resize(); addEventListener('resize', () => { resize(); draw(); });
 
-  // what shows: the light sections are see-through, so the water shows wherever one is on screen
-  const lights = [...document.querySelectorAll('[data-theme="light"]')];
+  // what shows: the light sections are see-through, so the water runs only while one is on screen (or nearly: it
+  // starts a little early, so a section never comes in over an old frame). Watched, not measured every frame.
+  const lights = document.querySelectorAll('[data-theme="light"]');
+  const vis = new Set(); let lost = false;
+  const want = () => !calm && !lost && vis.size > 0 && !document.hidden;
   const hero = document.querySelector('.hero');
-  const showing = () => lights.some((el) => { const r = el.getBoundingClientRect(); return r.bottom > 0 && r.top < innerHeight; });
+  let hh = hero ? hero.offsetHeight : innerHeight;
+  if (hero) new ResizeObserver(() => { hh = hero.offsetHeight; }).observe(hero);
 
-  // ripples: where the pointer goes, the water rings
+  // ripples: where the pointer goes, the water rings (only while it runs: its clock stops with it, and rings dropped
+  // under a dark section would play out on the next light one)
   const rip = new Float32Array(32); let ri = 0; let lastX = -1e3, lastY = -1e3, lastT = 0;
   let time = 0;
   const addRipple = (x, y, k) => { rip.set([x, y, time, k], ri * 4); ri = (ri + 1) % 8; };
   if (fine && !calm) on('pointer', (p) => {
-    if (!p.active) return;
+    if (!p.active || !run.on) return;
     const d = Math.hypot(p.x - lastX, p.y - lastY);
     if (d > 90 && time - lastT > 0.12) { addRipple(p.x, p.y, clamp(d / 400, 0.25, 1)); lastX = p.x; lastY = p.y; lastT = time; }
   });
-  addEventListener('pointerdown', (e) => { if (!calm) addRipple(e.clientX, e.clientY, 1.4); }, { passive: true });
+  addEventListener('pointerdown', (e) => { if (run.on) addRipple(e.clientX, e.clientY, 1.4); }, { passive: true });
 
   let soft = 0;
   function draw() {
-    const hh = hero ? hero.offsetHeight : innerHeight;
+    if (lost) return;
     soft = clamp(scroll.y / (hh * 0.9), 0, 1);
     ctx.uniform2f(uRes, w, h); ctx.uniform1f(uTime, time); ctx.uniform1f(uSoft, soft); ctx.uniform1f(uScroll, scroll.y); ctx.uniform1f(uScale, SCALE);
     ctx.uniform4fv(uRip, rip);
@@ -104,16 +116,25 @@ export function init() {
   let skip = 0;
   const run = loop((dt) => {
     time += dt;
-    if (!showing()) return;
     // a low-end machine draws every other frame: the water moves slowly enough not to show it
     if (gl.tier < 2 && (skip ^= 1)) return;
     draw();
   });
   canvas.classList.add('is-on');
   draw();
-  if (!calm) {
-    run.set(!document.hidden);
-    document.addEventListener('visibilitychange', () => run.set(!document.hidden));
-  }
-  on('scroll', () => { if (calm) draw(); });
+  const io = new IntersectionObserver((es) => {
+    const was = vis.size;
+    for (const e of es) { if (e.isIntersecting) vis.add(e.target); else vis.delete(e.target); }
+    if (vis.size && !was) draw();   // back in view: fresh at once, whatever the loop's skip
+    run.set(want());
+  }, { rootMargin: '25% 0px' });
+  lights.forEach((el) => io.observe(el));
+  document.addEventListener('visibilitychange', () => run.set(want()));
+  on('scroll', () => { if (calm && vis.size) draw(); });
+  // a lost context comes back only if asked to; meanwhile the plain sheen under the canvas shows
+  canvas.addEventListener('webglcontextlost', (e) => { e.preventDefault(); lost = true; run.set(false); canvas.classList.remove('is-on'); });
+  canvas.addEventListener('webglcontextrestored', () => {
+    try { setup(); } catch (e) { return; }   // lost again while rebuilding: the next restore tries again
+    lost = false; resize(); draw(); canvas.classList.add('is-on'); run.set(want());
+  });
 }

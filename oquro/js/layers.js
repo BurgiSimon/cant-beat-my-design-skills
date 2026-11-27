@@ -1,8 +1,8 @@
 // Security across every layer: an accordion that walks itself through the four layers while it is on screen (a line
-// under the open one fills as it waits), and two live cards that turn over to show each layer's numbers. The garden
-// behind them moves its camera to match (scenes.js listens for "layer").
+// under the open one fills as it waits) until someone opens one or presses pause, and two live cards that turn over to
+// show each layer's numbers. The garden behind them moves its camera to match (scenes.js listens for "layer").
 
-import { calm, gsap, emit, whenVisible, loop, fmt } from './core.js';
+import { calm, gsap, emit, whenVisible, loop, fmt, autoplay } from './core.js';
 import * as V from './viz.js';
 
 const LAYERS = [
@@ -36,7 +36,7 @@ export function init() {
   const sp = V.spark(cards.b.querySelector('[data-spark]'), { seed: 3 });
   g.set(LAYERS[0].a.gauge);
 
-  let current = 0; let wait = 0; let paused = false; let visible = false; let swapping = false;
+  let current = 0; let wait = 0; let visible = false; let swapping = false;
   let big = LAYERS[0].a.big;
 
   const fill = (card, data) => {
@@ -84,21 +84,19 @@ export function init() {
       .fromTo(cards.a.querySelector('[data-f="big"]'), { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.5 }, '-=0.5');
   }
 
+  // a layer someone opened stays open
+  const bars = items.map((it) => it.querySelector('.acc__bar'));
+  const play = calm ? null : autoplay(root.closest('section'), () => { wait = 0; for (const b of bars) b.style.transform = 'scaleX(0)'; });
   items.forEach((it, i) => {
     const btn = it.querySelector('.acc__btn');
-    btn.addEventListener('click', () => open(i));
+    btn.addEventListener('click', () => { play?.stop(); open(i); });
     btn.addEventListener('keydown', (e) => {
       const k = { ArrowDown: 1, ArrowUp: -1 }[e.key];
       if (!k) return;
-      e.preventDefault();
+      e.preventDefault(); play?.stop();
       items[(i + k + items.length) % items.length].querySelector('.acc__btn').focus();
     });
   });
-  const section = root.closest('section');
-  section.addEventListener('pointerenter', () => { paused = true; });
-  section.addEventListener('pointerleave', () => { paused = false; });
-  section.addEventListener('focusin', () => { paused = true; });
-  section.addEventListener('focusout', () => { paused = false; });
 
   // the firewall keeps counting
   let tickAcc = 0;
@@ -109,9 +107,9 @@ export function init() {
       tickAcc = 0; big += 1 + Math.floor(Math.random() * 3);
       cards.a.querySelector('[data-f="big"]').textContent = fmt(big);
     }
-    if (!paused && visible) {
+    if (play && !play.held() && visible) {
       wait += dt;
-      items[current].querySelector('.acc__bar').style.transform = `scaleX(${Math.min(1, wait / DWELL).toFixed(4)})`;
+      bars[current].style.transform = `scaleX(${Math.min(1, wait / DWELL).toFixed(4)})`;
       if (wait >= DWELL) open((current + 1) % items.length);
     }
   });

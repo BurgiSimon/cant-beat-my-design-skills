@@ -113,6 +113,25 @@ export function loop(fn) {
   };
 }
 
+// ---- a widget that plays through on its own: it holds while a mouse is over its section or focus is in it, and stops
+// for good once someone picks something or presses its pause button ([data-autoplay], aria-pressed). held() is asked
+// each frame; stop() is for a pick; reset() clears the widget's progress whenever it stops or starts again. ----
+export function autoplay(section, reset) {
+  const btn = section.querySelector('[data-autoplay]');
+  let hovered = false; let stopped = false;
+  const set = (v) => {
+    stopped = v; reset();
+    if (btn) { btn.setAttribute('aria-pressed', String(v)); btn.querySelector('use')?.setAttribute('href', v ? '#i-play' : '#i-pause'); }
+  };
+  section.addEventListener('pointerenter', (e) => { if (e.pointerType === 'mouse') hovered = true; });
+  section.addEventListener('pointerleave', (e) => { if (e.pointerType === 'mouse') hovered = false; });
+  if (btn) { btn.hidden = false; btn.addEventListener('click', () => { set(!stopped); hovered = false; }); } // play means now
+  return {
+    held: () => stopped || hovered || (section.contains(document.activeElement) && document.activeElement !== btn),
+    stop: () => { if (!stopped) set(true); },
+  };
+}
+
 // ---- small maths ----
 export const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
 export const lerp = (a, b, t) => a + (b - a) * t;

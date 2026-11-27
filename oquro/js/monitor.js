@@ -41,23 +41,34 @@ export function init() {
   const canvas = document.querySelector('[data-monitor-canvas]');
   if (!fig || !canvas) return;
   const ctx = canvas.getContext('2d', { alpha: false });
-  let W = 0, H = 0, S = 1, img = null, data = null, figA = null, strapA = null, phoneA = null;
+  // per size: the figure's, the strap's and the phone's coverage (a byte a pixel) and the terms that only change by
+  // column, so a frame does as little as it can per pixel
+  let W = 0, H = 0, S = 1, img = null, data = null, figA = null, strapA = null, phoneA = null, colG = null, colV = null, tri = null;
 
   function layout() {
-    const r = canvas.getBoundingClientRect();
+    // the box's own size: getBoundingClientRect would also count the parallax's scale on the canvas
     const q = Math.min(1.5, devicePixelRatio || 1);
-    W = Math.max(1, Math.round(r.width * q)); H = Math.max(1, Math.round(r.height * q));
-    canvas.width = W; canvas.height = H; S = W / 583;
+    const w = Math.max(1, Math.round(canvas.clientWidth * q)), h = Math.max(1, Math.round(canvas.clientHeight * q));
+    if (img && w === W && h === H) return false;
+    W = w; H = h; canvas.width = W; canvas.height = H; S = W / 583;
     const off = document.createElement('canvas'); off.width = W; off.height = H;
     const g = off.getContext('2d', { willReadFrequently: true });
-    const read = (draw) => { g.setTransform(1, 0, 0, 1, 0, 0); g.clearRect(0, 0, W, H); g.setTransform(S, 0, 0, S, 0, 0); draw(g); return g.getImageData(0, 0, W, H).data; };
+    const read = (draw) => {
+      g.setTransform(1, 0, 0, 1, 0, 0); g.clearRect(0, 0, W, H); g.setTransform(S, 0, 0, S, 0, 0); draw(g);
+      const d = g.getImageData(0, 0, W, H).data, a = new Uint8Array(W * H);
+      for (let p = 0; p < a.length; p++) a[p] = d[p * 4 + 3];
+      return a;
+    };
     figA = read(drawFigure); strapA = read(drawStrap); phoneA = read(drawPhone);
+    colG = new Float64Array(W); colV = new Float64Array(W); tri = new Float64Array(W);
+    for (let x = 0; x < W; x++) { colG[x] = (x / W - 0.53) * 14; const vx = x / W - 0.5; colV[x] = vx * vx; }
     img = ctx.createImageData(W, H); data = img.data;
+    for (let i = 3; i < data.length; i += 4) data[i] = 255;
+    return true;
   }
 
   // a fast xorshift for the grain
   let seed = 1234567;
-  const rnd = () => { seed ^= seed << 13; seed ^= seed >>> 17; seed ^= seed << 5; return ((seed >>> 0) & 0xffff) / 0xffff; };
 
   let t = 0; let glitchAt = 2.5; let glitchY = 0, glitchH = 0, glitchDx = 0;
   const ptr = { x: -1e4, y: -1e4, k: 0 };
@@ -66,62 +77,72 @@ export function init() {
     fig.addEventListener('pointerleave', () => { ptr.x = ptr.y = -1e4; });
   }
 
-  function draw() {
-    if (!data) return;
+  // a frame is fixed when it starts (time, pointer, glitch) and then painted in bands of rows
+  const fr = { t: 0, x: -1e4, y: -1e4, gy: 0, gh: 0, gdx: 0 };
+  function begin() {
+    fr.t = t; fr.x = ptr.x; fr.y = ptr.y; fr.gy = glitchY; fr.gh = glitchH; fr.gdx = glitchDx;
+    const split = Math.round(W * 0.53), period = 6.2 * S, phase = t * 7 * S;
+    for (let x = 0; x < split; x++) tri[x] = Math.abs(((x + phase) / period) % 1 - 0.5) * 2;  // the zigzag, by column
+  }
+  function paint(y0, y1) {
     const split = Math.round(W * 0.53);
-    const rowH = 7.2 * S, amp = 2.3 * S, period = 6.2 * S, lineW = 1.15 * S;
-    const phase = t * 7 * S;
-    const scan = ((t * 0.22) % 1.4) * H;
-    const R = 70 * S;
-    for (let y = 0; y < H; y++) {
-      const inGlitch = glitchH > 0 && y >= glitchY && y < glitchY + glitchH;
-      const vy = y / H;
-      for (let x = 0; x < W; x++) {
-        const sx = inGlitch ? clamp(x - glitchDx, 0, W - 1) : x;
-        const i = (y * W + x) * 4; const si = (y * W + sx) * 4;
-        const n = rnd();
-        let r, g, b;
+    const rowH = 7.2 * S, amp = 2.3 * S, lineW = 1.15 * S;
+    const scan = ((fr.t * 0.22) % 1.4) * H;
+    const R = 70 * S, RR = R * R, soft = 0.9 * S, half = lineW * 0.5, sw = 6 * S;
+    const px = fr.x, py = fr.y, gy = fr.gy, gh = fr.gh, gdx = fr.gdx;
+    let sd = seed;
+    for (let y = y0, i = y0 * W * 4; y < y1; y++) {
+      const inGlitch = gh > 0 && y >= gy && y < gy + gh;
+      const vy = y / H, rowG = 60 + (1 - vy) * 10, figV = 20 + (1 - vy) * 14, vv = (vy - 0.5) * (vy - 0.5);
+      const sl = Math.max(0, 1 - Math.abs(y - scan) / sw) * 16;
+      const dy = y - py, near = dy * dy < RR, row = y * W;
+      for (let x = 0; x < W; x++, i += 4) {
+        const sx = inGlitch ? clamp(x - gdx, 0, W - 1) : x, si = row + sx;
+        sd ^= sd << 13; sd ^= sd >>> 17; sd ^= sd << 5; const n = ((sd >>> 0) & 0xffff) / 0xffff;
+        let r, g, b, grain;
         if (sx < split) {
           // zigzags over a dark plum, bulging round the pointer
           let a = amp;
-          const dx = sx - ptr.x, dy = y - ptr.y; const d2 = dx * dx + dy * dy;
-          if (d2 < R * R) a += (1 - Math.sqrt(d2) / R) * 4 * S;
-          const tri = Math.abs(((sx + phase) / period) % 1 - 0.5) * 2;
-          const yy = y + tri * a;
-          const m = yy % rowH; const d = Math.min(m, rowH - m);
-          const cov = clamp(1 - (d - lineW * 0.5) / (0.9 * S), 0, 1) * 0.9;
+          if (near) { const dx = sx - px; const d2 = dx * dx + dy * dy; if (d2 < RR) a += (1 - Math.sqrt(d2) / R) * 4 * S; }
+          const yy = y + tri[sx] * a;
+          const m = yy - Math.floor(yy / rowH) * rowH; const d = Math.min(m, rowH - m);
+          let cov = 1 - (d - half) / soft; cov = (cov < 0 ? 0 : cov > 1 ? 1 : cov) * 0.9;
           r = 38 + (212 - 38) * cov; g = 31 + (114 - 31) * cov; b = 34 + (132 - 34) * cov;
+          grain = (n - 0.5) * 26;
         } else {
           // grey static, lighter towards the top right
-          const base = 60 + (1 - vy) * 10 + (sx / W - 0.53) * 14;
-          r = g = b = base;
+          r = g = b = rowG + colG[sx];
+          grain = (n - 0.5) * 44;
         }
-        const f = figA[si + 3] / 255;
-        if (f > 0) {
-          const st = strapA[si + 3] / 255; const ph = phoneA[si + 3] / 255;
-          let v = 20 + (1 - vy) * 14 + st * 46;
+        const fa = figA[si];
+        if (fa > 0) {
+          const f = fa / 255, st = strapA[si] / 255, ph = phoneA[si] / 255;
+          const v = figV + st * 46;
           r = r * (1 - f) + v * f; g = g * (1 - f) + v * f; b = b * (1 - f) + v * f;
           if (ph > 0) { r += ph * 30; g += ph * 22; b += ph * 26; }
         }
         // grain, scanline, vignette
-        const grain = (n - 0.5) * (sx < split ? 26 : 44);
-        const sl = Math.max(0, 1 - Math.abs(y - scan) / (6 * S)) * 16;
-        const vx = x / W - 0.5, vv = vy - 0.5; const vig = 1 - (vx * vx + vv * vv) * 0.5;
-        data[i] = (r + grain + sl) * vig; data[i + 1] = (g + grain + sl) * vig; data[i + 2] = (b + grain + sl) * vig; data[i + 3] = 255;
+        const vig = 1 - (colV[x] + vv) * 0.5;
+        data[i] = (r + grain + sl) * vig; data[i + 1] = (g + grain + sl) * vig; data[i + 2] = (b + grain + sl) * vig;
       }
     }
-    ctx.putImageData(img, 0, 0);
+    seed = sd;
   }
+  let next = Infinity; // the next row of the frame in hand
+  function draw() { if (!data) return; begin(); paint(0, H); next = Infinity; ctx.putImageData(img, 0, 0); }
 
+  // 12 frames a second, each spread over the ticks of its twelfth (done in about four fifths of it), so no one tick
+  // carries a whole frame
   let acc = 0;
   const run = loop((dt) => {
     t += dt; acc += dt;
     if (t > glitchAt) { glitchAt = t + 2.5 + Math.random() * 4; glitchY = Math.random() * H * 0.8; glitchH = (8 + Math.random() * 30) * S; glitchDx = Math.round((Math.random() - 0.5) * 40 * S); setTimeout(() => { glitchH = 0; }, 110); }
-    if (acc < 1 / 12) return; acc = 0;
-    draw();
+    if (next >= H) { if (acc < 1 / 12) return; acc = 0; begin(); next = 0; }
+    const y1 = Math.min(H, next + Math.ceil(H * dt * 15)); paint(next, y1); next = y1;
+    if (next >= H) ctx.putImageData(img, 0, 0);
   });
   layout(); draw();
-  new ResizeObserver(() => { layout(); draw(); }).observe(canvas);
+  new ResizeObserver(() => { if (layout()) draw(); }).observe(canvas);
   if (calm) return;
   whenVisible(fig, (v) => run.set(v));
 }

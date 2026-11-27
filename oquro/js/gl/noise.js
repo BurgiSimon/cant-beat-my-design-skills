@@ -1,4 +1,5 @@
-// Noise, twice: GLSL for the shaders and the same simplex in JS for shaping geometry on the CPU.
+// Noise: simplex in GLSL for the shaders, a seeded simplex in JS for shaping geometry on the CPU, and the shaders' own
+// simplex in JS too, for working out once on the CPU what a shader would only repeat.
 
 // 3D simplex noise: "webgl-noise" by Ashima Arts and Stefan Gustavson (MIT licence), plus a hash without sine
 // (after Dave Hoskins, MIT) and small helpers of our own.
@@ -117,3 +118,46 @@ export const fbmJS = (n, x, y, z, oct = 3) => {
   for (let o = 0; o < oct; o++) { s += a * n(x * f, y * f, z * f); w += a; a *= 0.5; f *= 2.03; }
   return s / w;
 };
+
+// ---- the shaders' own snoise and fbm3 (above), line for line, to work out once on the CPU what a shader would
+// only repeat. Not the seeded noise above: a different field. The hash and the gradient it picks are tabled (they
+// only ever see whole numbers below 580), and rounded to 32 bits as a GPU rounds them: h lands on 0 for some
+// corners, and its sign picks the gradient. ----
+const f32 = Math.fround;
+const m289 = (x) => x - Math.floor(f32(x * f32(1 / 289))) * 289;
+const PERM = new Float64Array(580);
+for (let x = 0; x < 580; x++) PERM[x] = m289((x * 34 + 10) * x);
+const GRAD3 = new Float64Array(290 * 3);   // per hash: the corner's gradient, already normalised
+{
+  const ns = f32(0.142857142857), nx = f32(ns * 2), ny = f32(f32(ns * 0.5) - 1);
+  for (let p = 0; p < 290; p++) {
+    const j = p - 49 * Math.floor(f32(f32(p * ns) * ns));
+    const xq = Math.floor(f32(j * ns)), yq = Math.floor(j - 7 * xq);
+    const gx = f32(f32(xq * nx) + ny), gy = f32(f32(yq * nx) + ny), h = f32(f32(1 - Math.abs(gx)) - Math.abs(gy));
+    const sh = h <= 0 ? -1 : 0;
+    const ax = gx + (Math.floor(gx) * 2 + 1) * sh, ay = gy + (Math.floor(gy) * 2 + 1) * sh;
+    const nrm = 1.79284291400159 - 0.85373472095314 * (ax * ax + ay * ay + h * h);
+    GRAD3[p * 3] = ax * nrm; GRAD3[p * 3 + 1] = ay * nrm; GRAD3[p * 3 + 2] = h * nrm;
+  }
+}
+function corner(p, x, y, z) {
+  let m = 0.5 - (x * x + y * y + z * z);
+  if (m <= 0) return 0;
+  m *= m; p *= 3;
+  return m * m * (GRAD3[p] * x + GRAD3[p + 1] * y + GRAD3[p + 2] * z);
+}
+export function snoiseJS(vx, vy, vz) {
+  const s = (vx + vy + vz) / 3;
+  let ix = Math.floor(vx + s), iy = Math.floor(vy + s), iz = Math.floor(vz + s);
+  const t = (ix + iy + iz) / 6;
+  const x0 = vx - ix + t, y0 = vy - iy + t, z0 = vz - iz + t;
+  const gx = x0 >= y0 ? 1 : 0, gy = y0 >= z0 ? 1 : 0, gz = z0 >= x0 ? 1 : 0;
+  const i1x = Math.min(gx, 1 - gz), i1y = Math.min(gy, 1 - gx), i1z = Math.min(gz, 1 - gy);
+  const i2x = Math.max(gx, 1 - gz), i2y = Math.max(gy, 1 - gx), i2z = Math.max(gz, 1 - gy);
+  ix = m289(ix); iy = m289(iy); iz = m289(iz);
+  return 105 * (corner(PERM[PERM[PERM[iz] + iy] + ix], x0, y0, z0)
+    + corner(PERM[PERM[PERM[iz + i1z] + iy + i1y] + ix + i1x], x0 - i1x + 1 / 6, y0 - i1y + 1 / 6, z0 - i1z + 1 / 6)
+    + corner(PERM[PERM[PERM[iz + i2z] + iy + i2y] + ix + i2x], x0 - i2x + 1 / 3, y0 - i2y + 1 / 3, z0 - i2z + 1 / 3)
+    + corner(PERM[PERM[PERM[iz + 1] + iy + 1] + ix + 1], x0 - 0.5, y0 - 0.5, z0 - 0.5));
+}
+export const fbm3JS = (x, y, z) => snoiseJS(x, y, z) * 0.57 + snoiseJS(x * 2.03 + 11.7, y * 2.03 + 11.7, z * 2.03 + 11.7) * 0.29 + snoiseJS(x * 4.11 + 5.3, y * 4.11 + 5.3, z * 4.11 + 5.3) * 0.14;

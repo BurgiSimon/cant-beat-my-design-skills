@@ -10,7 +10,10 @@ export async function init() {
   const copy = document.querySelectorAll('.hero__copy > *');
   const card = document.querySelector('.widget--threat');
   const navBits = document.querySelectorAll('.nav > *:not(.nav__progress)');
+  clearTimeout(window.__oquroReady); // the fallback in index.html: from here the intro shows the page (every wait in it ends)
   if (calm || !gsap) { markReady(); emit('hero:rise'); return; }
+  // it fired first: the page is already showing at rest, and may be scrolled and read, so leave it as it is
+  if (root.classList.contains('is-ready')) { intro?.remove(); markReady(); emit('hero:rise'); return; }
   const repeat = root.classList.contains('is-repeat');
 
   // the hero's resting state is hidden by CSS until ready; GSAP takes over from here

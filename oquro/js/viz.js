@@ -19,7 +19,8 @@ export function radar(svg) {
     const r0 = major ? 92 : 95, r1 = 100;
     el('line', { x1: C + Math.cos(a) * r0, y1: C + Math.sin(a) * r0, x2: C + Math.cos(a) * r1, y2: C + Math.sin(a) * r1, class: major ? 'is-major' : '' }, ticks);
   }
-  const spec = [[-0.95, 62, 9], [-0.2, 78, 7.5], [0.55, 52, 7], [1.5, 70, 8.5], [2.35, 46, 6], [3.3, 80, 7], [4.15, 58, 8]];
+  // [angle, orbit, radius]: dotted discs the shot's size round its r=31 core; the second sits low enough to clear the Risk chip
+  const spec = [[-0.95, 62, 12.5], [-0.1, 74, 10.5], [0.55, 52, 10], [1.5, 70, 12], [2.35, 46, 8.5], [3.3, 80, 10], [4.15, 58, 11]];
   const nodes = spec.map(([a, r, s]) => {
     const x = C + Math.cos(a) * r, y = C + Math.sin(a) * r;
     const line = el('line', { x1: C, y1: C, x2: x, y2: y }, links);
@@ -48,14 +49,13 @@ export function radar(svg) {
   return { tick, alarm(s = 3) { alarm = s; } };
 }
 
-/** A gauge: a fan of ticks round the top, lit up to the value. */
-export function gauge(host, { ticks = 38, from = 200, to = 340 } = {}) {
+/** A gauge: a fan of even ticks round the top, lit up to the value. Wide and flat, as in the shot (the CSS draws it at 1.5x). */
+export function gauge(host, { ticks = 22, from = 216, to = 324 } = {}) {
   const svg = el('svg', { viewBox: '0 0 220 115' }, host);
   const lines = [];
   for (let i = 0; i < ticks; i++) {
     const a = ((from + ((to - from) * i) / (ticks - 1)) * Math.PI) / 180;
-    const long = i % 4 === 0;
-    const r0 = long ? 78 : 84, r1 = 98;
+    const r0 = 83, r1 = 98;
     lines.push(el('line', { x1: 110 + Math.cos(a) * r0, y1: 108 + Math.sin(a) * r0, x2: 110 + Math.cos(a) * r1, y2: 108 + Math.sin(a) * r1 }, svg));
   }
   let shown = 0; let target = 0.7; let t = 0;

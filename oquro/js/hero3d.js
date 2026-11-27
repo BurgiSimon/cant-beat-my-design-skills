@@ -55,6 +55,7 @@ export async function init() {
   const ring = new THREE.Mesh(ringG, stone); ring.castShadow = true; ring.receiveShadow = true;
   const ringGroup = new THREE.Group(); ringGroup.add(ring); world.add(ringGroup);
   ringGroup.rotation.set(0.05, -0.1, 0.02);
+  await breathe();   // (the shells work their moss noise out once, per vertex: a slice of its own)
   const ringMoss = K.mossShells(ringG, {
     layers: low ? 12 : 18, thick: 0.034, density: [260, 260 * ringG.userData.perimeter / 5.1], fill: 0.7, ...RING_MOSS,
     mossA: '#22260a', mossB: '#646c14', tip: '#a6a845',
@@ -69,29 +70,35 @@ export async function init() {
   ringGroup.add(vault.group);
   // moss hanging from the ring's inner top onto the door: a few lumpy blobs, all moss
   const blobMat = K.surfaceMaterial({ key: 'blob', moss: 1.4, mossUp: 0, seed: [5, 5, 5], mossA: '#2a2e07', mossB: '#5d6514', pit: 0.1 });
+  const shells = [ringMoss, vault.shells].filter(Boolean);   // every moss shell, for the quality governor (see quality)
   for (const [x, y, z, r, sd] of [[-0.02, 0.62, 0.03, 0.1, 1], [-0.09, 0.53, 0.08, 0.09, 2], [0.05, 0.55, 0.05, 0.075, 5], [-0.07, 0.44, 0.11, 0.075, 3], [-0.15, 0.4, 0.09, 0.06, 4], [0.1, 0.6, 0.02, 0.06, 6], [-0.18, 0.58, 0.02, 0.06, 7]]) {
     const g = new THREE.IcosahedronGeometry(1, 3);
     K.displace(g, (a, b, c) => noise3(a * 1.8 + sd * 3, b * 1.8, c * 1.8) * 0.25);
     const blob = new THREE.Mesh(g, blobMat); blob.scale.set(r * 1.2, r, r); blob.position.set(x, y, z); blob.castShadow = true;
+    blob.renderOrder = 1;   // after its shells, as the mound below
     ringGroup.add(blob);
-    blob.add(K.mossShells(g, { layers: 12, thick: 0.22, density: [40, 40], fill: 0.85, moss: 1.4, mossUp: 0, seed: [5, 5, 5], mossA: '#22260a', mossB: '#646c14', tip: '#a6a845' }));
+    const sh = K.mossShells(g, { layers: 12, thick: 0.22, density: [40, 40], fill: 0.85, moss: 1.4, mossUp: 0, seed: [5, 5, 5], mossA: '#22260a', mossB: '#646c14', tip: '#a6a845' });
+    blob.add(sh); shells.push(sh);
   }
 
   await breathe();
   // ---- the mound ----
-  const MOUND = { cx: 0, cy: -2.2, cz: -0.25, rx: 2.75, ry: 1.46, rz: 1.75 };
+  const MOUND = { cx: 0, cy: -2.2, cz: -0.25, rx: 2.3, ry: 1.46, rz: 1.75 };   // an island: paper either side of it at the foot
   const moundG = new THREE.SphereGeometry(1, low ? 96 : 160, low ? 48 : 80, 0, Math.PI * 2, 0, Math.PI * 0.62);
   moundG.scale(MOUND.rx, MOUND.ry, MOUND.rz);
   K.displace(moundG, (x, y, z) => noise3(x * 1.4, y * 1.4, z * 1.4) * 0.05 + noise3(x * 5, y * 5, z * 5) * 0.012);
   const moundMat = K.surfaceMaterial({ key: 'mound', c1: '#3b4010', c2: '#555c17', c3: '#272b08', moss: 1.3, mossUp: 0, seed: [9, 1, 3], mossA: '#2c3108', mossB: '#5a6116', pit: 0.2, bump: 0.01 });
   const mound = new THREE.Mesh(moundG, moundMat);
   mound.position.set(MOUND.cx, MOUND.cy, MOUND.cz); mound.receiveShadow = true;
+  // drawn after its shells and the plants on it: the moss covers most of it, and the depth test then skips the stone
+  // shader (the heaviest on the page) wherever it does
+  mound.renderOrder = 1;
   world.add(mound);
   const moundMoss = K.mossShells(moundG, {
     layers: low ? 10 : 16, thick: 0.05, density: [900, 260], fill: 0.85, moss: 1.3, mossUp: 0, seed: [9, 1, 3], droop: 0.0,
     mossA: '#1f2306', mossB: '#555d12', tip: '#929640', light: 1.0,
   });
-  mound.add(moundMoss);
+  mound.add(moundMoss); shells.push(moundMoss);
   const moundY = (x, z) => {
     const nx = (x - MOUND.cx) / MOUND.rx, nz = (z - MOUND.cz) / MOUND.rz;
     const q = 1 - nx * nx - nz * nz;
@@ -116,7 +123,7 @@ export async function init() {
   // tall leaves: left of the ring and right behind the card
   const leafG = K.bladeGeometry({ segs: 8, w: 0.045, curl: 0.18, root: '#273309', mid: '#4b6a1b', tip: '#8aa23a' });
   const leafMat = K.plantMaterial({ sway: 0.1, ao: 0.4, trans: 0.8 });
-  const clumps = [[-1.25, 0.55, 46, 0.55], [-0.95, 0.75, 22, 0.42], [1.28, 0.2, 40, 0.62], [1.62, 0.4, 18, 0.4], [-1.95, 0.6, 18, 0.38], [0.7, 0.9, 14, 0.3]];
+  const clumps = [[-1.27, 0.39, 46, 0.55], [-0.96, 0.68, 22, 0.42], [1.34, -0.2, 40, 0.62], [1.73, -0.19, 18, 0.4], [-2.1, -0.15, 18, 0.38], [0.7, 0.87, 14, 0.3]];
   const leafList = [];
   for (const [cx, cz, n, hh] of clumps) for (let i = 0; i < n; i++) leafList.push([cx, cz, hh]);
   const leaves = K.plantField(leafG, leafMat, leafList.length, (i, r) => {
@@ -130,7 +137,7 @@ export async function init() {
   // wheat, left of the ring
   const wheatMat = K.plantMaterial({ sway: 0.11, ao: 0.55, trans: 0.9, kernels: 90 });
   const wheat = K.plantField(K.wheatGeometry({ stemW: 0.006, headW: 0.05, head: 0.36 }), wheatMat, 30, (i, r) => {
-    const x = -1.5 + r() * 0.72, z = 0.3 + r() * 0.4;
+    const x = -1.5 + r() * 0.72, z = 0.1 + r() * 0.5;
     const lean = (x + 1.1) * 0.9;
     return { x, y: moundY(x, z) - 0.02, z, h: 0.5 + r() * 0.36, w: 0.9 + r() * 0.4, yaw: Math.PI / 2 + lean * 0.6 + (r() - 0.5) * 0.5, bend: 0.15 + r() * 0.3 + Math.abs(lean) * 0.2, tint: [1, 0.97, 0.92] };
   }, rnd);
@@ -138,7 +145,7 @@ export async function init() {
 
   // daisies
   const daisyMat = K.plantMaterial({ sway: 0.12, ao: 0.5, trans: 0.5 });
-  const daisySpots = [[-1.55, 0.62, 0.3], [-1.38, 0.7, 0.22], [-1.68, 0.72, 0.18], [-1.22, 0.64, 0.26], [1.12, 0.28, 0.42], [1.3, 0.22, 0.36], [1.02, 0.36, 0.3], [-0.85, 0.82, 0.16], [1.5, 0.55, 0.2], [0.6, 0.78, 0.14]];
+  const daisySpots = [[-1.6, 0.35, 0.3], [-1.41, 0.53, 0.22], [-1.74, 0.42, 0.18], [-1.24, 0.5, 0.26], [1.14, 0.1, 0.42], [1.36, -0.18, 0.36], [1.04, 0.22, 0.3], [-0.85, 0.77, 0.16], [1.55, 0.28, 0.2], [0.6, 0.76, 0.14]];
   const daisies = K.plantField(K.daisyGeometry({ radius: 0.11 }), daisyMat, daisySpots.length, (i, r) => {
     const [x, z, h] = daisySpots[i];
     return { x, y: moundY(x, z) - 0.02, z, h: h * (0.9 + r() * 0.3), w: 1 + r() * 0.35, yaw: (r() - 0.5) * 0.8, bend: 0.05 + r() * 0.1, tint: [1, 0.95 + r() * 0.05, 1] };
@@ -149,7 +156,7 @@ export async function init() {
   // ---- rocks along the foot ----
   const rockMat = K.surfaceMaterial({ key: 'rock', c1: '#8c8270', c2: '#cfc4ad', c3: '#5a5040', pore: 26, pit: 0.35, bump: 0.02, tone: 1.6, moss: -0.25, mossUp: 1.2, mossScale: 2.0, seed: [2, 7, 1], mossA: '#2a3610', mossB: '#6f8429' });
   const rocks = [];
-  for (const [x, z, s, seed, rot] of [[-1.45, 0.8, 0.2, 2, 0.4], [0.3, 0.78, 0.26, 5, -0.3], [0.72, 0.72, 0.17, 4, 1.1], [1.25, 0.66, 0.2, 8, 0.9], [-0.62, 0.9, 0.13, 3, 1.4]]) {
+  for (const [x, z, s, seed, rot] of [[-1.45, 0.45, 0.2, 2, 0.4], [0.3, 0.77, 0.26, 5, -0.3], [0.72, 0.68, 0.17, 4, 1.1], [1.27, 0.52, 0.2, 8, 0.9], [-0.62, 0.88, 0.13, 3, 1.4]]) {
     const g = K.rockGeometry({ seed, sx: 1.2, sy: 1.0, sz: 0.95, detail: low ? 4 : 5, rough: 0.28 });
     const rk = new THREE.Mesh(g, rockMat); rk.scale.setScalar(s); rk.position.set(x, moundY(x, z) - s * 0.08, z); rk.rotation.y = rot;
     rk.castShadow = true; rk.receiveShadow = true; world.add(rk); rocks.push(rk);
@@ -157,8 +164,8 @@ export async function init() {
 
   // ---- moss crumbling off the first letter ----
   const letter = document.querySelector('.hero__letters > span');
-  const CLUMPS = low ? 1400 : 2600;
-  const clumpG = new THREE.IcosahedronGeometry(1, 1);
+  const CLUMPS = low ? 2400 : 4000;
+  const clumpG = new THREE.IcosahedronGeometry(1, 0);   // grains a few px across: twenty faces are plenty
   K.displace(clumpG, (x, y, z) => noise3(x * 2, y * 2, z * 2) * 0.25);
   const clumpMat = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 1, metalness: 0 });
   const clumpsMesh = new THREE.InstancedMesh(clumpG, clumpMat, CLUMPS);
@@ -167,8 +174,9 @@ export async function init() {
   const clumpState = [];
   const palette = ['#33380a', '#4d5414', '#676f1c', '#808a2a', '#9a9f3e', '#3d4410'].map((c) => new THREE.Color(c));
   for (let i = 0; i < CLUMPS; i++) {
-    const t = rnd();
-    clumpState.push({ t, side: rnd(), off: rnd(), size: (0.0032 + Math.pow(rnd(), 3.2) * 0.013) * (t > 0.72 ? 0.7 : 1), home: new THREE.Vector3(), pos: new THREE.Vector3(), vel: new THREE.Vector3(), spin: rnd() * 6, drift: rnd() });
+    // most run along one band (s: 0 at its loose tail, 1 at its head); a few are strays (see placeClumps)
+    const t = rnd(), group = t < 0.94 ? 0 : t < 0.97 ? 1 : 2, s = group ? 1 : Math.pow(t / 0.94, 0.8), loose = !group && s < 0.3;
+    clumpState.push({ s, group, loose, side: rnd(), off: rnd(), size: (0.0031 + Math.pow(rnd(), 3) * 0.0085) * (loose ? 0.8 : 1), home: new THREE.Vector3(), pos: new THREE.Vector3(), vel: new THREE.Vector3(), spin: rnd() * 6, drift: rnd() });
     clumpsMesh.setColorAt(i, palette[Math.floor(rnd() * palette.length)]);
   }
   const LETTER_Z = -0.55;
@@ -187,39 +195,54 @@ export async function init() {
     // where the letter rests: its box, less any lift the intro has it in the middle of
     const lift = new DOMMatrixReadOnly(getComputedStyle(letter).transform === 'none' ? undefined : getComputedStyle(letter).transform).m42;
     const lr = { left: box.left, top: box.top - lift, width: box.width, height: box.height };
-    // the O is a stadium: straight sides, round ends. Moss sits on its upper left and trails off up and left.
-    const w = lr.width * 0.87, x0 = lr.left + (lr.width - w) / 2; const h = lr.height; const r = w / 2;
+    // the O's ink (Anton's O: 7% in from the left of its box, 93% wide; the box is the cap height). As in the shot, the
+    // moss is one band: a loose spray off the O's upper left that thickens and runs down across its left stroke into
+    // the counter (a diagonal from (-0.55w, 0.25h) to (0.55w, 0.685h)), with a few strays on the right stroke and up
+    // between the first two letters.
+    const w = lr.width * 0.93, x0 = lr.left + lr.width * 0.067, h = lr.height;
+    const dx = 1.1 * w, dy = 0.435 * h, len = Math.hypot(dx, dy), nx = -dy / len, ny = dx / len;   // across the band
+    const room = clamp((x0 - cr.left - 6) / (w * 0.8), 0.3, 1);   // on a narrow screen the spray draws in, on screen
     for (const c of clumpState) {
       let px, py;
-      if (c.t < 0.72) { // on the letter: a patch over its upper left, thick at the edge and thinning inwards
-        const u = c.t / 0.72;
-        const a = Math.PI * (0.42 + u * 0.62);            // round the top, from just right of 12 o'clock to 9
-        const along = u < 0.7 ? 0 : (u - 0.7) / 0.3;      // then a little way down the left side
-        const inset = Math.pow(c.side, 2.2) * w * 0.4;
-        if (along === 0) { px = x0 + r + Math.cos(a) * (r - inset); py = lr.top + r - Math.sin(a) * (r - inset); }
-        else { px = x0 + inset; py = lr.top + r + along * h * 0.22; }
-      } else { // spilling off: a loose trail up and to the left of the letter
-        const u = (c.t - 0.72) / 0.28;
-        px = x0 + w * 0.15 - u * w * 0.55 + (c.side - 0.5) * w * 0.45 * u;
-        py = lr.top + h * 0.05 + u * h * 0.32 - Math.sin(u * 3) * h * 0.06 + (c.off - 0.5) * h * 0.14;
-      }
+      if (c.group === 0) {
+        // across: wide and loose at the tail, tight on the letter; the tail spreads more up and down than sideways, so
+        // it hugs the O's left edge and leaves the O above the band bare, as in the shot
+        const a = (c.side + c.off - 1) * w * (0.13 + 0.3 * (1 - c.s) ** 2);
+        px = x0 + w * (-0.55 + 1.1 * c.s) + nx * a * (0.4 + 0.6 * c.s); py = lr.top + h * (0.25 + 0.435 * c.s) + ny * a;
+        if (px < x0) px = x0 - (x0 - px) * room;
+      } else if (c.group === 1) { px = x0 + w * (0.65 + 0.22 * c.side); py = lr.top + h * (0.64 + 0.09 * c.off); }
+      else { px = x0 + w * (0.94 + 0.16 * c.side); py = lr.top + h * (0.07 + 0.18 * c.off); }
       toWorld(px, py, cr, c.home);
-      c.home.z += (c.side - 0.5) * 0.06 + (c.t > 0.72 ? 0.1 : 0.03);
-      if (!c.pos.lengthSq()) c.pos.copy(c.home);
+      c.home.z += (c.drift - 0.5) * 0.06 + (c.loose ? 0.1 : 0.03);
+      if (!c.pos.lengthSq() || calm) c.pos.copy(c.home);   // (nothing springs it home when nothing moves)
     }
   }
 
   // ---- fit: the ring sits on the anchor, whatever the screen ----
   let W = 1, H = 1;
-  // resolution follows the machine: start sharp, step down if the frames run long
-  const quality = { dpr: dpr(low ? 1.25 : 1.75), n: 0, sum: 0 };
+  // the cost follows the machine: start sharp and, while the frames run long, step down a rung at a time, never back
+  // up: the pixel ratio to 1, then thinner moss and grass, then below 1, then a smaller shadow map. A rung that costs
+  // detail waits for two slow spells in a row, and nothing counts until the intro has settled (shaders warming up).
+  const quality = { dpr: dpr(low ? 1.25 : 1.75), rung: 0, n: 0, sum: 0, slow: 0, on: false };
+  once('intro:done', () => setTimeout(() => { quality.on = true; }, 2500));
+  const rungs = [
+    () => {
+      for (const m of shells) { const k = Math.max(6, Math.round(m.geometry.instanceCount * 0.65)); m.geometry.instanceCount = k; m.userData.uniforms.uLayers.value = k; }
+      grass.geometry.instanceCount = Math.round(grass.geometry.instanceCount * 0.45);   // placed at random: thins evenly
+      clumpsMesh.count = Math.round(CLUMPS * 0.6);
+    },
+    () => { quality.dpr = Math.min(quality.dpr, 0.75); fit(); },
+    () => { if (sun.shadow.mapSize.x > 1024) { sun.shadow.mapSize.set(1024, 1024); sun.shadow.map?.dispose(); sun.shadow.map = null; } },
+  ];
   const watchFrame = (ms) => {
-    if (quality.dpr <= 1 || calm) return;
+    if (calm || !quality.on || quality.rung >= rungs.length) return;
     quality.n++; quality.sum += ms;
-    if (quality.n === 45) {
-      if (quality.sum / quality.n > 24) { quality.dpr = Math.max(1, quality.dpr - 0.35); fit(); }
-      quality.n = 0; quality.sum = 0;
-    }
+    if (quality.n < 45) return;
+    const slow = quality.sum / quality.n > 24;
+    quality.n = 0; quality.sum = 0; quality.slow = slow ? quality.slow + 1 : 0;
+    const ratio = renderer.getPixelRatio();
+    if (slow && ratio > 1) { quality.dpr = Math.max(1, Math.min(quality.dpr, ratio) - 0.35); fit(); quality.slow = 0; }
+    else if (quality.slow >= 2) { rungs[quality.rung++](); quality.slow = 0; }
   };
   function fit() {
     const r = canvas.getBoundingClientRect();
@@ -235,6 +258,7 @@ export async function init() {
     camera.aspect = W / H;
     camera.setViewOffset(W, H, W / 2 - cx, H / 2 - cy, W, H);
     camera.updateProjectionMatrix();
+    camera.updateMatrixWorld();   // placeClumps casts rays from it, and before the first render it is still unset
     placeClumps();
   }
 
@@ -339,11 +363,11 @@ export async function init() {
         const r = canvas.getBoundingClientRect();
         pw = toWorld(pointer.x, pointer.y, r, new THREE.Vector3());
       }
-      for (let i = 0; i < CLUMPS; i++) {
+      for (let i = 0; i < clumpsMesh.count; i++) {
         const c = clumpState[i];
         const home = c.home;
-        const fx = Math.sin(t * (0.4 + c.drift) + c.spin) * (c.t > 0.72 ? 0.02 : 0.003);
-        const fy = Math.cos(t * (0.3 + c.drift * 0.5) + c.spin) * (c.t > 0.72 ? 0.018 : 0.002);
+        const fx = Math.sin(t * (0.4 + c.drift) + c.spin) * (c.loose ? 0.02 : 0.003);
+        const fy = Math.cos(t * (0.3 + c.drift * 0.5) + c.spin) * (c.loose ? 0.018 : 0.002);
         c.vel.x += (home.x + fx - c.pos.x) * 18 * dt; c.vel.y += (home.y + fy - c.pos.y) * 18 * dt; c.vel.z += (home.z - c.pos.z) * 18 * dt;
         if (pw) {
           const dx = c.pos.x - pw.x, dy = c.pos.y - pw.y; const d2 = dx * dx + dy * dy;
@@ -352,7 +376,7 @@ export async function init() {
         c.vel.multiplyScalar(Math.exp(-5 * dt));
         c.pos.addScaledVector(c.vel, dt);
         e.set(c.spin + t * 0.2 * c.drift, c.spin * 2, 0); q.setFromEuler(e);
-        const appear = clamp(rise.v * 1.6 - c.t * 0.6, 0, 1);
+        const appear = clamp(rise.v * 1.6 - (c.group ? 0.3 : 1 - c.s) * 0.6, 0, 1);   // the band from its head out
         sc.setScalar(c.size * appear);
         m.compose(c.pos, q, sc); clumpsMesh.setMatrixAt(i, m);
       }
@@ -376,10 +400,20 @@ export async function init() {
   await breathe();
   if (renderer.compileAsync && renderer.extensions.has('KHR_parallel_shader_compile')) await renderer.compileAsync(scene, camera);
   else renderer.compile(scene, camera);
-  whenVisible(hero, (v) => { run.set(v && !calm); if (v && calm) frame(0.016); }, '0px');
-  const ro = new ResizeObserver(() => { fit(); if (calm || !run.on) frame(0); });
-  ro.observe(canvas);
-  addEventListener('resize', () => { fit(); if (calm || !run.on) frame(0); });
+  // refit on a real change of size or place: the canvas, and the anchor (in a short window the canvas holds at the
+  // hero's min-height while the ring still moves). Scrolled away, the refit waits until the hero is back.
+  let shown = false, stale = false;
+  whenVisible(hero, (v) => {
+    shown = v;
+    if (v && stale) { stale = false; fit(); }
+    run.set(v && !calm);
+    if (v && calm) frame(0.016);
+  }, '0px');
+  const ro = new ResizeObserver(() => { if (!shown) { stale = true; return; } fit(); if (calm) frame(0); });
+  ro.observe(canvas); ro.observe(anchor);
+  // a lost context comes back without the sky's light (three cannot refill a render target): bake it again, and
+  // redraw where nothing else will
+  canvas.addEventListener('webglcontextrestored', () => { scene.environment = K.skyEnvironment(renderer); if (calm && shown) frame(0); });
   frame(0.016);
   hero.classList.add('has-gl');
   canvas.classList.add('is-on');

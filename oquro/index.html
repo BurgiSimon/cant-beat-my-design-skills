@@ -32,7 +32,7 @@
       try { if (sessionStorage.getItem("oquro:seen")) h.classList.add("is-repeat"); } catch (e) {}
       if (matchMedia("(prefers-reduced-motion: reduce)").matches || /[?&]reduced/.test(location.search)) h.classList.add("is-calm");
       if (location.hash.length > 1) h.classList.add("is-repeat");
-      setTimeout(function () { h.classList.add("is-ready"); }, 8000); // if the scripts never get there, show the page anyway
+      window.__oquroReady = setTimeout(function () { h.classList.add("is-ready"); }, 8000); // if the scripts never get there, show the page anyway (intro.js cancels this)
     })(document.documentElement);
   </script>
   <script defer src="vendor/gsap.min.js"></script>
@@ -57,6 +57,8 @@
       <symbol id="i-face" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.4" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="9.2" cy="10.6" r="1.35" fill="currentColor"/><circle cx="14.8" cy="10.6" r="1.35" fill="currentColor"/><path d="M8.8 15.6c1.9-1.3 4.5-1.3 6.4 0" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
       <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3.2 19 6v5.6c0 4.3-2.9 7.9-7 9.2-4.1-1.3-7-4.9-7-9.2V6l7-2.8Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="m9 12 2.2 2.2L15.3 10" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></symbol>
       <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="10.5" width="14" height="10" rx="2" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M8.3 10.5V8a3.7 3.7 0 0 1 7.4 0v2.5" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M12 14.4v2.2" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></symbol>
+      <symbol id="i-pause" viewBox="0 0 24 24"><rect x="6.6" y="5" width="3.8" height="14" rx="1.3" fill="currentColor"/><rect x="13.6" y="5" width="3.8" height="14" rx="1.3" fill="currentColor"/></symbol>
+      <symbol id="i-play" viewBox="0 0 24 24"><path d="M7.6 5.9v12.2a1.1 1.1 0 0 0 1.7.94l9.6-6.1a1.1 1.1 0 0 0 0-1.88L9.3 4.96a1.1 1.1 0 0 0-1.7.94Z" fill="currentColor"/></symbol>
       <symbol id="i-mark" viewBox="0 0 32 32"><circle cx="16" cy="16" r="6.6" fill="currentColor"/><g fill="currentColor"><circle cx="16" cy="3.4" r="2.4"/><circle cx="16" cy="28.6" r="2.4"/><circle cx="3.4" cy="16" r="2.4"/><circle cx="28.6" cy="16" r="2.4"/><circle cx="7.1" cy="7.1" r="2.4"/><circle cx="24.9" cy="24.9" r="2.4"/><circle cx="24.9" cy="7.1" r="2.4"/><circle cx="7.1" cy="24.9" r="2.4"/></g><g stroke="currentColor" stroke-width="2.2"><path d="M16 5.6v5M16 21.4v5M5.6 16h5M21.4 16h5M8.6 8.6l3.5 3.5M19.9 19.9l3.5 3.5M23.4 8.6l-3.5 3.5M12.1 19.9l-3.5 3.5"/></g><g fill="#fff" fill-opacity=".38"><circle cx="13.6" cy="14" r="1.1"/><circle cx="17.6" cy="13.2" r=".9"/><circle cx="15.6" cy="17.8" r="1"/><circle cx="18.8" cy="17" r=".7"/></g></symbol>
     </defs>
   </svg>
@@ -67,20 +69,20 @@
   <div class="intro" data-intro aria-hidden="true">
     <div class="intro__dial">
       <svg viewBox="0 0 200 200" class="intro__ticks" data-intro-ticks></svg>
-      <svg class="intro__mark"><use href="#i-mark"/></svg>
+      <svg class="intro__mark" aria-hidden="true"><use href="#i-mark"/></svg>
     </div>
     <p class="intro__count"><span data-intro-count>000</span><i>Securing</i></p>
   </div>
 
   <header class="nav" data-nav>
     <nav class="nav__left" aria-label="Main">
-      <a class="nav__home is-current" href="#top" data-nav-link="top" aria-current="location"><svg class="i"><use href="#i-home"/></svg><span>Home</span></a>
-      <a class="nav__icon" href="#platform" data-nav-link="platform" data-tip="Platform"><svg class="i"><use href="#i-layout"/></svg><span class="sr">Platform</span></a>
-      <a class="nav__icon" href="#features" data-nav-link="features" data-tip="Features"><svg class="i"><use href="#i-box"/></svg><span class="sr">Features</span></a>
+      <a class="nav__home is-current" href="#top" data-nav-link="top" aria-current="location"><svg class="i" aria-hidden="true"><use href="#i-home"/></svg><span>Home</span></a>
+      <a class="nav__icon" href="#platform" data-nav-link="platform" data-tip="Platform"><svg class="i" aria-hidden="true"><use href="#i-layout"/></svg><span class="sr">Platform</span></a>
+      <a class="nav__icon" href="#features" data-nav-link="features" data-tip="Features"><svg class="i" aria-hidden="true"><use href="#i-box"/></svg><span class="sr">Features</span></a>
     </nav>
-    <a class="brand" href="#top" aria-label="OQURO, back to the top"><svg class="brand__mark"><use href="#i-mark"/></svg><span class="brand__word">OQURO</span></a>
+    <a class="brand" href="#top" aria-label="OQURO, back to the top"><svg class="brand__mark" aria-hidden="true"><use href="#i-mark"/></svg><span class="brand__word">OQURO</span></a>
     <div class="nav__right">
-      <a class="nav__icon" href="#start" data-tip="Sign in"><svg class="i"><use href="#i-user"/></svg><span class="sr">Sign in</span></a>
+      <a class="nav__icon" href="#start" data-tip="Sign in"><svg class="i" aria-hidden="true"><use href="#i-user"/></svg><span class="sr">Sign in</span></a>
       <a class="btn btn--ink" href="#start" data-magnetic><span class="btn__label" data-roll>Get Started Free</span></a>
     </div>
     <span class="nav__progress" data-progress aria-hidden="true"></span>
@@ -104,7 +106,7 @@
         </div>
 
         <article class="widget widget--red widget--threat" data-tilt data-threat aria-labelledby="threat-h">
-          <h3 class="widget__title" id="threat-h">Threat Detected</h3>
+          <p class="widget__title" id="threat-h">Threat Detected</p>
           <div class="radar" aria-hidden="true">
             <svg viewBox="0 0 220 220" class="radar__svg">
               <defs>
@@ -119,19 +121,20 @@
               <g class="radar__links" data-radar-links></g>
               <g class="radar__nodes" data-radar-nodes></g>
               <g class="radar__core">
-                <circle cx="110" cy="110" r="27" fill="url(#rad-core)" opacity=".5" class="radar__halo"/>
-                <circle cx="110" cy="110" r="19" fill="url(#rad-dots)" opacity=".9"/>
-                <circle cx="110" cy="110" r="19" class="radar__ring" opacity=".9"/>
-                <circle cx="110" cy="110" r="4.2" fill="#fff" class="radar__dot"/>
+                <circle cx="110" cy="110" r="42" fill="url(#rad-core)" opacity=".5" class="radar__halo"/>
+                <circle cx="110" cy="110" r="31" fill="url(#rad-dots)" opacity=".9"/>
+                <circle cx="110" cy="110" r="31" class="radar__ring" opacity=".9"/>
+                <circle cx="110" cy="110" r="5.5" fill="#fff" class="radar__dot"/>
               </g>
             </svg>
-            <span class="chip chip--glass radar__risk" data-risk><svg class="i"><use href="#i-alert"/></svg>Risk</span>
+            <span class="chip chip--glass radar__risk" data-risk><svg class="i" aria-hidden="true"><use href="#i-alert"/></svg>Risk</span>
           </div>
           <div class="widget__glass widget__glass--center">
-            <button class="widget__face" type="button" aria-label="Try the vault: spin its wheel" data-spin><svg class="i"><use href="#i-face"/></svg></button>
+            <button class="widget__face" type="button" aria-label="Try the vault: spin its wheel" data-spin><svg class="i" aria-hidden="true"><use href="#i-face"/></svg></button>
             <strong data-threat-title>Suspicious Login</strong>
             <span class="widget__time" data-clock="02:45">02:45 AM</span>
           </div>
+          <span class="sr" role="status" data-threat-status></span>
         </article>
       </div>
     </section>
@@ -153,7 +156,7 @@
         <p class="statement" data-statement>At OQURO, we combine intelligent technology and proactive security <span>to protect businesses from evolving cyber threats.</span></p>
         <figure class="intel" data-tilt>
           <div class="intel__media"><canvas data-scene="chain" aria-hidden="true"></canvas><div class="intel__fallback" aria-hidden="true"></div></div>
-          <figcaption class="intel__cap"><svg class="i"><use href="#i-spark"/></svg>Powered Intelligence</figcaption>
+          <figcaption class="intel__cap"><svg class="i" aria-hidden="true"><use href="#i-spark"/></svg>Powered Intelligence</figcaption>
         </figure>
       </div>
     </section>
@@ -164,6 +167,7 @@
         <div class="layers__left">
           <h2 class="h2 h2--ink" id="layers-title" data-split>Security across every layer</h2>
           <div class="acc" data-acc>
+            <button class="acc__auto" type="button" aria-pressed="false" aria-label="Pause autoplay of the layers" data-autoplay hidden><svg class="i" aria-hidden="true"><use href="#i-pause"/></svg></button>
             <div class="acc__item is-open">
               <h3><button class="acc__btn" aria-expanded="true" aria-controls="acc-1" id="acc-1-btn">Network Security</button></h3>
               <div class="acc__panel" id="acc-1" role="region" aria-labelledby="acc-1-btn"><p>Monitor network activity and prevent unauthorized access across your infrastructure.</p></div>
@@ -197,7 +201,7 @@
               <p class="widget__big"><strong data-f="big">1,284</strong><span data-f="bigLabel">Blocked Requests</span></p>
               <div class="widget__glass">
                 <p class="widget__row"><span data-f="row1">Login Attempts</span><b data-f="row1v">36</b></p>
-                <span class="chip chip--glass chip--sm"><span data-f="chip">Secured</span><svg class="i"><use href="#i-info"/></svg></span>
+                <span class="chip chip--glass chip--sm"><span data-f="chip">Secured</span><svg class="i" aria-hidden="true"><use href="#i-info"/></svg></span>
               </div>
             </article>
             <article class="widget widget--purple widget--b" data-tilt data-card="b">
@@ -206,7 +210,7 @@
               <div class="widget__glass">
                 <p class="widget__row"><span data-f="row1">Connected Devices</span><b data-f="row1v">24</b></p>
                 <p class="widget__row"><span data-f="row2">Threats Blocked</span><b data-f="row2v">128</b></p>
-                <span class="chip chip--glass chip--sm"><span data-f="chip" data-clock="02:45">02:45 AM</span><svg class="i"><use href="#i-info"/></svg></span>
+                <span class="chip chip--glass chip--sm"><span data-f="chip" data-clock="02:45">02:45 AM</span><svg class="i" aria-hidden="true"><use href="#i-info"/></svg></span>
               </div>
             </article>
           </div>
@@ -221,10 +225,13 @@
         <h2 class="h2" id="protect-title" data-split>Everything you need to stay protected</h2>
       </div>
       <div class="wrap">
-        <div class="tabs" role="tablist" aria-label="Capabilities" data-tabs>
-          <button class="tab is-on" role="tab" id="tab-live" aria-selected="true" aria-controls="panel-protect" data-tab="live">Live Monitoring</button>
-          <button class="tab" role="tab" id="tab-ai" aria-selected="false" aria-controls="panel-protect" tabindex="-1" data-tab="ai">AI Intelligence</button>
-          <button class="tab" role="tab" id="tab-auto" aria-selected="false" aria-controls="panel-protect" tabindex="-1" data-tab="auto">Auto Response</button>
+        <div class="tabs">
+          <div class="tabs__list" role="tablist" aria-label="Capabilities" data-tabs>
+            <button class="tab is-on" role="tab" id="tab-live" aria-selected="true" aria-controls="panel-protect" data-tab="live">Live Monitoring</button>
+            <button class="tab" role="tab" id="tab-ai" aria-selected="false" aria-controls="panel-protect" tabindex="-1" data-tab="ai">AI Intelligence</button>
+            <button class="tab" role="tab" id="tab-auto" aria-selected="false" aria-controls="panel-protect" tabindex="-1" data-tab="auto">Auto Response</button>
+          </div>
+          <button class="tab tabs__auto" type="button" aria-pressed="false" aria-label="Pause autoplay of the capabilities" data-autoplay hidden><svg class="i" aria-hidden="true"><use href="#i-pause"/></svg></button>
         </div>
         <div class="protect__grid" id="panel-protect" role="tabpanel" aria-labelledby="tab-live" data-panel>
           <article class="feature">
@@ -247,7 +254,7 @@
           </article>
           <article class="glasscard">
             <div class="panel panel--dark">
-              <div class="panel__head"><strong data-p="aTitle">Threat Detection Matrix</strong><button class="alert-btn" type="button" data-alert>Alert</button></div>
+              <div class="panel__head"><strong data-p="aTitle">Threat Detection Matrix</strong><button class="alert-btn" type="button" data-alert>Alert</button><span class="sr" role="status" data-alert-status></span></div>
               <div class="matrix" data-matrix-cols aria-hidden="true"></div>
               <p class="panel__foot"><b data-p="aValue" data-roller>12</b><i></i><span data-p="aLabel">Flagged Events</span></p>
             </div>
@@ -269,10 +276,10 @@
       </div>
       <div class="wrap ahead__body">
         <ul class="checks" data-checks>
-          <li><svg class="i"><use href="#i-check"/></svg><strong>24/7 Protection</strong></li>
-          <li><svg class="i"><use href="#i-check"/></svg><strong>Scalable Security</strong></li>
-          <li><svg class="i"><use href="#i-check"/></svg><strong>Automated Response</strong></li>
-          <li><svg class="i"><use href="#i-check"/></svg><strong>Compliance Ready</strong></li>
+          <li><svg class="i" aria-hidden="true"><use href="#i-check"/></svg><strong>24/7 Protection</strong></li>
+          <li><svg class="i" aria-hidden="true"><use href="#i-check"/></svg><strong>Scalable Security</strong></li>
+          <li><svg class="i" aria-hidden="true"><use href="#i-check"/></svg><strong>Automated Response</strong></li>
+          <li><svg class="i" aria-hidden="true"><use href="#i-check"/></svg><strong>Compliance Ready</strong></li>
         </ul>
 
         <div class="perf" data-perf>
@@ -306,8 +313,8 @@
         <form class="cta__form" data-cta-form novalidate>
           <label class="sr" for="cta-email">Work email</label>
           <input id="cta-email" type="email" name="email" autocomplete="email" placeholder="Work email" required />
-          <button class="btn btn--light" type="submit" data-magnetic><span class="btn__label" data-roll>Get Started Free</span><svg class="i"><use href="#i-arrow"/></svg></button>
-          <p class="cta__msg" role="status" data-cta-msg></p>
+          <button class="btn btn--light" type="submit" data-magnetic><span class="btn__label" data-roll>Get Started Free</span><svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></button>
+          <p class="cta__msg" id="cta-msg" role="status" data-cta-msg></p>
         </form>
       </div>
     </section>
@@ -315,8 +322,9 @@
 
   <footer class="foot" data-theme="light">
     <div class="wrap foot__grid">
+      <h2 class="sr">Site links</h2>
       <div class="foot__brand">
-        <a class="brand brand--foot" href="#top" aria-label="OQURO, back to the top"><svg class="brand__mark"><use href="#i-mark"/></svg><span class="brand__word">OQURO</span></a>
+        <a class="brand brand--foot" href="#top" aria-label="OQURO, back to the top"><svg class="brand__mark" aria-hidden="true"><use href="#i-mark"/></svg><span class="brand__word">OQURO</span></a>
         <p>Intelligent security for every layer of your business.</p>
         <p class="foot__status"><span class="live-dot" aria-hidden="true"></span>All systems operational · <span data-local-time>--:--</span> local</p>
       </div>
