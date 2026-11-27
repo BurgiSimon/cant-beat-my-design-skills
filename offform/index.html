@@ -1,0 +1,521 @@
+<!doctype html>
+<html lang="en-GB" class="no-js">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>OFFFORM — Not made to stand still. Collection 06, Autumn / Winter 2026</title>
+  <meta name="description" content="Technical essentials for the space between sport, culture and everyday life. Designed in London, tested in real life. Collection 06 — Autumn / Winter 2026." />
+  <meta name="theme-color" content="#fe4b1f" />
+  <meta name="color-scheme" content="light" />
+  <link rel="canonical" href="{{SITE_URL}}/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="{{SITE_URL}}/" />
+  <meta property="og:title" content="OFFFORM — Not made to stand still." />
+  <meta property="og:description" content="Technical essentials for the space between sport, culture and everyday life. Collection 06, out now." />
+  <meta property="og:image" content="{{SITE_URL}}/assets/img/og.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
+  <link rel="preload" href="assets/fonts/barlow-condensed-600.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="assets/fonts/jetbrains-mono-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="assets/img/hero-sprint.webp" as="image" type="image/webp" />
+  <link rel="stylesheet" href="vendor/lenis.css" />
+  <link rel="stylesheet" href="css/base.css?v={{VERSION}}" />
+  <link rel="stylesheet" href="css/sections.css?v={{VERSION}}" />
+  <script>
+    // Scripts will run: the page may hide what they are about to animate. A repeat visit in this tab gets the short intro.
+    (function (h) {
+      h.className = h.className.replace("no-js", "js");
+      try { if (sessionStorage.getItem("offform:seen")) h.classList.add("is-repeat"); } catch (e) {}
+      if (matchMedia("(prefers-reduced-motion: reduce)").matches || /[?&]reduced/.test(location.search)) h.classList.add("is-calm");
+      if (location.hash.length > 1) h.classList.add("is-repeat", "is-deep");
+      setTimeout(function () { h.classList.add("is-ready"); }, 7000); // if the scripts never get there, show the page anyway
+    })(document.documentElement);
+  </script>
+  <script defer src="vendor/gsap.min.js"></script>
+  <script defer src="vendor/ScrollTrigger.min.js"></script>
+  <script defer src="vendor/SplitText.min.js"></script>
+  <script defer src="vendor/lenis.min.js"></script>
+  <script type="module" src="js/main.js?v={{VERSION}}"></script>
+</head>
+<body>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <symbol id="i-ne" viewBox="0 0 16 16"><path d="M4.5 11.5 11.5 4.5M5.5 4.5h6v6" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="square"/></symbol>
+      <symbol id="i-arrow" viewBox="0 0 16 16"><path d="M2 8h11.5M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/></symbol>
+      <symbol id="i-left" viewBox="0 0 16 16"><path d="M14 8H2.5M7 3.5 2.5 8 7 12.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/></symbol>
+      <symbol id="i-plus" viewBox="0 0 16 16"><path d="M8 2.5v11M2.5 8h11" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/></symbol>
+      <symbol id="i-minus" viewBox="0 0 16 16"><path d="M2.5 8h11" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/></symbol>
+      <symbol id="i-close" viewBox="0 0 16 16"><path d="m3 3 10 10M13 3 3 13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/></symbol>
+      <symbol id="i-up" viewBox="0 0 16 16"><path d="M8 14V2.5M3.5 7 8 2.5 12.5 7" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/></symbol>
+    </defs>
+  </svg>
+
+  <a class="skip" href="#main">Skip to content</a>
+
+  <!-- First visit: the collection counts in on the hero's own orange, then the page assembles. -->
+  <div class="loader" aria-hidden="true">
+    <span class="loader__tag">Offform research dept. — loading collection</span>
+    <span class="loader__num"><span class="hero__paren">(OF)</span><span class="hero__dash">—</span><span class="hero__six loader__count">00</span></span>
+    <span class="loader__bar"><i></i></span>
+  </div>
+
+  <div class="announce" role="region" aria-label="Announcements">
+    <ul class="announce__list" aria-live="off">
+      <li class="is-on">Worldwide shipping <i>/</i> Complimentary delivery on orders $150+</li>
+      <li>Collection 06 <i>—</i> Autumn / Winter 2026 <i>/</i> Out now</li>
+      <li>Free returns within 30 days <i>/</i> Members get early access</li>
+    </ul>
+  </div>
+
+  <header class="head" data-head>
+    <div class="head__bar">
+      <a class="head__logo" href="#top" aria-label="Offform, back to the top">
+        <span class="head__word" aria-hidden="true"><span>O</span><span>F</span><span>F</span><span>F</span><span>O</span><span>R</span><span>M</span></span>
+      </a>
+      <nav class="head__nav" aria-label="Main">
+        <a class="head__link is-current" href="#shop" data-filter="all"><span data-roll>New arrivals</span></a>
+        <a class="head__link" href="#shop" data-filter="clothing"><span data-roll>Clothing</span></a>
+        <a class="head__link" href="#shop" data-filter="footwear"><span data-roll>Footwear</span></a>
+        <button class="head__link" type="button" aria-expanded="false" aria-controls="explore" data-explore><span data-roll>Explore</span></button>
+        <button class="head__link" type="button" data-search-open><span data-roll>Search</span></button>
+        <button class="head__link head__bag" type="button" data-bag-open aria-label="Bag, 0 items"><span data-roll>Bag</span> <span class="head__count">(<span data-bag-count>0</span>)</span></button>
+      </nav>
+      <button class="head__burger" type="button" aria-expanded="false" aria-controls="menu" data-menu-open>
+        <span class="sr">Menu</span><i></i><i></i>
+      </button>
+    </div>
+    <i class="head__progress" aria-hidden="true"></i>
+
+    <!-- Explore: the stories under the shop, with a picture for each -->
+    <div class="explore" id="explore" hidden>
+      <div class="explore__inner">
+        <p class="label explore__label">[ Explore ] / Collection 06</p>
+        <ul class="explore__list">
+          <li><a href="#after-hours" data-pic="after"><span class="explore__n">03</span> After Hours <svg class="i"><use href="#i-ne"/></svg></a></li>
+          <li><a href="#pace" data-pic="perf"><span class="explore__n">04</span> Performance system <svg class="i"><use href="#i-ne"/></svg></a></li>
+          <li><a href="#pace" data-pic="every"><span class="explore__n">04</span> Everyday system <svg class="i"><use href="#i-ne"/></svg></a></li>
+          <li><a href="#lab" data-pic="lab"><span class="explore__n">05</span> Research dept. <svg class="i"><use href="#i-ne"/></svg></a></li>
+          <li><a href="#club" data-pic="club"><span class="explore__n">06</span> Run club <svg class="i"><use href="#i-ne"/></svg></a></li>
+        </ul>
+        <figure class="explore__pic" aria-hidden="true">
+          <img data-pic="after" src="assets/img/after-hours-sm.webp" alt="" loading="lazy" />
+          <img data-pic="perf" src="assets/img/pace-performance-sm.webp" alt="" loading="lazy" />
+          <img data-pic="every" src="assets/img/pace-everyday-sm.webp" alt="" loading="lazy" />
+          <img data-pic="lab" src="assets/img/hero-sprint-sm.webp" alt="" loading="lazy" />
+          <img data-pic="club" src="assets/img/club-2-sm.webp" alt="" loading="lazy" />
+        </figure>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- ============ HERO ============ -->
+    <section class="hero" id="top" aria-labelledby="hero-title">
+      <div class="hero__media">
+        <div class="hero__photo hero__photo--a">
+          <img src="assets/img/hero-sprint.webp" width="1440" height="1280" alt="A runner in black breaks into a sprint along an orange wall." fetchpriority="high" />
+        </div>
+        <div class="hero__photo hero__photo--b">
+          <img src="assets/img/hero-stand.webp" width="1440" height="1280" alt="A man in a black hoodie stands still, hands in his pockets, against the same wall." />
+        </div>
+        <canvas class="hero__gl" aria-hidden="true"></canvas>
+      </div>
+
+      <div class="hero__lines" aria-hidden="true">
+        <svg class="hero__ring" viewBox="0 0 1440 1153" preserveAspectRatio="none">
+          <circle cx="720" cy="579" r="596" pathLength="1" />
+        </svg>
+        <i class="hero__orbit"><b></b></i>
+        <i class="hero__vline"></i>
+        <i class="hero__hline"></i>
+      </div>
+
+      <p class="hero__tag hero__tag--l label">Offform research dept.</p>
+      <p class="hero__tag hero__tag--r label">The everyday athlete</p>
+
+      <div class="hero__intro">
+        <p>An exploration of<br />movement.<br />From first light to<br />after hours.</p>
+        <a class="hero__cta link-ne" href="#after-hours"><span data-roll>View campaign</span> <svg class="i"><use href="#i-ne"/></svg></a>
+      </div>
+
+      <p class="hero__num" aria-label="Offform collection 06"><span class="hero__paren">(OF)</span><span class="hero__dash">—</span><span class="hero__six" data-num>06</span></p>
+
+      <p class="hero__meta hero__meta--l label">Performance <i>/</i> Lifestyle <i>/</i> No fixed form</p>
+      <p class="hero__meta hero__meta--r label">Collection 06 <i>—</i> Autumn <i>/</i> Winter 2026</p>
+
+      <h1 class="hero__title" id="hero-title"><span class="line">Not made</span> <span class="line">to stand</span> <span class="line">still.</span></h1>
+
+      <div class="hero__aside">
+        <p>Technical by nature.<br />Unconventional by design.<br />For every way you move.</p>
+        <a class="btn btn--ink" href="#shop" data-magnet><span data-roll>Explore the new drop</span> <svg class="i"><use href="#i-arrow"/></svg></a>
+      </div>
+    </section>
+
+    <!-- ============ [01] STORY ============ -->
+    <section class="story" id="story" aria-labelledby="story-label">
+      <div class="story__side">
+        <p class="label label--ink" id="story-label">[01] / A different kind of uniform</p>
+        <p class="story__coords label">Designed in London<br />Tested in real life<br /><span data-coords>51°30′26.4″N 0°07′39.6″W</span></p>
+      </div>
+      <p class="story__statement" data-statement>Life doesn’t move in straight lines. Neither do we. We make technical essentials for the space between sport, culture and everyday life.</p>
+      <ul class="story__pillars">
+        <li><span class="story__pn">01</span> / Purpose-built design<span class="story__tip">Every seam has a job. Nothing is there for show.</span></li>
+        <li><span class="story__pn">02</span> / Unrestricted movement<span class="story__tip">Cut on the body in motion, not on a hanger.</span></li>
+        <li><span class="story__pn">03</span> / No fixed destination<span class="story__tip">Track at six, office at nine, out after dark.</span></li>
+        <li class="story__more"><a class="link-ne link-ne--orange" href="#lab"><span data-roll>Our approach</span> <svg class="i"><use href="#i-ne"/></svg></a></li>
+      </ul>
+    </section>
+
+    <!-- ============ MARQUEE ============ -->
+    <div class="band" aria-label="Built for the in-between. Function with intent. Offform, volume 06. Keep moving, stay curious." role="note">
+      <div class="band__track" aria-hidden="true">
+        <div class="band__run">
+          <span>Built for the in-between</span><b>+</b><span>Function with intent</span><b>+</b><span>Offform / Vol. 06</span><b>+</b><span>Keep moving. Stay curious.</span><b>+</b>
+          <span>Built for the in-between</span><b>+</b><span>Function with intent</span><b>+</b><span>Offform / Vol. 06</span><b>+</b><span>Keep moving. Stay curious.</span><b>+</b>
+        </div>
+      </div>
+      <div class="band__badge" aria-hidden="true">
+        <svg class="band__blob" viewBox="0 0 240 150"><path d="M120 12c22 0 44 3 63 9l43-17-14 40c11 13 16 26 16 39 0 40-48 64-108 64S12 123 12 83 60 12 120 12Z" /></svg>
+        <span class="band__pill"><span data-year>2026</span></span>
+      </div>
+    </div>
+
+    <!-- ============ [02] SHOP ============ -->
+    <section class="shop" id="shop" aria-labelledby="shop-title">
+      <header class="shop__head">
+        <p class="label label--ink">[02] / The latest edit</p>
+        <h2 class="shop__title display" id="shop-title">Fresh in. Far out.</h2>
+        <a class="link-ne label label--ink" href="#shop" data-filter="all"><span data-roll>Shop all new arrivals</span> <svg class="i"><use href="#i-ne"/></svg></a>
+      </header>
+
+      <div class="shop__bar">
+        <div class="shop__tabs" role="tablist" aria-label="Filter products">
+          <button class="shop__tab" role="tab" aria-controls="shop-panel" aria-selected="true" data-tab="all">All products<span class="shop__n">(<span data-count>10</span>)</span></button>
+          <button class="shop__tab" role="tab" aria-controls="shop-panel" aria-selected="false" data-tab="clothing">Clothing<span class="shop__n">(<span data-count>5</span>)</span></button>
+          <button class="shop__tab" role="tab" aria-controls="shop-panel" aria-selected="false" data-tab="footwear">Footwear<span class="shop__n">(<span data-count>2</span>)</span></button>
+          <button class="shop__tab" role="tab" aria-controls="shop-panel" aria-selected="false" data-tab="accessories">Accessories<span class="shop__n">(<span data-count>3</span>)</span></button>
+        </div>
+      </div>
+
+      <div class="shop__rail" data-rail id="shop-panel" role="tabpanel" aria-labelledby="shop-title">
+        <ul class="shop__list" data-products role="list">
+          <!-- cards: written by tools/cards.py -->
+          <li class="card" data-id="velocity-shell" data-name="Velocity Shell" data-price="245" data-cat="clothing" data-tags="jacket shell hood waterproof rain reflective black" data-mode="dark">
+            <div class="card__media" data-cursor="Quick add">
+              <img src="assets/img/p-shell.webp" width="640" height="732" alt="Velocity Shell, black" loading="lazy" decoding="async" /><span class="card__badge label card__badge--orange">New</span>
+            </div>
+            <div class="card__quick" role="group" aria-label="Quick add Velocity Shell"><span class="label">Quick add</span><button class="card__size" type="button" data-size="XS" aria-label="Add Velocity Shell, size XS">XS</button><button class="card__size" type="button" data-size="S" aria-label="Add Velocity Shell, size S">S</button><button class="card__size" type="button" data-size="M" aria-label="Add Velocity Shell, size M">M</button><button class="card__size" type="button" data-size="L" aria-label="Add Velocity Shell, size L">L</button><button class="card__size" type="button" data-size="XL" aria-label="Add Velocity Shell, size XL">XL</button></div>
+            <div class="card__info">
+              <h3 class="card__name">Velocity Shell / <span class="card__price">$245</span></h3>
+              <span class="card__sub label">Ultralight / Water repellent</span>
+              <div class="card__swatches" role="group" aria-label="Colour"><button class="card__sw" type="button" style="--c:#161616" aria-pressed="true" aria-label="Black" data-colour="Black" data-hex="#161616"></button><button class="card__sw" type="button" style="--c:#77787a" aria-pressed="false" aria-label="Graphite" data-colour="Graphite" data-hex="#77787a"></button><button class="card__sw" type="button" style="--c:#e5491f" aria-pressed="false" aria-label="Signal orange" data-colour="Signal orange" data-hex="#e5491f"></button><span class="card__more label">+3 colors</span></div>
+            </div>
+          </li>
+          <li class="card" data-id="transit-cargo" data-name="Transit Cargo" data-price="165" data-cat="clothing" data-tags="trousers pants cargo stretch olive" data-mode="hue">
+            <div class="card__media" data-cursor="Quick add">
+              <img src="assets/img/p-cargo.webp" width="640" height="732" alt="Transit Cargo, olive" loading="lazy" decoding="async" />
+            </div>
+            <div class="card__quick" role="group" aria-label="Quick add Transit Cargo"><span class="label">Quick add</span><button class="card__size" type="button" data-size="XS" aria-label="Add Transit Cargo, size XS">XS</button><button class="card__size" type="button" data-size="S" aria-label="Add Transit Cargo, size S">S</button><button class="card__size" type="button" data-size="M" aria-label="Add Transit Cargo, size M">M</button><button class="card__size" type="button" data-size="L" aria-label="Add Transit Cargo, size L">L</button><button class="card__size" type="button" data-size="XL" aria-label="Add Transit Cargo, size XL">XL</button></div>
+            <div class="card__info">
+              <h3 class="card__name">Transit Cargo / <span class="card__price">$165</span></h3>
+              <span class="card__sub label">4-way stretch / Relaxed fit</span>
+              <div class="card__swatches" role="group" aria-label="Colour"><button class="card__sw" type="button" style="--c:#6f725a" aria-pressed="true" aria-label="Olive" data-colour="Olive" data-hex="#6f725a"></button><button class="card__sw" type="button" style="--c:#161616" aria-pressed="false" aria-label="Black" data-colour="Black" data-hex="#161616"></button><span class="card__more label">+2 colors</span></div>
+            </div>
+          </li>
+          <li class="card" data-id="aero-form-01" data-name="Aero Form 01" data-price="195" data-cat="footwear" data-tags="sneaker shoe trainer running reflective" data-mode="accent">
+            <div class="card__media" data-cursor="Quick add">
+              <img src="assets/img/p-sneaker.webp" width="640" height="732" alt="Aero Form 01, cloud" loading="lazy" decoding="async" />
+            </div>
+            <div class="card__quick" role="group" aria-label="Quick add Aero Form 01"><span class="label">Quick add</span><button class="card__size" type="button" data-size="7" aria-label="Add Aero Form 01, size 7">7</button><button class="card__size" type="button" data-size="8" aria-label="Add Aero Form 01, size 8">8</button><button class="card__size" type="button" data-size="9" aria-label="Add Aero Form 01, size 9">9</button><button class="card__size" type="button" data-size="10" aria-label="Add Aero Form 01, size 10">10</button><button class="card__size" type="button" data-size="11" aria-label="Add Aero Form 01, size 11">11</button></div>
+            <div class="card__info">
+              <h3 class="card__name">Aero Form 01 / <span class="card__price">$195</span></h3>
+              <span class="card__sub label">Everyday performance / Unisex</span>
+              <div class="card__swatches" role="group" aria-label="Colour"><button class="card__sw" type="button" style="--c:#d3d3cf" aria-pressed="true" aria-label="Cloud" data-colour="Cloud" data-hex="#d3d3cf"></button><button class="card__sw" type="button" style="--c:#161616" aria-pressed="false" aria-label="Black" data-colour="Black" data-hex="#161616"></button><button class="card__sw" type="button" style="--c:#e5491f" aria-pressed="false" aria-label="Signal orange" data-colour="Signal orange" data-hex="#e5491f"></button><span class="card__more label">+3 colors</span></div>
+            </div>
+          </li>
+          <li class="card" data-id="motion-long-sleeve" data-name="Motion Long Sleeve" data-price="85" data-cat="clothing" data-tags="top shirt long sleeve running orange" data-mode="hue">
+            <div class="card__media" data-cursor="Quick add">
+              <img src="assets/img/p-longsleeve.webp" width="640" height="732" alt="Motion Long Sleeve, signal orange" loading="lazy" decoding="async" /><span class="card__badge label">Bestseller</span>
+            </div>
+            <div class="card__quick" role="group" aria-label="Quick add Motion Long Sleeve"><span class="label">Quick add</span><button class="card__size" type="button" data-size="XS" aria-label="Add Motion Long Sleeve, size XS">XS</button><button class="card__size" type="button" data-size="S" aria-label="Add Motion Long Sleeve, size S">S</button><button class="card__size" type="button" data-size="M" aria-label="Add Motion Long Sleeve, size M">M</button><button class="card__size" type="button" data-size="L" aria-label="Add Motion Long Sleeve, size L">L</button><button class="card__size" type="button" data-size="XL" aria-label="Add Motion Long Sleeve, size XL">XL</button></div>
+            <div class="card__info">
+              <h3 class="card__name">Motion Long Sleeve / <span class="card__price">$85</span></h3>
+              <span class="card__sub label">Quick-dry / Second-skin feel</span>
+              <div class="card__swatches" role="group" aria-label="Colour"><button class="card__sw" type="button" style="--c:#f0782f" aria-pressed="true" aria-label="Signal orange" data-colour="Signal orange" data-hex="#f0782f"></button><button class="card__sw" type="button" style="--c:#161616" aria-pressed="false" aria-label="Black" data-colour="Black" data-hex="#161616"></button><button class="card__sw" type="button" style="--c:#dedbd3" aria-pressed="false" aria-label="Bone" data-colour="Bone" data-hex="#dedbd3"></button><span class="card__more label">+3 colors</span></div>
+            </div>
+          </li>
+          <li class="card" data-id="shield-sunglasses" data-name="Shield Sunglasses" data-price="120" data-cat="accessories" data-tags="sunglasses glasses shades shield" data-mode="solid">
+            <div class="card__media" data-cursor="Quick add">
+              <img src="assets/img/p-extra-2.webp" width="640" height="732" alt="Shield Sunglasses, bronze" loading="lazy" decoding="async" />
+            </div>
+            <div class="card__quick" role="group" aria-label="Quick add Shield Sunglasses"><span class="label">Quick add</span><button class="card__size" type="button" data-size="One size" aria-label="Add Shield Sunglasses, size One size">Add</button></div>
+            <div class="card__info">
+              <h3 class="card__name">Shield Sunglasses / <span class="card__price">$120</span></h3>
+              <span class="card__sub label">Cat. 3 lens / 26 g</span>
+              <div class="card__swatches" role="group" aria-label="Colour"><button class="card__sw" type="button" style="--c:#9c7a45" aria-pressed="true" aria-label="Bronze" data-colour="Bronze" data-hex="#9c7a45"></button><button class="card__sw" type="button" style="--c:#161616" aria-pressed="false" aria-label="Black" data-colour="Black" data-hex="#161616"></button><span class="card__more label">+2 colors</span></div>
+            </div>
+          </li>
+          <li class="card" data-id="stride-tight" data-name="Stride Tight 3/4" data-price="70" data-cat="clothing" data-tags="tights leggings running black" data-mode="dark">
+            <div class="card__media" data-cursor="Quick add">
+              <img src="assets/img/p-extra-6.webp" width="640" height="732" alt="Stride Tight 3/4, black" loading="lazy" decoding="async" />
+            </div>
+            <div class="card__quick" role="group" aria-label="Quick add Stride Tight 3/4"><span class="label">Quick add</span><button class="card__size" type="button" data-size="XS" aria-label="Add Stride Tight 3/4, size XS">XS</button><button class="card__size" type="button" data-size="S" aria-label="Add Stride Tight 3/4, size S">S</button><button class="card__size" type="button" data-size="M" aria-label="Add Stride Tight 3/4, size M">M</button><button class="card__size" type="button" data-size="L" aria-label="Add Stride Tight 3/4, size L">L</button><button class="card__size" type="button" data-size="XL" aria-label="Add Stride Tight 3/4, size XL">XL</button></div>
+            <div class="card__info">
+              <h3 class="card__name">Stride Tight 3/4 / <span class="card__price">$70</span></h3>
+              <span class="card__sub label">Compressive / Zip pocket</span>
+              <div class="card__swatches" role="group" aria-label="Colour"><button class="card__sw" type="button" style="--c:#161616" aria-pressed="true" aria-label="Black" data-colour="Black" data-hex="#161616"></button><button class="card__sw" type="button" style="--c:#77787a" aria-pressed="false" aria-label="Graphite" data-colour="Graphite" data-hex="#77787a"></button><span class="card__more label">+2 colors</span></div>
+            </div>
+          </li>
+          <li class="card" data-id="aero-form-02" data-name="Aero Form 02" data-price="210" data-cat="footwear" data-tags="sneaker shoe trainer running black reflective" data-mode="dark">
+            <div class="card__media" data-cursor="Quick add">
+              <img src="assets/img/p-extra-1.webp" width="640" height="732" alt="Aero Form 02, midnight" loading="lazy" decoding="async" /><span class="card__badge label card__badge--orange">New</span>
+            </div>
+            <div class="card__quick" role="group" aria-label="Quick add Aero Form 02"><span class="label">Quick add</span><button class="card__size" type="button" data-size="7" aria-label="Add Aero Form 02, size 7">7</button><button class="card__size" type="button" data-size="8" aria-label="Add Aero Form 02, size 8">8</button><button class="card__size" type="button" data-size="9" aria-label="Add Aero Form 02, size 9">9</button><button class="card__size" type="button" data-size="10" aria-label="Add Aero Form 02, size 10">10</button><button class="card__size" type="button" data-size="11" aria-label="Add Aero Form 02, size 11">11</button></div>
+            <div class="card__info">
+              <h3 class="card__name">Aero Form 02 / <span class="card__price">$210</span></h3>
+              <span class="card__sub label">Night runner / Reflective heel</span>
+              <div class="card__swatches" role="group" aria-label="Colour"><button class="card__sw" type="button" style="--c:#1c2235" aria-pressed="true" aria-label="Midnight" data-colour="Midnight" data-hex="#1c2235"></button><button class="card__sw" type="button" style="--c:#161616" aria-pressed="false" aria-label="Black" data-colour="Black" data-hex="#161616"></button><button class="card__sw" type="button" style="--c:#e5491f" aria-pressed="false" aria-label="Signal orange" data-colour="Signal orange" data-hex="#e5491f"></button><span class="card__more label">+3 colors</span></div>
+            </div>
+          </li>
+          <li class="card" data-id="thermal-base-layer" data-name="Thermal Base Layer" data-price="95" data-cat="clothing" data-tags="base layer long sleeve top merino grey" data-mode="dark">
+            <div class="card__media" data-cursor="Quick add">
+              <img src="assets/img/p-extra-4.webp" width="640" height="732" alt="Thermal Base Layer, graphite" loading="lazy" decoding="async" />
+            </div>
+            <div class="card__quick" role="group" aria-label="Quick add Thermal Base Layer"><span class="label">Quick add</span><button class="card__size" type="button" data-size="XS" aria-label="Add Thermal Base Layer, size XS">XS</button><button class="card__size" type="button" data-size="S" aria-label="Add Thermal Base Layer, size S">S</button><button class="card__size" type="button" data-size="M" aria-label="Add Thermal Base Layer, size M">M</button><button class="card__size" type="button" data-size="L" aria-label="Add Thermal Base Layer, size L">L</button><button class="card__size" type="button" data-size="XL" aria-label="Add Thermal Base Layer, size XL">XL</button></div>
+            <div class="card__info">
+              <h3 class="card__name">Thermal Base Layer / <span class="card__price">$95</span></h3>
+              <span class="card__sub label">Merino blend / Thumb loops</span>
+              <div class="card__swatches" role="group" aria-label="Colour"><button class="card__sw" type="button" style="--c:#6f6e73" aria-pressed="true" aria-label="Graphite" data-colour="Graphite" data-hex="#6f6e73"></button><button class="card__sw" type="button" style="--c:#161616" aria-pressed="false" aria-label="Black" data-colour="Black" data-hex="#161616"></button><button class="card__sw" type="button" style="--c:#dedbd3" aria-pressed="false" aria-label="Bone" data-colour="Bone" data-hex="#dedbd3"></button><span class="card__more label">+3 colors</span></div>
+            </div>
+          </li>
+          <li class="card" data-id="transit-sling" data-name="Transit Sling" data-price="75" data-cat="accessories" data-tags="bag sling crossbody black" data-mode="dark">
+            <div class="card__media" data-cursor="Quick add">
+              <img src="assets/img/p-extra-5.webp" width="640" height="732" alt="Transit Sling, black" loading="lazy" decoding="async" />
+            </div>
+            <div class="card__quick" role="group" aria-label="Quick add Transit Sling"><span class="label">Quick add</span><button class="card__size" type="button" data-size="One size" aria-label="Add Transit Sling, size One size">Add</button></div>
+            <div class="card__info">
+              <h3 class="card__name">Transit Sling / <span class="card__price">$75</span></h3>
+              <span class="card__sub label">2L / Water resistant</span>
+              <div class="card__swatches" role="group" aria-label="Colour"><button class="card__sw" type="button" style="--c:#161616" aria-pressed="true" aria-label="Black" data-colour="Black" data-hex="#161616"></button><button class="card__sw" type="button" style="--c:#6f725a" aria-pressed="false" aria-label="Olive" data-colour="Olive" data-hex="#6f725a"></button><span class="card__more label">+2 colors</span></div>
+            </div>
+          </li>
+          <li class="card" data-id="transit-pack" data-name="Transit Pack 18L" data-price="140" data-cat="accessories" data-tags="bag backpack pack black" data-mode="dark">
+            <div class="card__media" data-cursor="Quick add">
+              <img src="assets/img/p-extra-3.webp" width="640" height="732" alt="Transit Pack 18L, black" loading="lazy" decoding="async" /><span class="card__badge label">Low stock</span>
+            </div>
+            <div class="card__quick" role="group" aria-label="Quick add Transit Pack 18L"><span class="label">Quick add</span><button class="card__size" type="button" data-size="One size" aria-label="Add Transit Pack 18L, size One size">Add</button></div>
+            <div class="card__info">
+              <h3 class="card__name">Transit Pack 18L / <span class="card__price">$140</span></h3>
+              <span class="card__sub label">Padded back / Bottle pocket</span>
+              <div class="card__swatches" role="group" aria-label="Colour"><button class="card__sw" type="button" style="--c:#161616" aria-pressed="true" aria-label="Black" data-colour="Black" data-hex="#161616"></button><button class="card__sw" type="button" style="--c:#6f725a" aria-pressed="false" aria-label="Olive" data-colour="Olive" data-hex="#6f725a"></button><span class="card__more label">+2 colors</span></div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="shop__foot">
+        <div class="shop__progress" aria-hidden="true"><i></i></div>
+        <div class="shop__arrows">
+          <button class="shop__arrow" type="button" data-prev aria-label="Previous products"><svg class="i"><use href="#i-left"/></svg></button>
+          <button class="shop__arrow" type="button" data-next aria-label="Next products"><svg class="i"><use href="#i-arrow"/></svg></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ [03] AFTER HOURS ============ -->
+    <section class="after" id="after-hours" aria-labelledby="after-title">
+      <div class="after__media">
+        <div class="after__subject">
+          <img class="after__img" src="assets/img/after-hours.webp" width="1400" height="1740" alt="A man in profile, in shield sunglasses and a black hooded shell, against the dusk." loading="lazy" />
+          <i class="after__tint" aria-hidden="true"></i>
+          <i class="after__torch" aria-hidden="true"></i>
+        </div>
+      </div>
+      <p class="after__tag label">[03] / The after hours collection</p>
+      <p class="after__clock label" aria-label="London time"><span>London</span> <i>/</i> <time data-clock>22:06</time> <i>/</i> <span>Streetlights on</span></p>
+      <h2 class="after__title" id="after-title">
+        <span class="after__l after__l--1"><span class="line">Out of</span></span>
+        <span class="after__l after__l--2"><span class="line">office.</span></span>
+        <span class="after__l after__l--3"><span class="line">Into mo<span class="after__ghost">tion.</span></span></span>
+      </h2>
+      <p class="after__date" data-date aria-label="Drops June 2026">06.26</p>
+      <p class="after__copy">When the day ends, a different energy begins.<br />Reflective details. Unrestricted possibilities.</p>
+      <a class="btn btn--cream after__btn" href="#shop" data-magnet><span data-roll>Discover after hours</span></a>
+    </section>
+
+    <!-- ============ [04] PACE ============ -->
+    <section class="pace" id="pace" aria-labelledby="pace-title">
+      <header class="pace__head">
+        <h2 class="pace__title display" id="pace-title">Find your own pace.</h2>
+        <p class="label label--ink pace__note">[04] / Two modes. Zero compromise.<br />Engineered for your every day.</p>
+      </header>
+      <div class="pace__cards">
+        <a class="pace__card pace__card--perf" href="#shop" data-filter="clothing" data-cursor="Shop">
+          <img src="assets/img/pace-performance.webp" width="1600" height="1400" alt="A runner in black strides out under a concrete overpass." loading="lazy" />
+          <span class="pace__label label">01 / Performance system</span>
+          <span class="pace__stat label" aria-hidden="true"><span>Pace</span> <b data-pace>4′12″</b>/km</span>
+          <span class="pace__foot">
+            <span class="pace__desc">Breathable, fast-drying layers that move with every stride and get out of the way.</span>
+            <span class="pace__go label">Shop performance <svg class="i"><use href="#i-ne"/></svg></span>
+          </span>
+        </a>
+        <a class="pace__card pace__card--every" href="#shop" data-filter="all" data-cursor="Shop">
+          <img src="assets/img/pace-everyday.webp" width="1600" height="1400" alt="A man in a cream half-zip and sunglasses leans on a concrete pillar." loading="lazy" />
+          <span class="pace__label label">02 / Everyday system</span>
+          <span class="pace__stat label" aria-hidden="true"><span>Steps</span> <b data-steps>8,214</b></span>
+          <span class="pace__foot">
+            <span class="pace__desc">Relaxed cuts with technical bones: commute, coffee, wherever the day goes.</span>
+            <span class="pace__go label">Shop everyday <svg class="i"><use href="#i-ne"/></svg></span>
+          </span>
+        </a>
+      </div>
+    </section>
+
+    <!-- ============ [05] LAB ============ -->
+    <section class="lab" id="lab" aria-labelledby="lab-title">
+      <div class="lab__copy">
+        <p class="label label--cream">[05] / Offform research dept.</p>
+        <h2 class="lab__title display" id="lab-title">Built in<br />the lab.<br />Proven on<br />the street.</h2>
+        <p class="lab__lede">Every piece starts as a motion study. We film the body at speed, map where it bends, heats and stretches, and cut the pattern around it.</p>
+        <ul class="lab__specs" role="list">
+          <li data-zone="torso"><span class="lab__sn">01</span><span class="lab__sname">3-layer shell</span><span class="lab__sval">20K / 20K</span><span class="lab__sdesc">Waterproof, and breathable enough to sprint in.</span></li>
+          <li data-zone="seams"><span class="lab__sn">02</span><span class="lab__sname">Bonded seams</span><span class="lab__sval">0 needle holes</span><span class="lab__sdesc">Welded, not stitched. Nothing to chafe, nothing to leak.</span></li>
+          <li data-zone="reflect"><span class="lab__sn">03</span><span class="lab__sname">360° reflective</span><span class="lab__sval">Seen at 150 m</span><span class="lab__sdesc">Printed hits on the arms and heels catch headlights from every side.</span></li>
+          <li data-zone="legs"><span class="lab__sn">04</span><span class="lab__sname">4-way stretch</span><span class="lab__sval">+38% range</span><span class="lab__sdesc">A knit that gives at the hip and knee, then snaps back.</span></li>
+        </ul>
+      </div>
+      <figure class="lab__study" aria-label="Motion study: a runner drawn in type, its pace set by the control below.">
+        <div class="lab__screen">
+          <pre class="lab__ascii" aria-hidden="true" data-ascii></pre>
+          <span class="lab__corner lab__corner--tl label">Motion study 06 <i>/</i> <span data-mode>Run</span></span>
+          <span class="lab__corner lab__corner--tr label"><i class="lab__rec"></i>Live</span>
+          <dl class="lab__read">
+            <div><dt class="label">Pace</dt><dd data-read="pace">4′48″</dd></div>
+            <div><dt class="label">Cadence</dt><dd data-read="cad">172</dd></div>
+            <div><dt class="label">Stride</dt><dd data-read="stride">1.21 m</dd></div>
+          </dl>
+        </div>
+        <div class="lab__ctrl" role="radiogroup" aria-label="Pace of the motion study">
+          <button type="button" role="radio" aria-checked="false" data-speed="0">Walk</button>
+          <button type="button" role="radio" aria-checked="true" data-speed="1">Run</button>
+          <button type="button" role="radio" aria-checked="false" data-speed="2">Sprint</button>
+        </div>
+      </figure>
+    </section>
+
+    <!-- ============ [06] CLUB ============ -->
+    <section class="club" id="club" aria-labelledby="club-title">
+      <header class="club__head">
+        <p class="label label--ink">[06] / Offform run club</p>
+        <h2 class="club__title display" id="club-title">Run with us.</h2>
+        <p class="club__next label label--ink">Next session in <span data-countdown>2d 14:22:09</span></p>
+      </header>
+      <ul class="club__list" role="list">
+        <li class="club__row" data-pic="club-3" data-day="2" data-time="06:30">
+          <span class="club__day">Tue <b>06:30</b></span>
+          <span class="club__name">Shoreditch to Victoria Park</span>
+          <span class="club__type label">6K <i>/</i> Easy</span>
+          <button class="club__join" type="button" data-join="Tuesday"><span data-roll>Join</span> <svg class="i"><use href="#i-plus"/></svg></button>
+        </li>
+        <li class="club__row" data-pic="club-2" data-day="4" data-time="19:30">
+          <span class="club__day">Thu <b>19:30</b></span>
+          <span class="club__name">Southbank after hours</span>
+          <span class="club__type label">10K <i>/</i> Tempo</span>
+          <button class="club__join" type="button" data-join="Thursday"><span data-roll>Join</span> <svg class="i"><use href="#i-plus"/></svg></button>
+        </li>
+        <li class="club__row" data-pic="club-1" data-day="6" data-time="08:00">
+          <span class="club__day">Sat <b>08:00</b></span>
+          <span class="club__name">Hackney Marshes long run</span>
+          <span class="club__type label">16K <i>/</i> Long</span>
+          <button class="club__join" type="button" data-join="Saturday"><span data-roll>Join</span> <svg class="i"><use href="#i-plus"/></svg></button>
+        </li>
+        <li class="club__row" data-pic="club-4" data-day="0" data-time="09:00">
+          <span class="club__day">Sun <b>09:00</b></span>
+          <span class="club__name">Regent’s Canal recovery</span>
+          <span class="club__type label">5K <i>/</i> Recovery</span>
+          <button class="club__join" type="button" data-join="Sunday"><span data-roll>Join</span> <svg class="i"><use href="#i-plus"/></svg></button>
+        </li>
+      </ul>
+      <div class="club__float" aria-hidden="true">
+        <img data-pic="club-1" src="assets/img/club-1-sm.webp" alt="" loading="lazy" />
+        <img data-pic="club-2" src="assets/img/club-2-sm.webp" alt="" loading="lazy" />
+        <img data-pic="club-3" src="assets/img/club-3-sm.webp" alt="" loading="lazy" />
+        <img data-pic="club-4" src="assets/img/club-4-sm.webp" alt="" loading="lazy" />
+      </div>
+    </section>
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="foot" aria-labelledby="foot-title">
+    <div class="foot__top">
+      <form class="foot__news" data-news novalidate>
+        <p class="label label--cream">[07] / Stay in motion</p>
+        <h2 class="foot__title display" id="foot-title">First to the next drop.</h2>
+        <div class="foot__field">
+          <label class="sr" for="news-email">Email address</label>
+          <input id="news-email" name="email" type="email" autocomplete="email" placeholder="Your email" required />
+          <button class="btn btn--orange" type="submit" data-magnet><span data-roll>Sign up</span> <svg class="i"><use href="#i-arrow"/></svg></button>
+        </div>
+        <p class="foot__msg label" data-news-msg role="status" aria-live="polite">Early access, run club dates and nothing else.</p>
+      </form>
+      <nav class="foot__cols" aria-label="Footer">
+        <div><p class="label">Shop</p><a href="#shop" data-filter="all">New arrivals</a><a href="#shop" data-filter="clothing">Clothing</a><a href="#shop" data-filter="footwear">Footwear</a><a href="#shop" data-filter="accessories">Accessories</a></div>
+        <div><p class="label">Explore</p><a href="#after-hours">After Hours</a><a href="#pace">Two systems</a><a href="#lab">Research dept.</a><a href="#club">Run club</a></div>
+        <div><p class="label">Help</p><a href="#top">Shipping</a><a href="#top">Returns</a><a href="#top">Size guide</a><a href="#top">Contact</a></div>
+        <div><p class="label">Follow</p><a href="#top">Instagram <svg class="i"><use href="#i-ne"/></svg></a><a href="#top">Strava <svg class="i"><use href="#i-ne"/></svg></a><a href="#top">TikTok <svg class="i"><use href="#i-ne"/></svg></a></div>
+      </nav>
+    </div>
+    <p class="foot__word" aria-hidden="true" data-word><span>O</span><span>F</span><span>F</span><span>F</span><span>O</span><span>R</span><span>M</span></p>
+    <div class="foot__bar label">
+      <span>© <span data-year-now>2026</span> Offform Ltd. <i>/</i> A design study</span>
+      <span>London <i>/</i> <time data-clock>22:06</time> GMT</span>
+      <a class="link-ne" href="#top" data-top><span data-roll>Back to top</span> <svg class="i"><use href="#i-up"/></svg></a>
+    </div>
+  </footer>
+
+  <!-- ============ OVERLAYS ============ -->
+  <div class="scrim" data-scrim hidden></div>
+
+  <aside class="bag" id="bag" role="dialog" aria-modal="true" aria-labelledby="bag-title" hidden data-bag>
+    <header class="bag__head">
+      <h2 class="bag__title" id="bag-title">Bag <span>(<span data-bag-count>0</span>)</span></h2>
+      <button class="bag__close" type="button" data-bag-close aria-label="Close bag"><svg class="i"><use href="#i-close"/></svg></button>
+    </header>
+    <div class="bag__ship">
+      <p class="label label--ink" data-ship-msg>You’re $150 away from complimentary delivery</p>
+      <span class="bag__meter"><i data-ship-bar></i></span>
+    </div>
+    <ul class="bag__items" data-bag-items role="list"></ul>
+    <p class="bag__empty" data-bag-empty>Your bag is empty. <a href="#shop" data-bag-close>Start with the new drop</a>.</p>
+    <footer class="bag__foot">
+      <p class="bag__total"><span class="label label--ink">Subtotal</span><b data-bag-total>$0</b></p>
+      <button class="btn btn--ink btn--block" type="button" data-checkout disabled><span data-roll>Checkout</span> <svg class="i"><use href="#i-arrow"/></svg></button>
+    </footer>
+  </aside>
+
+  <div class="search" id="search" role="dialog" aria-modal="true" aria-label="Search" hidden data-search>
+    <div class="search__inner">
+      <label class="sr" for="search-q">Search products</label>
+      <input class="search__input" id="search-q" type="search" placeholder="Search" autocomplete="off" data-search-q />
+      <button class="search__close" type="button" data-search-close aria-label="Close search"><svg class="i"><use href="#i-close"/></svg></button>
+      <p class="label label--ink search__hint" data-search-hint>Try “shell”, “orange” or “reflective”</p>
+      <ul class="search__results" data-search-results role="list"></ul>
+    </div>
+  </div>
+
+  <nav class="menu" id="menu" aria-label="Menu" hidden data-menu>
+    <a href="#shop" data-filter="all">New arrivals</a>
+    <a href="#shop" data-filter="clothing">Clothing</a>
+    <a href="#shop" data-filter="footwear">Footwear</a>
+    <a href="#after-hours">After Hours</a>
+    <a href="#lab">Research dept.</a>
+    <a href="#club">Run club</a>
+    <p class="menu__foot label"><button type="button" data-search-open>Search</button><button type="button" data-bag-open>Bag (<span data-bag-count>0</span>)</button></p>
+  </nav>
+
+  <div class="cursor" aria-hidden="true"><i class="cursor__dot"></i><span class="cursor__label"></span></div>
+  <p class="toast" role="status" aria-live="polite" data-toast></p>
+  <i class="grain" aria-hidden="true"></i>
+</body>
+</html>

@@ -12,7 +12,8 @@
  * built and photographed with the header and the copy hidden; Nelson's is cut from its hero picture around the eye;
  * AsterPay's is its hero's light, rings and phones, the tall one cut from a wide render around the phones; Vizen's
  * is its rider alone, as its WebGL draws him (software WebGL will do, slowly), the tall one cut round him too;
- * UnoRouter's is its mark of coloured cells on the dot grid, in the shot's own colours.
+ * UnoRouter's is its mark of coloured cells on the dot grid, in the shot's own colours; OFFFORM's is its hero's two
+ * photographs, rules and ring, the tall one cut from a wide render around the sprinter.
  * Needs Playwright with Chromium (npm i -g playwright && npx playwright install chromium); the site itself does not.
  */
 import { promises as fs } from "node:fs";
@@ -108,9 +109,22 @@ const vizen = async (page, viewport) => {
   return { x: Math.round(cx - 450), y: 0, width: 900, height: 1600 };
 };
 
+// OFFFORM: its hero (both photographs, the rules and the ring) with the header and every word taken off. Held
+// upright, the tall still is cut from a wider, larger render around the sprinter.
+const offform = async (page, viewport) => {
+  const tall = viewport.height > viewport.width;
+  if (tall) await page.setViewportSize({ width: 3168, height: 1600 });
+  await page.goto(`${site}/offform/`, { waitUntil: "load" });
+  await page.addStyleTag({ content: ".skip, .announce, .head, .hero__tag, .hero__intro, .hero__num, .hero__meta, .hero__title, .hero__aside, .grain, .cursor { display: none !important; }" +
+    (tall ? ":root { --u: 2.2px !important; }" : "") });
+  await page.evaluate(() => Promise.all([document.fonts.ready, ...[...document.images].filter((i) => i.closest(".hero")).map((i) => i.decode())]));
+  await page.waitForTimeout(600);
+  return tall ? { x: 640 - 450, y: 0, width: 900, height: 1600 } : undefined;
+};
+
 await fs.mkdir(path.join(ASSETS, "stills"), { recursive: true });
 console.log("stills:");
-for (const [name, go] of Object.entries({ mist, nelson, asterpay, vizen, unorouter })) {
+for (const [name, go] of Object.entries({ mist, nelson, asterpay, vizen, unorouter, offform })) {
   if (only.length && !only.includes(name)) continue;
   await shoot(WIDE, `stills/${name}-wide.jpg`, go);
   await shoot(TALL, `stills/${name}-tall.jpg`, go);

@@ -11,6 +11,7 @@ Websites built from a single design, each its own project, behind one picker.
 | **AsterPay**, a money app's hero recreated from one shot and grown into a full landing page | [`/asterpay/`](https://burgisimon.github.io/cant-beat-my-design-skills/asterpay/) |
 | **Vizen**, a helmet store's product page recreated from one shot, its rider raymarched in WebGL | [`/vizen/`](https://burgisimon.github.io/cant-beat-my-design-skills/vizen/) |
 | **UnoRouter**, an AI model router's hero recreated from one shot, in pixels, and grown into a full landing page | [`/unorouter/`](https://burgisimon.github.io/cant-beat-my-design-skills/unorouter/) |
+| **OFFFORM**, a sportswear shop recreated from a two-artboard shot and given a motion layer | [`/offform/`](https://burgisimon.github.io/cant-beat-my-design-skills/offform/) |
 
 ## The picker
 
@@ -21,9 +22,11 @@ The front page ([`picker/`](picker/)) is a line of cards, one per site, each wit
   drifting ASCII, the way its hero tears its paper; on AsterPay, an orbit of light closes round the pointer and a
   streak sweeps along its horizon, as in its hero; on Vizen, the hero's reticle locks onto the pointer with a streak
   of brake light through it; on UnoRouter, a halo of cells round the pointer steps through its four colours the way
-  its mark does.
+  its mark does; on OFFFORM, the hero's two rules cross at the pointer, its ring closes round it with a light running
+  it, and speed lines stream off behind a quick move.
 - **Choose one** and the card grows to fill the screen, its still giving way to the colour that site paints
-  first: Mist's bare violet sky, Nelson's white preloader, AsterPay's dark one, the black of Vizen and of UnoRouter.
+  first: Mist's bare violet sky, Nelson's white preloader, AsterPay's dark one, the black of Vizen and of UnoRouter,
+  OFFFORM's orange.
   The site's own entrance then plays from there, so the move from picker to site has no seam.
 - While the cards fit the screen they stand in the middle. With more sites than fit, the line becomes
   endless: it drifts when left alone, and the wheel, a drag or the arrow keys move it.
@@ -33,7 +36,7 @@ The front page ([`picker/`](picker/)) is a line of cards, one per site, each wit
 
 To add a site: a link in `picker/index.html` with its own `data-id`, its `--still` and `--arrive` in
 `picker/picker.css`, and its stills from `node picker/tools/stills.mjs` (which renders every still and the
-share image, or only the named sites' stills: `node picker/tools/stills.mjs vizen unorouter`; it needs Playwright). A
+share image, or only the named sites' stills: `node picker/tools/stills.mjs vizen offform`; it needs Playwright). A
 trace of its own in `picker/picker.js` is optional.
 
 ## Mist
@@ -110,12 +113,26 @@ pixel language.
 No build step: plain HTML, CSS and ES modules, copied into `dist/unorouter/` by `build.mjs`. See
 [`unorouter/README.md`](unorouter/README.md).
 
+## OFFFORM
+
+A sixth project lives in [`offform/`](offform/): a sportswear shop recreated from one shot of two artboards (the top
+of the home page, and the sections after it), measured against it at 1440px, then carried on in the same language.
+
+| Part | What it is |
+| --- | --- |
+| From the shot | Announcement, header, the orange hero with its ring and rules, the manifesto, the band with its 2026 badge, the latest edit (tabs and a product rail), After Hours, Find your own pace |
+| Grown from it | A research dept. with a motion study drawn in type, a run club, a newsletter and a footer with the wordmark |
+| Motion | A preloader that counts the collection in and hands its number to the hero; both hero photographs in raw WebGL (a streak entrance, a smear along the sprinter's run as you move, the man beside her standing still); Lenis, GSAP scroll reveals and SplitText; a draggable rail with in-place colour swatches and quick add to a bag; a torch on After Hours; an ASCII runner with motion-capture markers and chronophotographic echoes |
+
+No build step either; copied into `dist/offform/` by `build.mjs`. The photographs are free-licence stand-ins graded
+to the shot (see [`offform/CREDITS.md`](offform/CREDITS.md)). See [`offform/README.md`](offform/README.md).
+
 ## Develop
 
 Requires Node 20+. No dependencies to install.
 
 ```bash
-node build.mjs --serve        # http://localhost:4321 — the picker, /mist/, /nelson-crm/, /asterpay/, /vizen/ and /unorouter/; rebuilds and live-reloads on change
+node build.mjs --serve        # http://localhost:4321 — the picker and every site under it; rebuilds and live-reloads on change
 node build.mjs                # production build into ./dist
 ```
 
@@ -144,6 +161,7 @@ nelson-crm/            separate prebuilt project, published under /nelson-crm/
 asterpay/              separate project, no build step, published under /asterpay/ (its README and tools/ stay behind)
 vizen/                 separate project, no build step, published under /vizen/ (its README and tools/ stay behind)
 unorouter/             separate project, no build step, published under /unorouter/ (its README and tools/ stay behind)
+offform/               separate project, no build step, published under /offform/ (its README, CREDITS and tools/ stay behind)
 ```
 
 ## Deploy
@@ -177,7 +195,10 @@ GitHub Pages (Settings → Pages → Source: GitHub Actions).
   (SIL Open Font License, licences in `vizen/assets/fonts/`).
 - UnoRouter: [Doto](https://github.com/oliverlalan/Doto) and [Geist Mono and Geist](https://github.com/vercel/geist-font)
   (SIL Open Font License, licences in `unorouter/assets/fonts/`).
+- OFFFORM: [Barlow Condensed](https://github.com/jpt/barlow), JetBrains Mono and Inter (SIL Open Font License,
+  licences in `offform/assets/fonts/`); photographs from Unsplash and Pexels under their licences, credited in
+  `offform/CREDITS.md`.
 - Mist, its customers, people, quotes and numbers are fictional. The investor line in the hero comes
   from the original design. AsterPay, its people, reviews and figures are fictional too, and so are Vizen and its
   helmets. UnoRouter's hero copy and figures come from its shot; its models list, prices, rankings and routing are
-  illustrative and simulated.
+  illustrative and simulated. OFFFORM, its products, prices, people and run club are fictional too.

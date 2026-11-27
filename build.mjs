@@ -14,6 +14,7 @@
  *   asterpay/    →  /asterpay/    the AsterPay project, as written (no build step; its README and tools stay behind)
  *   vizen/       →  /vizen/       the Vizen project, the same way
  *   unorouter/   →  /unorouter/   the UnoRouter project, the same way
+ *   offform/     →  /offform/     the OFFFORM project, the same way (its CREDITS stay behind too)
  * Mist used to live at the root, so each of its old page URLs gets a small redirect into /mist/.
  *
  * Mist pages live in src/pages/*.html and may include partials from src/partials with
@@ -23,7 +24,7 @@
  *
  * Tokens replaced in pages and static text files:
  *   {{SITE_URL}}  absolute URL of the page's own site, without trailing slash (env SITE_URL, + /mist for Mist,
- *                 + /asterpay for AsterPay, + /vizen for Vizen, + /unorouter for UnoRouter)
+ *                 + /asterpay for AsterPay, + /vizen for Vizen, + /unorouter for UnoRouter, + /offform for OFFFORM)
  *   {{BASE}}      URL path that site is served under, with trailing slash (env BASE_PATH, + mist/ for Mist)
  *   {{VERSION}}   content hash of that site's CSS + JS, for cache-busting
  *   {{YEAR}}      current year
@@ -47,11 +48,14 @@ const VIZEN = path.join(ROOT, "vizen");
 const VIZEN_PRIVATE = new Set(["README.md", "tools"]); // kept in the repo, not published
 const UNOROUTER = path.join(ROOT, "unorouter");
 const UNOROUTER_PRIVATE = new Set(["README.md", "tools"]); // kept in the repo, not published
+const OFFFORM = path.join(ROOT, "offform");
+const OFFFORM_PRIVATE = new Set(["README.md", "CREDITS.md", "tools"]); // kept in the repo, not published
 // Sites with no build step, published as written under /<name>/ (their README and tools stay behind).
 const PLAIN_SITES = [
   { dir: ASTERPAY, name: "asterpay", private: ASTERPAY_PRIVATE },
   { dir: VIZEN, name: "vizen", private: VIZEN_PRIVATE },
   { dir: UNOROUTER, name: "unorouter", private: UNOROUTER_PRIVATE },
+  { dir: OFFFORM, name: "offform", private: OFFFORM_PRIVATE },
 ];
 
 const argv = process.argv.slice(2);
@@ -239,7 +243,7 @@ async function build() {
     }
   }
 
-  // ── AsterPay, Vizen and UnoRouter, under /asterpay/, /vizen/ and /unorouter/ ──
+  // ── AsterPay, Vizen, UnoRouter and OFFFORM, under /asterpay/, /vizen/, /unorouter/ and /offform/ ──
   // Plain files, published as they are; their pages get the tokens, with a version hash of their own CSS and JS.
   for (const site of PLAIN_SITES) {
     const files = (await listFiles(site.dir)).filter((f) => !site.private.has(path.relative(site.dir, f).split(path.sep)[0]));
@@ -269,6 +273,7 @@ async function build() {
     `${SITE_URL}/asterpay/`,
     `${SITE_URL}/vizen/`,
     `${SITE_URL}/unorouter/`,
+    `${SITE_URL}/offform/`,
   ];
   const sitemap =
     `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
@@ -279,7 +284,7 @@ async function build() {
   await fs.writeFile(path.join(OUT, ".nojekyll"), "");
 
   for (const w of warnings) console.warn(`  ⚠ ${w}`);
-  console.log(`✓ built the picker, ${pages.length} Mist pages, Nelson, AsterPay, Vizen and UnoRouter → ${path.relative(ROOT, OUT) || OUT} in ${Date.now() - started}ms`);
+  console.log(`✓ built the picker, ${pages.length} Mist pages, Nelson, AsterPay, Vizen, UnoRouter and OFFFORM → ${path.relative(ROOT, OUT) || OUT} in ${Date.now() - started}ms`);
 }
 
 const MIME = {
