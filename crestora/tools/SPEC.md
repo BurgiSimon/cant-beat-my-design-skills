@@ -70,6 +70,12 @@ footer glides into view and (if its intro has not played) plays it, or (if it ha
   `restingTop(el)` (ignores a reveal still in flight), `scrollToTarget(el | selector | y)` lands where a native
   #anchor would unless an offset is given, deep links land again as late layout settles (until the reader moves), and
   `landing(fn)` lets a module say where a link to its element lands (a pin's start, a card centred).
+- Motion that runs on its own stops on its own or can be stopped (WCAG 2.2.2). The footer night and the home
+  threads (`js/gl/lanes.js`, hero and #features ribbon, one canvas) each have a pause button (`pauseButton(lanes)`; the
+  same 36 px glass circle); the brand mark's sheen turns once on arrival and again on hover or focus, never on a loop;
+  `?still` puts a page at rest like `?reduced`.
+- Fine print in phrases uses the kit's `.fine-print` (phrase spans, `.fine-print__sep`, `--2` hidden under 480 px), so
+  no dot ends a line. A `.chip--live` dot is white unless the chip is about one stage (`data-stage`).
 
 ## 2. How the site is built
 

@@ -412,10 +412,10 @@
       <!-- the card's glass, riding the ribbon (the pinned stage only; each state below fills it) -->
       <div class="home-flow__ride" aria-hidden="true"></div>
 
-      <ol class="home-flow__list" data-reveal-stagger="0.06">
+      <div class="home-flow__list" role="list" data-reveal-stagger="0.06">
 
         <!-- 01 Spark -->
-        <li class="home-flow__block" id="flow-spark" data-stage="spark" style="--i:0">
+        <div class="home-flow__block" role="listitem" id="flow-spark" data-stage="spark" style="--i:0">
           <div class="home-flow__copy">
             <div class="home-flow__meta">
               <span class="icon-box"><svg class="icon icon--lg" aria-hidden="true"><use href="#i-spark"/></svg></span>
@@ -441,10 +441,10 @@
             </ul>
             <figcaption class="hf-card__foot"><span>6 sparks · 2 constellations</span><span class="stage-rail" data-n="1" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span></figcaption>
           </figure>
-        </li>
+        </div>
 
         <!-- 02 Shape -->
-        <li class="home-flow__block" id="flow-shape" data-stage="shape" style="--i:1">
+        <div class="home-flow__block" role="listitem" id="flow-shape" data-stage="shape" style="--i:1">
           <div class="home-flow__copy">
             <div class="home-flow__meta">
               <span class="icon-box"><svg class="icon icon--lg" aria-hidden="true"><use href="#i-shape"/></svg></span>
@@ -471,10 +471,10 @@
             </div>
             <figcaption class="hf-card__foot"><span>3 riding along · shared by link</span><span class="stage-rail" data-n="2" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span></figcaption>
           </figure>
-        </li>
+        </div>
 
         <!-- 03 Make -->
-        <li class="home-flow__block" id="flow-make" data-stage="make" style="--i:2">
+        <div class="home-flow__block" role="listitem" id="flow-make" data-stage="make" style="--i:2">
           <div class="home-flow__copy">
             <div class="home-flow__meta">
               <span class="icon-box"><svg class="icon icon--lg" aria-hidden="true"><use href="#i-make"/></svg></span>
@@ -502,10 +502,10 @@
             </div>
             <figcaption class="hf-card__foot"><span>Changed since v6: petals, bus lights</span><span class="stage-rail" data-n="3" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span></figcaption>
           </figure>
-        </li>
+        </div>
 
         <!-- 04 Review -->
-        <li class="home-flow__block" id="flow-review" data-stage="review" style="--i:3">
+        <div class="home-flow__block" role="listitem" id="flow-review" data-stage="review" style="--i:3">
           <div class="home-flow__copy">
             <div class="home-flow__meta">
               <span class="icon-box"><svg class="icon icon--lg" aria-hidden="true"><use href="#i-review"/></svg></span>
@@ -533,10 +533,10 @@
             </div>
             <figcaption class="hf-card__foot"><span>3 notes · closed in 4 hours</span><span class="stage-rail" data-n="4" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span></figcaption>
           </figure>
-        </li>
+        </div>
 
         <!-- 05 Launch -->
-        <li class="home-flow__block" id="flow-launch" data-stage="launch" style="--i:4">
+        <div class="home-flow__block" role="listitem" id="flow-launch" data-stage="launch" style="--i:4">
           <div class="home-flow__copy">
             <div class="home-flow__meta">
               <span class="icon-box"><svg class="icon icon--lg" aria-hidden="true"><use href="#i-launch"/></svg></span>
@@ -566,10 +566,10 @@
             </div>
             <figcaption class="hf-card__foot"><span>Launch room: 3 crew watching</span><span class="stage-rail" data-n="5" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span></figcaption>
           </figure>
-        </li>
+        </div>
 
         <!-- 06 Afterglow -->
-        <li class="home-flow__block" id="flow-afterglow" data-stage="afterglow" style="--i:5">
+        <div class="home-flow__block" role="listitem" id="flow-afterglow" data-stage="afterglow" style="--i:5">
           <div class="home-flow__copy">
             <div class="home-flow__meta">
               <span class="icon-box"><svg class="icon icon--lg" aria-hidden="true"><use href="#i-afterglow"/></svg></span>
@@ -595,8 +595,8 @@
             </div>
             <figcaption class="hf-card__foot"><span>3 new sparks sent to the board</span><span class="stage-rail" data-n="6" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span></figcaption>
           </figure>
-        </li>
-      </ol>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -1051,7 +1051,7 @@
       </div>
       <div class="section-head__aside">
         <p class="lede">A few of the 1.2 million things launched from a Crestora lane, and one still on its way.</p>
-        <p class="chip chip--live work-live"><span><b>2,140</b> launches went live this week</span></p>
+        <p class="chip chip--live work-live" data-stage="launch"><span><b>2,140</b> launches went live this week</span></p>
       </div>
     </header>
 

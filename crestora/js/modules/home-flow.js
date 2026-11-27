@@ -9,7 +9,7 @@
 // and the card rides it to the right of the copy instead of under it. Everywhere else (phones, reduced motion, no
 // scripts) the section is the stacked list of stage blocks the markup already is, revealed by data-reveal-stagger.
 import { gsap, ScrollTrigger, lenis, clamp, damp, landing } from '../core.js';
-import { getLanes, flowCentre, flowEdges } from '../gl/lanes.js';
+import { getLanes, flowCentre, flowEdges, pauseButton } from '../gl/lanes.js';
 
 const T = 0.07;      // the first stretch of the pin shows the section's title
 const TAIL = 0.05;   // the last holds Afterglow, every band lit
@@ -78,6 +78,7 @@ export default function init({ calm, still }) {
     }
 
     section.classList.add('is-pinned', 'is-title');
+    // the list's blocks become the rail's tabpanels (they are divs, so either role is allowed on them)
     list.setAttribute('role', 'presentation');
     for (const b of blocks) { b.setAttribute('role', 'tabpanel'); b.setAttribute('aria-labelledby', `flow-tab-${b.dataset.stage}`); }
 
@@ -143,6 +144,10 @@ export default function init({ calm, still }) {
     ScrollTrigger.addEventListener('refresh', refit);
     document.fonts?.ready.then(() => { if (alive) refit(); });
     lanes.attach('flow', stage, { frame: () => ({ x: 0, y: fit.y0, sx: stage.clientWidth / 1600, sy: fit.k }) });
+    // the ribbon's dashes run for as long as it is on screen: the reader can hold them here too (the hero's button
+    // drives the same canvas, so the two agree)
+    const hold = pauseButton(lanes, 'home-flow__pause');
+    stage.append(hold);
 
     // ---- the rail: click or Enter scrolls to a stage; arrow keys, Home and End move between the tabs ----
     const yOf = (k) => st.start + (T + ((k + 0.5) / 6) * (1 - T - TAIL)) * (st.end - st.start);
@@ -218,8 +223,9 @@ export default function init({ calm, still }) {
       ScrollTrigger.removeEventListener('refresh', refit);
       unland();
       section.classList.remove('is-pinned', 'is-title');
-      list.removeAttribute('role');
-      for (const b of blocks) { b.removeAttribute('role'); b.removeAttribute('aria-labelledby'); b.classList.remove('is-current', 'is-past'); }
+      hold.remove();
+      list.setAttribute('role', 'list');
+      for (const b of blocks) { b.setAttribute('role', 'listitem'); b.removeAttribute('aria-labelledby'); b.classList.remove('is-current', 'is-past'); }
       for (const el of riders) el.style.transform = '';
       rail.style.setProperty('--rail', '0');
       cur = -1; selected = 0;

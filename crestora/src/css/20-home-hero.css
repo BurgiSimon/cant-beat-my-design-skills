@@ -66,6 +66,20 @@
 .home-hero__cue-label { font: 400 10px/1 var(--font-brand); letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-muted); }
 .is-calm .home-hero__cue-line i { animation: none; translate: 0 15px; }
 
+/* ---- pause: the threads move for as long as they are on screen; this holds them (js/gl/lanes.js pauseButton adds
+   it where they move, here and on the #features stage). The same glass circle as the footer's. ---- */
+.lanes-pause {
+  position: absolute; z-index: 4; display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%; color: #fff;
+  background: rgb(6 7 11 / 0.66); box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.22);
+  -webkit-backdrop-filter: blur(12px) saturate(1.3); backdrop-filter: blur(12px) saturate(1.3);
+  opacity: 0.85; transition: opacity var(--dur) var(--ease-out), box-shadow var(--dur) var(--ease-out);
+}
+.lanes-pause svg { width: 12px; height: 12px; fill: currentColor; }
+.lanes-pause:is(:hover, :focus-visible, .is-paused) { opacity: 1; box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.4); }
+.lanes-pause:focus-visible { outline-offset: 3px; border-radius: 50%; }
+/* on the container's right edge, level with the scroll cue's line */
+.home-hero__pause { right: calc((100% - min(100% - 2 * var(--gutter), var(--container))) / 2); bottom: calc(clamp(24px, 4vh, 40px) + 5px); }
+
 /* ---- phones and upright tablets: the type on top, the threads crossing the lower part of the screen ---- */
 @media (max-width: 900px), (max-aspect-ratio: 4/5) {
   /* the threads get their own band under the type (design y 80…800 of the field), the cue under them */
@@ -82,6 +96,7 @@
   .home-hero__fine .home-hero__sep--2 { display: none; }
   .home-hero__fine > span:last-child { display: block; margin-top: 4px; }
   .home-hero__cue { display: none; }
+  .home-hero__pause { bottom: 20px; }
   .home-hero__actions { display: grid; width: 100%; max-width: 420px; }
   .home-hero__actions .btn { width: 100%; }
   .home-hero__chip { display: none; }

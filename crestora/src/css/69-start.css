@@ -24,7 +24,6 @@
 [data-page="start"] .start-hero__lede { max-width: 30em; }
 [data-page="start"] .start-hero__preview { grid-area: preview; width: 100%; max-width: 500px; }
 [data-page="start"] .start-hero__fine { margin-top: 18px; font-size: 14px; line-height: 1.5; color: var(--ink-muted); text-wrap: balance; }
-[data-page="start"] .start-hero__fine span { margin: 0 0.35em; opacity: 0.6; }
 
 /* ---- the form panel ---- */
 [data-page="start"] .start-box { grid-area: box; padding: clamp(20px, 2.3vw, 32px); border-radius: 20px; }
