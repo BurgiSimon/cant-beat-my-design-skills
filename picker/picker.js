@@ -2,7 +2,7 @@
 // in the middle; where they do not, the line is endless: it drifts by itself when the page is left alone, and the
 // wheel, a drag or the arrow keys move it. The card under the pointer (or the one with the keyboard's focus) is lit
 // and gets a trace in its site's own manner: mist that drifts and parts, a hole torn through the clouds onto a night
-// of ASCII, an orbit of light with a streak along its horizon. A chosen card opens into its site: it grows to fill the screen and gives way to the colour the site
+// of ASCII, an orbit of light with a streak along its horizon, a reticle locking on through a streak of brake light. A chosen card opens into its site: it grows to fill the screen and gives way to the colour the site
 // paints first, so the site's own entrance carries on from there. On a phone the cards are a strip that a swipe
 // moves from one to the next. Without this script the page is still a row of links.
 
@@ -336,6 +336,55 @@ const TRACES = {
         const tail = g.createLinearGradient(hx, 0, hx + 170, 0);
         tail.addColorStop(0, `rgb(255 232 220 / ${0.95 * fade})`); tail.addColorStop(0.25, `rgb(255 150 110 / ${0.5 * fade})`); tail.addColorStop(1, 'rgb(255 90 54 / 0)');
         g.strokeStyle = tail; g.lineWidth = 1.6; g.beginPath(); g.moveTo(hx, hy); g.lineTo(hx + 170, hy); g.stroke();
+        g.restore();
+        return true;
+      },
+    };
+  })(),
+
+  // Vizen: the hero's reticle locks onto the pointer, its four rulers springing out as the card lights, and the
+  // brake light's yellow streak runs through it, as the hero's does behind the helmet; an azimuth reads out beside
+  // it. Lit with no pointer on it, the reticle scans the card.
+  vizen: (() => {
+    const at = { x: 0, y: 0, on: false };
+    const YEL = '252 233 27';
+    return {
+      reset() { at.on = false; },
+      draw(r, o, on, dt) {
+        if (o < 0.01) return false;
+        const want_ = on && inside(r, ptr) ? ptr : { x: r.left + r.width * (0.5 + 0.26 * Math.sin(clock * 0.39)), y: r.top + r.height * (0.4 + 0.12 * Math.sin(clock * 0.63)) };
+        if (!at.on) { at.x = want_.x; at.y = want_.y; at.on = true; }
+        const ease = 1 - Math.exp(-dt * 9);
+        at.x += (want_.x - at.x) * ease; at.y += (want_.y - at.y) * ease;
+        within(r);
+        // the streak: brightest at the reticle, long and thin, breathing
+        const b = o * (0.75 + 0.25 * Math.sin(clock * 2.1));
+        for (const [w, a] of [[14, 0.06], [6, 0.14], [2, 0.5], [1, 0.95]]) {
+          const grad = g.createLinearGradient(r.left, 0, r.right, 0);
+          const c = clamp((at.x - r.left) / r.width, 0.02, 0.98);
+          grad.addColorStop(0, `rgb(${YEL} / 0)`); grad.addColorStop(c, `rgb(${YEL} / ${a * b})`); grad.addColorStop(1, `rgb(${YEL} / 0)`);
+          g.fillStyle = grad; g.fillRect(r.left, at.y - w / 2, r.width, w);
+        }
+        // the reticle: a box, a cross through it, four rulers with a tick at each end and in the middle
+        const s = 5; const gap = 10 + 14 * o; const len = 34 * o;
+        g.strokeStyle = `rgb(${INK} / ${0.9 * o})`; g.lineWidth = 1.2;
+        g.strokeRect(at.x - s, at.y - s, 2 * s, 2 * s);
+        g.beginPath();
+        g.moveTo(at.x - s - 4, at.y); g.lineTo(at.x + s + 4, at.y); g.moveTo(at.x, at.y - s - 4); g.lineTo(at.x, at.y + s + 4);
+        for (const [dx, dy] of [[-1, 0], [1, 0], [0, -1], [0, 1]]) {
+          const x0 = at.x + dx * gap, y0 = at.y + dy * gap, x1 = at.x + dx * (gap + len), y1 = at.y + dy * (gap + len);
+          g.moveTo(x0, y0); g.lineTo(x1, y1);
+          for (const k of [0, 0.5, 1]) {
+            const tx = x0 + (x1 - x0) * k, ty = y0 + (y1 - y0) * k;
+            if (dx) { g.moveTo(tx, ty - 3.5); g.lineTo(tx, ty + 3.5); } else { g.moveTo(tx - 3.5, ty); g.lineTo(tx + 3.5, ty); }
+          }
+        }
+        g.stroke();
+        // the read-out
+        g.font = '500 10px "JetBrains Mono Variable", ui-monospace, monospace'; g.textAlign = 'left'; g.textBaseline = 'alphabetic';
+        g.fillStyle = `rgb(${INK} / ${0.8 * o})`;
+        const az = Math.round(mod(((at.x - r.left) / r.width) * 360 + 180, 360));
+        g.fillText(`AZ ${String(az).padStart(3, '0')}°`, at.x + gap + 4, at.y - gap - 4);
         g.restore();
         return true;
       },
