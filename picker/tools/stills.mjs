@@ -5,11 +5,13 @@
  *   stills/<site>-tall.jpg   900×1600, for a screen held upright
  *   og.jpg                  1200×630, the picker itself, for link previews
  *
- *   node picker/tools/stills.mjs
+ *   node picker/tools/stills.mjs              every site's stills, and the share image
+ *   node picker/tools/stills.mjs offform      only the sites named (and the share image)
  *
  * A still is the site's hero art with no type on it: the card sets its own name over it. Mist's is its own hero,
  * built and photographed with the header and the copy hidden; Nelson's is cut from its hero picture around the eye;
- * AsterPay's is its hero's light, rings and phones, the tall one cut from a wide render around the phones.
+ * AsterPay's is its hero's light, rings and phones, the tall one cut from a wide render around the phones; OFFFORM's is
+ * its hero's two photographs, rules and ring, the tall one cut from a wide render around the sprinter.
  * Needs Playwright with Chromium (npm i -g playwright && npx playwright install chromium); the site itself does not.
  */
 import { promises as fs } from "node:fs";
@@ -81,9 +83,24 @@ const asterpay = async (page, viewport) => {
   return tall ? { x: 1280 - 450, y: 0, width: 900, height: 1600 } : undefined;
 };
 
+// OFFFORM: its hero (both photographs, the rules and the ring) with the header and every word taken off. Held
+// upright, the tall still is cut from a wide render around the sprinter.
+const offform = async (page, viewport) => {
+  const tall = viewport.height > viewport.width;
+  if (tall) await page.setViewportSize({ width: 3168, height: 1600 });
+  await page.goto(`${site}/offform/`, { waitUntil: "load" });
+  await page.addStyleTag({ content: ".skip, .announce, .head, .hero__tag, .hero__intro, .hero__num, .hero__meta, .hero__title, .hero__aside, .grain, .cursor { display: none !important; }" +
+    (tall ? ":root { --u: 2.2px !important; }" : "") });
+  await page.evaluate(() => Promise.all([document.fonts.ready, ...[...document.images].filter((i) => i.closest(".hero")).map((i) => i.decode())]));
+  await page.waitForTimeout(600);
+  return tall ? { x: 640 - 450, y: 0, width: 900, height: 1600 } : undefined;
+};
+
+const SITES = { mist, nelson, asterpay, offform };
+const only = process.argv.slice(2);
 await fs.mkdir(path.join(ASSETS, "stills"), { recursive: true });
 console.log("stills:");
-for (const [name, go] of Object.entries({ mist, nelson, asterpay })) {
+for (const [name, go] of Object.entries(SITES).filter(([n]) => !only.length || only.includes(n))) {
   await shoot(WIDE, `stills/${name}-wide.jpg`, go);
   await shoot(TALL, `stills/${name}-tall.jpg`, go);
 }
