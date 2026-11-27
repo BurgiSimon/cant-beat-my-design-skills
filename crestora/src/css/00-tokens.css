@@ -44,6 +44,14 @@
   --pink: #ff7ad9;
   --rainbow: linear-gradient(90deg, #3a6dff, #23d3ff 22%, #20d69b 40%, #ffb13d 58%, #ff3b3b 76%, #ff7ad9 100%);
   --spectrum: #3a6dff, #23d3ff, #20d69b, #ffb13d, #ff3b3b, #ff7ad9;
+  /* the six stages of a lane: the same six colours, in the footer ribbon's own order (a colour always means its stage) */
+  --spark: #3a6dff;
+  --shape: #23d3ff;
+  --make: #20d69b;
+  --review: #ffb13d;
+  --launch: #ff3b3b;
+  --afterglow: #ff7ad9;
+  --stage: var(--spark);
   /* type */
   --font: "Inter Variable", "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-brand: "Michroma", "Eurostile", "Microgramma", system-ui, sans-serif;

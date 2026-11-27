@@ -3,6 +3,35 @@
 import { createScene } from './scene.js';
 import { intro } from './intro.js';
 import { details } from './ui.js';
+import { scrollToTarget } from '../core.js';
+
+// A launch from the page (the home page's "Hit the green light" dispatches crestora:launch): the page glides down to
+// the footer. If its intro has not played, arriving plays it; if it has, the road's warp reveal runs again from under
+// the car with a short burst of throttle.
+function launch(scene, foot, { calm }) {
+  let pending = false;
+  const go = () => {
+    scrollToTarget(foot, { offset: 0 });
+    if (!scene || calm || !foot.classList.contains('is-introduced') || pending) return;
+    pending = true;
+    const gsap = window.gsap;
+    const io = new IntersectionObserver(([e]) => {
+      if (!e.isIntersecting || e.intersectionRatio < 0.6) return;
+      io.disconnect();
+      pending = false;
+      scene.start();
+      if (gsap) {
+        gsap.fromTo(scene.state, { reveal: 0, speed: 6 }, { reveal: 1.25, duration: 1.7, ease: 'power2.inOut' });
+        gsap.to(scene.state, { speed: 1, duration: 2.6, ease: 'power3.out', delay: 0.1 });
+      }
+      scene.boost(true);
+      setTimeout(() => scene.boost(false), 1600);
+    }, { threshold: [0.6, 0.8] });
+    io.observe(foot);
+  };
+  addEventListener('crestora:launch', go);
+  if (window.__crestoraLaunched) go();   // a launch that came while this module was still loading
+}
 
 const root = document.documentElement;
 export const wide = matchMedia('(min-width: 1100px) and (min-aspect-ratio: 6/5)');
@@ -57,5 +86,6 @@ export function initFooter(foot, { calm = false, still = false } = {}) {
     }
   }
   details(scene, { calm, wide, foot });
+  launch(scene, foot, { calm });
   return scene;
 }

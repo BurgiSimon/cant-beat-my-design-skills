@@ -1,3 +1,4 @@
+{{> icons}}
 <a class="skip" href="#main">Skip to content</a>
 <header class="header">
   <div class="header__inner container">
@@ -5,5 +6,96 @@
       <span class="mark" aria-hidden="true"><span class="mark__sheen"></span></span>
       <span class="wordmark" aria-hidden="true">Crestora</span>
     </a>
+    <nav class="nav" aria-label="Main">
+      <div class="nav__item" data-menu>
+        <button class="nav__trigger{{CURRENTCLASS:product}}" type="button" aria-expanded="false" aria-controls="menu-product">Product<svg aria-hidden="true"><use href="#i-chev-down"/></svg></button>
+        <div class="dropdown" id="menu-product" style="--cols:2">
+          <a href="{{ROOT}}index.html#features"{{CURRENT:index.html#features}}><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-layers"/></svg></span><strong>Features</strong><small>Six lanes from spark to launch</small></a>
+          <a href="{{ROOT}}integrations.html"{{CURRENT:integrations.html}}><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-plug"/></svg></span><strong>Integrations</strong><small>120+ tools merge into your lane</small></a>
+          <a href="{{ROOT}}changelog.html"{{CURRENT:changelog.html}}><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-clock"/></svg></span><strong>Changelog</strong><small>v4.12 · Review Room hears you</small></a>
+          <a href="{{ROOT}}roadmap.html"{{CURRENT:roadmap.html}}><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-map"/></svg></span><strong>Roadmap</strong><small>Vote on what comes next</small></a>
+          <a href="{{ROOT}}security.html"{{CURRENT:security.html}}><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-shield"/></svg></span><strong>Security</strong><small>Your unreleased work, protected</small></a>
+          <a href="{{ROOT}}pricing.html"{{CURRENT:pricing.html}}><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-tag"/></svg></span><strong>Pricing</strong><small>Free for three lanes</small></a>
+        </div>
+      </div>
+      <a class="nav__link" href="{{ROOT}}index.html#creators" data-roll>Creators</a>
+      <div class="nav__item" data-menu>
+        <button class="nav__trigger{{CURRENTCLASS:resources}}" type="button" aria-expanded="false" aria-controls="menu-resources">Resources<svg aria-hidden="true"><use href="#i-chev-down"/></svg></button>
+        <div class="dropdown" id="menu-resources" style="--cols:2">
+          <a href="{{ROOT}}blog.html"{{CURRENT:blog.html}}><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-pen"/></svg></span><strong>Field Notes</strong><small>Launch stories and craft notes</small></a>
+          <a href="{{ROOT}}docs.html"{{CURRENT:docs.html}}><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-book"/></svg></span><strong>Documentation</strong><small>Lanes, stages and every tool</small></a>
+          <a href="{{ROOT}}api.html"{{CURRENT:api.html}}><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-code"/></svg></span><strong>API Reference</strong><small>A small REST API for lanes</small></a>
+          <a href="{{ROOT}}help.html"{{CURRENT:help.html}}><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-help"/></svg></span><strong>Help Center</strong><small>Answers, fast</small></a>
+          <a href="{{ROOT}}community.html"{{CURRENT:community.html}}><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-users"/></svg></span><strong>Community</strong><small>Circles, swaps and Launch Night</small></a>
+          <a href="{{ROOT}}tutorials.html"{{CURRENT:tutorials.html}}><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-learn"/></svg></span><strong>Tutorials</strong><small>Short lessons from people who ship</small></a>
+          <a href="{{ROOT}}webinars.html"{{CURRENT:webinars.html}}><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-broadcast"/></svg></span><strong>Webinars</strong><small>Next: Dec 10, live</small></a>
+        </div>
+      </div>
+      <div class="nav__item" data-menu>
+        <button class="nav__trigger{{CURRENTCLASS:company}}" type="button" aria-expanded="false" aria-controls="menu-company">Company<svg aria-hidden="true"><use href="#i-chev-down"/></svg></button>
+        <div class="dropdown" id="menu-company" style="--cols:1">
+          <a href="{{ROOT}}about.html"{{CURRENT:about.html}}><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-info"/></svg></span><strong>About</strong><small>Why we build roads for makers</small></a>
+          <a href="{{ROOT}}careers.html"{{CURRENT:careers.html}}><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-briefcase"/></svg></span><strong>Careers</strong><small>8 open roles, four hubs</small></a>
+          <a href="{{ROOT}}press.html"{{CURRENT:press.html}}><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-news"/></svg></span><strong>Press Kit</strong><small>Words, marks and facts</small></a>
+          <a href="{{ROOT}}partners.html"{{CURRENT:partners.html}}><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-handshake"/></svg></span><strong>Partners</strong><small>Studios, toolmakers, teachers</small></a>
+          <a href="{{ROOT}}contact.html"{{CURRENT:contact.html}}><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-mail"/></svg></span><strong>Contact</strong><small>Talk to a human</small></a>
+        </div>
+      </div>
+      <a class="nav__link" href="{{ROOT}}pricing.html"{{CURRENT:pricing.html}} data-roll>Pricing</a>
+    </nav>
+    <div class="header__actions">
+      <a class="header__signin" href="{{ROOT}}start.html#signin" data-roll>Sign in</a>
+      <a class="btn btn--primary btn--sm" href="{{ROOT}}start.html" data-roll>Open a lane</a>
+      <button class="header__burger" type="button" aria-expanded="false" aria-controls="menu" aria-label="Open menu"><span></span></button>
+    </div>
   </div>
 </header>
+<div class="menu" id="menu" role="dialog" aria-modal="true" aria-label="Menu">
+  <div class="menu__groups">
+    <div class="menu__group">
+      <h2>Product</h2>
+      <ul>
+        <li><a href="{{ROOT}}index.html#features"{{CURRENT:index.html#features}}>Features</a></li>
+        <li><a href="{{ROOT}}integrations.html"{{CURRENT:integrations.html}}>Integrations</a></li>
+        <li><a href="{{ROOT}}changelog.html"{{CURRENT:changelog.html}}>Changelog</a></li>
+        <li><a href="{{ROOT}}roadmap.html"{{CURRENT:roadmap.html}}>Roadmap</a></li>
+        <li><a href="{{ROOT}}security.html"{{CURRENT:security.html}}>Security</a></li>
+        <li><a href="{{ROOT}}pricing.html"{{CURRENT:pricing.html}}>Pricing</a></li>
+      </ul>
+    </div>
+    <div class="menu__group">
+      <h2>Resources</h2>
+      <ul>
+        <li><a href="{{ROOT}}blog.html"{{CURRENT:blog.html}}>Field Notes</a></li>
+        <li><a href="{{ROOT}}docs.html"{{CURRENT:docs.html}}>Documentation</a></li>
+        <li><a href="{{ROOT}}api.html"{{CURRENT:api.html}}>API Reference</a></li>
+        <li><a href="{{ROOT}}help.html"{{CURRENT:help.html}}>Help Center</a></li>
+        <li><a href="{{ROOT}}community.html"{{CURRENT:community.html}}>Community</a></li>
+        <li><a href="{{ROOT}}tutorials.html"{{CURRENT:tutorials.html}}>Tutorials</a></li>
+        <li><a href="{{ROOT}}webinars.html"{{CURRENT:webinars.html}}>Webinars</a></li>
+      </ul>
+    </div>
+    <div class="menu__group">
+      <h2>Company</h2>
+      <ul>
+        <li><a href="{{ROOT}}about.html"{{CURRENT:about.html}}>About</a></li>
+        <li><a href="{{ROOT}}careers.html"{{CURRENT:careers.html}}>Careers</a></li>
+        <li><a href="{{ROOT}}press.html"{{CURRENT:press.html}}>Press Kit</a></li>
+        <li><a href="{{ROOT}}partners.html"{{CURRENT:partners.html}}>Partners</a></li>
+        <li><a href="{{ROOT}}contact.html"{{CURRENT:contact.html}}>Contact</a></li>
+      </ul>
+    </div>
+    <div class="menu__group">
+      <h2>More</h2>
+      <ul>
+        <li><a href="{{ROOT}}index.html#creators">Creators</a></li>
+        <li><a href="{{ROOT}}sitemap.html"{{CURRENT:sitemap.html}}>Sitemap</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="streak" aria-hidden="true"></div>
+  <div class="menu__actions">
+    <a class="btn btn--primary" href="{{ROOT}}start.html">Open a lane</a>
+    <a class="btn" href="{{ROOT}}start.html#signin">Sign in</a>
+  </div>
+</div>

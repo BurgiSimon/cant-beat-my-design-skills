@@ -5,11 +5,14 @@
 //   data-reveal-stagger                          its children reveal one after another
 //   data-split                                   a heading whose lines rise out of a mask
 //   data-count="1234" [data-decimals data-prefix data-suffix]   a number that counts up when seen
+//   data-odometer="1234" [same]                  Michroma digits that roll up, digit by digit, when seen
 //   data-marquee[="speed"]                       an endless horizontal strip (duplicate the content once in the markup)
 //   data-magnetic                                leans toward the pointer
 //   data-tilt                                    tilts toward the pointer in 3D
 //   data-spotlight                               a soft light follows the pointer across it (sets --mx/--my)
-//   data-roll                                    its text rolls up into a white copy on hover
+//   data-roll                                    its text rolls up into a white copy on hover (icons are kept)
+//
+// Helpers for modules: toast(text, key?), odometer(el, value, opts), store.get/set, countTo, whenVisible, …
 //
 // Everything resolves to the resting design under reduced motion (.is-calm) and without scripts.
 
@@ -43,6 +46,73 @@ export function scrollToTarget(target, { offset = -84, immediate = false } = {})
   scrollTo({ top: y, behavior: calm || immediate ? 'auto' : 'smooth' });
 }
 
+// ---- the one toast: the footer's hint pill at the foot of the screen ----
+let toastEl = null, toastT = 0;
+export function toast(text, key = 'Demo') {
+  if (!toastEl) {
+    toastEl = document.createElement('div');
+    toastEl.className = 'toast';
+    toastEl.setAttribute('role', 'status');
+    toastEl.setAttribute('aria-live', 'polite');
+    document.body.append(toastEl);
+  }
+  toastEl.innerHTML = `${key ? `<span class="toast__key">${key}</span>` : ''}<span></span>`;
+  toastEl.lastChild.textContent = text;
+  requestAnimationFrame(() => toastEl.classList.add('is-on'));
+  clearTimeout(toastT);
+  toastT = setTimeout(() => toastEl.classList.remove('is-on'), 3600);
+}
+
+// ---- storage that never throws (private windows, blocked storage); keys are prefixed crestora: ----
+export const store = {
+  get(key, fallback = null) {
+    try { const v = localStorage.getItem(`crestora:${key}`); return v === null ? fallback : JSON.parse(v); } catch { return fallback; }
+  },
+  set(key, value) { try { localStorage.setItem(`crestora:${key}`, JSON.stringify(value)); } catch {} },
+  clear(key) { try { localStorage.removeItem(`crestora:${key}`); } catch {} },
+};
+
+// ---- odometer: Michroma digits in fixed cells, each a column of 0–9 that rolls to its value ----
+export const formatNumber = (v, { decimals = 0, prefix = '', suffix = '' } = {}) =>
+  `${prefix}${Number(v).toLocaleString('en-US', { minimumFractionDigits: decimals, maximumFractionDigits: decimals })}${suffix}`;
+const isDigit = (ch) => ch >= '0' && ch <= '9';
+export function odometer(el, value, opts = {}) {
+  const text = formatNumber(value, opts);
+  el.setAttribute('aria-label', text);
+  el.classList.add('odo');
+  if ((el._odo || '').length !== text.length) {
+    // build one column per digit (and a plain span for commas, points, signs), starting at 0
+    el.textContent = '';
+    for (const ch of text) {
+      const cell = document.createElement('span');
+      cell.setAttribute('aria-hidden', 'true');
+      if (isDigit(ch)) {
+        cell.className = 'odo__d';
+        const col = document.createElement('span');
+        for (let i = 0; i <= 9; i++) { const n = document.createElement('span'); n.textContent = String(i); col.append(n); }
+        cell.append(col);
+      } else {
+        cell.className = 'odo__s';
+        cell.textContent = ch;
+      }
+      el.append(cell);
+    }
+    el.getBoundingClientRect(); // lay out at 0 so the columns roll from there
+  }
+  el._odo = text;
+  if (opts.hold) return;                 // built, held at 0 until the next call rolls it
+  const cells = [...el.children];
+  [...text].forEach((ch, i) => {
+    const cell = cells[i];
+    if (!cell || !cell.classList.contains('odo__d')) return;
+    const col = cell.firstChild;
+    col.style.transition = calm ? 'none' : '';
+    col.style.transitionDelay = `${(cells.length - i) * 0.025}s`;
+    col.style.transform = `translateY(${-Number(ch) * 1.15}em)`;
+  });
+  el._odo = text;
+}
+
 let locks = 0;
 export function lockScroll() { if (locks++ === 0) { lenis?.stop(); root.style.overflow = 'hidden'; } }
 export function unlockScroll() { if (locks > 0 && --locks === 0) { lenis?.start(); root.style.overflow = ''; } }
@@ -65,6 +135,7 @@ export function boot() {
   reveals();
   splits();
   counters();
+  odometers();
   marquees();
   if (fine) { magnetic(); tilt(); spotlight(); }
   // deep links land where they point once the layout (fonts, images) has settled
@@ -156,8 +227,16 @@ function anchors() {
 function rolls() {
   for (const a of $$('[data-roll]')) {
     if (a.querySelector('.roll')) continue;
-    const t = a.textContent.trim();
-    a.innerHTML = `<span class="roll"><span>${t}</span></span>`;
+    // wrap the label (its text nodes) and keep any icon beside it
+    const text = [...a.childNodes].filter((n) => n.nodeType === 3 && n.textContent.trim());
+    if (!text.length) continue;
+    const roll = document.createElement('span');
+    roll.className = 'roll';
+    const inner = document.createElement('span');
+    inner.textContent = text.map((n) => n.textContent.trim()).join(' ');
+    roll.append(inner);
+    text[0].replaceWith(roll);
+    for (const n of text.slice(1)) n.textContent = '';
   }
 }
 
@@ -214,6 +293,17 @@ function counters() {
     const to = parseFloat(el.dataset.count);
     const opts = { decimals: parseInt(el.dataset.decimals || 0, 10), prefix: el.dataset.prefix || '', suffix: el.dataset.suffix || '' };
     ScrollTrigger.create({ trigger: el, start: 'top 90%', once: true, onEnter: () => countTo(el, to, opts) });
+  }
+}
+
+// ---- odometers: built at zero, rolled to their value when seen ----
+function odometers() {
+  for (const el of $$('[data-odometer]')) {
+    const to = parseFloat(el.dataset.odometer);
+    const opts = { decimals: parseInt(el.dataset.decimals || 0, 10), prefix: el.dataset.prefix || '', suffix: el.dataset.suffix || '' };
+    // built now, every column at 0 (the number's own shape), and rolled up when seen
+    odometer(el, to, { ...opts, hold: true });
+    ScrollTrigger.create({ trigger: el, start: 'top 90%', once: true, onEnter: () => odometer(el, to, opts) });
   }
 }
 

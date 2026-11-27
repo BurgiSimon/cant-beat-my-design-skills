@@ -15,9 +15,11 @@
  *   node crestora/tools/pages.mjs            assemble once
  *   node crestora/tools/pages.mjs --watch    and again whenever src changes
  *
+ * {{> name}} in a page or partial includes src/partials/<name>.html (e.g. {{> cta}}, {{> home/hero}}).
  * Tokens in partials and pages: {{ROOT}} (relative path from the page to the site root: "" or "../"), {{TITLE}},
  * {{DESCRIPTION}}, {{PATH}} (the page's path, e.g. "pricing.html"), {{PAGE}} (its name), {{MODULES}}, and
- * {{CURRENT:<key>}}, which becomes aria-current="page" on links whose key is the page's path or nav value.
+ * {{CURRENT:<key>}}, which becomes aria-current="page" on links whose key is the page's path or nav value, and
+ * {{CURRENTCLASS:<key>}}, which becomes " is-current" (for the header's menu triggers).
  * {{SITE_URL}} and {{VERSION}} are left for build.mjs.
  */
 import { promises as fs, watch } from "node:fs";
@@ -61,7 +63,18 @@ const esc = (s) => s.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g
 
 export async function assemble() {
   const started = Date.now();
-  const [head, header, footer] = await Promise.all(["head", "header", "footer"].map((n) => fs.readFile(path.join(SRC, "partials", `${n}.html`), "utf8")));
+  // every partial, by its path under src/partials without .html ("cta", "home/hero")
+  const partials = new Map();
+  for (const f of (await list(path.join(SRC, "partials"))).filter((f) => f.endsWith(".html"))) {
+    partials.set(path.relative(path.join(SRC, "partials"), f).split(path.sep).join("/").replace(/\.html$/, ""), await fs.readFile(f, "utf8"));
+  }
+  const include = (text, seen = []) =>
+    text.replace(/\{\{>\s*([\w/-]+)\s*\}\}/g, (_, name) => {
+      if (seen.includes(name)) throw new Error(`include cycle: ${[...seen, name].join(" → ")}`);
+      if (!partials.has(name)) throw new Error(`missing partial: ${name}`);
+      return include(partials.get(name).trim(), [...seen, name]);
+    });
+  const [head, header, footer] = ["head", "header", "footer"].map((n) => include(partials.get(n) || ""));
 
   // css: one bundle
   const cssFiles = (await list(path.join(SRC, "css"))).filter((f) => f.endsWith(".css"));
@@ -71,13 +84,16 @@ export async function assemble() {
   const pages = (await list(path.join(SRC, "pages"))).filter((f) => f.endsWith(".html"));
   for (const file of pages) {
     const rel = path.relative(path.join(SRC, "pages"), file).split(path.sep).join("/");
-    const { meta, body } = parse(await fs.readFile(file, "utf8"), rel);
+    const parsed = parse(await fs.readFile(file, "utf8"), rel);
+    const meta = parsed.meta;
+    const body = include(parsed.body);
     const depth = rel.split("/").length - 1;
     const ROOT = "../".repeat(depth);
     const keys = new Set([rel, meta.nav].filter(Boolean));
     const fill = (text) =>
       text
         .replace(/\{\{CURRENT:([\w./#-]+)\}\}/g, (_, k) => (keys.has(k) ? ' aria-current="page"' : ""))
+        .replace(/\{\{CURRENTCLASS:([\w./#-]+)\}\}/g, (_, k) => (keys.has(k) ? " is-current" : ""))
         .replace(/\{\{ROOT\}\}/g, ROOT)
         .replace(/\{\{TITLE\}\}/g, esc(meta.title))
         .replace(/\{\{DESCRIPTION\}\}/g, esc(meta.description || ""))

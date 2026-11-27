@@ -60,6 +60,7 @@ export async function intro(scene, foot) {
   });
   await settle(Promise.all([document.fonts?.ready, scene?.ready].filter(Boolean)), 3000);
 
+  foot.classList.add('is-introduced');
   const repeat = root.classList.contains('is-repeat');
   const k = repeat ? 0.55 : 1;                                 // a repeat visit: the same, quicker
   const tl = gsap.timeline({ defaults: { ease: 'expo.out' }, onComplete: done });
