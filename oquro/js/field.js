@@ -66,7 +66,7 @@ export function init() {
       const v = d < 0 ? 1 : Math.max(0, 1 - d * 9);
       let lens = 0;
       if (pk > 0) { const dx = px[i] - ptr.x, dy = py[i] - ptr.y, q = dx * dx + dy * dy; if (q < 19600) lens = pk * (1 - Math.sqrt(q) / 140); }
-      const base = 0.06 + 0.03 * (ps[i] * ct + pc[i] * st);  // sin(x * 0.05 + y * 0.03 + t)
+      const base = 0.06 + 0.03 * (ps[i] * ct + pc[i] * st);  // the shimmer, sin(x * 0.05 + y * 0.03 + t), from the dot's own sin and cos
       const r = 0.9 + v * 1.1 + lens * 1.6;
       // two colours, the alpha as globalAlpha: no colour string to build and parse for every dot
       if ((v > 0.6 && lens > 0.3) !== red) { red = !red; ctx.fillStyle = red ? '#ff6e64' : '#fff'; }
