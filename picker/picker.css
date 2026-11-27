@@ -41,6 +41,7 @@
   --unorouter: url("assets/stills/unorouter-wide.jpg");
   --offform: url("assets/stills/offform-wide.jpg");
   --oquro: url("assets/stills/oquro-wide.jpg");
+  --crestora: url("assets/stills/crestora-wide.jpg");
 }
 @media (orientation: portrait) {
   :root {
@@ -51,11 +52,13 @@
     --unorouter: url("assets/stills/unorouter-tall.jpg");
     --offform: url("assets/stills/offform-tall.jpg");
     --oquro: url("assets/stills/oquro-tall.jpg");
+    --crestora: url("assets/stills/crestora-tall.jpg");
   }
 }
 /* Mist opens on its bare sky (the peaks and the copy rise into it); Nelson on the white of its preloader; AsterPay on
    the dark of its preloader, or of its hero before the light rises; Vizen on the black its rider develops out of;
-   UnoRouter on black; OFFFORM on its orange; OQURO on the pale grey of its vault-dial preloader. */
+   UnoRouter on black; OFFFORM on its orange; OQURO on the pale grey of its vault-dial preloader; Crestora on the black
+   its night comes up out of. */
 [data-id="mist"] {
   --still: var(--mist);
   --arrive: linear-gradient(transparent calc(100% - 72px), #07050d),
@@ -96,6 +99,11 @@
   --still: var(--oquro);
   --arrive: #f3f3f3;
   --at: 50% 58%;
+}
+[data-id="crestora"] {
+  --still: var(--crestora);
+  --arrive: #000;
+  --at: 54% 70%;
 }
 
 *, *::before, *::after { box-sizing: border-box; }

@@ -14,7 +14,9 @@
  * is its rider alone, as its WebGL draws him (software WebGL will do, slowly), the tall one cut round him too;
  * UnoRouter's is its mark of coloured cells on the dot grid, in the shot's own colours; OFFFORM's is its hero's two
  * photographs, rules and ring, the tall one cut from a wide render around the sprinter; OQURO's is its 3D garden (the
- * stone ring, the vault, the mound) on the water, without its giant word, the tall one cut likewise.
+ * stone ring, the vault, the mound) on the water, without its giant word, the tall one cut likewise; Crestora's is
+ * its night (the road of light, the car, its dust) with the type taken off, the tall one cut from a wider render
+ * round the car.
  * Needs Playwright with Chromium (npm i -g playwright && npx playwright install chromium); the site itself does not.
  */
 import { promises as fs } from "node:fs";
@@ -139,7 +141,19 @@ const oquro = async (page, viewport) => {
   return tall ? { x: 1103 - 450, y: 0, width: 900, height: 1600 } : undefined;
 };
 
-for (const [name, go] of Object.entries({ mist, nelson, asterpay, vizen, unorouter, offform, oquro })) {
+// Crestora: its night as it rests (?still), the type hidden. Held upright, it is cut from a wider render, round the car
+// (2000 × 1600 is still wide enough for the picture layout, 6:5).
+const crestora = async (page, viewport) => {
+  const tall = viewport.height > viewport.width;
+  if (tall) await page.setViewportSize({ width: 2000, height: 1600 });
+  await page.goto(`${site}/crestora/?still`, { waitUntil: "load" });
+  await page.addStyleTag({ content: ".stage > :not(.road), .hint { visibility: hidden !important; }" });
+  await page.waitForFunction(() => document.documentElement.classList.contains("is-drawn"), null, { timeout: 60000 });
+  await page.waitForTimeout(300);
+  return tall ? { x: 618, y: 0, width: 900, height: 1600 } : undefined;
+};
+
+for (const [name, go] of Object.entries({ mist, nelson, asterpay, vizen, unorouter, offform, oquro, crestora })) {
   if (only.length && !only.includes(name)) continue;
   await shoot(WIDE, `stills/${name}-wide.jpg`, go);
   await shoot(TALL, `stills/${name}-tall.jpg`, go);

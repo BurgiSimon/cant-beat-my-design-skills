@@ -13,6 +13,7 @@ Websites built from a single design, each its own project, behind one picker.
 | **UnoRouter**, an AI model router's hero recreated from one shot, in pixels, and grown into a full landing page | [`/unorouter/`](https://burgisimon.github.io/cant-beat-my-design-skills/unorouter/) |
 | **OFFFORM**, a sportswear shop recreated from a two-artboard shot and given a motion layer | [`/offform/`](https://burgisimon.github.io/cant-beat-my-design-skills/offform/) |
 | **OQURO**, a cyber-security page recreated from one shot, its 3D renders rebuilt as real-time 3D in code | [`/oquro/`](https://burgisimon.github.io/cant-beat-my-design-skills/oquro/) |
+| **Crestora**, a footer recreated from one shot and set in motion: a car drifting down a road of light | [`/crestora/`](https://burgisimon.github.io/cant-beat-my-design-skills/crestora/) |
 
 ## The picker
 
@@ -25,10 +26,11 @@ The front page ([`picker/`](picker/)) is a line of cards, one per site, each wit
   of brake light through it; on UnoRouter, a halo of cells round the pointer steps through its four colours the way
   its mark does; on OFFFORM, the hero's two rules cross at the pointer, its ring closes round it with a light running
   it, and speed lines stream off behind a quick move; on OQURO, the vault dial of its preloader closes round the
-  pointer while rings spread through the water under it.
+  pointer while rings spread through the water under it; on Crestora, a fan of lanes in the road's colours streams
+  back from the pointer, as the road streams from its car.
 - **Choose one** and the card grows to fill the screen, its still giving way to the colour that site paints
   first: Mist's bare violet sky, Nelson's white preloader, AsterPay's dark one, the black of Vizen and of UnoRouter,
-  OFFFORM's orange, OQURO's pale grey.
+  OFFFORM's orange, OQURO's pale grey, Crestora's black.
   The site's own entrance then plays from there, so the move from picker to site has no seam.
 - While the cards fit the screen they stand in the middle. With more sites than fit, the line becomes
   endless: it drifts when left alone, and the wheel, a drag or the arrow keys move it.
@@ -144,6 +146,20 @@ chain link in sand) rebuilt as real-time 3D, entirely in code.
 No build step: plain HTML, CSS and ES modules, copied into `dist/oquro/` by `build.mjs`. See
 [`oquro/README.md`](oquro/README.md).
 
+## Crestora
+
+An eighth project lives in [`crestora/`](crestora/): a footer recreated from a single shot (measured against it at its
+own size) and set in motion.
+
+| Part | What it is |
+| --- | --- |
+| The night | WebGL2: a road of light traced off the shot (210 lanes lofted between 14 guides, dashes streaming along them), the car cut from the shot with its wheels turning and the light sliding over its paint, dust off its tail, stars |
+| Motion | An intro where the road lights from under the car at warp speed as the car rolls in; the pointer is a lamp over the road, and holding it down floors the throttle (the stars streak, the hint reads out km/h) |
+| Details | Rolling links, magnetic social boxes with a ring of the road's colours, a chrome mark that turns to the pointer, a glint on the rule, a heart that sends hearts up |
+
+No build step: plain HTML, CSS and ES modules, copied into `dist/crestora/` by `build.mjs`. See
+[`crestora/README.md`](crestora/README.md).
+
 ## Develop
 
 Requires Node 20+. No dependencies to install.
@@ -180,6 +196,7 @@ vizen/                 separate project, no build step, published under /vizen/ 
 unorouter/             separate project, no build step, published under /unorouter/ (its README and tools/ stay behind)
 offform/               separate project, no build step, published under /offform/ (its README, CREDITS and tools/ stay behind)
 oquro/                 separate project, no build step, published under /oquro/ (its README and tools/ stay behind)
+crestora/              separate project, no build step, published under /crestora/ (its README and tools/ stay behind)
 ```
 
 ## Deploy
@@ -218,8 +235,11 @@ GitHub Pages (Settings → Pages → Source: GitHub Actions).
   `offform/CREDITS.md`.
 - OQURO: [Anton](https://github.com/googlefonts/AntonFont), Inter and JetBrains Mono (SIL Open Font License, licences in
   `oquro/assets/fonts/`); [three.js](https://threejs.org) (MIT), cut down to what it uses.
+- Crestora: recreated from a footer shot signed "Made with love by Pranav", and its car picture is cut from that shot;
+  [Michroma](https://github.com/googlefonts/Michroma-font) and [Inter](https://github.com/rsms/inter) (SIL Open Font
+  License, licences in `crestora/assets/fonts/`).
 - Mist, its customers, people, quotes and numbers are fictional. The investor line in the hero comes
   from the original design. AsterPay, its people, reviews and figures are fictional too, and so are Vizen and its
   helmets. UnoRouter's hero copy and figures come from its shot; its models list, prices, rankings and routing are
   illustrative and simulated. OFFFORM, its products, prices, people and run club are fictional too, and so are OQURO,
-  its numbers and its threats.
+  its numbers and its threats. Crestora is fictional.
