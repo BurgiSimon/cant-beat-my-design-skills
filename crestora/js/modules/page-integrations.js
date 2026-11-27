@@ -5,7 +5,7 @@
 //  - The empty state says what was searched and pre-fills the request form's app name with it; when a lane chip is
 //    hiding an app that does exist in another lane, it says so and offers every lane instead.
 //  - Connect buttons in the dialogs say it's a demo; "/" jumps to the search field.
-import { toast, scrollToTarget, lenis, $, $$ } from '../core.js';
+import { toast, scrollToTarget, landing, restingTop, $, $$ } from '../core.js';
 
 export default function init() {
   const scope = $('.ig-dir');
@@ -45,7 +45,7 @@ export default function init() {
     if (card.hidden) showAll();
   };
   mark();
-  landAgain();
+  centreCards();
   addEventListener('hashchange', mark);
   addEventListener('popstate', mark);
   // once someone opens another card, the landing light has done its job
@@ -134,17 +134,11 @@ export default function init() {
   });
 }
 
-// Deep links: the shared landing (core.js, on load) puts the #id under the header; a directory card is better in the
-// middle of the screen, where the eye is, so once that has run it lands again there.
-function landAgain() {
-  const id = decodeURIComponent(location.hash.slice(1));
-  const target = id && document.getElementById(id);
-  if (!target) return;
-  // a directory card lands in the middle of the screen, where the eye is; anything else under the header
-  const offset = () => (target.classList.contains('ig-card') ? -Math.max(96, Math.round((innerHeight - target.offsetHeight) / 2)) : -84);
-  const land = () => setTimeout(() => {
-    if (lenis) scrollToTarget(target, { immediate: true, offset: offset() });
-    else if (target.classList.contains('ig-card')) scrollTo({ top: target.getBoundingClientRect().top + scrollY + offset(), behavior: 'auto' });
-  }, 140);
-  if (document.readyState === 'complete') land(); else addEventListener('load', land, { once: true });
+// Deep links (and in-page links) to a directory card: the kit lands an #id under the header; a card is better in the
+// middle of the screen, where the eye is. The kit asks here first, so it lands there once, without a second jump.
+function centreCards() {
+  landing((t) => {
+    if (!t.classList.contains('ig-card')) return undefined;
+    return restingTop(t) + scrollY - Math.max(96, Math.round((innerHeight - t.offsetHeight) / 2));
+  });
 }

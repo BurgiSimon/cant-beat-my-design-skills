@@ -57,7 +57,7 @@
 .no-js [data-page="careers"] :is(.cr-chips, .cr-tools__end) { display: none; }
 
 [data-page="careers"] .cr-roles { border-top: 1px solid var(--line-soft); }
-[data-page="careers"] .cr-roles > li { border-bottom: 1px solid var(--line-faint); scroll-margin-top: calc(var(--header-h) + 24px); }
+[data-page="careers"] .cr-roles > li { border-bottom: 1px solid var(--line-faint); }
 [data-page="careers"] .cr-role__sum {
   position: relative; display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1.3fr) minmax(120px, auto) 44px; gap: 24px; align-items: center;
   padding: 22px 0; cursor: pointer; list-style: none; transition: padding var(--dur) var(--ease-out);

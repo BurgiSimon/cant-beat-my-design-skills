@@ -1,5 +1,6 @@
-// A .toc of links to headings follows the reading (aria-current="true" on the section in view); headings with
-// data-copy-link get a small button that copies a link to them.
+// A .toc of links to headings follows the reading (aria-current="true" on the section in view), and one folded into a
+// <details> folds away once a section is chosen; headings with data-copy-link get a small button that copies a link to
+// them (the heading's accessible name stays its own words).
 import { toast, lenis, $$ } from '../core.js';
 import { copyText } from './copy.js';
 
@@ -34,10 +35,28 @@ export default function init() {
     addEventListener('load', queue);
     update();
   }
+  // a contents list folded into a <details> (the legal pages' "On this page" on phones) closes once a section is chosen:
+  // in the capture phase, so the kit's glide measures the page as it will be with the list folded away
+  document.addEventListener('click', (e) => {
+    const a = e.target.closest?.('.toc a[href^="#"]');
+    const fold = a?.closest('.toc')?.closest('details');
+    if (fold?.open && !e.metaKey && !e.ctrlKey && !e.shiftKey && !e.button) fold.open = false;
+  }, true);
+
   for (const h of $$('[data-copy-link]')) {
-    if (!h.id) continue;
+    if (!h.id || h.querySelector(':scope > .copy-link')) continue;
+    const name = h.textContent.trim();
+    // the heading is named by its own words only, not by the button that sits at its end: its text is wrapped in a span
+    // that names it (inline, so nothing moves)
+    const label = document.createElement('span');
+    let lid = `${h.id}-name`;
+    for (let i = 2; document.getElementById(lid); i++) lid = `${h.id}-name-${i}`;
+    label.id = lid;
+    label.append(...h.childNodes);
+    h.append(label);
+    h.setAttribute('aria-labelledby', lid);
     const b = document.createElement('button');
-    b.type = 'button'; b.className = 'copy-link'; b.setAttribute('aria-label', `Copy a link to “${h.textContent.trim()}”`);
+    b.type = 'button'; b.className = 'copy-link'; b.setAttribute('aria-label', `Copy a link to “${name}”`);
     b.innerHTML = '<svg class="icon" aria-hidden="true"><use href="#i-link"/></svg>';
     b.addEventListener('click', async () => { await copyText(`${location.origin}${location.pathname}#${h.id}`); toast('Link copied', 'Copied'); });
     h.append(b);

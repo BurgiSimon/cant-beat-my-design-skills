@@ -30,10 +30,8 @@
 [data-page="security"] .sec-part { max-width: none; }
 [data-page="security"] .sec-part > :is(p, ul, ol):not([class]) { max-width: 66ch; }
 [data-page="security"] .sec-part + .sec-part { margin-top: clamp(64px, 6vw, 96px); padding-top: clamp(64px, 6vw, 96px); border-top: 1px solid var(--line-faint); }
-/* html already keeps an anchored heading clear of the header (scroll-padding-top); the kit's scroll-margin on .prose h2
-   doubled it, so #status landed ~180 px down the screen. Balanced, a heading that wraps on a phone keeps its link button
-   beside its last word instead of alone on a line. */
-[data-page="security"] .sec-part > h2 { margin-top: 0; font-size: clamp(24px, 2.3vw, 34px); scroll-margin-top: 0; text-wrap: balance; }
+/* balanced, a heading that wraps on a phone keeps its link button beside its last word instead of alone on a line */
+[data-page="security"] .sec-part > h2 { margin-top: 0; font-size: clamp(24px, 2.3vw, 34px); text-wrap: balance; }
 [data-page="security"] .sec-part > h2 + p { margin-top: 0.9em; }
 [data-page="security"] .sec-part > [class] { margin-top: 32px; }
 [data-page="security"] .sec-part > [class] + :is(ul, p):not([class]) { margin-top: 28px; }

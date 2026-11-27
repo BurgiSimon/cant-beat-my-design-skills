@@ -8,7 +8,7 @@
 // pin has added its length). On a short screen the ribbon drops (and, if it must, flattens) to pass under the copy,
 // and the card rides it to the right of the copy instead of under it. Everywhere else (phones, reduced motion, no
 // scripts) the section is the stacked list of stage blocks the markup already is, revealed by data-reveal-stagger.
-import { gsap, ScrollTrigger, lenis, clamp, damp } from '../core.js';
+import { gsap, ScrollTrigger, lenis, clamp, damp, landing } from '../core.js';
 import { getLanes, flowCentre, flowEdges } from '../gl/lanes.js';
 
 const T = 0.07;      // the first stretch of the pin shows the section's title
@@ -30,7 +30,7 @@ export default function init({ calm, still }) {
 
   // The rail is a tablist driven by the scroll (data-tabs-manual keeps the generic tabs.js off it); the blocks it names
   // all stay shown.
-  let cur = -1, selected = 0, landed = false;
+  let cur = -1, selected = 0;
   function sync() {
     for (const b of blocks) b.hidden = false;
     const focused = tabs.includes(document.activeElement) ? document.activeElement : null;
@@ -178,41 +178,9 @@ export default function init({ calm, still }) {
     rail.addEventListener('focusout', onLeave);
     rail.addEventListener('focusin', onEnter);
 
-    // ---- deep links to #features land at the start of the pin (where the title is) ----
-    const home = (path) => path.replace(/index\.html$/, '');
-    const onLink = (e) => {
-      const a = e.target.closest?.('a[href*="#features"]');
-      if (!a || e.defaultPrevented || e.metaKey || e.ctrlKey || e.shiftKey || e.button) return;
-      const url = new URL(a.href, location.href);
-      if (url.hash !== '#features' || home(url.pathname) !== home(location.pathname)) return;
-      e.preventDefault();
-      go(st.start);
-      history.pushState(null, '', '#features');
-      if (!section.hasAttribute('tabindex')) section.setAttribute('tabindex', '-1');
-      section.focus({ preventScroll: true });
-    };
-    document.addEventListener('click', onLink, true);
-    const first = !landed;
-    landed = true;
-    if (location.hash === '#features' && first) {
-      const land = () => requestAnimationFrame(() => { if (alive) { ScrollTrigger.refresh(); go(st.start, false); } });
-      if (document.readyState === 'complete') land(); else addEventListener('load', land, { once: true });
-    }
-    // a deep link to anything after the section was landed before the pin added its length: land it again (unless the
-    // reader has moved on since)
-    const target = first && location.hash.length > 1 && document.getElementById(decodeURIComponent(location.hash.slice(1)));
-    if (target && !section.contains(target) && section.compareDocumentPosition(target) & Node.DOCUMENT_POSITION_FOLLOWING) {
-      let moved = false;
-      const mark = () => { moved = true; };
-      for (const t of ['wheel', 'touchstart', 'keydown', 'pointerdown']) addEventListener(t, mark, { once: true, passive: true });
-      const land = () => requestAnimationFrame(() => {
-        if (!alive || moved) return;
-        ScrollTrigger.refresh();
-        const y = Math.max(0, target.getBoundingClientRect().top + scrollY - 84);
-        if (lenis) lenis.scrollTo(y, { immediate: true, force: true }); else scrollTo(0, y);
-      });
-      if (document.readyState === 'complete') land(); else addEventListener('load', land, { once: true });
-    }
+    // ---- links to #features (deep or in-page) land at the start of the pin, where the title is. (A deep link to
+    // anything after the section is landed again by the kit once the refresh below has given the pin its length.) ----
+    const unland = landing((t) => (t === section ? st.start : undefined));
 
     requestAnimationFrame(() => ScrollTrigger.refresh());
 
@@ -227,7 +195,7 @@ export default function init({ calm, still }) {
       rail.removeEventListener('focusout', onLeave);
       rail.removeEventListener('focusin', onEnter);
       ScrollTrigger.removeEventListener('refresh', refit);
-      document.removeEventListener('click', onLink, true);
+      unland();
       section.classList.remove('is-pinned', 'is-title');
       list.removeAttribute('role');
       for (const b of blocks) { b.removeAttribute('role'); b.removeAttribute('aria-labelledby'); b.classList.remove('is-current', 'is-past'); }

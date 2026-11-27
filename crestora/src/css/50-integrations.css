@@ -14,6 +14,7 @@
 [data-page="integrations"] .ig-hero__copy h1 { max-width: 11.5em; }
 [data-page="integrations"] .ig-hero__copy .btn-row { margin-top: 10px; }
 [data-page="integrations"] .ig-hero__facts { display: grid; border-top: 1px solid var(--line-soft); }
+[data-page="integrations"] .ig-hero__facts .fiction { grid-column: 1 / -1; padding-top: 14px; }
 [data-page="integrations"] .ig-fact { display: grid; gap: 6px; padding: 20px 0 22px; border-bottom: 1px solid var(--line-faint); }
 [data-page="integrations"] .ig-fact__n { display: inline-flex; align-items: baseline; font: 400 clamp(30px, 2.6vw, 40px)/1.15 var(--font-brand); letter-spacing: -0.02em; color: #fff; white-space: nowrap; }
 /* the unit sits on the digits' baseline (an odometer's own baseline is the foot of its clipped cells) */
@@ -45,12 +46,8 @@
 [data-page="integrations"] .ig-box--lit { background: #07080c; box-shadow: inset 0 0 0 1px var(--box), 0 0 26px -8px var(--stage); }
 [data-page="integrations"] .ig-box--sm { width: 36px; height: 36px; border-radius: 8px; }
 
-/* the kit's rolling label rises into a white copy of itself; on a white primary button that copy is invisible, so
-   here it takes the button's own ink */
-[data-page="integrations"] .btn--primary > .roll > span { text-shadow: 0 1.5em 0 currentColor; }
-/* in-page links land on a section's content (its container carries the #id; the page's scroll-padding keeps it clear
-   of the header), and the focus they hand over draws no frame around a whole section */
-[data-page="integrations"] .ig-land:focus { outline: none; }
+/* in-page links land on a section's content (its container carries the #id); the kit keeps it clear of the header
+   and draws no focus frame round it */
 
 /* ================= section heads ================= */
 [data-page="integrations"] .ig-nw { white-space: nowrap; }
@@ -132,7 +129,9 @@
   position: relative; display: flex; flex-direction: column; min-width: 0; min-height: 292px; padding: 22px 22px 18px; border-radius: var(--radius-lg); cursor: pointer; isolation: isolate;
   background: var(--surface); box-shadow: inset 0 0 0 1px var(--line-faint);
   transition: background-color 0.4s var(--ease-out), box-shadow 0.4s var(--ease-out);
-  scroll-margin-top: calc(var(--header-h) + 120px);
+  /* on purpose: a deep-linked card lands near the middle of the screen, where the eye is, not under the header */
+  /* (the browser's own jump puts a 292px card about in the middle; page-integrations.js then centres it exactly) */
+  scroll-margin-top: max(8px, calc((100svh - 292px) / 2 - var(--anchor-offset, 88px)));
 }
 [data-page="integrations"] .ig-card[hidden] { display: none; }
 /* the top hairline: lit in the lane's colour under the pointer, a white dash running along it */

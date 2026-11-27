@@ -8,7 +8,7 @@
  *     <page>          e.g. pricing.html, blog/leave-the-light-on.html, index.html
  *     --w 1440 --h 900 --dpr 1     viewport (default 1440 × 900 @1)
  *     --full                       the whole page (scrolled through first, so every reveal has played)
- *     --el "#features"             just this element (scrolled to)
+ *     --el "#features"             just this element (scrolled to; the fixed header and skip link are hidden)
  *     --reduced                    with prefers-reduced-motion
  *     --nojs                       with scripts off (the page's no-JS fallback)
  *     --wait 1200                  ms to wait after arriving (default 1200)
@@ -90,7 +90,12 @@ if (overflow.scrollWidth > overflow.vw + 1) problems.push(`horizontal overflow: 
 
 if (el) {
   const handle = await p.$(el);
-  if (handle) await handle.screenshot({ path: out }); else problems.push(`no element ${el}`);
+  if (handle) {
+    // an element taller than the screen is captured in strips: the fixed header and skip link would be painted over
+    // its middle, so they step out of the picture
+    await p.addStyleTag({ content: ".header, .skip { visibility: hidden !important; }" });
+    await handle.screenshot({ path: out });
+  } else problems.push(`no element ${el}`);
 } else {
   await p.screenshot({ path: out, fullPage: flag("full") });
 }

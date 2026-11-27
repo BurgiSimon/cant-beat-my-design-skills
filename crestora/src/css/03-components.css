@@ -42,6 +42,7 @@
   border-radius: var(--radius); font: 500 15px/1 var(--font); letter-spacing: -0.005em; white-space: nowrap; isolation: isolate;
   color: #fff; box-shadow: inset 0 0 0 1px var(--box); background: transparent;
   transition: background-color var(--dur) var(--ease-out), box-shadow var(--dur) var(--ease-out), color var(--dur) var(--ease-out), transform var(--dur) var(--ease-out);
+  --roll-copy: currentColor;   /* a rolling label (data-roll) rolls into the button's own ink: black on the white primary */
 }
 .btn svg { width: 16px; height: 16px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; transition: transform var(--dur) var(--ease-out); }
 .btn--primary { background: #fff; color: #000; box-shadow: none; }
@@ -90,7 +91,10 @@
 @media (hover: hover) { [data-spotlight]:hover::after { opacity: 1; } }
 
 .chip { display: inline-flex; align-items: center; gap: 8px; height: 28px; padding: 0 11px; border-radius: 999px; font: 500 12.5px/1 var(--font); color: var(--ink-soft); box-shadow: inset 0 0 0 1px var(--line-soft); background: rgb(255 255 255 / 0.03); white-space: nowrap; }
-.chip--live::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--green); box-shadow: 0 0 0 3px rgb(32 214 155 / 0.18); animation: pulse 2s ease-in-out infinite; }
+/* a live status: its dot breathes three times when it is first seen, then rests (no idle pulse). Inside a reveal it
+   waits for the reveal; a section can hold it with animation-play-state; .is-calm stills it (01-base). */
+.chip--live::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--green); box-shadow: 0 0 0 3px rgb(32 214 155 / 0.18); animation: pulse 2s ease-in-out 3; }
+.js [data-reveal]:not(.is-in) .chip--live::before { animation-play-state: paused; }
 @keyframes pulse { 50% { box-shadow: 0 0 0 6px rgb(32 214 155 / 0); } }
 .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; background: var(--c, var(--cyan)); }
 
@@ -115,7 +119,7 @@
 }
 textarea.input { height: auto; min-height: 140px; padding: 12px 14px; resize: vertical; line-height: 1.5; }
 select.input { appearance: none; padding-right: 40px; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23dce4ed' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; background-size: 16px; }
-.input::placeholder { color: var(--ink-faint); }
+.input::placeholder { color: var(--ink-muted); opacity: 1; }   /* about 6:1 on the field: quieter than typed text, still legible */
 .input:hover { box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.24); }
 .input:focus-visible { box-shadow: inset 0 0 0 1px #fff, 0 0 0 4px rgb(35 211 255 / 0.18); background: rgb(255 255 255 / 0.06); }
 .input[aria-invalid="true"] { box-shadow: inset 0 0 0 1px #ff6b6b; }
@@ -130,6 +134,12 @@ select.input { appearance: none; padding-right: 40px; background-image: url("dat
 .segmented button { position: relative; z-index: 1; height: 36px; padding: 0 16px; border-radius: 8px; font-size: 14px; font-weight: 500; color: var(--ink-soft); transition: color var(--dur) var(--ease-out); }
 .segmented button[aria-pressed="true"], .segmented button[aria-selected="true"] { color: #000; }
 .segmented__thumb { position: absolute; z-index: 0; top: 4px; bottom: 4px; left: 0; border-radius: 8px; background: #fff; transition: transform 0.45s var(--ease-out), width 0.45s var(--ease-out); }
+/* until a script has measured the thumb (it sets its style), and always without scripts, the chosen option carries
+   the thumb's light itself, so its dark label never sits on the night. The thumb then appears in place, without a slide.
+   A thumb measured while its switch was hidden (width 0) counts as not measured yet. */
+.segmented__thumb:is(:not([style]), [style*="width: 0px"]), .no-js .segmented__thumb { display: none; }
+.segmented__thumb:is(:not([style]), [style*="width: 0px"]) ~ :is([aria-pressed="true"], [aria-selected="true"], [aria-current="true"]),
+.no-js .segmented :is([aria-pressed="true"], [aria-selected="true"], [aria-current="true"]) { background: #fff; color: #000; }
 
 /* ---- the page hero for every page but the home page ---- */
 .page-hero { position: relative; padding: calc(var(--header-h) + clamp(72px, 10vw, 150px)) 0 clamp(56px, 7vw, 100px); overflow: hidden; }
@@ -150,21 +160,23 @@ select.input { appearance: none; padding-right: 40px; background-image: url("dat
 /* ---- long-form text (legal, blog, docs) ---- */
 .prose { color: var(--ink-soft); font-size: 17px; line-height: 1.75; max-width: 72ch; }
 .prose > * + * { margin-top: 1.1em; }
-.prose h2 { font: 400 clamp(22px, 2vw, 28px)/1.25 var(--font-brand); color: #fff; margin-top: 2.2em; letter-spacing: -0.01em; scroll-margin-top: calc(var(--header-h) + 24px); }
-.prose h3 { font: 600 19px/1.35 var(--font); color: #fff; margin-top: 1.8em; scroll-margin-top: calc(var(--header-h) + 24px); }
+/* (an anchored heading is kept clear of the header by html's scroll-padding alone: see --anchor-offset in 01-base) */
+.prose h2 { font: 400 clamp(22px, 2vw, 28px)/1.25 var(--font-brand); color: #fff; margin-top: 2.2em; letter-spacing: -0.01em; }
+.prose h3 { font: 600 19px/1.35 var(--font); color: #fff; margin-top: 1.8em; }
 .prose a, .link { color: #fff; text-decoration: underline; text-decoration-color: rgb(255 255 255 / 0.35); text-underline-offset: 3px; transition: text-decoration-color var(--dur); }
 .prose a:hover, .link:hover { text-decoration-color: var(--cyan); }
 .prose ul, .prose ol { padding-left: 1.3em; }
 .prose ul { list-style: none; }
 .prose ul li { position: relative; }
-.prose ul li::before { content: ""; position: absolute; left: -1.1em; top: 0.8em; width: 8px; height: 1px; background: var(--rainbow); }
+/* a bullet is a short white hairline, the footer's rule (the spectrum means the whole flow, not a list item) */
+.prose ul li::before { content: ""; position: absolute; left: -1.1em; top: 0.8em; width: 8px; height: 1px; background: var(--line); }
 .prose ol { list-style: decimal; }
 .prose li + li { margin-top: 0.45em; }
 .prose strong { color: #fff; font-weight: 600; }
 .prose code { font-family: var(--font-mono); font-size: 0.86em; padding: 0.15em 0.4em; border-radius: 5px; background: rgb(255 255 255 / 0.07); color: #fff; }
 .prose pre { font-family: var(--font-mono); font-size: 14px; line-height: 1.6; padding: 18px 20px; border-radius: 12px; background: var(--bg-raised); box-shadow: inset 0 0 0 1px var(--line-faint); overflow-x: auto; color: #e6edf5; }
 .prose pre code { padding: 0; background: none; font-size: inherit; }
-.prose blockquote { padding-left: 20px; border-left: 1px solid; border-image: var(--rainbow) 1; color: #fff; font-size: 1.1em; }
+.prose blockquote { padding-left: 20px; border-left: 1px solid var(--line); color: #fff; font-size: 1.1em; }
 .prose hr { border: 0; height: 1px; background: var(--line-soft); margin-block: 2.5em; }
 .prose table { width: 100%; border-collapse: collapse; font-size: 15px; }
 .prose th, .prose td { text-align: left; padding: 12px 14px 12px 0; border-bottom: 1px solid var(--line-faint); vertical-align: top; }
@@ -176,7 +188,7 @@ select.input { appearance: none; padding-right: 40px; background-image: url("dat
 .toc__title { font: 400 11px/1 var(--font-brand); letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-muted); margin-bottom: 12px; }
 .toc a { display: block; padding: 6px 0 6px 14px; color: var(--ink-muted); border-left: 1px solid var(--line-faint); transition: color var(--dur), border-color var(--dur); }
 .toc a:hover { color: #fff; }
-.toc a[aria-current="true"] { color: #fff; border-image: linear-gradient(180deg, var(--spectrum)) 1; border-left-width: 1px; }
+.toc a[aria-current="true"] { color: #fff; border-left-color: #fff; }   /* white: the spectrum is for the whole flow */
 .with-toc { display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: clamp(40px, 6vw, 96px); align-items: start; }
 @media (max-width: 960px) { .with-toc { grid-template-columns: 1fr; } .toc { position: static; } }
 
@@ -203,17 +215,27 @@ select.input { appearance: none; padding-right: 40px; background-image: url("dat
 .toast.is-on { opacity: 1; translate: -50% 0; scale: 1; }
 
 /* split lines (core.js) keep their descenders */
-.split-line { padding-bottom: 0.08em; margin-bottom: -0.08em; }
+/* the mask must clear Michroma's descenders (a "p" drops ~0.2em); the negative margin keeps the layout as it was */
+.split-line { padding-bottom: 0.16em; margin-bottom: -0.16em; }
 
 /* ---- the lane's own parts ---- */
-/* a stage rail: six dots on a hairline; data-n="0…6" lights the first n in their stage colours (and fills the line) */
-.stage-rail { --n: 0; position: relative; display: grid; grid-template-columns: repeat(6, 1fr); align-items: center; height: 10px; }
+/* a stage rail: six dots on a hairline; data-n="0…6" lights the first n in their stage colours, and the line fills to
+   the last lit dot in the colours of the stages it has passed (stage k's colour sits on dot k, so a lane in Shape shows
+   blue to cyan, never the whole spectrum). The six dots are evenly spaced: the first and last sit --rail-in from the
+   ends, measured to their centres, and the line and its fill run centre to centre, so the fill ends exactly on the lit
+   dot at every n and width. --rail-in is 4 px by default (the end dots touch the ends); over a row of six names in a
+   six-column grid, set --rail-in: calc(100% / 12) and every dot sits over the middle of its name. */
+.stage-rail { --n: 0; --rail-in: 4px; position: relative; display: flex; justify-content: space-between; align-items: center; height: 10px; }
 .stage-rail[data-n="1"] { --n: 1; } .stage-rail[data-n="2"] { --n: 2; } .stage-rail[data-n="3"] { --n: 3; }
 .stage-rail[data-n="4"] { --n: 4; } .stage-rail[data-n="5"] { --n: 5; } .stage-rail[data-n="6"] { --n: 6; }
-.stage-rail::before { content: ""; position: absolute; left: 4px; right: 4px; top: 50%; height: 1px; background: var(--line-soft); }
-.stage-rail::after { content: ""; position: absolute; left: 4px; top: 50%; height: 1px; width: calc((100% - 8px) * max(0, (var(--n) - 1) / 5)); background: var(--rainbow); transition: width 0.8s var(--ease-out); }
-.stage-rail i { position: relative; z-index: 1; justify-self: center; width: 8px; height: 8px; border-radius: 50%; background: #000; box-shadow: inset 0 0 0 1px var(--line-soft); transition: background-color 0.4s var(--ease-out), box-shadow 0.4s var(--ease-out); }
-.stage-rail i:first-child { justify-self: start; } .stage-rail i:last-child { justify-self: end; }
+.stage-rail::before, .stage-rail::after { content: ""; position: absolute; left: var(--rail-in); right: var(--rail-in); top: 50%; height: 1px; }
+.stage-rail::before { background: var(--line-soft); }
+.stage-rail::after {
+  background: linear-gradient(90deg, var(--spark), var(--shape) 20%, var(--make) 40%, var(--review) 60%, var(--launch) 80%, var(--afterglow));
+  clip-path: inset(0 calc(100% - 100% * max(0, var(--n) - 1) / 5) 0 0); transition: clip-path 0.8s var(--ease-out);
+}
+.stage-rail i { position: relative; z-index: 1; flex: none; width: 8px; height: 8px; border-radius: 50%; background: #000; box-shadow: inset 0 0 0 1px var(--line-soft); transition: background-color 0.4s var(--ease-out), box-shadow 0.4s var(--ease-out); }
+.stage-rail i:first-child { margin-left: calc(var(--rail-in) - 4px); } .stage-rail i:last-child { margin-right: calc(var(--rail-in) - 4px); }
 .stage-rail i:nth-child(1) { --c: var(--spark); } .stage-rail i:nth-child(2) { --c: var(--shape); } .stage-rail i:nth-child(3) { --c: var(--make); }
 .stage-rail i:nth-child(4) { --c: var(--review); } .stage-rail i:nth-child(5) { --c: var(--launch); } .stage-rail i:nth-child(6) { --c: var(--afterglow); }
 .stage-rail[data-n="1"] i:nth-child(-n+1), .stage-rail[data-n="2"] i:nth-child(-n+2), .stage-rail[data-n="3"] i:nth-child(-n+3),
@@ -273,7 +295,7 @@ dialog.dialog[open] { animation: dialog-in 0.45s var(--ease-out); }
 kbd { display: inline-block; min-width: 1.6em; padding: 0.1em 0.45em; border-radius: 6px; font: 500 0.82em/1.5 var(--font-mono); text-align: center; color: #fff; background: rgb(255 255 255 / 0.07); box-shadow: inset 0 -1px 0 rgb(255 255 255 / 0.12), inset 0 0 0 1px var(--line-soft); }
 
 /* a quiet line under stat blocks and on the legal pages */
-.fiction { font-size: 12.5px; color: var(--ink-faint); }
+.fiction { font-size: 12.5px; color: var(--ink-muted); }   /* quiet, but read: about 6:1 on the night */
 
 @media print {
   .header, .menu, .footer, .cta, .toast, .skip { display: none !important; }

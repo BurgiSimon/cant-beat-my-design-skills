@@ -63,6 +63,7 @@
 .hf-mood__bus i:nth-child(1) { left: 8px; } .hf-mood__bus i:nth-child(2) { left: 23px; } .hf-mood__bus i:nth-child(3) { left: 38px; opacity: 0.4; } .hf-mood__bus i:nth-child(4) { left: 53px; }
 .hf-mood__link { display: flex; align-items: flex-start; gap: 5px; font-size: 10.5px; line-height: 1.25; color: #fff; }
 .hf-mood__link .icon { width: 13px; height: 13px; flex: none; color: var(--spark); }
+.hf-mood__link { min-width: 0; overflow-wrap: anywhere; } /* "anywhere" lets the bare text node shrink below its longest word at 320px */
 .hf-mood__swatches { display: flex; gap: 4px; padding-top: 4px; }
 .hf-mood__swatches i { width: 16px; height: 16px; border-radius: 50%; box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.16); }
 .hf-mood__swatches i:nth-child(1) { background: #0a1230; } .hf-mood__swatches i:nth-child(2) { background: var(--spark); } .hf-mood__swatches i:nth-child(3) { background: #b9c8ff; } .hf-mood__swatches i:nth-child(4) { background: #f4f6ff; }

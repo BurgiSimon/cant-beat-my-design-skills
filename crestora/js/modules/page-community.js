@@ -2,7 +2,7 @@
 // own time kept beside it; the "Start a Circle", "Remind me" and "Get paired" links tick the matching box in the join
 // form on their way down; and the Night Bloom poster draws itself once when it comes into view. The countdown, the
 // calendar files and the form are the generic countdown, ics and forms modules.
-import { $, $$, whenVisible, ScrollTrigger } from '../core.js';
+import { $, $$, whenVisible } from '../core.js';
 
 const ZONE = (() => { try { return Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC'; } catch { return 'UTC'; } })();
 
@@ -63,14 +63,6 @@ export default function init({ calm, still }) {
     const box = document.getElementById(`cm-i-${a.dataset.interest}`);
     if (box) box.checked = true;
   });
-
-  // ---- counters near the fold: their triggers were measured while the hero was still rising into place, so a number
-  // sitting low on a short screen (the third stat at 1024 × 768) never rolled. Measure again once the reveals have
-  // settled; anything already on screen then rolls up as it should ----
-  if (!calm && ScrollTrigger) {
-    const settle = () => setTimeout(() => ScrollTrigger.refresh(), 1600);
-    if (document.readyState === 'complete') settle(); else addEventListener('load', settle, { once: true });
-  }
 
   // ---- the Night Bloom poster draws once, when seen ----
   const art = $('.cm-art');

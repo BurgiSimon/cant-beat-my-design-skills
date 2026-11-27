@@ -103,8 +103,9 @@
 [data-page="docs"] .docs-body > .docs-sec { position: relative; margin-top: 0; padding-bottom: clamp(56px, 5.6vw, 84px); }
 [data-page="docs"] .docs-body > .docs-sec + .docs-sec { padding-top: clamp(56px, 5.6vw, 84px); border-top: 1px solid var(--line-faint); }
 [data-page="docs"] .docs-sec > * + * { margin-top: 1.1em; }
+/* a section's heading lands with its kicker line above it still in view (the kicker sits 16 + ~20 px above it) */
 [data-page="docs"] .docs-sec > h2 { margin-top: 16px; font-size: clamp(26px, 2.3vw, 34px); line-height: 1.15; scroll-margin-top: 36px; }
-[data-page="docs"] .docs-sec > h3 { margin-top: 2.3em; font-size: 20px; letter-spacing: -0.012em; scroll-margin-top: 8px; }
+[data-page="docs"] .docs-sec > h3 { margin-top: 2.3em; font-size: 20px; letter-spacing: -0.012em; }
 [data-page="docs"] .docs-sec > h2 + .docs-lead { margin-top: 22px; }
 [data-page="docs"] .docs-sec > h3 + * { margin-top: 0.75em; }
 [data-page="docs"] .docs-sec :is(h2, h3) .copy-link { translate: 0 -2px; }
@@ -277,7 +278,7 @@
   [data-page="docs"] .docs-start { grid-template-columns: 44px minmax(0, 1fr); grid-template-rows: auto auto; column-gap: 16px; row-gap: 3px; padding: 18px 44px 18px 18px; }
   [data-page="docs"] .docs-start > .icon-box, [data-page="docs"] .docs-start__rail { grid-row: span 2; margin: 0; align-self: center; }
   [data-page="docs"] .docs-start__rail { width: 44px; }
-  [data-page="docs"] .docs-start__rail .stage-rail { grid-template-columns: repeat(3, 1fr); row-gap: 8px; height: auto; }
+  [data-page="docs"] .docs-start__rail .stage-rail { display: grid; grid-template-columns: repeat(3, 1fr); row-gap: 8px; height: auto; }
   [data-page="docs"] .docs-start__rail .stage-rail::before, [data-page="docs"] .docs-start__rail .stage-rail::after { display: none; }
   [data-page="docs"] .docs-start__rail .stage-rail i { justify-self: center; }
   [data-page="docs"] .docs-start__t { font-size: 16px; }
@@ -314,7 +315,3 @@
   [data-page="docs"] .docs-sec > h2 { font-size: 23px; }
 }
 @media (hover: none) { [data-page="docs"] .docs-try, [data-page="docs"] .docs-search__kbd { display: none; } }
-
-/* an in-page link moves focus to its target (core.js gives it tabindex="-1"): the section is not a control, so no ring
-   is drawn round it; the next Tab carries on from there */
-[data-page="docs"] [tabindex="-1"]:not(a, button, input, select, textarea, summary, [role]):focus-visible { outline: none; }

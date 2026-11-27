@@ -4,12 +4,8 @@
    ever marks its stage: the dots on the rails and the group rows of the table.
    Every rule is scoped to [data-page="pricing"]. */
 
-/* the kit's rolling label rises into a white copy of itself; on a white primary button that copy is invisible, so
-   here it takes the button's own ink */
-[data-page="pricing"] .btn--primary > .roll > span { text-shadow: 0 1.5em 0 currentColor; }
-/* in-page links land on a section's content (its container carries the #id; the page's scroll-padding keeps it clear
-   of the header), and the focus they hand over draws no frame around a whole section */
-[data-page="pricing"] .pr-land:focus, [data-page="pricing"] .pr-plan:focus { outline: none; }
+/* in-page links land on a section's content (its container carries the #id); the kit keeps it clear of the header
+   and draws no focus frame round it */
 
 /* ================= hero ================= */
 [data-page="pricing"] .pr-hero { padding-bottom: clamp(44px, 5vw, 72px); }
@@ -239,7 +235,7 @@
 [data-page="pricing"] .pr-pass__price s { font: 400 20px/1 var(--font-brand); color: var(--ink-muted); text-decoration-thickness: 1px; }
 [data-page="pricing"] .pr-pass__price span { font: 400 60px/1 var(--font-brand); letter-spacing: -0.02em; }
 [data-page="pricing"] .pr-pass__price small { flex-basis: 100%; font-size: 14px; color: var(--ink-soft); }
-[data-page="pricing"] .pr-pass .stage-rail { display: flex; justify-content: space-between; margin-top: 4px; }
+[data-page="pricing"] .pr-pass .stage-rail { margin-top: 4px; }
 [data-page="pricing"] .pr-pass__facts { display: grid; gap: 0; margin: 4px 0 0; border-top: 1px solid var(--line-faint); }
 [data-page="pricing"] .pr-pass__facts div { display: flex; justify-content: space-between; gap: 16px; padding: 10px 0; border-bottom: 1px solid var(--line-faint); font-size: 13.5px; }
 [data-page="pricing"] .pr-pass__facts dt { color: var(--ink-muted); }

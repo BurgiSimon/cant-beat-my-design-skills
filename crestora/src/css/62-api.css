@@ -124,8 +124,6 @@
 [data-page="api"] .api-sec:first-child .api-row--intro { padding-top: 22px; }
 [data-page="api"] .api-row--solo { grid-template-columns: minmax(0, 1fr); padding-bottom: clamp(36px, 3.6vw, 52px); }
 [data-page="api"] .api-row--solo .api-doc { max-width: 44rem; }
-/* html already keeps the header's height clear (scroll-padding), so anchors add nothing of their own */
-[data-page="api"] :is(.api-sec, .api-ep) { scroll-margin-top: 0; }
 [data-page="api"] .api-aside { position: sticky; top: calc(var(--header-h) + 24px); align-self: start; min-width: 0; transition: top 0.5s var(--ease-out); }
 
 [data-page="api"] .api-doc { min-width: 0; font-size: 16px; line-height: 1.7; color: var(--ink-soft); }
@@ -262,7 +260,3 @@
   [data-page="api"] .api-errors td:last-child { grid-column: 1 / -1; margin-top: 4px; }
   [data-page="api"] .api-params--2 tbody th { white-space: normal; }
 }
-
-/* an in-page link moves focus to its target (core.js gives it tabindex="-1"): the section is not a control, so no ring
-   is drawn round it; the next Tab carries on from there */
-[data-page="api"] [tabindex="-1"]:not(a, button, input, select, textarea, summary, [role]):focus-visible { outline: none; }

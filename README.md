@@ -151,7 +151,7 @@ No build step: plain HTML, CSS and ES modules, copied into `dist/oquro/` by `bui
 An eighth project lives in [`crestora/`](crestora/): a footer recreated from a single shot (measured against it at its
 own size) and set in motion, then grown into the whole website behind it. Crestora is a creative workspace whose idea
 comes from the footer's road: *every idea gets a lane*, and each of the road's six colours is one stage of a project
-(Spark, Shape, Make, Review Room, Countdown, Afterglow). Every page ends in the footer's night.
+(Spark, Shape, Make, Review, Launch, Afterglow). Every page ends in the footer's night.
 
 | Part | What it is |
 | --- | --- |

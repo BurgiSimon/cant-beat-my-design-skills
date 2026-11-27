@@ -313,7 +313,7 @@ nav: resources
           <p class="docs-lead">Workbench is where the work itself lives. Drop in a render, a build or a mix and Crestora keeps every version on the lane, and tells you what changed and who changed it.</p>
 
           <h3 id="versions" data-copy-link>Versions</h3>
-          <p>Each upload to the same file becomes its next version: v1, v2, v3 and on. Version history is unlimited on every plan and older versions are never thinned out; they simply count toward your storage. Give a version a name, such as “festival cut”, to pin it, and pinned versions show first in Review Room.</p>
+          <p>Each upload to the same file becomes its next version: v1, v2, v3 and on. Studio, Crew and Label keep every version for good (Solo keeps 30 days), and older versions are never thinned out; they simply count toward your storage. Give a version a name, such as “festival cut”, to pin it, and pinned versions show first in Review Room.</p>
 
           <h3 id="compare" data-copy-link>Compare</h3>
           <p>Pick any two versions and press <kbd>C</kbd>. Video and images open side by side with a swipe handle, audio lays both waveforms over each other, and documents and code show a line-by-line diff. A short summary at the top says what changed, such as “14 frames re-timed, grade adjusted”.</p>
@@ -363,7 +363,7 @@ nav: resources
 
           <h3 id="approvals" data-copy-link>Approvals</h3>
           <p>When a version is right, the reviewer chooses <strong>Approve</strong>. The approval is written onto that exact version with the name and the time, so nobody has to dig through email later. On Crew, approvals keep a full audit trail and can ask for more than one person, say the director and the client.</p>
-          <p>Approved versions are what Countdown publishes, which is why a lane can’t move into Launch while a version is still waiting. Moving a lane on by itself after an approval is <a href="roadmap.html#rm-c-automations">on the roadmap, under Next</a>.</p>
+          <p>Approved versions are what Countdown publishes, which is why a lane can’t move into Launch while a version is still waiting. When the last one is approved, the lane moves on to Launch by itself; rules of your own, like that one, are <a href="roadmap.html#rm-c-automations">on the roadmap, under Next</a>.</p>
           <div class="docs-helpful" data-helpful="review-room" data-title="Review Room">
             <span class="docs-helpful__q" id="hq-review-room">Was this section helpful?<span class="sr"> Review Room</span></span>
             <span class="docs-helpful__btns" role="group" aria-labelledby="hq-review-room">
@@ -383,7 +383,7 @@ nav: resources
           <p>The checklist fills itself from the lane: the approved versions to publish, the milestones still open, the channels you picked and the copy for your Share Page. Items tick themselves off as the work gets done. Add your own, give them to someone and give them a time, like “Post the trailer, 09:00”.</p>
 
           <h3 id="channels" data-copy-link>Channels</h3>
-          <p>A channel is anywhere the work goes out: your Share Page, a newsletter, an online store, a social scheduler, a live stream, an app-store build, a podcast feed. Channels come from the tools you’ve connected, such as <a href="integrations.html#postbox">Postbox</a>, <a href="integrations.html#shopfront">Shopfront</a> and <a href="integrations.html#clipdeck">Clipdeck</a>. Each gets its own time and its own copy, and the whole schedule sits on one line, so you can see what goes out when.</p>
+          <p>A channel is anywhere the work goes out: your Share Page, a newsletter, an online store, a social scheduler, a live stream, an app-store build, a podcast feed. Channels come from the tools you’ve connected, such as <a href="integrations.html#postlark">Postlark</a>, <a href="integrations.html#stallfront">Stallfront</a> and <a href="integrations.html#clipdeck">Clipdeck</a>. Each gets its own time and its own copy, and the whole schedule sits on one line, so you can see what goes out when.</p>
           <p>Studio and Crew launch to up to 14 channels at once; Solo launches to one.</p>
 
           <h3 id="launch-rooms" data-copy-link>Launch rooms</h3>
@@ -469,7 +469,7 @@ nav: resources
             <li><span class="docs-steps__n" aria-hidden="true">02</span><p>Choose the tool and the stage its work should land in.</p></li>
             <li><span class="docs-steps__n" aria-hidden="true">03</span><p>Sign in to the tool and approve what it asks for. It takes about 30 seconds.</p></li>
           </ol>
-          <p>From then on, new work arrives on its own: an export from <a href="integrations.html#framewright">Framewright</a> becomes a new version in Workbench, and an order in Shopfront shows up in Afterglow.</p>
+          <p>From then on, new work arrives on its own: an export from <a href="integrations.html#framewright">Framewright</a> becomes a new version in Workbench, and an order in Stallfront shows up in Afterglow.</p>
 
           <h3 id="integration-permissions" data-copy-link>What a tool can see</h3>
           <p>Each integration asks only for what it needs, and shows you the list before you connect: read access to one folder, say, or permission to post to one channel. A tool connected to one lane can’t see your others. Disconnect it any time from Settings → Integrations; the versions it already brought in stay on the lane.</p>
@@ -532,7 +532,7 @@ nav: resources
           <div class="docs-code" data-copy-scope>
             <div class="docs-code__bar"><span class="docs-code__name">lanes.csv</span><button class="docs-code__copy" type="button" data-copy data-copy-toast="Sample CSV copied" aria-label="Copy the sample CSV"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg></button></div>
             <pre tabindex="0" data-lenis-prevent><code data-copy-source>title,stage,launch_on,owner
-Tidepool 1.1,review,2026-12-04,theo@tidepool.example
+Tidepool 1.1,launch,2026-12-04,theo@tidepool.example
 Small Hours ep. 49,review,2026-12-04,lena@smallhours.example
 Kiln &amp; Co. spring drop,review,,ines@kilnandco.example</code></pre>
           </div>

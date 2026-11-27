@@ -84,11 +84,8 @@
 .creators .cr-lane .stage-rail i:nth-child(2) { --k: 1; } .creators .cr-lane .stage-rail i:nth-child(3) { --k: 2; }
 .creators .cr-lane .stage-rail i:nth-child(4) { --k: 3; } .creators .cr-lane .stage-rail i:nth-child(5) { --k: 4; }
 .creators .cr-lane .stage-rail i:nth-child(6) { --k: 5; }
-/* each dot at the centre of its sixth, its name centred under it: the gaps are even, and the fill ends on the dot
-   it means (the kit's rail pins the end dots to the edges, which stretches the first and last gaps) */
-.creators .cr-lane .stage-rail i:first-child, .creators .cr-lane .stage-rail i:last-child { justify-self: center; }
-.creators .cr-lane .stage-rail::before { left: calc(100% / 12); right: calc(100% / 12); }
-.creators .cr-lane .stage-rail::after { left: calc(100% / 12); width: calc(100% / 6 * max(0, var(--n) - 1)); }
+/* each dot over the centre of its sixth, its name centred under it (the kit's inset for a rail over six names) */
+.creators .cr-lane .stage-rail { --rail-in: calc(100% / 12); }
 .creators .cr-stages { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); font-size: 11.5px; line-height: 1.2; color: var(--ink-faint); }
 .creators .cr-stages li { text-align: center; white-space: nowrap; }
 .creators .cr-stages .is-past { color: var(--ink-muted); }

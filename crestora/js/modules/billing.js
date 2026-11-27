@@ -9,13 +9,19 @@
 import { odometer, store, $$ } from '../core.js';
 import { placeThumb } from './tabs.js';
 
+// Keyboard: like the segmented tabs elsewhere, the switch is one stop in the Tab order (the chosen period); Left/Right
+// (and Home/End) move to the other period and choose it.
 export default function init() {
   const switches = $$('[data-billing]');
   if (!switches.length) return;
   const set = (period, first = false) => {
     store.set('billing', period);
     for (const s of switches) {
-      for (const b of $$('[data-period]', s)) b.setAttribute('aria-pressed', String(b.dataset.period === period));
+      for (const b of $$('[data-period]', s)) {
+        const on = b.dataset.period === period;
+        b.setAttribute('aria-pressed', String(on));
+        b.tabIndex = on ? 0 : -1;
+      }
       placeThumb(s);
     }
     for (const el of $$('[data-price-monthly]')) {
@@ -25,8 +31,24 @@ export default function init() {
     for (const el of $$('[data-billing-show]')) el.hidden = el.dataset.billingShow !== period;
     document.dispatchEvent(new CustomEvent('billing:change', { detail: period }));
   };
-  for (const s of switches) s.addEventListener('click', (e) => { const b = e.target.closest('[data-period]'); if (b) set(b.dataset.period); });
-  set(store.get('billing', 'yearly'), true);
+  for (const s of switches) {
+    s.addEventListener('click', (e) => { const b = e.target.closest('[data-period]'); if (b) set(b.dataset.period); });
+    s.addEventListener('keydown', (e) => {
+      const opts = $$('[data-period]', s);
+      const i = opts.indexOf(document.activeElement);
+      if (i < 0 || e.altKey || e.ctrlKey || e.metaKey) return;
+      const next = { ArrowRight: i + 1, ArrowLeft: i - 1, Home: 0, End: opts.length - 1 }[e.key];
+      if (next === undefined) return;
+      e.preventDefault();
+      const b = opts[(next + opts.length) % opts.length];
+      if (b.getAttribute('aria-pressed') !== 'true') set(b.dataset.period);
+      b.focus();
+    });
+  }
+  // a stored value this switch doesn't offer (an old or hand-edited one) falls back to yearly, so one option is always
+  // chosen and the switch always has its stop in the Tab order
+  const saved = store.get('billing', 'yearly');
+  set($$('[data-period]').some((b) => b.dataset.period === saved) ? saved : 'yearly', true);
   addEventListener('resize', () => switches.forEach(placeThumb));
   document.fonts?.ready.then(() => switches.forEach(placeThumb));
 }

@@ -27,7 +27,7 @@
 
 /* ---- the doors ---- */
 [data-page="contact"] .ct-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
-[data-page="contact"] .ct-topic { display: flex; min-width: 0; scroll-margin-top: calc(var(--header-h) + 24px); }
+[data-page="contact"] .ct-topic { display: flex; min-width: 0; }
 [data-page="contact"] .ct-topic__in {
   position: relative; isolation: isolate; overflow: hidden; display: flex; flex-direction: column; gap: 12px; width: 100%; padding: 22px 22px 20px; border-radius: var(--radius-lg);
   background: radial-gradient(90% 55% at 0% 0%, rgb(255 255 255 / 0.04), transparent 70%), var(--surface); box-shadow: inset 0 0 0 1px var(--line-faint);

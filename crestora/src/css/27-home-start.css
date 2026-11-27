@@ -116,12 +116,9 @@
 :is(.home-start, [data-page="start"]) .lane-card .stage-rail i { transition-delay: 0s; }
 :is(.home-start, [data-page="start"]) .lane-card__names { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); font-size: 11.5px; line-height: 1.2; color: var(--ink-faint); }
 :is(.home-start, [data-page="start"]) .lane-card__names li { text-align: center; white-space: nowrap; transition: color 0.4s var(--ease-out); }
-/* the rail's dots evenly spread (the kit's rail stretches its end gaps, and its fill then misses the dot it means):
-   with names under them, each dot sits at the centre of its sixth; without, they run edge to edge */
-.home-start .lane-card .stage-rail i:first-child, .home-start .lane-card .stage-rail i:last-child { justify-self: center; }
-.home-start .lane-card .stage-rail::before { left: calc(100% / 12); right: calc(100% / 12); }
-.home-start .lane-card .stage-rail::after { left: calc(100% / 12); width: calc(100% / 6 * max(0, var(--n) - 1)); }
-[data-page="start"] .lane-card .stage-rail { display: flex; justify-content: space-between; }
+/* with names under the rail (home), each dot sits over the centre of its name; without (the start page), the kit's
+   rail runs edge to edge */
+.home-start .lane-card .stage-rail { --rail-in: calc(100% / 12); }
 :is(.home-start, [data-page="start"]) .lane-card__names li.is-lit { color: var(--ink-soft); }
 :is(.home-start, [data-page="start"]) .lane-card__names li.is-now { color: #fff; }
 

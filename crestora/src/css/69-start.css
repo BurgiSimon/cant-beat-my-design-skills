@@ -97,9 +97,10 @@
 /* the success state */
 [data-page="start"] .start-done { display: grid; gap: 18px; justify-items: start; padding: 8px 0 4px; }
 [data-page="start"] .start-done[hidden] { display: none; }
-[data-page="start"] .start-done:focus-visible { outline-offset: 10px; border-radius: 12px; }
+/* the success state takes focus after a keyboard submit: unlike a section an anchor lands on, it keeps a ring */
+[data-page="start"] .start-done:focus-visible { outline: 1px solid rgb(255 255 255 / 0.9); outline-offset: 10px; border-radius: 12px; }
 [data-page="start"] .start-done__no { display: flex; align-items: center; gap: 14px; font: 400 10.5px/1 var(--font-brand); letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-soft); }
-[data-page="start"] .start-done__no .stage-rail { width: 112px; display: flex; justify-content: space-between; }
+[data-page="start"] .start-done__no .stage-rail { width: 112px; }
 [data-page="start"] .start-done__title { margin-top: 6px; font-size: clamp(30px, 2.8vw, 44px); }
 [data-page="start"] .start-done__text { max-width: 30em; }
 [data-page="start"] .start-done__text strong { color: #fff; font-weight: 600; overflow-wrap: anywhere; }
