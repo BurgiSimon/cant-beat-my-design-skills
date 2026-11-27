@@ -6,14 +6,17 @@
  *   og.jpg                  1200×630, the picker itself, for link previews
  *
  *   node picker/tools/stills.mjs                    every site's stills, then og.jpg
- *   node picker/tools/stills.mjs vizen crestora     only the named sites' stills (og.jpg is always rendered)
+ *   node picker/tools/stills.mjs vizen unorouter    only the named sites' stills (og.jpg is always rendered)
  *
  * A still is the site's hero art with no type on it: the card sets its own name over it. Mist's is its own hero,
  * built and photographed with the header and the copy hidden; Nelson's is cut from its hero picture around the eye;
  * AsterPay's is its hero's light, rings and phones, the tall one cut from a wide render around the phones; Vizen's
  * is its rider alone, as its WebGL draws him (software WebGL will do, slowly), the tall one cut round him too;
- * UnoRouter's is its mark of coloured cells on the dot grid, in the shot's own colours; Crestora's is its night (the
- * road of light, the car, its dust) with the type taken off, the tall one cut from a wider render round the car.
+ * UnoRouter's is its mark of coloured cells on the dot grid, in the shot's own colours; OFFFORM's is its hero's two
+ * photographs, rules and ring, the tall one cut from a wide render around the sprinter; OQURO's is its 3D garden (the
+ * stone ring, the vault, the mound) on the water, without its giant word, the tall one cut likewise; Crestora's is
+ * its night (the road of light, the car, its dust) with the type taken off, the tall one cut from a wider render
+ * round the car.
  * Needs Playwright with Chromium (npm i -g playwright && npx playwright install chromium); the site itself does not.
  */
 import { promises as fs } from "node:fs";
@@ -109,6 +112,35 @@ const vizen = async (page, viewport) => {
   return { x: Math.round(cx - 450), y: 0, width: 900, height: 1600 };
 };
 
+// OFFFORM: its hero (both photographs, the rules and the ring) with the header and every word taken off. Held
+// upright, the tall still is cut from a wider, larger render around the sprinter.
+const offform = async (page, viewport) => {
+  const tall = viewport.height > viewport.width;
+  if (tall) await page.setViewportSize({ width: 3168, height: 1600 });
+  await page.goto(`${site}/offform/`, { waitUntil: "load" });
+  await page.addStyleTag({ content: ".skip, .announce, .head, .hero__tag, .hero__intro, .hero__num, .hero__meta, .hero__title, .hero__aside, .grain, .cursor { display: none !important; }" +
+    (tall ? ":root { --u: 2.2px !important; }" : "") });
+  await page.evaluate(() => Promise.all([document.fonts.ready, ...[...document.images].filter((i) => i.closest(".hero")).map((i) => i.decode())]));
+  await page.waitForTimeout(600);
+  return tall ? { x: 640 - 450, y: 0, width: 900, height: 1600 } : undefined;
+};
+
+await fs.mkdir(path.join(ASSETS, "stills"), { recursive: true });
+console.log("stills:");
+// OQURO: its hero under reduced motion (the 3D garden drawn once), with the header, the word, the copy and the threat
+// card taken off. Held upright it is cut from a wide render, around the ring.
+const oquro = async (page, viewport) => {
+  const tall = viewport.height > viewport.width;
+  if (tall) await page.setViewportSize({ width: 2200, height: 1600 });
+  await page.goto(`${site}/oquro/`, { waitUntil: "load" });
+  await page.addStyleTag({ content: ".skip, .nav, .hero__word, .hero__copy, .widget--threat { visibility: hidden !important; } .hero { height: 100vh !important; }" });
+  await page.evaluate(() => document.fonts.ready);
+  await page.evaluate(() => dispatchEvent(new Event("resize")));
+  await page.waitForFunction(() => document.querySelector(".hero")?.classList.contains("has-gl"), null, { timeout: 60000 });
+  await page.waitForTimeout(1500);
+  return tall ? { x: 1103 - 450, y: 0, width: 900, height: 1600 } : undefined;
+};
+
 // Crestora: its night as it rests (?still), the type hidden. Held upright, it is cut from a wider render, round the car
 // (2000 × 1600 is still wide enough for the picture layout, 6:5).
 const crestora = async (page, viewport) => {
@@ -121,9 +153,7 @@ const crestora = async (page, viewport) => {
   return tall ? { x: 618, y: 0, width: 900, height: 1600 } : undefined;
 };
 
-await fs.mkdir(path.join(ASSETS, "stills"), { recursive: true });
-console.log("stills:");
-for (const [name, go] of Object.entries({ mist, nelson, asterpay, vizen, unorouter, crestora })) {
+for (const [name, go] of Object.entries({ mist, nelson, asterpay, vizen, unorouter, offform, oquro, crestora })) {
   if (only.length && !only.includes(name)) continue;
   await shoot(WIDE, `stills/${name}-wide.jpg`, go);
   await shoot(TALL, `stills/${name}-tall.jpg`, go);

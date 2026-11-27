@@ -3,9 +3,10 @@
 // wheel, a drag or the arrow keys move it. The card under the pointer (or the one with the keyboard's focus) is lit
 // and gets a trace in its site's own manner: mist that drifts and parts, a hole torn through the clouds onto a night
 // of ASCII, an orbit of light with a streak along its horizon, a reticle locking on through a streak of brake light, a
-// halo of coloured cells, a fan of light streaming back. A chosen card opens into its site: it grows to fill the screen and gives way to the colour
-// the site paints first, so the site's own entrance carries on from there. On a phone the cards are a strip that a
-// swipe moves from one to the next. Without this script the page is still a row of links.
+// halo of coloured cells, a vault dial over rippling water, a fan of light streaming back. A chosen card opens into its
+// site: it grows to fill the screen and gives way to the colour the site paints first, so the site's own entrance
+// carries on from there. On a phone the cards are a strip that a swipe moves from one to the next. Without this script
+// the page is still a row of links.
 
 const list = document.querySelector('.list');
 const rows = [...list.querySelectorAll('a')];            // one card per site, as the page has them
@@ -343,6 +344,51 @@ const TRACES = {
     };
   })(),
 
+  // OQURO: the vault dial of its preloader closes round the pointer, its long ticks catching up one by one, and the
+  // pointer drops rings into the water under it, as the light sections of the page do. Lit with no pointer on it,
+  // the dial wanders.
+  oquro: (() => {
+    const at = { x: 0, y: 0, on: false, px: 0, py: 0, turn: 0 };
+    const DARK = '34 34 34';   // its still is pale water, so this one is drawn in OQURO's ink, not the picker's white
+    const rings = [];
+    return {
+      reset() { at.on = false; rings.length = 0; },
+      draw(r, o, on, dt) {
+        if (o < 0.01 && !rings.length) return false;
+        const want_ = on && inside(r, ptr) ? ptr : { x: r.left + r.width * (0.5 + 0.22 * Math.sin(clock * 0.39)), y: r.top + r.height * (0.3 + 0.1 * Math.sin(clock * 0.63)) };
+        if (!at.on) { at.x = at.px = want_.x; at.y = at.py = want_.y; at.on = true; }
+        const ease = 1 - Math.exp(-dt * 6);
+        at.x += (want_.x - at.x) * ease; at.y += (want_.y - at.y) * ease;
+        // a ring wherever the pointer has travelled far enough, and a slow one now and then
+        if (o > 0.5 && (Math.hypot(at.x - at.px, at.y - at.py) > 46 || rnd(Math.floor(clock * 2)) < dt * 1.2)) { rings.push({ x: at.x, y: at.y, t: 0 }); at.px = at.x; at.py = at.y; }
+        within(r);
+        for (let i = rings.length - 1; i >= 0; i--) {
+          const q = rings[i]; q.t += dt;
+          if (q.t > 1.8) { rings.splice(i, 1); continue; }
+          const k = q.t / 1.8;
+          g.strokeStyle = `rgb(${DARK} / ${0.32 * (1 - k) ** 2})`;
+          g.beginPath(); g.ellipse(q.x, q.y, 14 + k * 120, (14 + k * 120) * 0.42, 0, 0, Math.PI * 2); g.stroke();
+        }
+        // the dial: sixty ticks, every fifth long, closing round from the top as the card lights, turning slowly
+        const R = Math.min(64, r.width * 0.16);
+        at.turn += dt * (0.25 + 0.6 * (on ? 1 : 0));
+        const shown = Math.floor(60 * Math.min(1, o * 1.1));
+        for (let i = 0; i < shown; i++) {
+          const long = i % 5 === 0; const a = -Math.PI / 2 + (i / 60) * Math.PI * 2 + at.turn;
+          const r0 = R - (long ? 13 : 7); const r1 = R;
+          g.strokeStyle = `rgb(${DARK} / ${(long ? 0.9 : 0.45) * o})`;
+          g.beginPath(); g.moveTo(at.x + Math.cos(a) * r0, at.y + Math.sin(a) * r0); g.lineTo(at.x + Math.cos(a) * r1, at.y + Math.sin(a) * r1); g.stroke();
+        }
+        // and the mark in its middle: a hub with eight knobs
+        g.fillStyle = `rgb(${DARK} / ${0.9 * o})`;
+        g.beginPath(); g.arc(at.x, at.y, 5.5, 0, Math.PI * 2); g.fill();
+        for (let i = 0; i < 8; i++) { const a = (i / 8) * Math.PI * 2 - at.turn * 2; g.beginPath(); g.arc(at.x + Math.cos(a) * 11, at.y + Math.sin(a) * 11, 2, 0, Math.PI * 2); g.fill(); }
+        g.restore();
+        return true;
+      },
+    };
+  })(),
+
   // Vizen: the hero's reticle locks onto the pointer, its four rulers springing out as the card lights, and the
   // brake light's yellow streak runs through it, as the hero's does behind the helmet; an azimuth reads out beside
   // it. Lit with no pointer on it, the reticle scans the card.
@@ -386,6 +432,59 @@ const TRACES = {
         g.fillStyle = `rgb(${INK} / ${0.8 * o})`;
         const az = Math.round(mod(((at.x - r.left) / r.width) * 360 + 180, 360));
         g.fillText(`AZ ${String(az).padStart(3, '0')}°`, at.x + gap + 4, at.y - gap - 4);
+        g.restore();
+        return true;
+      },
+    };
+  })(),
+
+  // OFFFORM: the hero's lines meet at the pointer, a rule down and a rule across, and the hero's ring closes round
+  // that point from its top with a light running it; move fast and speed lines stream off behind the pointer, the
+  // way the sprinter smears. Lit with no pointer on it, the point wanders.
+  offform: (() => {
+    const at = { x: 0, y: 0, on: false, vx: 0, a: -0.7 };
+    const LINE = '255 226 210';
+    return {
+      reset() { at.on = false; at.vx = 0; },
+      draw(r, o, on, dt) {
+        if (o < 0.01) return false;
+        const want_ = on && inside(r, ptr) ? ptr : { x: r.left + r.width * (0.5 + 0.22 * Math.sin(clock * 0.47)), y: r.top + r.height * (0.5 + 0.14 * Math.sin(clock * 0.73)) };
+        if (!at.on) { at.x = want_.x; at.y = want_.y; at.on = true; }
+        const ease = 1 - Math.exp(-dt * 7);
+        const nx = at.x + (want_.x - at.x) * ease;
+        at.vx += ((nx - at.x) / Math.max(dt, 0.001) - at.vx) * Math.min(1, dt * 10);
+        at.x = nx; at.y += (want_.y - at.y) * ease;
+        within(r);
+        // the two rules, drawn out from the point as the card lights
+        const span = Math.min(1, o * 1.2);
+        g.strokeStyle = `rgb(${LINE} / ${0.45 * o})`; g.lineWidth = 1;
+        g.beginPath();
+        g.moveTo(at.x, at.y - r.height * span); g.lineTo(at.x, at.y + r.height * span);
+        g.moveTo(at.x - r.width * span, at.y); g.lineTo(at.x + r.width * span, at.y);
+        g.stroke();
+        // the ring, closing from its top both ways, and the light that runs it (quicker while the pointer moves)
+        const R = Math.min(120, r.width * 0.26) * (0.9 + 0.1 * o);
+        const top = -Math.PI / 2; const arc = Math.PI * span;
+        g.strokeStyle = `rgb(${LINE} / ${0.7 * o})`;
+        g.beginPath(); g.arc(at.x, at.y, R, top - arc, top + arc); g.stroke();
+        at.a += dt * (0.6 + Math.min(6, Math.abs(at.vx) / 120));
+        const lx = at.x + Math.cos(at.a) * R; const ly = at.y + Math.sin(at.a) * R;
+        g.fillStyle = `rgb(255 255 255 / ${o})`; g.beginPath(); g.arc(lx, ly, 3.5, 0, Math.PI * 2); g.fill();
+        g.fillStyle = `rgb(255 255 255 / ${0.18 * o})`; g.beginPath(); g.arc(lx, ly, 8, 0, Math.PI * 2); g.fill();
+        // speed lines, streaming back from the point
+        const sp = Math.min(1, Math.abs(at.vx) / 900);
+        if (sp > 0.02) {
+          const dir = at.vx > 0 ? -1 : 1;
+          for (let i = 0; i < 7; i++) {
+            const y = at.y + (i - 3) * 9 + (rnd(i + 500) - 0.5) * 6;
+            const len = (60 + 140 * rnd(i + 520)) * sp;
+            const x0 = at.x + dir * (8 + 20 * rnd(i + 540));
+            const grad = g.createLinearGradient(x0, 0, x0 + dir * len, 0);
+            grad.addColorStop(0, `rgb(255 255 255 / ${0.75 * sp * o})`); grad.addColorStop(1, 'rgb(255 255 255 / 0)');
+            g.strokeStyle = grad; g.lineWidth = 1.4;
+            g.beginPath(); g.moveTo(x0, y); g.lineTo(x0 + dir * len, y); g.stroke();
+          }
+        }
         g.restore();
         return true;
       },
