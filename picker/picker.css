@@ -36,14 +36,17 @@
      site paints first. The opener ends on that, so the hand-over is invisible. */
   --mist: url("assets/stills/mist-wide.jpg");
   --nelson: url("assets/stills/nelson-wide.jpg");
+  --asterpay: url("assets/stills/asterpay-wide.jpg");
 }
 @media (orientation: portrait) {
   :root {
     --mist: url("assets/stills/mist-tall.jpg");
     --nelson: url("assets/stills/nelson-tall.jpg");
+    --asterpay: url("assets/stills/asterpay-tall.jpg");
   }
 }
-/* Mist opens on its bare sky (the peaks and the copy rise into it); Nelson on the white of its preloader. */
+/* Mist opens on its bare sky (the peaks and the copy rise into it); Nelson on the white of its preloader; AsterPay on
+   the dark of its preloader, or of its hero before the light rises. */
 [data-id="mist"] {
   --still: var(--mist);
   --arrive: linear-gradient(transparent calc(100% - 72px), #07050d),
@@ -57,6 +60,11 @@
   --still: var(--nelson);
   --arrive: #fff;
   --at: 50% 46%;
+}
+[data-id="asterpay"] {
+  --still: var(--asterpay);
+  --arrive: #0c0b0e;
+  --at: 50% 62%;
 }
 
 *, *::before, *::after { box-sizing: border-box; }

@@ -8,6 +8,7 @@ Websites built from a single design, each its own project, behind one picker.
 | --- | --- |
 | **Mist**, a marketing site for an AI workflow-automation product | [`/mist/`](https://burgisimon.github.io/cant-beat-my-design-skills/mist/) |
 | **Nelson**, a CRM landing page recreated 1:1 and given a motion layer | [`/nelson-crm/`](https://burgisimon.github.io/cant-beat-my-design-skills/nelson-crm/) |
+| **AsterPay**, a money app's hero recreated from one shot and grown into a full landing page | [`/asterpay/`](https://burgisimon.github.io/cant-beat-my-design-skills/asterpay/) |
 
 ## The picker
 
@@ -15,9 +16,10 @@ The front page ([`picker/`](picker/)) is a line of cards, one per site, each wit
 
 - **Point at a card** and it lights up with a trace in its site's own manner: on Mist, wisps of mist drift
   across the foot and part around the pointer; on Nelson, a hole tears open in the clouds onto a night of
-  drifting ASCII, the way its hero tears its paper.
+  drifting ASCII, the way its hero tears its paper; on AsterPay, an orbit of light closes round the pointer and a
+  streak sweeps along its horizon, as in its hero.
 - **Choose one** and the card grows to fill the screen, its still giving way to the colour that site paints
-  first: Mist's bare violet sky, Nelson's white preloader. The site's own entrance then plays from there, so
+  first: Mist's bare violet sky, Nelson's white preloader, AsterPay's dark one. The site's own entrance then plays from there, so
   the move from picker to site has no seam.
 - While the cards fit the screen they stand in the middle. With more sites than fit, the line becomes
   endless: it drifts when left alone, and the wheel, a drag or the arrow keys move it.
@@ -60,12 +62,26 @@ premium motion layer.
 It is prebuilt (`python3 nelson-crm/src/build.py`); `build.mjs` only copies its runtime files into
 `dist/nelson-crm/`. See [`nelson-crm/README.md`](nelson-crm/README.md).
 
+## AsterPay
+
+A third project lives in [`asterpay/`](asterpay/): a fintech hero recreated from a single concept shot (measured
+against it at 1440px) and grown into a full landing page in the same language.
+
+| Part | What it is |
+| --- | --- |
+| Hero | The shot, live: a raw-WebGL horizon of light fitted to the shot's colours, rings with orbiting lights, floating market figures that tick, two phones in perspective whose screens update |
+| Sections | Payments (a dotted globe of transfers and a slide to send), Cards (a 3D card with live controls), Invest (a chart to scrub across assets and ranges), features, about, reviews, FAQ, and a call to action over a field of money in ASCII |
+| Motion | Preloader into the header, Lenis smooth scroll, GSAP scroll reveals and SplitText, rolling digits, magnetic buttons |
+
+No build step: plain HTML, CSS and ES modules, copied into `dist/asterpay/` by `build.mjs`. See
+[`asterpay/README.md`](asterpay/README.md).
+
 ## Develop
 
 Requires Node 20+. No dependencies to install.
 
 ```bash
-node build.mjs --serve        # http://localhost:4321 — the picker, /mist/ and /nelson-crm/; rebuilds and live-reloads on change
+node build.mjs --serve        # http://localhost:4321 — the picker, /mist/, /nelson-crm/ and /asterpay/; rebuilds and live-reloads on change
 node build.mjs                # production build into ./dist
 ```
 
@@ -91,6 +107,7 @@ src/                   Mist, published under /mist/ (its 404 page answers for th
   assets/              self-hosted fonts, images, icons
   static/              copied to the root of Mist (web manifest)
 nelson-crm/            separate prebuilt project, published under /nelson-crm/
+asterpay/              separate project, no build step, published under /asterpay/ (its README and tools/ stay behind)
 ```
 
 ## Deploy
@@ -118,5 +135,7 @@ GitHub Pages (Settings → Pages → Source: GitHub Actions).
   `picker/assets/fonts/`). All under the SIL Open Font License.
 - Landscape art: adapted from a wallpaper published on wallpapers.com (sky replaced, birds removed,
   mist added). Check its licence before using this site commercially.
+- AsterPay: [Satoshi](https://www.fontshare.com/fonts/satoshi) (ITF Free Font License), loaded from Fontshare's CDN
+  rather than committed; land outlines from [Natural Earth](https://www.naturalearthdata.com/) (public domain).
 - Mist, its customers, people, quotes and numbers are fictional. The investor line in the hero comes
-  from the original design.
+  from the original design. AsterPay, its people, reviews and figures are fictional too.

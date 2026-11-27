@@ -1,0 +1,676 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>AsterPay — All your money. One simple app.</title>
+  <meta name="description" content="Track your balance, spending and savings at a glance. Send money instantly, spend with a metal card and invest from $1 — all in one app." />
+  <meta name="theme-color" content="#0c0b0e" />
+  <meta name="color-scheme" content="dark" />
+  <link rel="canonical" href="{{SITE_URL}}/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="{{SITE_URL}}/" />
+  <meta property="og:title" content="AsterPay — All your money. One simple app." />
+  <meta property="og:description" content="Track your balance, spending and savings at a glance." />
+  <meta property="og:image" content="{{SITE_URL}}/assets/img/og.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://api.fontshare.com" />
+  <link rel="preconnect" href="https://cdn.fontshare.com" crossorigin />
+  <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=satoshi@1,2&amp;display=swap" />
+  <link rel="stylesheet" href="vendor/lenis.css" />
+  <link rel="stylesheet" href="css/base.css?v={{VERSION}}" />
+  <link rel="stylesheet" href="css/hero.css?v={{VERSION}}" />
+  <link rel="stylesheet" href="css/sections.css?v={{VERSION}}" />
+  <script>
+    // Scripts will run: the page may hide what they are about to animate. A repeat visit in this tab gets the short intro.
+    (function (h) {
+      h.className = h.className.replace("no-js", "js");
+      try { if (sessionStorage.getItem("asterpay:seen")) h.classList.add("is-repeat"); } catch (e) {}
+      if (matchMedia("(prefers-reduced-motion: reduce)").matches || /[?&]reduced/.test(location.search)) h.classList.add("is-calm");
+      if (location.hash.length > 1) h.classList.add("is-repeat");
+      setTimeout(function () { h.classList.add("is-ready"); }, 7000); // if the scripts never get there, show the page anyway
+    })(document.documentElement);
+  </script>
+  <script defer src="vendor/gsap.min.js"></script>
+  <script defer src="vendor/ScrollTrigger.min.js"></script>
+  <script defer src="vendor/SplitText.min.js"></script>
+  <script defer src="vendor/lenis.min.js"></script>
+  <script type="module" src="js/main.js?v={{VERSION}}"></script>
+</head>
+<body>
+  <!-- Icons, used by reference -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <symbol id="i-chev-down" viewBox="0 0 24 24"><path d="M6.5 9.5 12 15l5.5-5.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+      <symbol id="i-chev-right" viewBox="0 0 24 24"><path d="M9.5 6 15.5 12l-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+      <symbol id="i-chev-left" viewBox="0 0 24 24"><path d="M14.5 6 8.5 12l6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+      <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4.5 12h14.5M13.5 6.5 19 12l-5.5 5.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+      <symbol id="i-up" viewBox="0 0 24 24"><path d="M12 19V5.5M6.5 11 12 5.5l5.5 5.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+      <symbol id="i-up-right" viewBox="0 0 24 24"><path d="M7 17 17 7M8.5 7H17v8.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+      <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5.8v12.4c0 .6.7 1 1.2.7l9.6-6.2c.5-.3.5-1 0-1.3L9.2 5.1C8.7 4.8 8 5.2 8 5.8Z" fill="currentColor"/></symbol>
+      <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+      <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+      <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12Z" fill="none" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="12" r="3" fill="none" stroke="currentColor" stroke-width="1.7"/></symbol>
+      <symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.5 1.5h-15L6 16.5ZM10 20.5h4" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+      <symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13 2.5 4.5 13.5H11l-1 8 8.5-11H12l1-8Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></symbol>
+      <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M3 12h18M12 3c2.6 2.5 3.9 5.5 3.9 9S14.6 18.5 12 21c-2.6-2.5-3.9-5.5-3.9-9S9.4 5.5 12 3Z" fill="none" stroke="currentColor" stroke-width="1.6"/></symbol>
+      <symbol id="i-split" viewBox="0 0 24 24"><path d="M12 21v-7.5L5.5 7M12 13.5 18.5 7M5 11.5V6.5h5M19 11.5V6.5h-5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+      <symbol id="i-lock" viewBox="0 0 24 24"><rect x="4.5" y="10.5" width="15" height="10" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5" fill="none" stroke="currentColor" stroke-width="1.6"/></symbol>
+      <symbol id="i-snow" viewBox="0 0 24 24"><path d="M12 2.5v19M3.8 7.25l16.4 9.5M3.8 16.75l16.4-9.5M9.5 4 12 6.5 14.5 4M9.5 20l2.5-2.5 2.5 2.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+      <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 2.8 19.5 5.5v6c0 4.6-3.1 8.4-7.5 9.7-4.4-1.3-7.5-5.1-7.5-9.7v-6L12 2.8Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="m8.7 12 2.3 2.3 4.4-4.6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+      <symbol id="i-headset" viewBox="0 0 24 24"><path d="M4.5 14v-2a7.5 7.5 0 0 1 15 0v2M4.5 14v2.5a1.5 1.5 0 0 0 1.5 1.5h1.5v-5.5H6A1.5 1.5 0 0 0 4.5 14ZM19.5 14v2.5A1.5 1.5 0 0 1 18 18h-1.5v-5.5H18a1.5 1.5 0 0 1 1.5 1.5ZM16.5 18c0 1.7-1.8 2.5-4.5 2.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+      <symbol id="i-layers" viewBox="0 0 24 24"><path d="m12 3.5 9 4.75-9 4.75-9-4.75 9-4.75ZM3 12.25 12 17l9-4.75M3 16.25 12 21l9-4.75" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></symbol>
+      <symbol id="i-repeat" viewBox="0 0 24 24"><path d="M17 3.5 20 6.5l-3 3M4 11.5v-2a3 3 0 0 1 3-3h13M7 20.5l-3-3 3-3M20 12.5v2a3 3 0 0 1-3 3H4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+      <symbol id="i-percent" viewBox="0 0 24 24"><path d="M18.5 5.5 5.5 18.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="7.5" cy="7.5" r="2.5" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="16.5" cy="16.5" r="2.5" fill="none" stroke="currentColor" stroke-width="1.6"/></symbol>
+      <symbol id="i-star" viewBox="0 0 24 24"><path d="m12 2.8 2.75 5.8 6.35.8-4.65 4.4 1.2 6.3L12 17l-5.65 3.1 1.2-6.3L2.9 9.4l6.35-.8L12 2.8Z" fill="currentColor"/></symbol>
+      <symbol id="i-phone" viewBox="0 0 24 24"><rect x="6.5" y="2.5" width="11" height="19" rx="3" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M10.5 5.5h3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
+      <symbol id="i-android" viewBox="0 0 24 24"><path d="M5.5 10.5a6.5 6.5 0 0 1 13 0v8a1.5 1.5 0 0 1-1.5 1.5H7a1.5 1.5 0 0 1-1.5-1.5v-8ZM5.5 11.5h13M7.5 3.5l1.5 2.5M16.5 3.5 15 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="9.5" cy="8.5" r=".9" fill="currentColor"/><circle cx="14.5" cy="8.5" r=".9" fill="currentColor"/></symbol>
+      <symbol id="i-apple" viewBox="0 0 24 24"><path d="M12 7.6c-1.3-.9-2.6-1.2-4-1-2.6.4-4.3 2.9-4.1 6.1.3 4.3 3 8.3 5.4 8.3.9 0 1.5-.5 2.7-.5s1.8.5 2.7.5c2.4 0 5.1-4 5.4-8.3.2-3.2-1.5-5.7-4.1-6.1-1.4-.2-2.7.1-4 1Z" fill="currentColor"/><path d="M12 7.4c0-2.3 1-4 3.3-4.9" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M12.2 6.2c.4-1.8 1.9-2.9 3.9-2.8-.3 1.9-1.8 3-3.9 2.8Z" fill="currentColor"/></symbol>
+      <symbol id="i-signal" viewBox="0 0 20 12"><rect x="0" y="8" width="3.2" height="4" rx="1" fill="currentColor"/><rect x="5.4" y="5.5" width="3.2" height="6.5" rx="1" fill="currentColor"/><rect x="10.8" y="3" width="3.2" height="9" rx="1" fill="currentColor"/><rect x="16.2" y="0" width="3.2" height="12" rx="1" fill="currentColor"/></symbol>
+      <symbol id="i-wifi" viewBox="0 0 18 12"><path d="M9 11.6 6.3 8.8a3.9 3.9 0 0 1 5.4 0L9 11.6Z" fill="currentColor"/><path d="M3.9 6.3a7.3 7.3 0 0 1 10.2 0M1.3 3.6a11 11 0 0 1 15.4 0" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></symbol>
+      <symbol id="i-battery" viewBox="0 0 28 13"><rect x=".7" y=".7" width="23.6" height="11.6" rx="3.4" fill="none" stroke="currentColor" stroke-opacity=".4" stroke-width="1.2"/><rect x="2.6" y="2.6" width="19.8" height="7.8" rx="1.8" fill="currentColor"/><path d="M26 4.4v4.2c.9-.3 1.4-1.1 1.4-2.1s-.5-1.8-1.4-2.1Z" fill="currentColor" fill-opacity=".45"/></symbol>
+      <symbol id="i-plane" viewBox="0 0 24 24"><path d="M10.2 13.8 3.5 11.2l1.6-1.6 7.6 1.1 4.6-4.6c.9-.9 2.3-.9 3.1-.1.8.8.8 2.2-.1 3.1l-4.6 4.6 1.1 7.6-1.6 1.6-2.6-6.7-3.2 3.2.3 2.4-1.3 1.3-1.9-3.6-3.6-1.9 1.3-1.3 2.4.3 3.6-3.4Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></symbol>
+      <symbol id="i-music" viewBox="0 0 24 24"><path d="M9 17.5V5.5l10-2v12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="6.5" cy="17.5" r="2.5" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="16.5" cy="15.5" r="2.5" fill="none" stroke="currentColor" stroke-width="1.6"/></symbol>
+      <symbol id="i-cup" viewBox="0 0 24 24"><path d="M4.5 9.5h12v5a5 5 0 0 1-5 5h-2a5 5 0 0 1-5-5v-5ZM16.5 10.5h1.5a2.5 2.5 0 0 1 0 5h-1.8M8.5 3.5v2.5M12.5 3.5v2.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+      <symbol id="i-down" viewBox="0 0 24 24"><path d="M12 5v13.5M6.5 13l5.5 5.5 5.5-5.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+      <symbol id="i-dollar" viewBox="0 0 24 24"><path d="M12 3v18M16.5 7.5c-.6-1.5-2.3-2.5-4.5-2.5-2.6 0-4.5 1.4-4.5 3.4 0 4.6 9.5 2.4 9.5 7.2 0 2-1.9 3.4-5 3.4-2.4 0-4.2-1-4.8-2.6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+      <symbol id="flag-us" viewBox="0 0 20 20"><clipPath id="flag-us-c"><circle cx="10" cy="10" r="10"/></clipPath><g clip-path="url(#flag-us-c)"><rect width="20" height="20" fill="#f4f4f4"/><path d="M0 1.5h20M0 4.5h20M0 7.5h20M0 10.5h20M0 13.5h20M0 16.5h20M0 19.5h20" stroke="#d6233c" stroke-width="1.5"/><rect width="10" height="10.5" fill="#24357a"/><g fill="#fff"><circle cx="2.5" cy="2.5" r=".6"/><circle cx="5" cy="2.5" r=".6"/><circle cx="7.5" cy="2.5" r=".6"/><circle cx="3.75" cy="5" r=".6"/><circle cx="6.25" cy="5" r=".6"/><circle cx="2.5" cy="7.5" r=".6"/><circle cx="5" cy="7.5" r=".6"/><circle cx="7.5" cy="7.5" r=".6"/></g></g></symbol>
+      <symbol id="flag-eu" viewBox="0 0 20 20"><circle cx="10" cy="10" r="10" fill="#1f3f9e"/><g fill="#ffd43b"><circle cx="10" cy="4.2" r=".85"/><circle cx="12.9" cy="5" r=".85"/><circle cx="15" cy="7.1" r=".85"/><circle cx="15.8" cy="10" r=".85"/><circle cx="15" cy="12.9" r=".85"/><circle cx="12.9" cy="15" r=".85"/><circle cx="10" cy="15.8" r=".85"/><circle cx="7.1" cy="15" r=".85"/><circle cx="5" cy="12.9" r=".85"/><circle cx="4.2" cy="10" r=".85"/><circle cx="5" cy="7.1" r=".85"/><circle cx="7.1" cy="5" r=".85"/></g></symbol>
+      <symbol id="mark" viewBox="0 0 32 32"><path d="M16 1.6c.55 8.9 4.6 13.1 14.4 14.4-9.8 1.3-13.85 5.5-14.4 14.4-.55-8.9-4.6-13.1-14.4-14.4C11.4 14.7 15.45 10.5 16 1.6Z" fill="currentColor"/><g stroke="#ff5233" stroke-width="2.3" stroke-linecap="round"><path d="m5.6 5.6 2.6 2.6M26.4 5.6l-2.6 2.6M5.6 26.4l2.6-2.6M26.4 26.4l-2.6-2.6"/></g><g fill="#ff5233"><circle cx="9.6" cy="3.6" r="1.05"/><circle cx="3.6" cy="22.4" r="1.05"/></g></symbol>
+    </defs>
+  </svg>
+
+  <a class="skip" href="#main">Skip to content</a>
+
+  <!-- The preloader: the mark turns in, the count runs to 100, then the mark flies to its place in the header. -->
+  <div class="loader" aria-hidden="true">
+    <svg class="loader__mark"><use href="#mark" /></svg>
+    <span class="loader__count"><span data-count>0</span></span>
+    <span class="loader__line"><i></i></span>
+  </div>
+
+  <header class="nav" data-nav>
+    <div class="nav__bar">
+      <a class="brand" href="#top" aria-label="AsterPay, back to top">
+        <svg class="brand__mark" aria-hidden="true"><use href="#mark" /></svg>
+        <span class="brand__word" aria-hidden="true">AsterPay</span>
+      </a>
+      <nav class="nav__links" aria-label="Main">
+        <div class="drop" data-drop>
+          <button class="nav__link drop__toggle" type="button" aria-expanded="false" aria-controls="product-menu"><span class="roll" data-roll>Product</span> <svg class="drop__chev" aria-hidden="true"><use href="#i-chev-down" /></svg></button>
+          <div class="drop__panel" id="product-menu">
+            <ul class="drop__list">
+              <li><a href="#payments"><span class="drop__icon"><svg aria-hidden="true"><use href="#i-bolt" /></svg></span><span><b>Payments</b><small>Send and request money in seconds</small></span></a></li>
+              <li><a href="#cards"><span class="drop__icon"><svg aria-hidden="true"><use href="#i-layers" /></svg></span><span><b>Cards</b><small>Metal and virtual, with live controls</small></span></a></li>
+              <li><a href="#invest"><span class="drop__icon"><svg aria-hidden="true"><use href="#i-percent" /></svg></span><span><b>Invest</b><small>Stocks, ETFs and crypto from $1</small></span></a></li>
+              <li><a href="#features"><span class="drop__icon"><svg aria-hidden="true"><use href="#i-shield" /></svg></span><span><b>Features</b><small>Budgets, goals, insights and more</small></span></a></li>
+            </ul>
+            <a class="drop__promo" href="#payments">
+              <span class="drop__promo-glow" aria-hidden="true"></span>
+              <span class="tag"><i></i>New</span>
+              <b>Instant &amp; free transfers to anyone</b>
+              <small>Under a second, 24/7, in 40+ currencies.</small>
+              <span class="drop__promo-go">See how <svg aria-hidden="true"><use href="#i-arrow" /></svg></span>
+            </a>
+          </div>
+        </div>
+        <a class="nav__link" href="#payments"><span class="roll" data-roll>Payments</span></a>
+        <a class="nav__link" href="#cards"><span class="roll" data-roll>Cards</span></a>
+        <a class="nav__link" href="#invest"><span class="roll" data-roll>Invest</span></a>
+        <a class="nav__link" href="#about"><span class="roll" data-roll>About</span></a>
+      </nav>
+      <div class="nav__actions">
+        <button class="sq-btn burger" type="button" aria-label="Menu" aria-expanded="false" aria-controls="menu" data-burger><span></span><span></span></button>
+        <a class="split split--dark" href="#download" data-magnetic>
+          <span class="split__label"><span class="roll" data-roll>Get the App</span></span>
+          <span class="split__icon"><svg aria-hidden="true"><use href="#i-chev-right" /></svg><svg aria-hidden="true"><use href="#i-chev-right" /></svg></span>
+        </a>
+      </div>
+    </div>
+    <span class="nav__progress" aria-hidden="true"></span>
+  </header>
+
+  <!-- The menu behind the burger: every section, and the app. -->
+  <div class="menu" id="menu" role="dialog" aria-modal="true" aria-label="Menu" hidden>
+    <div class="menu__scrim" data-menu-close></div>
+    <div class="menu__panel">
+      <ol class="menu__list">
+        <li><a href="#payments"><span class="menu__n">01</span><span class="menu__t">Payments</span></a></li>
+        <li><a href="#cards"><span class="menu__n">02</span><span class="menu__t">Cards</span></a></li>
+        <li><a href="#invest"><span class="menu__n">03</span><span class="menu__t">Invest</span></a></li>
+        <li><a href="#features"><span class="menu__n">04</span><span class="menu__t">Features</span></a></li>
+        <li><a href="#about"><span class="menu__n">05</span><span class="menu__t">About</span></a></li>
+        <li><a href="#faq"><span class="menu__n">06</span><span class="menu__t">FAQ</span></a></li>
+      </ol>
+      <div class="menu__foot">
+        <p>All your money, one simple app. Free to start, three minutes to sign up.</p>
+        <a class="btn btn--orange" href="#download"><span class="btn__label">Get the App</span><span class="btn__icon"><svg aria-hidden="true"><use href="#i-play" /></svg></span></a>
+      </div>
+    </div>
+  </div>
+
+  <main id="main">
+    <!-- ============================== HERO ============================== -->
+    <section class="hero" id="top" aria-labelledby="hero-title">
+      <div class="hero__bg" aria-hidden="true"></div>
+      <canvas class="hero__gl" aria-hidden="true"></canvas>
+      <div class="hero__frame" aria-hidden="true">
+        <span class="hero__rule"></span>
+        <i class="plus plus--l"></i><i class="plus plus--r"></i>
+        <span class="hero__rail hero__rail--l"></span><span class="hero__rail hero__rail--r"></span>
+      </div>
+
+      <div class="hero__stage">
+        <svg class="rings" viewBox="0 0 1440 1000" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+          <defs>
+            <linearGradient id="ring-a" gradientUnits="userSpaceOnUse" x1="0" y1="190" x2="0" y2="760" gradientTransform="rotate(90 720 692)">
+              <stop offset="0" stop-color="#ffd2c2" stop-opacity=".1" />
+              <stop offset=".45" stop-color="#ffc2ad" stop-opacity=".26" />
+              <stop offset="1" stop-color="#ffb59c" stop-opacity=".6" />
+            </linearGradient>
+            <linearGradient id="ring-b" gradientUnits="userSpaceOnUse" x1="0" y1="470" x2="0" y2="760" gradientTransform="rotate(90 720 1061)">
+              <stop offset="0" stop-color="#ffc6b3" stop-opacity=".3" />
+              <stop offset="1" stop-color="#ffab90" stop-opacity=".5" />
+            </linearGradient>
+            <radialGradient id="sat-glow"><stop offset="0" stop-color="#fff2ea" /><stop offset=".35" stop-color="#ff9d7c" stop-opacity=".7" /><stop offset="1" stop-color="#ff5a36" stop-opacity="0" /></radialGradient>
+          </defs>
+          <circle class="ring ring--a" cx="720" cy="692" r="501" stroke="url(#ring-a)" pathLength="1" transform="rotate(-90 720 692)" />
+          <circle class="ring ring--b" cx="720" cy="1061" r="585" stroke="url(#ring-b)" pathLength="1" transform="rotate(-90 720 1061)" />
+          <g class="sats"></g>
+        </svg>
+
+        <ul class="ticks" aria-hidden="true">
+          <li class="tick" style="--x:97;--y:282;--d:.6" data-tick="stock" data-price="18450" data-chg="8.4"><span class="tick__head"><span class="tick__icon">A</span><span class="tick__name">Apple</span><span class="tick__tag">AAPL</span></span><span class="tick__row"><span class="tick__price">$18,450</span><span class="tick__chg">+8.4%</span></span></li>
+          <li class="tick" style="--x:194;--y:430;--d:1" data-tick="flow" data-price="12850"><span class="tick__head"><span class="tick__icon">$</span><span class="tick__name">Income</span><span class="tick__tag">USD</span></span><span class="tick__row"><span class="tick__price">$12,850</span></span></li>
+          <li class="tick" style="--x:267;--y:591;--d:1.4" data-tick="stock" data-price="16820" data-chg="14.2"><span class="tick__head"><span class="tick__icon">N</span><span class="tick__name">NVIDIA</span><span class="tick__tag">NVDA</span></span><span class="tick__row"><span class="tick__price">$16,820</span><span class="tick__chg">+14.2%</span></span></li>
+          <li class="tick" style="--x:1227;--y:279;--d:.7" data-tick="stock" data-price="9850" data-dec="1" data-chg="-2.4"><span class="tick__head"><span class="tick__icon">T</span><span class="tick__name">Tesla</span><span class="tick__tag">TSLA</span></span><span class="tick__row"><span class="tick__price">$9,850.0</span><span class="tick__chg">-2.4%</span></span></li>
+          <li class="tick" style="--x:1122;--y:411;--d:1.1" data-tick="flow" data-price="5420"><span class="tick__head"><span class="tick__icon tick__icon--minus">&minus;</span><span class="tick__name">Expenses</span><span class="tick__tag">USD</span></span><span class="tick__row"><span class="tick__price">$5,420</span></span></li>
+          <li class="tick" style="--x:1012;--y:585;--d:1.5" data-tick="flow" data-price="7430"><span class="tick__head"><span class="tick__icon">$</span><span class="tick__name">Savings</span><span class="tick__tag">USD</span></span><span class="tick__row"><span class="tick__price">$7,430</span></span></li>
+        </ul>
+
+        <div class="hero__content">
+          <a class="pill" href="#payments">
+            <span class="pill__new"><i></i>New</span>
+            <span class="pill__text">Instant &amp; free transfers to anyone</span>
+            <svg class="pill__arrow" aria-hidden="true"><use href="#i-arrow" /></svg>
+          </a>
+          <h1 class="hero__title" id="hero-title"><span class="hero__line">All Your Money.</span> <span class="hero__line">One Simple App.</span></h1>
+          <p class="hero__sub">Track your balance, spending and savings at a glance.</p>
+          <div class="hero__ctas">
+            <a class="btn btn--orange" href="#download" data-magnetic>
+              <span class="btn__label"><span class="roll" data-roll>Get the App</span></span>
+              <span class="btn__icon"><svg aria-hidden="true"><use href="#i-play" /></svg></span>
+            </a>
+            <a class="btn btn--white" href="#features" data-magnetic><span class="btn__label"><span class="roll" data-roll>See Features</span></span></a>
+          </div>
+        </div>
+
+        <div class="phones" role="img" aria-label="The AsterPay app on two phones: an Apple share position worth $18,450, and a wallet with a total balance of $84,250.80.">
+          <!-- Left: asset details, in the dark with a green chart -->
+          <div class="phone phone--l" aria-hidden="true">
+            <div class="phone__screen scr-invest">
+              <div class="sb"><span class="sb__time">9:41</span><i class="sb__cam"></i><span class="sb__icons"><svg class="sb__sig"><use href="#i-signal" /></svg><svg class="sb__wifi"><use href="#i-wifi" /></svg><svg class="sb__bat"><use href="#i-battery" /></svg></span></div>
+              <span class="ph-btn ph-btn--add"><svg><use href="#i-plus" /></svg></span>
+              <div class="inv__bar"><span class="ph-btn"><svg><use href="#i-chev-left" /></svg></span><span>Asset Details</span></div>
+              <div class="inv__asset"><span class="ph-btn ph-btn--lg"><svg><use href="#i-apple" /></svg></span><span>Apple.Inc</span></div>
+              <div class="inv__price"><span data-odo="18450" data-odo-format="int">$18,450</span><span class="dim">.00</span></div>
+              <div class="inv__change"><span class="chip chip--green"><svg><use href="#i-up" /></svg><span data-live-pct>12.84%</span></span><span data-live-today>+$3.15 Today</span></div>
+              <div class="inv__chart">
+                <svg viewBox="0 0 360 250" preserveAspectRatio="none">
+                  <defs>
+                    <pattern id="dots" width="9" height="9" patternUnits="userSpaceOnUse"><circle cx="1.5" cy="1.5" r="1.05" fill="#3ff08b" /></pattern>
+                    <linearGradient id="inv-line" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#2be0c4" /><stop offset=".55" stop-color="#3ff08b" /><stop offset="1" stop-color="#7dff8f" /></linearGradient>
+                    <linearGradient id="inv-fade" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".9" /><stop offset="1" stop-color="#fff" stop-opacity=".15" /></linearGradient>
+                    <mask id="inv-mask"><rect width="360" height="250" fill="url(#inv-fade)" /></mask>
+                    <filter id="neon" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="3.2" /></filter>
+                  </defs>
+                  <path class="inv__area" d="M0.00,150.00C4.76,154.76 23.64,173.36 34.00,184.00C44.36,194.64 62.52,215.36 74.00,226.00C85.48,236.64 103.40,252.72 116.00,260.00C128.60,267.28 151.68,276.32 164.00,278.00C176.32,279.68 195.32,277.32 204.00,272.00C212.68,266.68 220.68,252.88 226.00,240.00C231.32,227.12 237.80,196.52 242.00,180.00C246.20,163.48 252.36,135.72 256.00,122.00C259.64,108.28 264.64,91.24 268.00,82.00C271.36,72.76 276.08,61.04 280.00,56.00C283.92,50.96 290.68,48.52 296.00,46.00C301.32,43.48 311.84,40.52 318.00,38.00C324.16,35.48 334.12,30.80 340.00,28.00C345.88,25.20 357.20,19.40 360.00,18.00L360,260L0,260Z" fill="url(#dots)" mask="url(#inv-mask)" />
+                  <path class="inv__glow" d="M0.00,150.00C4.76,154.76 23.64,173.36 34.00,184.00C44.36,194.64 62.52,215.36 74.00,226.00C85.48,236.64 103.40,252.72 116.00,260.00C128.60,267.28 151.68,276.32 164.00,278.00C176.32,279.68 195.32,277.32 204.00,272.00C212.68,266.68 220.68,252.88 226.00,240.00C231.32,227.12 237.80,196.52 242.00,180.00C246.20,163.48 252.36,135.72 256.00,122.00C259.64,108.28 264.64,91.24 268.00,82.00C271.36,72.76 276.08,61.04 280.00,56.00C283.92,50.96 290.68,48.52 296.00,46.00C301.32,43.48 311.84,40.52 318.00,38.00C324.16,35.48 334.12,30.80 340.00,28.00C345.88,25.20 357.20,19.40 360.00,18.00" fill="none" stroke="#3ff08b" stroke-width="5" filter="url(#neon)" opacity=".7" />
+                  <path class="inv__line" d="M0.00,150.00C4.76,154.76 23.64,173.36 34.00,184.00C44.36,194.64 62.52,215.36 74.00,226.00C85.48,236.64 103.40,252.72 116.00,260.00C128.60,267.28 151.68,276.32 164.00,278.00C176.32,279.68 195.32,277.32 204.00,272.00C212.68,266.68 220.68,252.88 226.00,240.00C231.32,227.12 237.80,196.52 242.00,180.00C246.20,163.48 252.36,135.72 256.00,122.00C259.64,108.28 264.64,91.24 268.00,82.00C271.36,72.76 276.08,61.04 280.00,56.00C283.92,50.96 290.68,48.52 296.00,46.00C301.32,43.48 311.84,40.52 318.00,38.00C324.16,35.48 334.12,30.80 340.00,28.00C345.88,25.20 357.20,19.40 360.00,18.00" fill="none" stroke="url(#inv-line)" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" />
+                  <line class="inv__drop" x1="275" x2="275" y1="68" y2="250" stroke="#3ff08b" stroke-width="2" />
+                  <circle class="inv__dot" cx="275" cy="59" r="9" fill="#020403" stroke="#4dff8f" stroke-width="3.4" />
+                </svg>
+              </div>
+              <div class="inv__ranges"><span>1D</span><span class="is-on">1W</span><span>1M</span><span>1Y</span><span>All</span></div>
+              <div class="inv__trade"><span>Sell</span><span>Buy</span></div>
+            </div>
+          </div>
+
+          <!-- Right: the wallet, in AsterPay orange -->
+          <div class="phone phone--r" aria-hidden="true">
+            <div class="phone__screen scr-wallet">
+              <div class="sb"><span class="sb__time">9:41</span><i class="sb__island"></i><span class="sb__icons"><svg class="sb__sig"><use href="#i-signal" /></svg><svg class="sb__wifi"><use href="#i-wifi" /></svg><svg class="sb__bat"><use href="#i-battery" /></svg></span></div>
+              <div class="wal__user">
+                <span class="avatar">
+                  <svg viewBox="0 0 48 48"><defs><linearGradient id="av-bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f2c7a5" /><stop offset="1" stop-color="#d98d62" /></linearGradient></defs><rect width="48" height="48" fill="url(#av-bg)" /><path d="M9 48c0-9 6.5-14 15-14s15 5 15 14Z" fill="#2c1a14" /><path d="M11 30c-2-9 2-21 13-21s15.5 11 13 21c-1.4 5.6-3 9-6 10.5l-14-.3C13.8 38.8 12.2 35.4 11 30Z" fill="#5a2c1c" /><ellipse cx="24" cy="24.5" rx="7.4" ry="9" fill="#f0c3a2" /><path d="M16 22c1-7 6.2-9.6 11-8.6 3.4.7 5.6 3.2 6 7.6-3.5-1.4-8.5-2.3-12.5-5.6-1 2.8-2.3 5-4.5 6.6Z" fill="#6b3522" /><path d="M21 29.5c1.8 1.3 4.2 1.3 6 0" fill="none" stroke="#b5604a" stroke-width="1.2" stroke-linecap="round" /><path d="M20.5 34.5h7l.6 3.8c-2.6 1.2-5.6 1.2-8.2 0Z" fill="#eab896" /></svg>
+                </span>
+                <span class="wal__name">Julia Alex</span>
+              </div>
+              <span class="ph-btn ph-btn--glass wal__bell"><svg><use href="#i-bell" /></svg></span>
+              <div class="wal__label">Total Balance <svg><use href="#i-eye" /></svg></div>
+              <span class="wal__cur"><svg class="flag"><use href="#flag-us" /></svg>USD<svg class="wal__cur-chev"><use href="#i-chev-down" /></svg></span>
+              <div class="wal__balance"><span data-odo="84250" data-odo-format="int">$84,250</span><span class="dim">.80</span></div>
+              <div class="wal__change"><span class="chip chip--white"><svg><use href="#i-up-right" /></svg>8.42%</span><span>+$6,540.20 this month</span></div>
+              <div class="wal__chart">
+                <svg viewBox="0 0 330 90" preserveAspectRatio="none"><defs><linearGradient id="wal-fill" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".22" /><stop offset="1" stop-color="#fff" stop-opacity="0" /></linearGradient></defs><path class="wal__area" d="M0.00,52.00C4.80,51.70 22.40,49.55 32.00,50.00C41.60,50.45 54.40,53.50 64.00,55.00C73.60,56.50 86.10,58.80 96.00,60.00C105.90,61.20 119.80,62.40 130.00,63.00C140.20,63.60 153.80,64.15 164.00,64.00C174.20,63.85 188.10,62.90 198.00,62.00C207.90,61.10 220.40,59.50 230.00,58.00C239.60,56.50 252.70,54.40 262.00,52.00C271.30,49.60 284.20,45.00 292.00,42.00C299.80,39.00 308.30,34.40 314.00,32.00C319.70,29.60 327.60,26.90 330.00,26.00L330,96L0,96Z" fill="url(#wal-fill)" /><path class="wal__line" d="M0.00,52.00C4.80,51.70 22.40,49.55 32.00,50.00C41.60,50.45 54.40,53.50 64.00,55.00C73.60,56.50 86.10,58.80 96.00,60.00C105.90,61.20 119.80,62.40 130.00,63.00C140.20,63.60 153.80,64.15 164.00,64.00C174.20,63.85 188.10,62.90 198.00,62.00C207.90,61.10 220.40,59.50 230.00,58.00C239.60,56.50 252.70,54.40 262.00,52.00C271.30,49.60 284.20,45.00 292.00,42.00C299.80,39.00 308.30,34.40 314.00,32.00C319.70,29.60 327.60,26.90 330.00,26.00" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" /><circle class="wal__dot" cx="330" cy="26" r="6.5" fill="#fff" /></svg>
+              </div>
+              <div class="wal__actions"><span><i><svg><use href="#i-arrow" /></svg></i>Send</span><span><i><svg><use href="#i-plus" /></svg></i>Top up</span><span><i><svg><use href="#i-split" /></svg></i>Split</span><span><i><svg><use href="#i-layers" /></svg></i>Cards</span></div>
+              <div class="wal__list">
+                <p><b>Recent</b><small>See all</small></p>
+                <div class="wal__tx"><i>S</i><span><b>Salary</b><small>Today, 09:00</small></span><em>+$4,200.00</em></div>
+                <div class="wal__tx"><i>M</i><span><b>Maya Chen</b><small>Yesterday</small></span><em>&minus;$240.00</em></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================== TAPE ============================== -->
+    <div class="tape" aria-label="Markets today">
+      <div class="tape__track" data-tape>
+        <ul class="tape__set">
+          <li><b>AAPL</b><span>$231.40</span><em class="up">+0.42%</em></li>
+          <li><b>NVDA</b><span>$142.18</span><em class="up">+2.31%</em></li>
+          <li><b>TSLA</b><span>$248.90</span><em class="down">&minus;1.12%</em></li>
+          <li><b>MSFT</b><span>$428.06</span><em class="up">+0.18%</em></li>
+          <li><b>BTC</b><span>$96,412</span><em class="up">+3.20%</em></li>
+          <li><b>ETH</b><span>$3,412</span><em class="up">+1.74%</em></li>
+          <li><b>EUR/USD</b><span>1.0842</span><em class="down">&minus;0.06%</em></li>
+          <li><b>GOLD</b><span>$2,684</span><em class="up">+0.33%</em></li>
+          <li><b>AMZN</b><span>$201.77</span><em class="up">+0.94%</em></li>
+          <li><b>S&amp;P 500</b><span>6,021</span><em class="up">+0.51%</em></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ============================== STATEMENT ============================== -->
+    <section class="section statement" aria-labelledby="statement-title">
+      <div class="wrap">
+        <p class="eyebrow">Why AsterPay</p>
+        <h2 class="statement__text" id="statement-title" data-scrub>AsterPay brings your accounts, cards, savings and investments into one calm place — so you always know exactly where you stand.</h2>
+        <dl class="stats">
+          <div><dt><span data-count-to="2.4" data-decimals="1">2.4</span>M+</dt><dd>people use AsterPay every month</dd></div>
+          <div><dt><span data-count-to="160">160</span>+</dt><dd>countries you can send money to</dd></div>
+          <div><dt>$<span data-count-to="0">0</span></dt><dd>monthly fee on the Standard plan</dd></div>
+          <div><dt><span data-count-to="4.9" data-decimals="1">4.9</span><svg class="stats__star" aria-hidden="true"><use href="#i-star" /></svg></dt><dd>average rating from 120k reviews</dd></div>
+        </dl>
+      </div>
+    </section>
+
+    <!-- ============================== PAYMENTS ============================== -->
+    <section class="section pay" id="payments" aria-labelledby="pay-title">
+      <div class="wrap pay__grid">
+        <div class="pay__copy">
+          <p class="eyebrow">Payments</p>
+          <h2 class="h2" id="pay-title" data-split>Send money anywhere. Instantly.</h2>
+          <p class="lede" data-fade>Pay friends, split the bill or send money home in 40+ currencies at the real exchange rate — free between AsterPay accounts, any time of day.</p>
+          <ul class="points">
+            <li data-fade><span class="points__icon"><svg aria-hidden="true"><use href="#i-bolt" /></svg></span><span><b>Under a second</b>Transfers between AsterPay accounts land instantly, 24/7, weekends included.</span></li>
+            <li data-fade><span class="points__icon"><svg aria-hidden="true"><use href="#i-globe" /></svg></span><span><b>160+ countries</b>Send to bank accounts and wallets worldwide at the mid-market rate.</span></li>
+            <li data-fade><span class="points__icon"><svg aria-hidden="true"><use href="#i-split" /></svg></span><span><b>Split &amp; request</b>Share a link, split a bill and see who has paid you back.</span></li>
+          </ul>
+        </div>
+        <div class="pay__stage">
+          <div class="globe" data-globe>
+            <canvas class="globe__canvas" aria-hidden="true"></canvas>
+            <p class="globe__hint" aria-hidden="true">Drag to spin</p>
+          </div>
+          <form class="send" data-send aria-labelledby="send-title">
+            <div class="send__head">
+              <span class="send__avatar" aria-hidden="true">MC</span>
+              <span><b id="send-title">Send to Maya Chen</b><small>Lisbon · EUR account</small></span>
+              <span class="send__live" aria-hidden="true"><i></i>Instant</span>
+            </div>
+            <div class="send__amount" aria-live="polite"><span class="send__cur">$</span><span data-send-amount>240.00</span></div>
+            <p class="send__fx">Maya gets <b data-send-eur>€221.54</b> · Fee <b>$0.00</b></p>
+            <fieldset class="send__presets">
+              <legend class="sr">Amount</legend>
+              <label><input type="radio" name="amount" value="40" /><span>$40</span></label>
+              <label><input type="radio" name="amount" value="120" /><span>$120</span></label>
+              <label><input type="radio" name="amount" value="240" checked /><span>$240</span></label>
+              <label><input type="radio" name="amount" value="1000" /><span>$1,000</span></label>
+            </fieldset>
+            <button class="slide" type="submit" data-slide>
+              <span class="slide__fill" aria-hidden="true"></span>
+              <span class="slide__label"><span class="slide__text">Slide to send</span><span class="slide__done" aria-hidden="true">Sent in <span data-send-time>0.42</span>s</span></span>
+              <span class="slide__knob" aria-hidden="true"><svg class="slide__arrow"><use href="#i-arrow" /></svg><svg class="slide__check"><use href="#i-check" /></svg></span>
+            </button>
+            <p class="sr" role="status" data-send-status></p>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================== CARDS ============================== -->
+    <section class="section cards" id="cards" aria-labelledby="cards-title">
+      <div class="wrap cards__grid">
+        <div class="cards__copy">
+          <p class="eyebrow">Cards</p>
+          <h2 class="h2" id="cards-title" data-split>A card as sharp as you are.</h2>
+          <p class="lede" data-fade>Metal or virtual, every AsterPay card comes with instant controls, real-time alerts and 1% back on everything you buy.</p>
+          <ul class="facts" data-fade>
+            <li><b>1%</b>cashback on every purchase</li>
+            <li><b>$0</b>foreign transaction fees</li>
+            <li><b>18g</b>of brushed stainless steel</li>
+          </ul>
+        </div>
+
+        <div class="cards__stage" data-card-stage>
+          <div class="card3d" data-card tabindex="0" role="button" aria-pressed="false" aria-label="AsterPay card. Press to turn it over.">
+            <div class="card3d__inner">
+              <div class="card3d__face card3d__front">
+                <span class="card3d__grain" aria-hidden="true"></span>
+                <span class="card3d__brand"><svg aria-hidden="true"><use href="#mark" /></svg>AsterPay</span>
+                <span class="card3d__tier" data-card-tier>Metal</span>
+                <span class="card3d__chip" aria-hidden="true"><i></i><i></i><i></i></span>
+                <svg class="card3d__nfc" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 7.5a6.5 6.5 0 0 1 0 9M11.5 5a10 10 0 0 1 0 14M15 2.5a13.5 13.5 0 0 1 0 19" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" /></svg>
+                <span class="card3d__num">&bull;&bull;&bull;&bull; 4821</span>
+                <span class="card3d__name">Julia Alex</span>
+                <span class="card3d__type">Debit</span>
+                <span class="card3d__flag" aria-hidden="true">Online payments paused</span>
+                <span class="card3d__frost" aria-hidden="true"><svg><use href="#i-snow" /></svg>Frozen</span>
+                <span class="card3d__sheen" aria-hidden="true"></span>
+              </div>
+              <div class="card3d__face card3d__back">
+                <span class="card3d__grain" aria-hidden="true"></span>
+                <span class="card3d__stripe" aria-hidden="true"></span>
+                <span class="card3d__sig" aria-hidden="true"><i>Julia Alex</i><b>&bull;&bull;&bull;</b></span>
+                <span class="card3d__fine">This card is issued by AsterPay, a fictional company. If found, please return it to the nearest imagination.</span>
+                <svg class="card3d__mark-back" aria-hidden="true"><use href="#mark" /></svg>
+                <span class="card3d__sheen" aria-hidden="true"></span>
+              </div>
+            </div>
+          </div>
+          <span class="cards__floor" aria-hidden="true"></span>
+          <p class="cards__hint" aria-hidden="true">Tilt it. Tap to flip.</p>
+        </div>
+
+        <div class="controls" data-controls>
+          <p class="controls__title">Card controls <span class="controls__live"><i></i>Live</span></p>
+          <div class="controls__row">
+            <span id="finish-label">Finish</span>
+            <div class="swatches" role="radiogroup" aria-labelledby="finish-label">
+              <button type="button" role="radio" aria-checked="true" data-finish="ember" style="--sw:linear-gradient(135deg,#ff8a55,#e2401f)"><span class="sr">Ember</span></button>
+              <button type="button" role="radio" aria-checked="false" data-finish="onyx" tabindex="-1" style="--sw:linear-gradient(135deg,#3a393f,#0e0d10)"><span class="sr">Onyx</span></button>
+              <button type="button" role="radio" aria-checked="false" data-finish="steel" tabindex="-1" style="--sw:linear-gradient(135deg,#f1f1f3,#9b9ca3)"><span class="sr">Steel</span></button>
+            </div>
+          </div>
+          <label class="controls__row">
+            <span><svg class="controls__icon" aria-hidden="true"><use href="#i-snow" /></svg>Freeze card</span>
+            <span class="switch"><input type="checkbox" role="switch" data-freeze /><i></i></span>
+          </label>
+          <label class="controls__row">
+            <span><svg class="controls__icon" aria-hidden="true"><use href="#i-globe" /></svg>Online payments</span>
+            <span class="switch"><input type="checkbox" role="switch" checked data-online /><i></i></span>
+          </label>
+          <div class="controls__row controls__row--limit">
+            <label for="limit"><svg class="controls__icon" aria-hidden="true"><use href="#i-shield" /></svg>Monthly limit</label>
+            <output for="limit" data-limit-out>$2,500</output>
+            <input class="range" id="limit" type="range" min="500" max="10000" step="250" value="2500" data-limit />
+            <span class="controls__spent"><span data-spent-bar></span></span>
+            <small class="controls__note"><span data-spent-text>$1,840 spent this month</span> · resets in 4 days</small>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================== INVEST ============================== -->
+    <section class="section invest" id="invest" aria-labelledby="invest-title">
+      <div class="wrap invest__grid">
+        <div class="invest__copy">
+          <p class="eyebrow eyebrow--green">Invest</p>
+          <h2 class="h2" id="invest-title" data-split>Invest in what you believe in. From $1.</h2>
+          <p class="lede" data-fade>Buy fractional shares of the companies you love, put a little away every week, and watch it all move in real time.</p>
+          <ul class="points points--green">
+            <li data-fade><span class="points__icon"><svg aria-hidden="true"><use href="#i-layers" /></svg></span><span><b>Fractional shares</b>Own a slice of any stock or ETF from $1.</span></li>
+            <li data-fade><span class="points__icon"><svg aria-hidden="true"><use href="#i-repeat" /></svg></span><span><b>Auto-invest</b>Weekly or monthly, on autopilot, cancel any time.</span></li>
+            <li data-fade><span class="points__icon"><svg aria-hidden="true"><use href="#i-percent" /></svg></span><span><b>Zero commission</b>On stocks and ETFs. Always.</span></li>
+          </ul>
+          <p class="fine" data-fade>Investing involves risk. The value of investments can go down as well as up.</p>
+        </div>
+
+        <div class="chart" data-chart>
+          <div class="chart__top">
+            <div class="chart__assets" role="tablist" aria-label="Asset">
+              <button role="tab" aria-selected="false" tabindex="-1" data-asset="AAPL">AAPL</button>
+              <button role="tab" aria-selected="true" data-asset="NVDA">NVDA</button>
+              <button role="tab" aria-selected="false" tabindex="-1" data-asset="TSLA">TSLA</button>
+              <button role="tab" aria-selected="false" tabindex="-1" data-asset="BTC">BTC</button>
+            </div>
+            <div class="chart__ranges" role="tablist" aria-label="Range">
+              <button role="tab" aria-selected="false" tabindex="-1" data-range="1D">1D</button>
+              <button role="tab" aria-selected="false" tabindex="-1" data-range="1W">1W</button>
+              <button role="tab" aria-selected="true" data-range="1M">1M</button>
+              <button role="tab" aria-selected="false" tabindex="-1" data-range="1Y">1Y</button>
+              <button role="tab" aria-selected="false" tabindex="-1" data-range="ALL">All</button>
+            </div>
+          </div>
+          <div class="chart__head">
+            <span class="chart__logo" data-chart-logo aria-hidden="true">N</span>
+            <span class="chart__name"><b data-chart-name>NVIDIA</b><small data-chart-sym>NVDA · Nasdaq</small></span>
+          </div>
+          <p class="chart__price" aria-live="polite"><span data-chart-price>$142.18</span> <span class="chip chip--green" data-chart-chg><svg aria-hidden="true"><use href="#i-up" /></svg><span>2.31%</span></span> <small data-chart-abs>+$3.21 this month</small></p>
+          <div class="chart__plot" data-chart-plot>
+            <svg class="chart__svg" viewBox="0 0 800 320" preserveAspectRatio="none" aria-hidden="true">
+              <defs>
+                <pattern id="dots-l" width="12" height="12" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.2" fill="#3ff08b" /></pattern>
+                <linearGradient id="chart-fade" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".75" /><stop offset="1" stop-color="#fff" stop-opacity="0" /></linearGradient>
+                <mask id="chart-mask"><rect width="800" height="320" fill="url(#chart-fade)" /></mask>
+                <linearGradient id="chart-line" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#2be0c4" /><stop offset=".6" stop-color="#3ff08b" /><stop offset="1" stop-color="#8bff9c" /></linearGradient>
+              </defs>
+              <g class="chart__grid"></g>
+              <path class="chart__area" d="M0.00,205.69C0.67,206.16 5.38,209.67 6.72,210.35C8.07,211.04 12.10,212.10 13.45,212.54C14.79,212.98 18.82,214.04 20.17,214.75C21.51,215.46 25.55,218.53 26.89,219.60C28.24,220.68 32.27,225.26 33.61,225.46C34.96,225.67 38.99,222.65 40.34,221.68C41.68,220.71 45.71,216.28 47.06,215.75C48.40,215.22 52.44,216.59 53.78,216.40C55.13,216.21 59.16,213.67 60.50,213.88C61.85,214.09 65.88,216.95 67.23,218.51C68.57,220.06 72.61,226.73 73.95,229.43C75.29,232.13 79.33,242.00 80.67,245.50C82.02,249.01 86.05,261.70 87.39,264.50C88.74,267.31 92.77,272.68 94.12,273.57C95.46,274.46 99.50,274.23 100.84,273.38C102.18,272.53 106.22,267.04 107.56,265.09C108.91,263.13 112.94,255.79 114.29,253.81C115.63,251.84 119.66,246.58 121.01,245.34C122.35,244.11 126.39,241.52 127.73,241.44C129.08,241.36 133.11,245.03 134.45,244.56C135.80,244.09 139.83,238.70 141.18,236.74C142.52,234.78 146.55,227.08 147.90,224.98C149.24,222.87 153.28,216.29 154.62,215.68C155.97,215.07 160.00,217.15 161.34,218.85C162.69,220.56 166.72,229.83 168.07,232.76C169.41,235.69 173.45,245.91 174.79,248.15C176.13,250.40 180.17,256.33 181.51,255.21C182.86,254.10 186.89,238.17 188.24,236.99C189.58,235.81 193.61,242.29 194.96,243.42C196.30,244.55 200.34,247.86 201.68,248.29C203.03,248.73 207.06,248.71 208.40,247.74C209.75,246.77 213.78,240.14 215.13,238.59C216.47,237.04 220.50,232.72 221.85,232.26C223.19,231.80 227.23,233.21 228.57,233.97C229.92,234.73 233.95,239.20 235.29,239.86C236.64,240.52 240.67,239.16 242.02,240.55C243.36,241.93 247.39,250.85 248.74,253.68C250.08,256.50 254.12,266.04 255.46,268.80C256.81,271.57 260.84,279.88 262.18,281.34C263.53,282.80 267.56,284.04 268.91,283.40C270.25,282.76 274.29,276.10 275.63,274.92C276.97,273.73 281.01,271.89 282.35,271.51C283.70,271.12 287.73,271.99 289.08,271.07C290.42,270.16 294.45,264.40 295.80,262.34C297.14,260.28 301.18,252.61 302.52,250.45C303.87,248.29 307.90,242.27 309.24,240.77C310.59,239.27 314.62,235.71 315.97,235.50C317.31,235.29 321.34,238.70 322.69,238.66C324.03,238.61 328.07,235.66 329.41,235.05C330.76,234.43 334.79,232.61 336.13,232.51C337.48,232.40 341.51,232.79 342.86,233.99C344.20,235.19 348.24,244.46 349.58,244.51C350.92,244.57 354.96,236.90 356.30,234.56C357.65,232.23 361.68,223.60 363.03,221.17C364.37,218.73 368.40,211.31 369.75,210.20C371.09,209.08 375.13,210.84 376.47,210.04C377.82,209.24 381.85,204.38 383.19,202.19C384.54,200.01 388.57,191.38 389.92,188.18C391.26,184.98 395.29,173.47 396.64,170.20C397.98,166.93 402.02,158.06 403.36,155.50C404.71,152.94 408.74,146.51 410.08,144.58C411.43,142.64 415.46,137.57 416.81,136.13C418.15,134.68 422.18,130.94 423.53,130.09C424.87,129.24 428.91,128.07 430.25,127.62C431.60,127.17 435.63,126.01 436.97,125.61C438.32,125.21 442.35,124.11 443.70,123.59C445.04,123.07 449.08,121.65 450.42,120.42C451.76,119.18 455.80,111.74 457.14,111.23C458.49,110.72 462.52,113.94 463.87,115.34C465.21,116.75 469.24,123.18 470.59,125.28C471.93,127.38 475.97,135.34 477.31,136.36C478.66,137.39 482.69,136.61 484.03,135.52C485.38,134.43 489.41,127.10 490.76,125.49C492.10,123.89 496.13,120.08 497.48,119.46C498.82,118.83 502.86,120.40 504.20,119.22C505.55,118.04 509.58,109.15 510.92,107.63C512.27,106.10 516.30,104.03 517.65,103.97C518.99,103.90 523.03,105.99 524.37,106.99C525.71,107.99 529.75,113.84 531.09,113.99C532.44,114.15 536.47,110.53 537.82,108.58C539.16,106.63 543.19,97.84 544.54,94.48C545.88,91.13 549.92,79.23 551.26,75.07C552.61,70.91 556.64,56.59 557.98,52.88C559.33,49.17 563.36,39.42 564.71,37.99C566.05,36.56 570.08,38.39 571.43,38.56C572.77,38.73 576.81,40.10 578.15,39.69C579.50,39.27 583.53,36.21 584.87,34.44C586.22,32.66 590.25,22.90 591.60,21.96C592.94,21.02 596.97,23.63 598.32,25.05C599.66,26.46 603.70,33.47 605.04,36.16C606.39,38.84 610.42,48.12 611.76,51.93C613.11,55.74 617.14,70.02 618.49,74.27C619.83,78.52 623.87,91.06 625.21,94.40C626.55,97.75 630.59,105.88 631.93,107.72C633.28,109.56 637.31,110.83 638.66,112.83C640.00,114.82 644.03,125.70 645.38,127.66C646.72,129.62 650.76,131.93 652.10,132.40C653.45,132.87 657.48,132.50 658.82,132.35C660.17,132.21 664.20,130.70 665.55,130.99C666.89,131.27 670.92,134.82 672.27,135.21C673.61,135.59 677.65,135.04 678.99,134.81C680.34,134.58 684.37,133.31 685.71,132.93C687.06,132.54 691.09,132.61 692.44,130.97C693.78,129.33 697.82,119.07 699.16,116.50C700.50,113.93 704.54,107.71 705.88,105.27C707.23,102.84 711.26,95.29 712.61,92.14C713.95,89.00 717.98,76.58 719.33,73.83C720.67,71.08 724.71,66.12 726.05,64.64C727.39,63.17 731.43,59.77 732.77,59.06C734.12,58.36 738.15,57.40 739.50,57.58C740.84,57.76 744.87,58.94 746.22,60.90C747.56,62.85 751.60,73.67 752.94,77.15C754.29,80.62 758.32,92.42 759.66,95.66C761.01,98.89 765.04,107.76 766.39,109.47C767.73,111.17 771.76,110.85 773.11,112.69C774.45,114.53 778.49,125.31 779.83,127.89C781.18,130.48 785.21,136.45 786.55,138.55C787.90,140.66 791.93,146.50 793.28,148.97C794.62,151.44 799.33,161.81 800.00,163.24L800,322L0,322Z" fill="url(#dots-l)" mask="url(#chart-mask)" />
+              <path class="chart__glow" d="M0.00,205.69C0.67,206.16 5.38,209.67 6.72,210.35C8.07,211.04 12.10,212.10 13.45,212.54C14.79,212.98 18.82,214.04 20.17,214.75C21.51,215.46 25.55,218.53 26.89,219.60C28.24,220.68 32.27,225.26 33.61,225.46C34.96,225.67 38.99,222.65 40.34,221.68C41.68,220.71 45.71,216.28 47.06,215.75C48.40,215.22 52.44,216.59 53.78,216.40C55.13,216.21 59.16,213.67 60.50,213.88C61.85,214.09 65.88,216.95 67.23,218.51C68.57,220.06 72.61,226.73 73.95,229.43C75.29,232.13 79.33,242.00 80.67,245.50C82.02,249.01 86.05,261.70 87.39,264.50C88.74,267.31 92.77,272.68 94.12,273.57C95.46,274.46 99.50,274.23 100.84,273.38C102.18,272.53 106.22,267.04 107.56,265.09C108.91,263.13 112.94,255.79 114.29,253.81C115.63,251.84 119.66,246.58 121.01,245.34C122.35,244.11 126.39,241.52 127.73,241.44C129.08,241.36 133.11,245.03 134.45,244.56C135.80,244.09 139.83,238.70 141.18,236.74C142.52,234.78 146.55,227.08 147.90,224.98C149.24,222.87 153.28,216.29 154.62,215.68C155.97,215.07 160.00,217.15 161.34,218.85C162.69,220.56 166.72,229.83 168.07,232.76C169.41,235.69 173.45,245.91 174.79,248.15C176.13,250.40 180.17,256.33 181.51,255.21C182.86,254.10 186.89,238.17 188.24,236.99C189.58,235.81 193.61,242.29 194.96,243.42C196.30,244.55 200.34,247.86 201.68,248.29C203.03,248.73 207.06,248.71 208.40,247.74C209.75,246.77 213.78,240.14 215.13,238.59C216.47,237.04 220.50,232.72 221.85,232.26C223.19,231.80 227.23,233.21 228.57,233.97C229.92,234.73 233.95,239.20 235.29,239.86C236.64,240.52 240.67,239.16 242.02,240.55C243.36,241.93 247.39,250.85 248.74,253.68C250.08,256.50 254.12,266.04 255.46,268.80C256.81,271.57 260.84,279.88 262.18,281.34C263.53,282.80 267.56,284.04 268.91,283.40C270.25,282.76 274.29,276.10 275.63,274.92C276.97,273.73 281.01,271.89 282.35,271.51C283.70,271.12 287.73,271.99 289.08,271.07C290.42,270.16 294.45,264.40 295.80,262.34C297.14,260.28 301.18,252.61 302.52,250.45C303.87,248.29 307.90,242.27 309.24,240.77C310.59,239.27 314.62,235.71 315.97,235.50C317.31,235.29 321.34,238.70 322.69,238.66C324.03,238.61 328.07,235.66 329.41,235.05C330.76,234.43 334.79,232.61 336.13,232.51C337.48,232.40 341.51,232.79 342.86,233.99C344.20,235.19 348.24,244.46 349.58,244.51C350.92,244.57 354.96,236.90 356.30,234.56C357.65,232.23 361.68,223.60 363.03,221.17C364.37,218.73 368.40,211.31 369.75,210.20C371.09,209.08 375.13,210.84 376.47,210.04C377.82,209.24 381.85,204.38 383.19,202.19C384.54,200.01 388.57,191.38 389.92,188.18C391.26,184.98 395.29,173.47 396.64,170.20C397.98,166.93 402.02,158.06 403.36,155.50C404.71,152.94 408.74,146.51 410.08,144.58C411.43,142.64 415.46,137.57 416.81,136.13C418.15,134.68 422.18,130.94 423.53,130.09C424.87,129.24 428.91,128.07 430.25,127.62C431.60,127.17 435.63,126.01 436.97,125.61C438.32,125.21 442.35,124.11 443.70,123.59C445.04,123.07 449.08,121.65 450.42,120.42C451.76,119.18 455.80,111.74 457.14,111.23C458.49,110.72 462.52,113.94 463.87,115.34C465.21,116.75 469.24,123.18 470.59,125.28C471.93,127.38 475.97,135.34 477.31,136.36C478.66,137.39 482.69,136.61 484.03,135.52C485.38,134.43 489.41,127.10 490.76,125.49C492.10,123.89 496.13,120.08 497.48,119.46C498.82,118.83 502.86,120.40 504.20,119.22C505.55,118.04 509.58,109.15 510.92,107.63C512.27,106.10 516.30,104.03 517.65,103.97C518.99,103.90 523.03,105.99 524.37,106.99C525.71,107.99 529.75,113.84 531.09,113.99C532.44,114.15 536.47,110.53 537.82,108.58C539.16,106.63 543.19,97.84 544.54,94.48C545.88,91.13 549.92,79.23 551.26,75.07C552.61,70.91 556.64,56.59 557.98,52.88C559.33,49.17 563.36,39.42 564.71,37.99C566.05,36.56 570.08,38.39 571.43,38.56C572.77,38.73 576.81,40.10 578.15,39.69C579.50,39.27 583.53,36.21 584.87,34.44C586.22,32.66 590.25,22.90 591.60,21.96C592.94,21.02 596.97,23.63 598.32,25.05C599.66,26.46 603.70,33.47 605.04,36.16C606.39,38.84 610.42,48.12 611.76,51.93C613.11,55.74 617.14,70.02 618.49,74.27C619.83,78.52 623.87,91.06 625.21,94.40C626.55,97.75 630.59,105.88 631.93,107.72C633.28,109.56 637.31,110.83 638.66,112.83C640.00,114.82 644.03,125.70 645.38,127.66C646.72,129.62 650.76,131.93 652.10,132.40C653.45,132.87 657.48,132.50 658.82,132.35C660.17,132.21 664.20,130.70 665.55,130.99C666.89,131.27 670.92,134.82 672.27,135.21C673.61,135.59 677.65,135.04 678.99,134.81C680.34,134.58 684.37,133.31 685.71,132.93C687.06,132.54 691.09,132.61 692.44,130.97C693.78,129.33 697.82,119.07 699.16,116.50C700.50,113.93 704.54,107.71 705.88,105.27C707.23,102.84 711.26,95.29 712.61,92.14C713.95,89.00 717.98,76.58 719.33,73.83C720.67,71.08 724.71,66.12 726.05,64.64C727.39,63.17 731.43,59.77 732.77,59.06C734.12,58.36 738.15,57.40 739.50,57.58C740.84,57.76 744.87,58.94 746.22,60.90C747.56,62.85 751.60,73.67 752.94,77.15C754.29,80.62 758.32,92.42 759.66,95.66C761.01,98.89 765.04,107.76 766.39,109.47C767.73,111.17 771.76,110.85 773.11,112.69C774.45,114.53 778.49,125.31 779.83,127.89C781.18,130.48 785.21,136.45 786.55,138.55C787.90,140.66 791.93,146.50 793.28,148.97C794.62,151.44 799.33,161.81 800.00,163.24" fill="none" stroke="#3ff08b" stroke-width="6" filter="url(#neon)" opacity=".55" vector-effect="non-scaling-stroke" />
+              <path class="chart__line" d="M0.00,205.69C0.67,206.16 5.38,209.67 6.72,210.35C8.07,211.04 12.10,212.10 13.45,212.54C14.79,212.98 18.82,214.04 20.17,214.75C21.51,215.46 25.55,218.53 26.89,219.60C28.24,220.68 32.27,225.26 33.61,225.46C34.96,225.67 38.99,222.65 40.34,221.68C41.68,220.71 45.71,216.28 47.06,215.75C48.40,215.22 52.44,216.59 53.78,216.40C55.13,216.21 59.16,213.67 60.50,213.88C61.85,214.09 65.88,216.95 67.23,218.51C68.57,220.06 72.61,226.73 73.95,229.43C75.29,232.13 79.33,242.00 80.67,245.50C82.02,249.01 86.05,261.70 87.39,264.50C88.74,267.31 92.77,272.68 94.12,273.57C95.46,274.46 99.50,274.23 100.84,273.38C102.18,272.53 106.22,267.04 107.56,265.09C108.91,263.13 112.94,255.79 114.29,253.81C115.63,251.84 119.66,246.58 121.01,245.34C122.35,244.11 126.39,241.52 127.73,241.44C129.08,241.36 133.11,245.03 134.45,244.56C135.80,244.09 139.83,238.70 141.18,236.74C142.52,234.78 146.55,227.08 147.90,224.98C149.24,222.87 153.28,216.29 154.62,215.68C155.97,215.07 160.00,217.15 161.34,218.85C162.69,220.56 166.72,229.83 168.07,232.76C169.41,235.69 173.45,245.91 174.79,248.15C176.13,250.40 180.17,256.33 181.51,255.21C182.86,254.10 186.89,238.17 188.24,236.99C189.58,235.81 193.61,242.29 194.96,243.42C196.30,244.55 200.34,247.86 201.68,248.29C203.03,248.73 207.06,248.71 208.40,247.74C209.75,246.77 213.78,240.14 215.13,238.59C216.47,237.04 220.50,232.72 221.85,232.26C223.19,231.80 227.23,233.21 228.57,233.97C229.92,234.73 233.95,239.20 235.29,239.86C236.64,240.52 240.67,239.16 242.02,240.55C243.36,241.93 247.39,250.85 248.74,253.68C250.08,256.50 254.12,266.04 255.46,268.80C256.81,271.57 260.84,279.88 262.18,281.34C263.53,282.80 267.56,284.04 268.91,283.40C270.25,282.76 274.29,276.10 275.63,274.92C276.97,273.73 281.01,271.89 282.35,271.51C283.70,271.12 287.73,271.99 289.08,271.07C290.42,270.16 294.45,264.40 295.80,262.34C297.14,260.28 301.18,252.61 302.52,250.45C303.87,248.29 307.90,242.27 309.24,240.77C310.59,239.27 314.62,235.71 315.97,235.50C317.31,235.29 321.34,238.70 322.69,238.66C324.03,238.61 328.07,235.66 329.41,235.05C330.76,234.43 334.79,232.61 336.13,232.51C337.48,232.40 341.51,232.79 342.86,233.99C344.20,235.19 348.24,244.46 349.58,244.51C350.92,244.57 354.96,236.90 356.30,234.56C357.65,232.23 361.68,223.60 363.03,221.17C364.37,218.73 368.40,211.31 369.75,210.20C371.09,209.08 375.13,210.84 376.47,210.04C377.82,209.24 381.85,204.38 383.19,202.19C384.54,200.01 388.57,191.38 389.92,188.18C391.26,184.98 395.29,173.47 396.64,170.20C397.98,166.93 402.02,158.06 403.36,155.50C404.71,152.94 408.74,146.51 410.08,144.58C411.43,142.64 415.46,137.57 416.81,136.13C418.15,134.68 422.18,130.94 423.53,130.09C424.87,129.24 428.91,128.07 430.25,127.62C431.60,127.17 435.63,126.01 436.97,125.61C438.32,125.21 442.35,124.11 443.70,123.59C445.04,123.07 449.08,121.65 450.42,120.42C451.76,119.18 455.80,111.74 457.14,111.23C458.49,110.72 462.52,113.94 463.87,115.34C465.21,116.75 469.24,123.18 470.59,125.28C471.93,127.38 475.97,135.34 477.31,136.36C478.66,137.39 482.69,136.61 484.03,135.52C485.38,134.43 489.41,127.10 490.76,125.49C492.10,123.89 496.13,120.08 497.48,119.46C498.82,118.83 502.86,120.40 504.20,119.22C505.55,118.04 509.58,109.15 510.92,107.63C512.27,106.10 516.30,104.03 517.65,103.97C518.99,103.90 523.03,105.99 524.37,106.99C525.71,107.99 529.75,113.84 531.09,113.99C532.44,114.15 536.47,110.53 537.82,108.58C539.16,106.63 543.19,97.84 544.54,94.48C545.88,91.13 549.92,79.23 551.26,75.07C552.61,70.91 556.64,56.59 557.98,52.88C559.33,49.17 563.36,39.42 564.71,37.99C566.05,36.56 570.08,38.39 571.43,38.56C572.77,38.73 576.81,40.10 578.15,39.69C579.50,39.27 583.53,36.21 584.87,34.44C586.22,32.66 590.25,22.90 591.60,21.96C592.94,21.02 596.97,23.63 598.32,25.05C599.66,26.46 603.70,33.47 605.04,36.16C606.39,38.84 610.42,48.12 611.76,51.93C613.11,55.74 617.14,70.02 618.49,74.27C619.83,78.52 623.87,91.06 625.21,94.40C626.55,97.75 630.59,105.88 631.93,107.72C633.28,109.56 637.31,110.83 638.66,112.83C640.00,114.82 644.03,125.70 645.38,127.66C646.72,129.62 650.76,131.93 652.10,132.40C653.45,132.87 657.48,132.50 658.82,132.35C660.17,132.21 664.20,130.70 665.55,130.99C666.89,131.27 670.92,134.82 672.27,135.21C673.61,135.59 677.65,135.04 678.99,134.81C680.34,134.58 684.37,133.31 685.71,132.93C687.06,132.54 691.09,132.61 692.44,130.97C693.78,129.33 697.82,119.07 699.16,116.50C700.50,113.93 704.54,107.71 705.88,105.27C707.23,102.84 711.26,95.29 712.61,92.14C713.95,89.00 717.98,76.58 719.33,73.83C720.67,71.08 724.71,66.12 726.05,64.64C727.39,63.17 731.43,59.77 732.77,59.06C734.12,58.36 738.15,57.40 739.50,57.58C740.84,57.76 744.87,58.94 746.22,60.90C747.56,62.85 751.60,73.67 752.94,77.15C754.29,80.62 758.32,92.42 759.66,95.66C761.01,98.89 765.04,107.76 766.39,109.47C767.73,111.17 771.76,110.85 773.11,112.69C774.45,114.53 778.49,125.31 779.83,127.89C781.18,130.48 785.21,136.45 786.55,138.55C787.90,140.66 791.93,146.50 793.28,148.97C794.62,151.44 799.33,161.81 800.00,163.24" fill="none" stroke="url(#chart-line)" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke" />
+            </svg>
+            <span class="chart__cross" aria-hidden="true"><i></i></span>
+            <span class="chart__marker" aria-hidden="true" style="left:100%;top:51.0112%"></span>
+            <span class="chart__tip" aria-hidden="true"><b></b><small></small></span>
+          </div>
+          <div class="chart__foot">
+            <span>Your position <b data-chart-pos>$1,204.60</b></span>
+            <a class="btn btn--green btn--sm" href="#download"><span class="btn__label">Buy <span data-chart-buy>NVDA</span></span></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================== FEATURES ============================== -->
+    <section class="section features" id="features" aria-labelledby="features-title">
+      <div class="wrap">
+        <div class="head">
+          <div>
+            <p class="eyebrow">Features</p>
+            <h2 class="h2" id="features-title" data-split>Everything in one app.</h2>
+          </div>
+          <p class="lede" data-fade>Budgets, savings goals, insights and 40 currencies — the tools you would otherwise juggle five apps for.</p>
+        </div>
+        <div class="bento" data-bento>
+          <article class="tile tile--budget" data-tile>
+            <div class="tile__viz donut" data-donut>
+              <svg viewBox="0 0 120 120" aria-hidden="true">
+                <circle cx="60" cy="60" r="48" class="donut__track" />
+                <circle cx="60" cy="60" r="48" class="donut__seg" style="--c:#ff5a36" data-v=".34" />
+                <circle cx="60" cy="60" r="48" class="donut__seg" style="--c:#ff9b6e" data-v=".22" />
+                <circle cx="60" cy="60" r="48" class="donut__seg" style="--c:#ffd0b8" data-v=".16" />
+                <circle cx="60" cy="60" r="48" class="donut__seg" style="--c:#6c6670" data-v=".09" />
+              </svg>
+              <span class="donut__center"><b>$1,840</b><small>of $2,600</small></span>
+            </div>
+            <ul class="legend" aria-hidden="true"><li style="--c:#ff5a36">Food</li><li style="--c:#ff9b6e">Bills</li><li style="--c:#ffd0b8">Travel</li><li style="--c:#6c6670">Other</li></ul>
+            <h3>Smart budgets</h3>
+            <p>Set a limit for each category and get a nudge before you overspend, not after.</p>
+          </article>
+
+          <article class="tile tile--goal" data-tile>
+            <div class="tile__viz goal" aria-hidden="true">
+              <div class="goal__top"><span class="goal__icon"><svg><use href="#i-plane" /></svg></span><span><b>Lisbon trip</b><small>Goal · Jun 2027</small></span><b class="goal__pct"><span data-goal-pct>72</span>%</b></div>
+              <span class="goal__bar"><i data-goal-bar></i></span>
+              <div class="goal__row"><span>$<span data-goal-amt>2,160</span> saved</span><span>$3,000</span></div>
+              <span class="goal__round"><svg><use href="#i-plus" /></svg>Round-up <b data-roundup>+$0.62</b></span>
+            </div>
+            <h3>Savings goals</h3>
+            <p>Round up every purchase and watch your goals fill themselves.</p>
+          </article>
+
+          <article class="tile tile--bars" data-tile>
+            <div class="tile__viz bars" aria-hidden="true">
+              <p class="bars__total"><b>$412.60</b><small>this week</small></p>
+              <div class="bars__cols">
+                <span style="--h:.42"><i></i>M</span><span style="--h:.66"><i></i>T</span><span style="--h:.35"><i></i>W</span><span style="--h:.82"><i></i>T</span><span class="is-today" style="--h:.58"><i></i>F</span><span style="--h:.24"><i></i>S</span><span style="--h:.3"><i></i>S</span>
+              </div>
+            </div>
+            <h3>Spending insights</h3>
+            <p>See where every dollar went, day by day and week by week.</p>
+          </article>
+
+          <article class="tile tile--fx" data-tile>
+            <div class="tile__viz fx" aria-hidden="true">
+              <div class="fx__row"><svg class="fx__flag"><use href="#flag-us" /></svg><span>USD</span><b>1,000.00</b></div>
+              <span class="fx__swap"><svg><use href="#i-repeat" /></svg><span>1 USD = <b data-fx-rate>0.9231</b> EUR</span></span>
+              <div class="fx__row"><svg class="fx__flag"><use href="#flag-eu" /></svg><span>EUR</span><b data-fx-out>923.10</b></div>
+            </div>
+            <h3>40+ currencies</h3>
+            <p>Hold, convert and spend at the real exchange rate, with no markup.</p>
+          </article>
+
+          <article class="tile tile--secure" data-tile>
+            <div class="tile__viz secure" aria-hidden="true">
+              <svg class="secure__face" viewBox="0 0 100 100"><path d="M8 30V18a10 10 0 0 1 10-10h12M70 8h12a10 10 0 0 1 10 10v12M92 70v12a10 10 0 0 1-10 10H70M30 92H18A10 10 0 0 1 8 82V70" /><path d="M36 38v6M64 38v6M50 40v14h-4M38 66c7 6 17 6 24 0" /></svg>
+              <span class="secure__scan"></span>
+              <span class="secure__ok"><svg><use href="#i-check" /></svg>Face ID verified</span>
+            </div>
+            <h3>Bank-grade security</h3>
+            <p>Biometric sign-in, instant card freeze and fraud monitoring that never sleeps.</p>
+          </article>
+
+          <article class="tile tile--alerts" data-tile>
+            <div class="tile__viz alerts" aria-hidden="true" data-alerts>
+              <div class="alert"><i class="alert__icon"><svg><use href="#i-down" /></svg></i><span><b>You received $120.00</b><small>From Sam Okafor · now</small></span></div>
+              <div class="alert"><i class="alert__icon alert__icon--dim"><svg><use href="#i-music" /></svg></i><span><b>Music subscription</b><small>$9.99 · Subscriptions</small></span></div>
+              <div class="alert"><i class="alert__icon"><svg><use href="#i-dollar" /></svg></i><span><b>Salary landed</b><small>+$4,200.00 · Payroll</small></span></div>
+              <div class="alert"><i class="alert__icon alert__icon--dim"><svg><use href="#i-cup" /></svg></i><span><b>Coffee at Ora</b><small>$4.60 · Food &amp; drink</small></span></div>
+            </div>
+            <h3>Real-time alerts</h3>
+            <p>Know the moment money moves, in or out — with the merchant, not a code.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================== ABOUT ============================== -->
+    <section class="section about" id="about" aria-labelledby="about-title">
+      <div class="wrap about__grid">
+        <div>
+          <p class="eyebrow">About</p>
+          <h2 class="h2" id="about-title" data-split>Built for people, not for banks.</h2>
+        </div>
+        <div class="about__body">
+          <p class="lede" data-fade>We started AsterPay in 2021 because managing money had turned into a part-time job: five apps, three banks and no idea what you could actually spend. Today 2.4 million people use it to see everything in one place — and to keep more of what they earn.</p>
+          <dl class="about__nums">
+            <div data-fade><dt>$<span data-count-to="18">18</span>B</dt><dd>moved through AsterPay last year</dd></div>
+            <div data-fade><dt><span data-count-to="320">320</span></dt><dd>people in 9 cities</dd></div>
+            <div data-fade><dt><span data-count-to="24">24</span>/7</dt><dd>human support, in 12 languages</dd></div>
+          </dl>
+        </div>
+        <ul class="trust">
+          <li data-fade><svg aria-hidden="true"><use href="#i-shield" /></svg><b>Funds safeguarded</b><span>Held at regulated partner banks, always separate from our own money.</span></li>
+          <li data-fade><svg aria-hidden="true"><use href="#i-lock" /></svg><b>256-bit encryption</b><span>The same standard banks use, on every screen and every request.</span></li>
+          <li data-fade><svg aria-hidden="true"><use href="#i-snow" /></svg><b>Freeze in one tap</b><span>Lost your card? Freeze it, then unfreeze it when it turns up.</span></li>
+          <li data-fade><svg aria-hidden="true"><use href="#i-headset" /></svg><b>Real humans</b><span>Chat with a person in under two minutes, day or night.</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============================== REVIEWS ============================== -->
+    <section class="section reviews" aria-labelledby="reviews-title">
+      <div class="wrap">
+        <div class="head head--center">
+          <p class="eyebrow">Reviews</p>
+          <h2 class="h2" id="reviews-title" data-split>Loved by 2.4 million people.</h2>
+        </div>
+      </div>
+      <div class="reviews__rows">
+        <div class="reviews__row" data-reviews="1">
+          <ul class="reviews__set">
+            <li class="review"><span class="review__stars" aria-label="5 stars"><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg></span><p>“I finally know what I can actually spend. The budgets alone saved me $300 in my first month.”</p><span class="review__who"><i>PN</i><b>Priya N.</b><small>Designer, Leeds</small></span></li>
+            <li class="review"><span class="review__stars" aria-label="5 stars"><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg></span><p>“Sent money to my mum in Lisbon and it arrived before I hung up the phone.”</p><span class="review__who"><i>DR</i><b>Daniel R.</b><small>Nurse, Toronto</small></span></li>
+            <li class="review"><span class="review__stars" aria-label="5 stars"><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg></span><p>“The freeze button is the most reassuring thing on my phone.”</p><span class="review__who"><i>HK</i><b>Hannah K.</b><small>Student, Berlin</small></span></li>
+            <li class="review"><span class="review__stars" aria-label="5 stars"><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg></span><p>“Round-ups paid for my flights. I never even noticed them going.”</p><span class="review__who"><i>MD</i><b>Marco D.</b><small>Chef, Milan</small></span></li>
+          </ul>
+        </div>
+        <div class="reviews__row reviews__row--rev" data-reviews="-1">
+          <ul class="reviews__set">
+            <li class="review"><span class="review__stars" aria-label="5 stars"><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg></span><p>“Clean, fast and no surprise fees. I moved my salary over within a week.”</p><span class="review__who"><i>SL</i><b>Sofia L.</b><small>Engineer, Madrid</small></span></li>
+            <li class="review"><span class="review__stars" aria-label="5 stars"><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg></span><p>“Buying a $5 slice of a stock is what finally got me investing.”</p><span class="review__who"><i>TW</i><b>Tom W.</b><small>Teacher, Austin</small></span></li>
+            <li class="review"><span class="review__stars" aria-label="5 stars"><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg></span><p>“Splitting rent with three flatmates used to be a spreadsheet. Now it is a link.”</p><span class="review__who"><i>AB</i><b>Aisha B.</b><small>Producer, London</small></span></li>
+            <li class="review"><span class="review__stars" aria-label="5 stars"><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg></span><p>“The insights screen is honestly better than my bank's entire app.”</p><span class="review__who"><i>LM</i><b>Lukas M.</b><small>Founder, Zürich</small></span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================== FAQ ============================== -->
+    <section class="section faq" id="faq" aria-labelledby="faq-title">
+      <div class="wrap faq__grid">
+        <div>
+          <p class="eyebrow">FAQ</p>
+          <h2 class="h2" id="faq-title" data-split>Questions, answered.</h2>
+          <p class="lede" data-fade>Something else on your mind? Our team answers in under two minutes, day or night.</p>
+        </div>
+        <div class="faq__list" data-faq>
+          <details class="qa" open><summary><span>Is my money safe with AsterPay?</span><i aria-hidden="true"></i></summary><div class="qa__a"><p>Your balance is held at regulated partner banks, kept separate from AsterPay's own funds, and protected by biometric sign-in, instant card freeze and round-the-clock fraud monitoring.</p></div></details>
+          <details class="qa"><summary><span>How much does AsterPay cost?</span><i aria-hidden="true"></i></summary><div class="qa__a"><p>Standard is free: no monthly fee, free transfers between AsterPay users and a free virtual card. Plus and Metal add higher limits, cashback and the metal card.</p></div></details>
+          <details class="qa"><summary><span>How fast are transfers?</span><i aria-hidden="true"></i></summary><div class="qa__a"><p>Payments to other AsterPay users arrive in under a second, any time. International transfers to bank accounts usually land within minutes and never take more than one business day.</p></div></details>
+          <details class="qa"><summary><span>Can I invest with a small amount?</span><i aria-hidden="true"></i></summary><div class="qa__a"><p>Yes. Fractional shares let you buy into stocks and ETFs from $1, and auto-invest can put a fixed amount to work every week or month.</p></div></details>
+          <details class="qa"><summary><span>Which currencies can I hold?</span><i aria-hidden="true"></i></summary><div class="qa__a"><p>You can hold and convert between 40+ currencies at the mid-market rate, and spend in 150+ with your card without foreign transaction fees.</p></div></details>
+          <details class="qa"><summary><span>How do I get started?</span><i aria-hidden="true"></i></summary><div class="qa__a"><p>Download the app, verify your ID in about three minutes, and your virtual card is ready straight away. The physical card arrives within a week.</p></div></details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================== CTA ============================== -->
+    <section class="cta" id="download" aria-labelledby="cta-title">
+      <canvas class="cta__gl" aria-hidden="true"></canvas>
+      <canvas class="cta__ascii" aria-hidden="true"></canvas>
+      <div class="cta__glow" aria-hidden="true"></div>
+      <div class="wrap cta__inner">
+        <p class="eyebrow">Get the app</p>
+        <h2 class="cta__title" id="cta-title" data-split>Your money, finally in one place.</h2>
+        <p class="lede" data-fade>Join 2.4 million people who stopped juggling apps. Sign up in three minutes — your virtual card is ready straight away.</p>
+        <div class="cta__buttons" data-fade>
+          <a class="store" href="#download" data-store="iPhone" data-magnetic><svg aria-hidden="true"><use href="#i-phone" /></svg><span><small>Download for</small>iPhone</span></a>
+          <a class="store" href="#download" data-store="Android" data-magnetic><svg aria-hidden="true"><use href="#i-android" /></svg><span><small>Download for</small>Android</span></a>
+        </div>
+        <p class="cta__rating" data-fade><span class="cta__stars" aria-hidden="true"><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg></span>4.9 from 120,000 reviews</p>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============================== FOOTER ============================== -->
+  <footer class="foot">
+    <div class="wrap foot__top">
+      <div class="foot__brand">
+        <a class="brand" href="#top" aria-label="AsterPay, back to top"><svg class="brand__mark" aria-hidden="true"><use href="#mark" /></svg><span class="brand__word" aria-hidden="true">AsterPay</span></a>
+        <p>All your money. One simple app.</p>
+      </div>
+      <nav class="foot__cols" aria-label="Footer">
+        <div><p>Product</p><ul><li><a href="#payments">Payments</a></li><li><a href="#cards">Cards</a></li><li><a href="#invest">Invest</a></li><li><a href="#features">Features</a></li></ul></div>
+        <div><p>Company</p><ul><li><a href="#about">About</a></li><li><a href="#faq">FAQ</a></li><li><a href="#download">Get the app</a></li></ul></div>
+        <div><p>This site</p><ul><li><a href="../">All sites</a></li><li><a href="https://github.com/BurgiSimon/cant-beat-my-design-skills">Source code</a></li></ul></div>
+      </nav>
+    </div>
+    <div class="foot__word" aria-hidden="true"><span data-word>AsterPay</span></div>
+    <div class="wrap foot__bottom">
+      <p>© {{YEAR}} AsterPay is a fictional company. A design study, not a financial product.</p>
+      <button class="foot__top-btn" type="button" data-to-top>Back to top <svg aria-hidden="true"><use href="#i-up" /></svg></button>
+    </div>
+  </footer>
+
+  <div class="toast" role="status" aria-live="polite" data-toast></div>
+</body>
+</html>

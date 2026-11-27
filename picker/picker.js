@@ -2,7 +2,7 @@
 // in the middle; where they do not, the line is endless: it drifts by itself when the page is left alone, and the
 // wheel, a drag or the arrow keys move it. The card under the pointer (or the one with the keyboard's focus) is lit
 // and gets a trace in its site's own manner: mist that drifts and parts, a hole torn through the clouds onto a night
-// of ASCII. A chosen card opens into its site: it grows to fill the screen and gives way to the colour the site
+// of ASCII, an orbit of light with a streak along its horizon. A chosen card opens into its site: it grows to fill the screen and gives way to the colour the site
 // paints first, so the site's own entrance carries on from there. On a phone the cards are a strip that a swipe
 // moves from one to the next. Without this script the page is still a row of links.
 
@@ -294,6 +294,48 @@ const TRACES = {
         }
         g.restore();
         g.strokeStyle = `rgb(250 248 242 / ${0.85 * o})`; g.lineWidth = 2; g.stroke(); g.lineWidth = 1;   // the paper's torn edge
+        g.restore();
+        return true;
+      },
+    };
+  })(),
+
+  // AsterPay: an orbit closes round the pointer from its top, the way the hero's rings draw themselves, with two
+  // lights going round it and a tilted orbit through it; along that orbit's horizon a streak of light sweeps in
+  // from the right and dims at the left, as the hero's does. Lit with no pointer on it, the orbit wanders.
+  asterpay: (() => {
+    const at = { x: 0, y: 0, on: false };
+    const WARM = '255 190 165';
+    return {
+      reset() { at.on = false; },
+      draw(r, o, on, dt) {
+        if (o < 0.01) return false;
+        const want_ = on && inside(r, ptr) ? ptr : { x: r.left + r.width * (0.5 + 0.2 * Math.sin(clock * 0.41)), y: r.top + r.height * (0.48 + 0.14 * Math.sin(clock * 0.67)) };
+        if (!at.on) { at.x = want_.x; at.y = want_.y; at.on = true; }
+        const ease = 1 - Math.exp(-dt * 6);
+        at.x += (want_.x - at.x) * ease; at.y += (want_.y - at.y) * ease;
+        const R = Math.min(100, r.width * 0.22) * (0.85 + 0.15 * o);
+        within(r);
+        // the ring, closing from its top both ways as the card lights
+        const top = -Math.PI / 2; const span = Math.PI * Math.min(1, o * 1.15);
+        g.strokeStyle = `rgb(${WARM} / ${0.6 * o})`; g.lineWidth = 1;
+        g.beginPath(); g.arc(at.x, at.y, R, top - span, top + span); g.stroke();
+        // the tilted orbit through it
+        g.strokeStyle = `rgb(${WARM} / ${0.32 * o})`;
+        g.beginPath(); g.ellipse(at.x, at.y + R * 0.18, R * 1.6, R * 0.4, -0.1, 0, Math.PI * 2 * Math.min(1, o * 1.15)); g.stroke();
+        // two lights going round
+        for (const [phase, speed] of [[0.3, 0.9], [2.6, -0.55]]) {
+          const a = phase + clock * speed; const x = at.x + Math.cos(a) * R; const y = at.y + Math.sin(a) * R;
+          const halo = g.createRadialGradient(x, y, 0, x, y, 10);
+          halo.addColorStop(0, `rgb(255 244 236 / ${o})`); halo.addColorStop(0.35, `rgb(255 150 118 / ${0.55 * o})`); halo.addColorStop(1, 'rgb(255 90 54 / 0)');
+          g.fillStyle = halo; g.beginPath(); g.arc(x, y, 10, 0, Math.PI * 2); g.fill();
+        }
+        // the streak, on the orbit's horizon: in from the right edge, easing out, then dimming where it rests
+        const k = (clock * 0.32) % 1; const run = Math.min(1, k / 0.55); const e = 1 - (1 - run) ** 3;
+        const hx = r.right + 20 - (r.width + 10) * e; const hy = at.y + R * 0.18; const fade = o * (k < 0.55 ? Math.min(1, k * 8) : 1 - (k - 0.55) / 0.45);
+        const tail = g.createLinearGradient(hx, 0, hx + 170, 0);
+        tail.addColorStop(0, `rgb(255 232 220 / ${0.95 * fade})`); tail.addColorStop(0.25, `rgb(255 150 110 / ${0.5 * fade})`); tail.addColorStop(1, 'rgb(255 90 54 / 0)');
+        g.strokeStyle = tail; g.lineWidth = 1.6; g.beginPath(); g.moveTo(hx, hy); g.lineTo(hx + 170, hy); g.stroke();
         g.restore();
         return true;
       },
