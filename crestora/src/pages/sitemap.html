@@ -1,16 +1,152 @@
 <!--page
 title: Sitemap — Crestora
-description: Sitemap.
+description: Every page on the Crestora site, grouped the way the footer groups them, with each stop on the home page, every Field Note and the way in.
 nav: legal
 -->
 <main id="main">
-  <section class="page-hero">
+  <!-- Sitemap: the legal hero (67-legal.css) with three counts, then every page (68-sitemap.css). On the left the
+       home page drawn as a lane: a road of six faint hairlines in the ribbon's order, with a 44 px box per section;
+       hovering or focusing a stop lights its box and its lane in its colour (the page rides the spectrum top to
+       bottom, so the two whole-flow stops light all six). On the right the footer's four columns, then Field Notes
+       and Get started, each link with a line of what's there. CSS only; links roll (core.js). -->
+  <section class="page-hero legal-hero" aria-labelledby="legal-title">
     <div class="page-hero__lanes" aria-hidden="true"></div>
     <div class="container page-hero__inner">
-      <p class="eyebrow">Legal</p>
-      <h1 class="title-1">Sitemap.</h1>
-      <p class="lede">This page is being built.</p>
+      <p class="eyebrow" data-reveal="fade">Legal</p>
+      <h1 class="title-1" id="legal-title" data-split>Sitemap.</h1>
+      <p class="lede" data-reveal data-delay="0.12">Every page on this site, grouped the way the footer groups them, with each stop on the home page and every Field Note.</p>
+      <ul class="sm-count" data-reveal-stagger>
+        <li><span class="sm-count__n" data-odometer="30">30</span><span class="sm-count__l">pages in all</span></li>
+        <li><span class="sm-count__n" data-odometer="8">8</span><span class="sm-count__l">stops on the home page</span></li>
+        <li><span class="sm-count__n" data-odometer="6">6</span><span class="sm-count__l">Field Notes</span></li>
+      </ul>
+    </div>
+    <div class="container">
+      <nav class="legal-nav" aria-label="Legal documents">
+        <ul class="legal-nav__list">
+          <li><a href="{{ROOT}}privacy.html"><svg class="icon" aria-hidden="true"><use href="#i-lock"/></svg>Privacy policy</a></li>
+          <li><a href="{{ROOT}}terms.html"><svg class="icon" aria-hidden="true"><use href="#i-scale"/></svg>Terms of service</a></li>
+          <li><a href="{{ROOT}}cookies.html"><svg class="icon" aria-hidden="true"><use href="#i-cookie"/></svg>Cookie policy</a></li>
+          <li><a href="{{ROOT}}compliance.html"><svg class="icon" aria-hidden="true"><use href="#i-shield"/></svg>Compliance</a></li>
+          <li><a href="{{ROOT}}sitemap.html" aria-current="page"><svg class="icon" aria-hidden="true"><use href="#i-sitemap"/></svg>Sitemap</a></li>
+        </ul>
+      </nav>
     </div>
   </section>
+
+  <nav class="sm-body" aria-label="Every page">
+    <div class="container sm-layout">
+
+      <div class="sm-side">
+        <!-- the home page, as a lane -->
+        <section class="sm-home" aria-labelledby="sm-home-title" data-reveal>
+          <div class="sm-home__head">
+            <h2 class="sm-group__title" id="sm-home-title">Home <span class="sm-group__n" aria-hidden="true">08</span></h2>
+            <p>The home page is one long lane, ridden top to bottom through the six colours in order. Every stop is a link.</p>
+          </div>
+          <ol class="sm-lane">
+            <li class="sm-stop" style="--c: var(--spark); --x: 0px">
+              <a class="sm-stop__link" href="{{ROOT}}index.html#top"><span class="sm-stop__box" aria-hidden="true">01</span><span class="roll sm-stop__title"><span>Every idea gets a lane</span></span><span class="sm-stop__desc">The opening: six threads and a first lane</span><span class="sm-stop__id" aria-hidden="true">#top</span></a>
+            </li>
+            <li class="sm-stop" style="--c: var(--shape); --x: 4px">
+              <a class="sm-stop__link" href="{{ROOT}}index.html#creators"><span class="sm-stop__box" aria-hidden="true">02</span><span class="roll sm-stop__title"><span>Creators</span></span><span class="sm-stop__desc">Amara, Theo and Inés, one project each</span><span class="sm-stop__id" aria-hidden="true">#creators</span></a>
+            </li>
+            <li class="sm-stop sm-stop--flow">
+              <a class="sm-stop__link" href="{{ROOT}}index.html#features"><span class="sm-stop__box" aria-hidden="true">03</span><span class="roll sm-stop__title"><span>How it flows</span></span><span class="sm-stop__desc">Six lanes from first spark to launch night</span><span class="sm-stop__id" aria-hidden="true">#features</span></a>
+            </li>
+            <li class="sm-stop" style="--c: var(--make); --x: 8px">
+              <a class="sm-stop__link" href="{{ROOT}}index.html#workspace"><span class="sm-stop__box" aria-hidden="true">04</span><span class="roll sm-stop__title"><span>Inside a lane</span></span><span class="sm-stop__desc">The workspace: lane, board and calendar</span><span class="sm-stop__id" aria-hidden="true">#workspace</span></a>
+            </li>
+            <li class="sm-stop" style="--c: var(--review); --x: 12px">
+              <a class="sm-stop__link" href="{{ROOT}}index.html#integrations"><span class="sm-stop__box" aria-hidden="true">05</span><span class="roll sm-stop__title"><span>Integrations</span></span><span class="sm-stop__desc">Twelve on-ramps into the lanes</span><span class="sm-stop__id" aria-hidden="true">#integrations</span></a>
+            </li>
+            <li class="sm-stop" style="--c: var(--launch); --x: 16px">
+              <a class="sm-stop__link" href="{{ROOT}}index.html#work"><span class="sm-stop__box" aria-hidden="true">06</span><span class="roll sm-stop__title"><span>Made in Crestora</span></span><span class="sm-stop__desc">Twelve launches and the mileage</span><span class="sm-stop__id" aria-hidden="true">#work</span></a>
+            </li>
+            <li class="sm-stop" style="--c: var(--afterglow); --x: 20px">
+              <a class="sm-stop__link" href="{{ROOT}}index.html#plans"><span class="sm-stop__box" aria-hidden="true">07</span><span class="roll sm-stop__title"><span>Plans</span></span><span class="sm-stop__desc">Solo, Studio and Crew, monthly or yearly</span><span class="sm-stop__id" aria-hidden="true">#plans</span></a>
+            </li>
+            <li class="sm-stop sm-stop--flow">
+              <a class="sm-stop__link" href="{{ROOT}}index.html#start"><span class="sm-stop__box" aria-hidden="true">08</span><span class="roll sm-stop__title"><span>Your lane is open</span></span><span class="sm-stop__desc">One idea, one email, and the launch</span><span class="sm-stop__id" aria-hidden="true">#start</span></a>
+            </li>
+            <li class="sm-stop sm-stop--end">
+              <a class="sm-stop__link" href="#footer"><span class="sm-stop__box" aria-hidden="true"><svg class="icon"><use href="#i-arrow-down"/></svg></span><span class="roll sm-stop__title"><span>The footer</span></span><span class="sm-stop__desc">Where every page ends, this one included</span><span class="sm-stop__id" aria-hidden="true">#footer</span></a>
+            </li>
+          </ol>
+        </section>
+
+        <section class="sm-group sm-group--start" aria-labelledby="sm-start">
+          <h2 class="sm-group__title" id="sm-start">Get started <span class="sm-group__n" aria-hidden="true">02</span></h2>
+          <ul class="sm-list">
+            <li class="sm-item"><a href="{{ROOT}}start.html" data-roll>Open a lane</a><span class="sm-item__path">start.html</span><p class="sm-item__desc">Free for 3 lanes, no card</p></li>
+            <li class="sm-item"><a href="{{ROOT}}start.html#signin" data-roll>Sign in</a><span class="sm-item__path">start.html#signin</span><p class="sm-item__desc">With a link in your email, never a password</p></li>
+          </ul>
+        </section>
+      </div>
+
+      <div class="sm-groups">
+        <section class="sm-group" aria-labelledby="sm-product">
+          <h2 class="sm-group__title" id="sm-product">Product <span class="sm-group__n" aria-hidden="true">06</span></h2>
+          <ul class="sm-list">
+            <li class="sm-item"><a href="{{ROOT}}index.html#features" data-roll>Features</a><span class="sm-item__path">index.html#features</span><p class="sm-item__desc">Six lanes from first spark to launch night</p></li>
+            <li class="sm-item"><a href="{{ROOT}}integrations.html" data-roll>Integrations</a><span class="sm-item__path">integrations.html</span><p class="sm-item__desc">120+ tools that merge into your lane</p></li>
+            <li class="sm-item"><a href="{{ROOT}}pricing.html" data-roll>Pricing</a><span class="sm-item__path">pricing.html</span><p class="sm-item__desc">Free for three lanes, fair after that</p><p class="sm-item__subs"><a href="{{ROOT}}pricing.html#grants">Creator grants</a></p></li>
+            <li class="sm-item"><a href="{{ROOT}}changelog.html" data-roll>Changelog</a><span class="sm-item__path">changelog.html</span><p class="sm-item__desc">A release every two weeks, give or take</p><p class="sm-item__subs"><a href="{{ROOT}}changelog.html#v4-12">Latest: v4.12</a></p></li>
+            <li class="sm-item"><a href="{{ROOT}}roadmap.html" data-roll>Roadmap</a><span class="sm-item__path">roadmap.html</span><p class="sm-item__desc">Now, next and later, with your votes</p></li>
+            <li class="sm-item"><a href="{{ROOT}}security.html" data-roll>Security</a><span class="sm-item__path">security.html</span><p class="sm-item__desc">Encryption, access and incident response</p><p class="sm-item__subs"><a href="{{ROOT}}security.html#status">Status</a><a href="{{ROOT}}security.html#disclosure">Responsible disclosure</a></p></li>
+          </ul>
+        </section>
+
+        <section class="sm-group" aria-labelledby="sm-company">
+          <h2 class="sm-group__title" id="sm-company">Company <span class="sm-group__n" aria-hidden="true">05</span></h2>
+          <ul class="sm-list">
+            <li class="sm-item"><a href="{{ROOT}}about.html" data-roll>About Us</a><span class="sm-item__path">about.html</span><p class="sm-item__desc">Founded in Lisbon in 2021; 64 people today</p></li>
+            <li class="sm-item"><a href="{{ROOT}}careers.html" data-roll>Careers</a><span class="sm-item__path">careers.html</span><p class="sm-item__desc">Eight open roles across four hubs</p></li>
+            <li class="sm-item"><a href="{{ROOT}}press.html" data-roll>Press Kit</a><span class="sm-item__path">press.html</span><p class="sm-item__desc">Words, marks, colours, faces and facts</p></li>
+            <li class="sm-item"><a href="{{ROOT}}partners.html" data-roll>Partners</a><span class="sm-item__path">partners.html</span><p class="sm-item__desc">Studios, toolmakers and teachers</p></li>
+            <li class="sm-item"><a href="{{ROOT}}contact.html" data-roll>Contact</a><span class="sm-item__path">contact.html</span><p class="sm-item__desc">Real people in four time zones</p></li>
+          </ul>
+        </section>
+
+        <section class="sm-group" aria-labelledby="sm-resources">
+          <h2 class="sm-group__title" id="sm-resources">Resources <span class="sm-group__n" aria-hidden="true">07</span></h2>
+          <ul class="sm-list">
+            <li class="sm-item"><a href="{{ROOT}}blog.html" data-roll>Blogs</a><span class="sm-item__path">blog.html</span><p class="sm-item__desc">Field Notes: launch stories and craft</p></li>
+            <li class="sm-item"><a href="{{ROOT}}docs.html" data-roll>Documentation</a><span class="sm-item__path">docs.html</span><p class="sm-item__desc">Lanes, stages and every tool inside them</p></li>
+            <li class="sm-item"><a href="{{ROOT}}api.html" data-roll>API Reference</a><span class="sm-item__path">api.html</span><p class="sm-item__desc">A small REST API: JSON in, JSON out</p></li>
+            <li class="sm-item"><a href="{{ROOT}}help.html" data-roll>Help Center</a><span class="sm-item__path">help.html</span><p class="sm-item__desc">Straight answers, then a human</p></li>
+            <li class="sm-item"><a href="{{ROOT}}community.html" data-roll>Community</a><span class="sm-item__path">community.html</span><p class="sm-item__desc">Circles, feedback swaps and Launch Night</p><p class="sm-item__subs"><a href="{{ROOT}}community.html#elsewhere">Crestora elsewhere</a></p></li>
+            <li class="sm-item"><a href="{{ROOT}}tutorials.html" data-roll>Tutorials</a><span class="sm-item__path">tutorials.html</span><p class="sm-item__desc">Short lessons from people who ship</p></li>
+            <li class="sm-item"><a href="{{ROOT}}webinars.html" data-roll>Webinars</a><span class="sm-item__path">webinars.html</span><p class="sm-item__desc">Live sessions; the next one is 10 Dec</p></li>
+          </ul>
+        </section>
+
+        <section class="sm-group" aria-labelledby="sm-legal">
+          <h2 class="sm-group__title" id="sm-legal">Legal <span class="sm-group__n" aria-hidden="true">05</span></h2>
+          <ul class="sm-list">
+            <li class="sm-item"><a href="{{ROOT}}privacy.html" data-roll>Privacy Policy</a><span class="sm-item__path">privacy.html</span><p class="sm-item__desc">What we collect, and how to take it back</p></li>
+            <li class="sm-item"><a href="{{ROOT}}terms.html" data-roll>Terms of Service</a><span class="sm-item__path">terms.html</span><p class="sm-item__desc">You own what you make</p></li>
+            <li class="sm-item"><a href="{{ROOT}}cookies.html" data-roll>Cookie Policy</a><span class="sm-item__path">cookies.html</span><p class="sm-item__desc">No cookies here, and your switches</p></li>
+            <li class="sm-item"><a href="{{ROOT}}compliance.html" data-roll>Compliance</a><span class="sm-item__path">compliance.html</span><p class="sm-item__desc">Frameworks, the DPA and subprocessors</p><p class="sm-item__subs"><a href="{{ROOT}}compliance.html#subprocessors">Subprocessors</a><a href="{{ROOT}}compliance.html#accessibility">Accessibility</a></p></li>
+            <li class="sm-item"><a href="{{ROOT}}sitemap.html" aria-current="page" data-roll>Sitemap</a><span class="sm-item__path">sitemap.html</span><p class="sm-item__desc">You are here</p></li>
+          </ul>
+        </section>
+      </div>
+    </div>
+    <div class="container">
+      <section class="sm-group sm-notes" aria-labelledby="sm-notes">
+        <h2 class="sm-group__title" id="sm-notes">Field Notes <span class="sm-group__n" aria-hidden="true">06</span></h2>
+        <ul class="sm-list">
+          <li class="sm-item sm-item--post" data-stage="spark"><a href="{{ROOT}}blog/leave-the-light-on.html" data-roll>Leave the light on</a><p class="sm-item__desc"><span>Mira Castell · Company · <time datetime="2026-11-24">24 Nov</time></span></p></li>
+          <li class="sm-item sm-item--post" data-stage="review"><a href="{{ROOT}}blog/designing-review-room.html" data-roll>Designing Review Room</a><p class="sm-item__desc"><span>Hye-jin Park · Product · <time datetime="2026-11-20">20 Nov</time></span></p></li>
+          <li class="sm-item sm-item--post" data-stage="afterglow"><a href="{{ROOT}}blog/forty-one-days-to-night-bloom.html" data-roll>Forty-one days to Night Bloom</a><p class="sm-item__desc"><span>Amara Okafor · Launch stories · <time datetime="2026-11-12">12 Nov</time></span></p></li>
+          <li class="sm-item sm-item--post" data-stage="shape"><a href="{{ROOT}}blog/the-case-for-a-smaller-launch.html" data-roll>The case for a smaller launch</a><p class="sm-item__desc"><span>Rafael Mendes · Craft · <time datetime="2026-11-06">6 Nov</time></span></p></li>
+          <li class="sm-item sm-item--post" data-stage="launch"><a href="{{ROOT}}blog/why-theo-ships-on-fridays.html" data-roll>Why Theo ships on Fridays</a><p class="sm-item__desc"><span>Theo Lindqvist · Launch stories · <time datetime="2026-10-23">23 Oct</time></span></p></li>
+          <li class="sm-item sm-item--post" data-stage="make"><a href="{{ROOT}}blog/sixty-pots-in-three-hours.html" data-roll>Sixty pots in three hours</a><p class="sm-item__desc"><span>Inés Navarro · Launch stories · <time datetime="2026-10-15">15 Oct</time></span></p></li>
+        </ul>
+      </section>
+    </div>
+  </nav>
+
   {{> cta}}
 </main>

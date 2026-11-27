@@ -1,16 +1,611 @@
 <!--page
 title: Help Center — Crestora
-description: How can we help?
+description: Straight answers about lanes, stages, reviews, launches, billing and integrations, with instant search, and a human when an answer isn’t enough.
+modules: copy page-help
 nav: resources
 -->
 <main id="main">
-  <section class="page-hero">
+  <!-- Help Center: a hero with the big search (a combobox over every answer on this page: highlighted matches, a
+       listbox with the arrow keys and Enter, which scrolls to the answer and opens it) and the six popular questions;
+       eight topic cards that jump to their sections; the answers themselves, each a <details> with its own id, beside
+       a sticky topic list with scrollspy; then "Still stuck?" with Support and the community. Without scripts the
+       search is hidden and everything else reads as a page of answers. -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <symbol id="hc-i-fix" viewBox="0 0 24 24"><path d="M15.4 3.9a4.7 4.7 0 0 0-5.2 6.2l-5.9 5.9a2 2 0 0 0 2.8 2.8l5.9-5.9a4.7 4.7 0 0 0 6.2-5.2l-2.8 2.8-2.7-.4-.4-2.7Z"/></symbol>
+  </svg>
+
+  <section class="page-hero hc-hero" aria-labelledby="hc-title">
     <div class="page-hero__lanes" aria-hidden="true"></div>
-    <div class="container page-hero__inner">
-      <p class="eyebrow">Resources</p>
-      <h1 class="title-1">How can we help?</h1>
-      <p class="lede">This page is being built.</p>
+    <div class="container hc-hero__grid">
+      <div class="hc-hero__intro">
+        <p class="eyebrow" data-reveal="fade">Help Center</p>
+        <h1 class="title-1" id="hc-title" data-split>How can we help?</h1>
+        <p class="lede" data-reveal data-delay="0.15">Straight answers from the people who build Crestora. Type what’s in your way, or pick a topic below.</p>
+
+        <form class="hc-search" role="search" action="#answers" data-reveal data-delay="0.25">
+          <label class="sr" for="hc-q">Search the Help Center</label>
+          <div class="hc-search__box">
+            <svg class="icon hc-search__icon" aria-hidden="true"><use href="#i-search"/></svg>
+            <input class="hc-search__input" id="hc-q" name="q" type="search" role="combobox" aria-expanded="false" aria-controls="hc-results" aria-autocomplete="list" aria-describedby="hc-q-hint" autocomplete="off" spellcheck="false" enterkeyhint="go" placeholder="Search 33 answers" />
+            <kbd class="hc-search__kbd" aria-hidden="true">/</kbd>
+            <button class="hc-search__clear" type="button" aria-label="Clear the search" hidden><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg></button>
+          </div>
+          <p class="sr" id="hc-q-hint">Results appear as you type. Use the up and down arrow keys to move through them and Enter to open an answer.</p>
+          <div class="hc-pop" id="hc-pop" hidden>
+            <p class="hc-pop__head" id="hc-pop-head">Popular this week</p>
+            <ul class="hc-pop__list" id="hc-results" role="listbox" aria-labelledby="hc-pop-head"></ul>
+            <div class="hc-pop__empty" hidden>
+              <p class="hc-pop__none">No answer mentions <q data-hc-none></q> yet.</p>
+              <p>Ask the crew on the <a href="{{ROOT}}community.html#forum">Help forum</a>, or <a href="{{ROOT}}contact.html?topic=support">write to Support</a> and a person will reply.</p>
+            </div>
+            <p class="hc-pop__keys" aria-hidden="true"><span><kbd>↑</kbd><kbd>↓</kbd> to move</span><span><kbd>Enter</kbd> to open</span><span><kbd>Esc</kbd> to close</span></p>
+          </div>
+          <p class="sr" id="hc-live" aria-live="polite"></p>
+        </form>
+
+        <div class="hc-try" data-reveal data-delay="0.3">
+          <span class="hc-try__label">Try</span>
+          <button class="hc-try__q" type="button" data-q="export">export</button>
+          <button class="hc-try__q" type="button" data-q="review link">review link</button>
+          <button class="hc-try__q" type="button" data-q="cancel">cancel</button>
+          <button class="hc-try__q" type="button" data-q="sign-in">sign-in</button>
+          <button class="hc-try__q" type="button" data-q="merge">merge</button>
+        </div>
+
+        <div class="hc-hero__meta" data-reveal data-delay="0.35">
+          <a class="chip chip--live hc-status" href="{{ROOT}}security.html#status">All systems normal</a>
+          <a class="hc-ver" href="{{ROOT}}changelog.html#v4-12">33 answers · updated for v4.12</a>
+        </div>
+      </div>
+
+      <aside class="hc-hero__aside" aria-labelledby="hc-popular-title" data-reveal data-delay="0.3">
+        <h2 class="hc-label" id="hc-popular-title">Popular this week</h2>
+        <ol class="hc-popular" data-hc-popular>
+          <li><a href="#export-everything"><span class="hc-popular__n" aria-hidden="true">01</span><span class="hc-popular__q">How do I export everything?</span><span class="hc-popular__c">Account &amp; billing</span></a></li>
+          <li><a href="#review-links"><span class="hc-popular__n" aria-hidden="true">02</span><span class="hc-popular__q">Do reviewers need an account?</span><span class="hc-popular__c">Review &amp; feedback</span></a></li>
+          <li><a href="#change-plan"><span class="hc-popular__n" aria-hidden="true">03</span><span class="hc-popular__q">How do I change or cancel my plan?</span><span class="hc-popular__c">Account &amp; billing</span></a></li>
+          <li><a href="#sign-in-link"><span class="hc-popular__n" aria-hidden="true">04</span><span class="hc-popular__q">My sign-in link didn’t arrive.</span><span class="hc-popular__c">Troubleshooting</span></a></li>
+          <li><a href="#merge-lanes"><span class="hc-popular__n" aria-hidden="true">05</span><span class="hc-popular__q">How do I merge two lanes?</span><span class="hc-popular__c">Lanes &amp; stages</span></a></li>
+          <li><a href="#active-lane"><span class="hc-popular__n" aria-hidden="true">06</span><span class="hc-popular__q">What counts as an active lane?</span><span class="hc-popular__c">Account &amp; billing</span></a></li>
+        </ol>
+      </aside>
     </div>
   </section>
+
+  <!-- eight topics, each jumping to its section -->
+  <section class="hc-topics" id="topics" aria-labelledby="hc-topics-title">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow" data-reveal="fade">Browse by topic</p>
+          <h2 class="title-2" id="hc-topics-title" data-split>Pick a topic.</h2>
+        </div>
+        <div class="section-head__aside" data-reveal>
+          <p class="lede">Eight topics, roughly in the order you’ll need them: from opening your first lane to the day something sticks.</p>
+        </div>
+      </div>
+      <ul class="hc-cats" data-reveal-stagger>
+        <li><a class="hc-cat" href="#getting-started" data-spotlight>
+          <span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-bolt"/></svg></span>
+          <span class="hc-cat__t">Getting started</span>
+          <span class="hc-cat__d">Your first lane, your first crew, and the work you already have.</span>
+          <span class="hc-cat__foot"><span>4 answers</span><svg class="icon" aria-hidden="true"><use href="#i-arrow-down"/></svg></span>
+        </a></li>
+        <li><a class="hc-cat" href="#billing" data-spotlight>
+          <span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-tag"/></svg></span>
+          <span class="hc-cat__t">Account &amp; billing</span>
+          <span class="hc-cat__d">Plans, invoices, lane limits and taking everything with you.</span>
+          <span class="hc-cat__foot"><span>5 answers</span><svg class="icon" aria-hidden="true"><use href="#i-arrow-down"/></svg></span>
+        </a></li>
+        <li><a class="hc-cat hc-cat--flow" href="#lanes" data-spotlight>
+          <span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-layers"/></svg></span>
+          <span class="hc-cat__t">Lanes &amp; stages</span>
+          <span class="hc-cat__d">The six stages, moving back, merging and archiving.</span>
+          <span class="hc-cat__foot"><span>4 answers</span><span class="stage-rail hc-cat__rail" data-n="6" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span><svg class="icon" aria-hidden="true"><use href="#i-arrow-down"/></svg></span>
+        </a></li>
+        <li><a class="hc-cat hc-cat--stage" href="#review" data-stage="review" data-spotlight>
+          <span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-review"/></svg></span>
+          <span class="hc-cat__t">Review &amp; feedback</span>
+          <span class="hc-cat__d">Review links, pinned notes and approvals that stick.</span>
+          <span class="hc-cat__foot"><span>4 answers</span><span class="lane-chip hc-cat__chip">Review</span><svg class="icon" aria-hidden="true"><use href="#i-arrow-down"/></svg></span>
+        </a></li>
+        <li><a class="hc-cat hc-cat--stage" href="#launching" data-stage="launch" data-spotlight>
+          <span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-launch"/></svg></span>
+          <span class="hc-cat__t">Launching</span>
+          <span class="hc-cat__d">Checklists, channels, launch rooms and moving the date.</span>
+          <span class="hc-cat__foot"><span>4 answers</span><span class="lane-chip hc-cat__chip">Launch</span><svg class="icon" aria-hidden="true"><use href="#i-arrow-down"/></svg></span>
+        </a></li>
+        <li><a class="hc-cat" href="#integrations" data-spotlight>
+          <span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-plug"/></svg></span>
+          <span class="hc-cat__t">Integrations</span>
+          <span class="hc-cat__d">Connecting your tools, and what they’re allowed to see.</span>
+          <span class="hc-cat__foot"><span>4 answers</span><svg class="icon" aria-hidden="true"><use href="#i-arrow-down"/></svg></span>
+        </a></li>
+        <li><a class="hc-cat" href="#crews" data-spotlight>
+          <span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-users"/></svg></span>
+          <span class="hc-cat__t">Crews &amp; roles</span>
+          <span class="hc-cat__d">Roles, seats, handing a lane over and portals for clients.</span>
+          <span class="hc-cat__foot"><span>4 answers</span><svg class="icon" aria-hidden="true"><use href="#i-arrow-down"/></svg></span>
+        </a></li>
+        <li><a class="hc-cat" href="#troubleshooting" data-spotlight>
+          <span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#hc-i-fix"/></svg></span>
+          <span class="hc-cat__t">Troubleshooting</span>
+          <span class="hc-cat__d">Sign-in links, stuck uploads, iOS sync and the status page.</span>
+          <span class="hc-cat__foot"><span>4 answers</span><svg class="icon" aria-hidden="true"><use href="#i-arrow-down"/></svg></span>
+        </a></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- the answers -->
+  <section class="hc-answers" id="answers" aria-label="Answers">
+    <div class="container hc-answers__grid">
+      <nav class="toc hc-nav" aria-label="Topics on this page">
+        <p class="toc__title">Topics</p>
+        <a href="#getting-started"><span>Getting started</span><span class="hc-nav__n">4</span></a>
+        <a href="#billing"><span>Account &amp; billing</span><span class="hc-nav__n">5</span></a>
+        <a href="#lanes"><span>Lanes &amp; stages</span><span class="hc-nav__n">4</span></a>
+        <a href="#review"><span>Review &amp; feedback</span><span class="hc-nav__n">4</span></a>
+        <a href="#launching"><span>Launching</span><span class="hc-nav__n">4</span></a>
+        <a href="#integrations"><span>Integrations</span><span class="hc-nav__n">4</span></a>
+        <a href="#crews"><span>Crews &amp; roles</span><span class="hc-nav__n">4</span></a>
+        <a href="#troubleshooting"><span>Troubleshooting</span><span class="hc-nav__n">4</span></a>
+        <a class="hc-nav__stuck" href="#still-stuck">Still stuck?</a>
+      </nav>
+
+      <div class="hc-answers__body">
+        <!-- 1 -->
+        <section class="hc-topic" id="getting-started" aria-labelledby="hc-h-start">
+          <header class="hc-topic__head">
+            <span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-bolt"/></svg></span>
+            <div>
+              <h2 class="hc-topic__title" id="hc-h-start">Getting started</h2>
+              <p class="hc-topic__d">Your first lane, your first crew, and the work you already have.</p>
+            </div>
+            <span class="hc-topic__n">4 answers</span>
+          </header>
+          <div class="accordion hc-acc">
+            <details class="hc-a" id="first-lane" data-keywords="new create open begin start blank template">
+              <summary>How do I open my first lane?</summary>
+              <div class="accordion__body hc-a__body">
+                <p>Press <kbd>N</kbd> anywhere in Crestora, or choose <strong>New lane</strong> at the top of the sidebar. Give it a name, say what you’re making, and pick a Blueprint template or start blank. Every lane starts in Spark, so drop in whatever you have: a voice memo, a screenshot, one good sentence.</p>
+                <p>On Solo you can keep three lanes active at once, free, for as long as you like.</p>
+                <p class="hc-a__foot"><a class="hc-a__more" href="{{ROOT}}docs.html#getting-started">Your first lane in four steps<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a><button class="hc-a__copy" type="button" data-copy-answer><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg>Copy link</button></p>
+              </div>
+            </details>
+            <details class="hc-a" id="lane-vs-project" data-keywords="project lane difference meaning what is">
+              <summary>What’s the difference between a lane and a project?</summary>
+              <div class="accordion__body hc-a__body">
+                <p>A lane is a project with a road under it. It holds everything for one thing you’ll launch (the brief, the files, the notes and the release) and moves through six stages as the work does.</p>
+                <p>One lane per launch is a good rule of thumb: a short film is a lane, and its trailer can be another.</p>
+                <p class="hc-a__foot"><a class="hc-a__more" href="{{ROOT}}docs.html#lanes">How lanes work<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a><button class="hc-a__copy" type="button" data-copy-answer><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg>Copy link</button></p>
+              </div>
+            </details>
+            <details class="hc-a" id="invite-crew" data-keywords="invite add people team collaborator share member email">
+              <summary>How do I invite people to a lane?</summary>
+              <div class="accordion__body hc-a__body">
+                <p>Open the lane, choose <strong>Share</strong>, then <strong>Invite</strong>. Add email addresses and pick a role for each person: Maker for the people who make, Reviewer for the people who give notes. They get an email with a sign-in link, with no password to set.</p>
+                <p>Reviewers don’t even need that: send a review link and they can leave notes straight from their browser.</p>
+                <p class="hc-a__foot"><a class="hc-a__more" href="#roles">What each role can do<svg class="icon" aria-hidden="true"><use href="#i-arrow-down"/></svg></a><button class="hc-a__copy" type="button" data-copy-answer><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg>Copy link</button></p>
+              </div>
+            </details>
+            <details class="hc-a" id="bring-work-in" data-keywords="import migrate move folder csv files upload existing">
+              <summary>Can I bring in work from other tools?</summary>
+              <div class="accordion__body hc-a__body">
+                <p>Yes. Drag a folder onto a lane and Crestora keeps its structure, with each file as a first version. Tasks come in from a CSV, and connected apps send new work straight to the right stage, so renders from Framewright land in Make as versions.</p>
+                <p class="hc-a__foot"><a class="hc-a__more" href="{{ROOT}}docs.html#importing">Importing, in detail<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a><button class="hc-a__copy" type="button" data-copy-answer><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg>Copy link</button></p>
+              </div>
+            </details>
+          </div>
+        </section>
+
+        <!-- 2 -->
+        <section class="hc-topic" id="billing" aria-labelledby="hc-h-billing">
+          <header class="hc-topic__head">
+            <span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-tag"/></svg></span>
+            <div>
+              <h2 class="hc-topic__title" id="hc-h-billing">Account &amp; billing</h2>
+              <p class="hc-topic__d">Plans, invoices, lane limits and taking everything with you.</p>
+            </div>
+            <span class="hc-topic__n">5 answers</span>
+          </header>
+          <div class="accordion hc-acc">
+            <details class="hc-a" id="change-plan" data-keywords="cancel downgrade upgrade plan subscription stop refund switch">
+              <summary>How do I change or cancel my plan?</summary>
+              <div class="accordion__body hc-a__body">
+                <p>Go to <strong>Settings</strong>, then <strong>Plan</strong>. Upgrades start right away, and you pay only the difference for the rest of the period. Downgrades and cancellations take effect at the end of the period you’ve paid for, and nothing is deleted when they do.</p>
+                <p>No call, no form, no retention offer.</p>
+                <p class="hc-a__foot"><a class="hc-a__more" href="{{ROOT}}pricing.html">Compare every plan<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a><button class="hc-a__copy" type="button" data-copy-answer><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg>Copy link</button></p>
+              </div>
+            </details>
+            <details class="hc-a" id="active-lane" data-keywords="limit three 3 solo free archive slot count">
+              <summary>What counts as an active lane?</summary>
+              <div class="accordion__body hc-a__body">
+                <p>Any lane that isn’t archived, whatever stage it’s in. Solo includes three; Studio and Crew have no limit.</p>
+                <p>When a project has launched and its Afterglow recaps are in, archive it. It stays readable, searchable and exportable, and stops counting toward your three.</p>
+                <p class="hc-a__foot"><a class="hc-a__more" href="#archive-delete">Archiving and deleting<svg class="icon" aria-hidden="true"><use href="#i-arrow-down"/></svg></a><button class="hc-a__copy" type="button" data-copy-answer><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg>Copy link</button></p>
+              </div>
+            </details>
+            <details class="hc-a" id="invoices" data-keywords="invoice receipt vat tax company address billing card bank payment">
+              <summary>Where do I find invoices and change billing details?</summary>
+              <div class="accordion__body hc-a__body">
+                <p>In <strong>Settings</strong>, then <strong>Billing</strong>. Every invoice is there as a PDF, and you can add a VAT or tax ID, a company name and an address; changes apply from the next invoice.</p>
+                <p>Every plan can pay by card. Label can also pay by bank transfer against an annual invoice.</p>
+                <p class="hc-a__foot"><button class="hc-a__copy" type="button" data-copy-answer><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg>Copy link</button></p>
+              </div>
+            </details>
+            <details class="hc-a" id="export-everything" data-keywords="export download backup leave take out zip data portability">
+              <summary>How do I export everything?</summary>
+              <div class="accordion__body hc-a__body">
+                <p>Go to <strong>Settings</strong>, then <strong>Export</strong>. Pick a few lanes or take the whole workspace: files at full quality, every version, notes as JSON and CSV, and recaps as PDFs. We email you a download link when it’s ready, usually within the hour.</p>
+                <p>It’s free, on every plan, as often as you like. Your work is yours.</p>
+                <p class="hc-a__foot"><a class="hc-a__more" href="{{ROOT}}docs.html#exporting">What an export contains<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a><button class="hc-a__copy" type="button" data-copy-answer><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg>Copy link</button></p>
+              </div>
+            </details>
+            <details class="hc-a" id="creator-grant" data-keywords="student discount educator founder grant free education teacher">
+              <summary>Is there a discount for students or first-time founders?</summary>
+              <div class="accordion__body hc-a__body">
+                <p>Better than a discount: students, educators and first-time founders can have Studio free for a year through a Creator grant. Applying takes about five minutes, and we decide within two weeks.</p>
+                <p class="hc-a__foot"><a class="hc-a__more" href="{{ROOT}}pricing.html#grants">How Creator grants work<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a><button class="hc-a__copy" type="button" data-copy-answer><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg>Copy link</button></p>
+              </div>
+            </details>
+          </div>
+        </section>
+
+        <!-- 3 -->
+        <section class="hc-topic" id="lanes" aria-labelledby="hc-h-lanes">
+          <header class="hc-topic__head">
+            <span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-layers"/></svg></span>
+            <div>
+              <h2 class="hc-topic__title" id="hc-h-lanes">Lanes &amp; stages</h2>
+              <p class="hc-topic__d">The six stages, moving back, merging and archiving.</p>
+            </div>
+            <span class="hc-topic__n">4 answers</span>
+          </header>
+          <div class="accordion hc-acc">
+            <details class="hc-a" id="six-stages" data-keywords="stages spark shape make review launch afterglow sparkboard blueprints workbench countdown flow">
+              <summary>What are the six stages?</summary>
+              <div class="accordion__body hc-a__body">
+                <p>Every lane moves through the same six, and each one opens its own tool.</p>
+                <ol class="hc-stages">
+                  <li data-stage="spark"><span class="hc-stages__n">01</span><strong>Spark</strong><span>Sparkboard catches the idea before it fades.</span></li>
+                  <li data-stage="shape"><span class="hc-stages__n">02</span><strong>Shape</strong><span>Blueprints turns it into a one-page plan.</span></li>
+                  <li data-stage="make"><span class="hc-stages__n">03</span><strong>Make</strong><span>Workbench keeps every version and what changed.</span></li>
+                  <li data-stage="review"><span class="hc-stages__n">04</span><strong>Review</strong><span>Review Room holds the notes and the approvals.</span></li>
+                  <li data-stage="launch"><span class="hc-stages__n">05</span><strong>Launch</strong><span>Countdown runs the checklist and the schedule.</span></li>
+                  <li data-stage="afterglow"><span class="hc-stages__n">06</span><strong>Afterglow</strong><span>Afterglow recaps how it landed on day 1, 7 and 30.</span></li>
+                </ol>
+                <p class="hc-a__foot"><a class="hc-a__more" href="{{ROOT}}docs.html#stages">The stages, in depth<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a><button class="hc-a__copy" type="button" data-copy-answer><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg>Copy link</button></p>
+              </div>
+            </details>
+            <details class="hc-a" id="move-lane" data-keywords="move back backwards previous stage undo drag shortcut">
+              <summary>Can a lane move backwards?</summary>
+              <div class="accordion__body hc-a__body">
+                <p>Yes, and often it should. Drag the lane chip to any earlier stage, or press <kbd>⇧</kbd> <kbd>←</kbd>. Versions, notes and approvals travel with it, and the lane’s history records every move.</p>
+                <p>A second round of Review is never a step back. It’s just another stop.</p>
+                <p class="hc-a__foot"><a class="hc-a__more" href="{{ROOT}}docs.html#moving-a-lane">Moving a lane<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a><button class="hc-a__copy" type="button" data-copy-answer><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg>Copy link</button></p>
+              </div>
+            </details>
+            <details class="hc-a" id="merge-lanes" data-keywords="merge combine join two lanes duplicate">
+              <summary>How do I merge two lanes?</summary>
+              <div class="accordion__body hc-a__body">
+                <p>From the lane menu choose <strong>Merge into</strong>, then pick the lane to keep. Files, versions and notes come across in date order, and anything with the same name becomes a new version rather than a duplicate.</p>
+                <p>Merging arrived in v4.10, and a merge can be undone for seven days.</p>
+                <p class="hc-a__foot"><a class="hc-a__more" href="{{ROOT}}changelog.html#v4-10">Read the v4.10 notes<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a><button class="hc-a__copy" type="button" data-copy-answer><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg>Copy link</button></p>
+              </div>
+            </details>
+            <details class="hc-a" id="archive-delete" data-keywords="archive delete remove trash restore recover">
+              <summary>What happens when I archive or delete a lane?</summary>
+              <div class="accordion__body hc-a__body">
+                <p>Archiving makes a lane read-only and frees its slot; you can restore it any time. Deleting moves it to Trash for 30 days. After that it leaves our live systems within 24 hours and our backups within 30 days.</p>
+                <p>If in doubt, archive.</p>
+                <p class="hc-a__foot"><a class="hc-a__more" href="{{ROOT}}security.html#your-work">How we handle your work<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a><button class="hc-a__copy" type="button" data-copy-answer><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg>Copy link</button></p>
+              </div>
+            </details>
+          </div>
+        </section>
+
+        <!-- 4 -->
+        <section class="hc-topic" id="review" data-stage="review" aria-labelledby="hc-h-review">
+          <header class="hc-topic__head">
+            <span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-review"/></svg></span>
+            <div>
+              <h2 class="hc-topic__title" id="hc-h-review">Review &amp; feedback</h2>
+              <p class="hc-topic__d">Review links, pinned notes and approvals that stick.</p>
+            </div>
+            <span class="hc-topic__n">4 answers</span>
+          </header>
+          <div class="accordion hc-acc">
+            <details class="hc-a" id="review-links" data-keywords="reviewer account sign up guest link client password expire free feedback">
+              <summary>Do reviewers need an account?</summary>
+              <div class="accordion__body hc-a__body">
+                <p>No. Share a review link and anyone who has it can watch, read or listen in their browser, type their name and pin notes. You can give a link an expiry date and a password, and revoke it in one click.</p>
+                <p>Reviewers are always free, on every plan.</p>
+                <p class="hc-a__foot"><a class="hc-a__more" href="{{ROOT}}docs.html#review-links">Review links<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a><button class="hc-a__copy" type="button" data-copy-answer><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg>Copy link</button></p>
+              </div>
+            </details>
+            <details class="hc-a" id="pin-notes" data-keywords="comment note pin frame timecode audio waveform pixel pdf code video">
+              <summary>Can I pin a note to a frame or a second of audio?</summary>
+              <div class="accordion__body hc-a__body">
+                <p>Yes. Notes pin to a frame of video, a pixel of an image, a spot on a PDF page, a line of code and, since v4.12, a moment on an audio waveform. Press <kbd>C</kbd> to comment at the playhead.</p>
+                <p>Every note keeps its timecode, so the editor lands on the exact frame you meant.</p>
+                <p class="hc-a__foot"><a class="hc-a__more" href="{{ROOT}}docs.html#note-types">Every kind of note<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a><button class="hc-a__copy" type="button" data-copy-answer><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg>Copy link</button></p>
+              </div>
+            </details>
+            <details class="hc-a" id="approvals" data-keywords="approve approval sign off audit trail decision request changes">
+              <summary>How do approvals work?</summary>
+              <div class="accordion__body hc-a__body">
+                <p>Choose <strong>Ask for approval</strong> on a version and pick who signs off. Each approver gets a clear Approve or Request changes, and every decision is recorded with their name, the time and the exact version.</p>
+                <p>On Crew, approvals also go into an audit trail you can export for a client or a contract.</p>
+                <p class="hc-a__foot"><a class="hc-a__more" href="{{ROOT}}docs.html#approvals">Approvals<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a><button class="hc-a__copy" type="button" data-copy-answer><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg>Copy link</button></p>
+              </div>
+            </details>
+            <details class="hc-a" id="resolved-notes" data-keywords="resolved notes hidden missing carry over new version history">
+              <summary>Where do resolved notes go?</summary>
+              <div class="accordion__body hc-a__body">
+                <p>They fold into the version they were left on, so the conversation stays with the work. Switch on <strong>Show resolved</strong> to see them again.</p>
+                <p>When you upload a new version, Crestora offers to carry the open notes across and leaves the resolved ones behind.</p>
+                <p class="hc-a__foot"><button class="hc-a__copy" type="button" data-copy-answer><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg>Copy link</button></p>
+              </div>
+            </details>
+          </div>
+        </section>
+
+        <!-- 5 -->
+        <section class="hc-topic" id="launching" data-stage="launch" aria-labelledby="hc-h-launch">
+          <header class="hc-topic__head">
+            <span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-launch"/></svg></span>
+            <div>
+              <h2 class="hc-topic__title" id="hc-h-launch">Launching</h2>
+              <p class="hc-topic__d">Checklists, channels, launch rooms and moving the date.</p>
+            </div>
+            <span class="hc-topic__n">4 answers</span>
+          </header>
+          <div class="accordion hc-acc">
+            <details class="hc-a" id="launch-checklist" data-keywords="checklist countdown tasks steps milestones launch plan">
+              <summary>Where does the launch checklist come from?</summary>
+              <div class="accordion__body hc-a__body">
+                <p>Countdown builds it from your Blueprint. Every milestone becomes a step, and each connected channel adds its own: a newsletter to write, a store page to fill, a build to submit.</p>
+                <p>Assign steps, add your own, or tick them off as they happen. It fills itself in; you just check it.</p>
+                <p class="hc-a__foot"><a class="hc-a__more" href="{{ROOT}}docs.html#checklists">Checklists<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a><button class="hc-a__copy" type="button" data-copy-answer><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg>Copy link</button></p>
+              </div>
+            </details>
+            <details class="hc-a" id="launch-channels" data-keywords="channels publish schedule social newsletter store fourteen 14 post">
+              <summary>Which channels can Countdown publish to?</summary>
+              <div class="accordion__body hc-a__body">
+                <p>Studio and up schedule to 14 channels, from newsletters and online stores to social scheduling, live streams and app-store builds, through apps like Postbox, Shopfront and Clipdeck. Solo includes one channel.</p>
+                <p>Every post sits in one schedule you can read at a glance, and moves if the date does.</p>
+                <p class="hc-a__foot"><a class="hc-a__more" href="{{ROOT}}docs.html#channels">Launch channels<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a><button class="hc-a__copy" type="button" data-copy-answer><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg>Copy link</button></p>
+              </div>
+            </details>
+            <details class="hc-a" id="launch-room" data-keywords="launch room live day watch together guests countdown">
+              <summary>What is a launch room?</summary>
+              <div class="accordion__body hc-a__body">
+                <p>A live page for launch day. The crew sees the countdown, the checklist, a chat and the first numbers as they come in, all in one place.</p>
+                <p>Guests can join by link, so your sister, your editor or your beta testers can watch it go live with you.</p>
+                <p class="hc-a__foot"><a class="hc-a__more" href="{{ROOT}}docs.html#launch-rooms">Launch rooms<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a><button class="hc-a__copy" type="button" data-copy-answer><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg>Copy link</button></p>
+              </div>
+            </details>
+            <details class="hc-a" id="move-launch-date" data-keywords="date change reschedule postpone delay move launch day calendar">
+              <summary>I need to move the launch date. What happens?</summary>
+              <div class="accordion__body hc-a__body">
+                <p>Drag the date on the lane’s calendar, or change it in Countdown. Every scheduled post moves with it and keeps its spacing, and the crew gets one note about the change.</p>
+                <p>Anything already published stays published: Countdown never recalls a post.</p>
+                <p class="hc-a__foot"><button class="hc-a__copy" type="button" data-copy-answer><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg>Copy link</button></p>
+              </div>
+            </details>
+          </div>
+        </section>
+
+        <!-- 6 -->
+        <section class="hc-topic" id="integrations" aria-labelledby="hc-h-integrations">
+          <header class="hc-topic__head">
+            <span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-plug"/></svg></span>
+            <div>
+              <h2 class="hc-topic__title" id="hc-h-integrations">Integrations</h2>
+              <p class="hc-topic__d">Connecting your tools, and what they’re allowed to see.</p>
+            </div>
+            <span class="hc-topic__n">4 answers</span>
+          </header>
+          <div class="accordion hc-acc">
+            <details class="hc-a" id="connect-app" data-keywords="connect integration app tool add setup">
+              <summary>How do I connect an app?</summary>
+              <div class="accordion__body hc-a__body">
+                <p>Open a lane, choose <strong>Integrations</strong>, pick the app and sign in to it. Then say what should flow in and to which stage, such as renders to Make or orders to Afterglow.</p>
+                <p>It takes about 30 seconds, and the same app can feed as many lanes as you like.</p>
+                <p class="hc-a__foot"><a class="hc-a__more" href="{{ROOT}}integrations.html">Browse 120+ integrations<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a><button class="hc-a__copy" type="button" data-copy-answer><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg>Copy link</button></p>
+              </div>
+            </details>
+            <details class="hc-a" id="app-permissions" data-keywords="permissions access privacy scopes revoke data see read">
+              <summary>What can a connected app see?</summary>
+              <div class="accordion__body hc-a__body">
+                <p>Only what you allow. Every app asks for the narrowest access it needs, shown before you connect, and most are read-only.</p>
+                <p>You can see what each one has sent, and revoke it at any time, from <strong>Settings</strong>, then <strong>Integrations</strong>.</p>
+                <p class="hc-a__foot"><a class="hc-a__more" href="{{ROOT}}docs.html#integration-permissions">Integration permissions<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a><button class="hc-a__copy" type="button" data-copy-answer><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg>Copy link</button></p>
+              </div>
+            </details>
+            <details class="hc-a" id="missing-app" data-keywords="missing request not listed api build own custom">
+              <summary>The app I use isn’t listed. Now what?</summary>
+              <div class="accordion__body hc-a__body">
+                <p>Tell us. Requests go straight to the integrations team, and the most-asked ones ship first.</p>
+                <p>If you can’t wait, the API lets you send versions, notes and stats from anything that can make a web request.</p>
+                <p class="hc-a__foot"><a class="hc-a__more" href="{{ROOT}}integrations.html#request">Request an integration<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a><a class="hc-a__more" href="{{ROOT}}api.html">API reference<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a><button class="hc-a__copy" type="button" data-copy-answer><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg>Copy link</button></p>
+              </div>
+            </details>
+            <details class="hc-a" id="sync-delay" data-keywords="render missing sync delay slow not showing arrived reconnect">
+              <summary>Why hasn’t my render shown up yet?</summary>
+              <div class="accordion__body hc-a__body">
+                <p>Most work arrives within a minute. Large files upload in the background and appear when they’re complete, with a progress chip on the lane.</p>
+                <p>If nothing has arrived after ten minutes, open <strong>Integrations</strong>, then <strong>Activity</strong>. An expired sign-in is the usual cause, and reconnecting fixes it.</p>
+                <p class="hc-a__foot"><button class="hc-a__copy" type="button" data-copy-answer><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg>Copy link</button></p>
+              </div>
+            </details>
+          </div>
+        </section>
+
+        <!-- 7 -->
+        <section class="hc-topic" id="crews" aria-labelledby="hc-h-crews">
+          <header class="hc-topic__head">
+            <span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-users"/></svg></span>
+            <div>
+              <h2 class="hc-topic__title" id="hc-h-crews">Crews &amp; roles</h2>
+              <p class="hc-topic__d">Roles, seats, handing a lane over and portals for clients.</p>
+            </div>
+            <span class="hc-topic__n">4 answers</span>
+          </header>
+          <div class="accordion hc-acc">
+            <details class="hc-a" id="roles" data-keywords="roles owner maker reviewer guest permissions access">
+              <summary>What can each role do?</summary>
+              <div class="accordion__body hc-a__body">
+                <dl class="hc-roles">
+                  <div><dt>Owner</dt><dd>Everything, including billing, roles and deleting the lane.</dd></div>
+                  <div><dt>Maker</dt><dd>Adds work, moves stages, runs reviews and launches.</dd></div>
+                  <div><dt>Reviewer</dt><dd>Watches, reads and listens; leaves notes and approves.</dd></div>
+                  <div><dt>Guest</dt><dd>Sees what you share with them, and nothing more.</dd></div>
+                </dl>
+                <p class="hc-a__foot"><a class="hc-a__more" href="{{ROOT}}docs.html#permissions">The full permissions table<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a><button class="hc-a__copy" type="button" data-copy-answer><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg>Copy link</button></p>
+              </div>
+            </details>
+            <details class="hc-a" id="who-pays" data-keywords="seat seats pay paid price crew cost per person minimum">
+              <summary>Who needs a paid seat?</summary>
+              <div class="accordion__body hc-a__body">
+                <p>On Crew, Owners and Makers have seats. Reviewers and guests are always free, however many you invite.</p>
+                <p>Crew starts at two seats, at $16 a seat a month billed yearly, or $20 billed monthly.</p>
+                <p class="hc-a__foot"><a class="hc-a__more" href="{{ROOT}}pricing.html#plan-crew">The Crew plan<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a><button class="hc-a__copy" type="button" data-copy-answer><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg>Copy link</button></p>
+              </div>
+            </details>
+            <details class="hc-a" id="transfer-lane" data-keywords="transfer ownership hand over owner leave give">
+              <summary>How do I hand a lane over to someone else?</summary>
+              <div class="accordion__body hc-a__body">
+                <p>Open the lane’s settings and choose <strong>Transfer ownership</strong>. The new owner accepts by email, and the lane moves with its full history.</p>
+                <p>You stay on as a Maker unless you choose to leave.</p>
+                <p class="hc-a__foot"><button class="hc-a__copy" type="button" data-copy-answer><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg>Copy link</button></p>
+              </div>
+            </details>
+            <details class="hc-a" id="client-portals" data-keywords="client portal branded logo agency customer review">
+              <summary>Can a client see our work without seeing everything else?</summary>
+              <div class="accordion__body hc-a__body">
+                <p>Yes, with client review portals on Crew. A client gets a page with your logo and only the versions you send them, where they can leave notes and approve.</p>
+                <p>They never see other lanes, internal notes or who else is on the crew.</p>
+                <p class="hc-a__foot"><button class="hc-a__copy" type="button" data-copy-answer><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg>Copy link</button></p>
+              </div>
+            </details>
+          </div>
+        </section>
+
+        <!-- 8 -->
+        <section class="hc-topic" id="troubleshooting" aria-labelledby="hc-h-fix">
+          <header class="hc-topic__head">
+            <span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#hc-i-fix"/></svg></span>
+            <div>
+              <h2 class="hc-topic__title" id="hc-h-fix">Troubleshooting</h2>
+              <p class="hc-topic__d">Sign-in links, stuck uploads, iOS sync and the status page.</p>
+            </div>
+            <span class="hc-topic__n">4 answers</span>
+          </header>
+          <div class="accordion hc-acc">
+            <details class="hc-a" id="sign-in-link" data-keywords="sign in login log in magic link email password locked out spam">
+              <summary>My sign-in link didn’t arrive.</summary>
+              <div class="accordion__body hc-a__body">
+                <p>Crestora signs you in with an emailed link, never a password. Links can take a minute to arrive, and they expire after 15 minutes. Check spam and any Promotions tab, then ask for a new one.</p>
+                <p>If your company filters mail, add <span class="mono">signin@crestora.example</span> to your safe senders.</p>
+                <p class="hc-a__foot"><a class="hc-a__more" href="{{ROOT}}start.html#signin">Get a new sign-in link<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a><button class="hc-a__copy" type="button" data-copy-answer><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg>Copy link</button></p>
+              </div>
+            </details>
+            <details class="hc-a" id="upload-stuck" data-keywords="upload stuck slow frozen file size large fail">
+              <summary>My upload is stuck.</summary>
+              <div class="accordion__body hc-a__body">
+                <p>Uploads pick up where they stopped if your connection drops, so a pause usually fixes itself. If one sits at the same percentage for more than five minutes, pause and resume it from the upload tray, or try another browser.</p>
+                <p>Single files can be up to 50 GB on Studio and Crew.</p>
+                <p class="hc-a__foot"><a class="hc-a__more" href="{{ROOT}}docs.html#supported-files">Supported files<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a><button class="hc-a__copy" type="button" data-copy-answer><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg>Copy link</button></p>
+              </div>
+            </details>
+            <details class="hc-a" id="ios-sync" data-keywords="ios iphone offline sync sparkboard capture phone mobile">
+              <summary>Sparkboard on iOS hasn’t synced my captures.</summary>
+              <div class="accordion__body hc-a__body">
+                <p>Sparkboard works offline on iOS and syncs when you’re back on a connection. Open the app with a signal for a few seconds and the captures go up in the order you made them.</p>
+                <p>Nothing leaves your phone until our servers confirm they have it, so a capture can wait, but it can’t get lost.</p>
+                <p class="hc-a__foot"><a class="hc-a__more" href="{{ROOT}}changelog.html#v4-8">Offline Sparkboard, in v4.8<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a><button class="hc-a__copy" type="button" data-copy-answer><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg>Copy link</button></p>
+              </div>
+            </details>
+            <details class="hc-a" id="is-it-down" data-keywords="down outage status slow broken not working error incident">
+              <summary>Is Crestora down, or is it me?</summary>
+              <div class="accordion__body hc-a__body">
+                <p>The status page knows, and the on-call crew keeps it current: every tool, the last 90 days, and anything happening right now.</p>
+                <p>If it says all is well and something still isn’t, write to Support with the lane’s name and what you expected to happen.</p>
+                <p class="hc-a__foot"><a class="hc-a__more" href="{{ROOT}}security.html#status">Check the status page<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a><button class="hc-a__copy" type="button" data-copy-answer><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg>Copy link</button></p>
+              </div>
+            </details>
+          </div>
+        </section>
+      </div>
+    </div>
+  </section>
+
+  <!-- still stuck: a person, or the crew -->
+  <section class="hc-stuck" id="still-stuck" aria-labelledby="hc-stuck-title">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow" data-reveal="fade">People, not tickets</p>
+          <h2 class="title-2" id="hc-stuck-title" data-split>Still stuck?</h2>
+        </div>
+        <div class="section-head__aside" data-reveal>
+          <p class="lede">Some questions need a person who can look at your lane. Others need someone who’s been there. We have both.</p>
+        </div>
+      </div>
+
+      <div class="hc-stuck__grid" data-reveal-stagger>
+        <article class="hc-door hc-door--support panel panel--raised" aria-labelledby="hc-door-support" data-spotlight>
+          <div class="hc-door__top">
+            <span class="icon-box" aria-hidden="true"><svg class="icon icon--lg"><use href="#i-help"/></svg></span>
+            <span class="chip hc-door__chip"><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg>Replies in under 2 hours on weekdays</span>
+          </div>
+          <h3 class="title-3" id="hc-door-support">Write to Support</h3>
+          <p class="hc-door__text">A person on the support crew reads every message, in four time zones. Tell us the lane, what you expected and what happened instead, and you’ll hear back from them by name.</p>
+          <div class="hc-door__crew">
+            <span class="hc-door__faces" aria-hidden="true">
+              <span class="avatar" data-stage="shape">HJ</span>
+              <span class="avatar" data-stage="make">KO</span>
+              <span class="avatar" data-stage="afterglow">MS</span>
+            </span>
+            <span class="small">Hye-jin, Kofi and Marta answer most of them.</span>
+          </div>
+          <div class="hc-door__foot">
+            <a class="btn btn--primary" href="{{ROOT}}contact.html?topic=support" data-roll>Write to Support<svg class="arrow" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+            <a class="hc-door__mail" href="mailto:support@crestora.example">support@crestora.example</a>
+          </div>
+        </article>
+
+        <article class="hc-door panel" aria-labelledby="hc-door-community" data-spotlight>
+          <div class="hc-door__top">
+            <span class="icon-box" aria-hidden="true"><svg class="icon icon--lg"><use href="#i-users"/></svg></span>
+            <span class="chip hc-door__chip">Help forum · 9.1k threads</span>
+          </div>
+          <h3 class="title-3" id="hc-door-community">Ask the community</h3>
+          <p class="hc-door__text">Thousands of creators have hit your problem before you, and most like being the one who solves it. Questions in the Help forum usually get a first answer within the hour, often with a screenshot.</p>
+          <dl class="hc-door__stats">
+            <div><dt>Answered this month</dt><dd>1,960</dd></div>
+            <div><dt>Median first reply</dt><dd>42 min</dd></div>
+          </dl>
+          <div class="hc-door__foot">
+            <a class="btn" href="{{ROOT}}community.html" data-roll>Ask the community<svg class="arrow" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+          </div>
+        </article>
+      </div>
+
+      <div class="hc-more" data-reveal>
+        <p class="hc-more__t">Prefer to read?</p>
+        <ul class="hc-more__links">
+          <li><a class="link-arrow" href="{{ROOT}}docs.html" data-roll>Documentation<svg aria-hidden="true"><use href="#i-arrow"/></svg></a></li>
+          <li><a class="link-arrow" href="{{ROOT}}tutorials.html" data-roll>Tutorials<svg aria-hidden="true"><use href="#i-arrow"/></svg></a></li>
+          <li><a class="link-arrow" href="{{ROOT}}webinars.html" data-roll>Webinars<svg aria-hidden="true"><use href="#i-arrow"/></svg></a></li>
+          <li><a class="link-arrow" href="{{ROOT}}api.html" data-roll>API reference<svg aria-hidden="true"><use href="#i-arrow"/></svg></a></li>
+        </ul>
+        <p class="fiction">Crestora is a fictional company; figures are illustrative.</p>
+      </div>
+    </div>
+  </section>
+
   {{> cta}}
 </main>

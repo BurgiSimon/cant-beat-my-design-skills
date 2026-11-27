@@ -5,7 +5,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <title>Terms of Service — Crestora</title>
-<meta name="description" content="Terms of service." />
+<meta name="description" content="The agreement between you and Crestora: you own what you make, we host it only the way you ask, be decent, pay for what you use, and either of us can end it." />
 <meta name="theme-color" content="#000000" />
 <meta name="color-scheme" content="dark" />
 <link rel="canonical" href="{{SITE_URL}}/terms.html" />
@@ -13,7 +13,7 @@
 <meta property="og:site_name" content="Crestora" />
 <meta property="og:url" content="{{SITE_URL}}/terms.html" />
 <meta property="og:title" content="Terms of Service — Crestora" />
-<meta property="og:description" content="Terms of service." />
+<meta property="og:description" content="The agreement between you and Crestora: you own what you make, we host it only the way you ask, be decent, pay for what you use, and either of us can end it." />
 <meta property="og:image" content="{{SITE_URL}}/assets/img/og.jpg" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
@@ -39,7 +39,7 @@
 <script defer src="vendor/lenis.min.js"></script>
 <script type="module" src="js/main.js?v={{VERSION}}"></script>
 </head>
-<body data-page="terms" data-modules="">
+<body data-page="terms" data-modules="toc copy">
 <!-- The icon sprite: drawn on a 24 px grid in the footer's hand (round caps and joins; stroke set by .icon). Use as
      <svg class="icon" aria-hidden="true"><use href="#i-spark"/></svg>. -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
@@ -203,14 +203,302 @@
 </div>
 
 <main id="main">
-  <section class="page-hero">
+  <!-- Terms: the legal template (67-legal.css), the same as privacy: hero with the date and the row of legal documents,
+       a numbered contents list beside the short version and fourteen sections with an "In short" in the margin.
+       Generic toc (scrollspy, copy-link) and copy modules. Sample text for a fictional company. -->
+  <section class="page-hero legal-hero" aria-labelledby="legal-title">
     <div class="page-hero__lanes" aria-hidden="true"></div>
     <div class="container page-hero__inner">
-      <p class="eyebrow">Legal</p>
-      <h1 class="title-1">Terms of service.</h1>
-      <p class="lede">This page is being built.</p>
+      <p class="eyebrow" data-reveal="fade">Legal</p>
+      <h1 class="title-1" id="legal-title" data-split>Terms of service.</h1>
+      <p class="lede" data-reveal data-delay="0.12">The agreement between you and Crestora: what you can count on from us, what we ask of you, and how either of us can walk away.</p>
+      <ul class="legal-hero__meta" data-reveal="fade" data-delay="0.2">
+        <li>Last updated&nbsp;<time datetime="2026-11-01">1 November 2026</time></li>
+        <li>Version&nbsp;<strong>3.4</strong></li>
+        <li>About 14 minutes to read</li>
+      </ul>
+      <p class="fiction" data-reveal="fade" data-delay="0.25">Crestora is a fictional company; figures are illustrative. These terms are sample text.</p>
+    </div>
+    <div class="container">
+      <nav class="legal-nav" aria-label="Legal documents">
+        <ul class="legal-nav__list">
+          <li><a href="privacy.html"><svg class="icon" aria-hidden="true"><use href="#i-lock"/></svg>Privacy policy</a></li>
+          <li><a href="terms.html" aria-current="page"><svg class="icon" aria-hidden="true"><use href="#i-scale"/></svg>Terms of service</a></li>
+          <li><a href="cookies.html"><svg class="icon" aria-hidden="true"><use href="#i-cookie"/></svg>Cookie policy</a></li>
+          <li><a href="compliance.html"><svg class="icon" aria-hidden="true"><use href="#i-shield"/></svg>Compliance</a></li>
+          <li><a href="sitemap.html"><svg class="icon" aria-hidden="true"><use href="#i-sitemap"/></svg>Sitemap</a></li>
+        </ul>
+      </nav>
     </div>
   </section>
+
+  <section class="legal-body" aria-label="The terms of service">
+    <div class="container with-toc legal-layout">
+      <nav class="toc legal-toc" aria-label="On this page">
+        <p class="toc__title">On this page</p>
+        <a href="#short-version">The short version</a>
+        <a href="#accepting" data-n="01">Accepting these terms</a>
+        <a href="#account" data-n="02">Your account</a>
+        <a href="#content" data-n="03">Your content</a>
+        <a href="#acceptable-use" data-n="04">Acceptable use</a>
+        <a href="#billing" data-n="05">Plans, billing &amp; refunds</a>
+        <a href="#guests" data-n="06">Guests &amp; review links</a>
+        <a href="#integrations" data-n="07">Third-party integrations</a>
+        <a href="#availability" data-n="08">Availability</a>
+        <a href="#termination" data-n="09">Termination</a>
+        <a href="#disclaimers" data-n="10">Disclaimers</a>
+        <a href="#liability" data-n="11">Liability</a>
+        <a href="#governing-law" data-n="12">Governing law</a>
+        <a href="#changes" data-n="13">Changes</a>
+        <a href="#contact" data-n="14">Contact</a>
+        <div class="legal-toc__help">
+          <strong>Something unclear?</strong>
+          <span class="legal-mail"><a href="mailto:legal@crestora.example">legal@crestora.example</a><button class="legal-copy" type="button" data-copy="legal@crestora.example" data-copy-toast="legal@crestora.example copied" aria-label="Copy legal@crestora.example"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg></button></span>
+          <span>If these terms confuse you, that’s on us to fix.</span>
+        </div>
+      </nav>
+
+      <div class="legal-doc">
+        <details class="legal-jump">
+          <summary>On this page <span>14 sections</span><svg class="icon" aria-hidden="true"><use href="#i-chev-down"/></svg></summary>
+          <nav class="toc" aria-label="On this page">
+            <a href="#short-version">The short version</a>
+            <a href="#accepting" data-n="01">Accepting these terms</a>
+            <a href="#account" data-n="02">Your account</a>
+            <a href="#content" data-n="03">Your content</a>
+            <a href="#acceptable-use" data-n="04">Acceptable use</a>
+            <a href="#billing" data-n="05">Plans, billing &amp; refunds</a>
+            <a href="#guests" data-n="06">Guests &amp; review links</a>
+            <a href="#integrations" data-n="07">Third-party integrations</a>
+            <a href="#availability" data-n="08">Availability</a>
+            <a href="#termination" data-n="09">Termination</a>
+            <a href="#disclaimers" data-n="10">Disclaimers</a>
+            <a href="#liability" data-n="11">Liability</a>
+            <a href="#governing-law" data-n="12">Governing law</a>
+            <a href="#changes" data-n="13">Changes</a>
+            <a href="#contact" data-n="14">Contact</a>
+          </nav>
+        </details>
+
+        <section class="legal-short" aria-labelledby="short-version" data-reveal>
+          <div class="legal-short__head">
+            <h2 class="legal-short__title" id="short-version">The short version</h2>
+            <p>The whole deal in six lines. The full terms below are what count.</p>
+          </div>
+          <ul class="legal-short__list">
+            <li><span class="lane-chip" data-stage="spark">You own it</span><p><strong>You own what you make.</strong> Every file, note, version and recap, from the first spark to the launch.</p></li>
+            <li><span class="lane-chip" data-stage="shape">We host it</span><p><strong>You let us store, process and show it</strong> only the way you ask: to your crew, your reviewers and your Share Pages.</p></li>
+            <li><span class="lane-chip" data-stage="make">Be decent</span><p><strong>Be decent.</strong> Nothing illegal, nothing that harms people, nothing you don’t have the rights to.</p></li>
+            <li><span class="lane-chip" data-stage="review">Fair pay</span><p><strong>Pay for what you use.</strong> Reviewers and guests never pay, and refunds within 14 days need no reason.</p></li>
+            <li><span class="lane-chip" data-stage="launch">Free to go</span><p><strong>Either of us can end this.</strong> You leave with everything you brought and everything you made.</p></li>
+            <li><span class="lane-chip" data-stage="afterglow">Told first</span><p><strong>We tell you 30 days before</strong> any change to these terms that affects you, so you can decide.</p></li>
+          </ul>
+        </section>
+
+        <section class="legal-sec" aria-labelledby="accepting">
+          <h2 class="legal-sec__title" id="accepting" data-copy-link>Accepting these terms</h2>
+          <p class="legal-gist"><span class="legal-gist__label">In short</span>Use Crestora and these terms apply. If you sign up for a studio or a company, you’re confirming you can do that.</p>
+          <div class="prose legal-sec__body">
+            <p>These terms are an agreement between you and Crestora, Lda., a company registered in Portugal (“Crestora”, “we”). They cover the Crestora workspace on the web, iOS and desktop, review links, Share Pages and our API (together, “Crestora”).</p>
+            <p>By opening a lane, accepting an invitation or using an API key, you agree to these terms and to our <a href="privacy.html">Privacy policy</a>. If you’re signing up on behalf of a studio, label, school or company, you confirm that you’re allowed to bind it, and “you” means that organisation too.</p>
+            <p>You need to be at least 16 to use Crestora. Crew and Label customers who sign an order form with us follow that form where it differs from these terms.</p>
+          </div>
+        </section>
+
+        <section class="legal-sec" aria-labelledby="account">
+          <h2 class="legal-sec__title" id="account" data-copy-link>Your account</h2>
+          <p class="legal-gist"><span class="legal-gist__label">In short</span>Keep your email safe, because it’s your key. Tell us fast if something looks wrong.</p>
+          <div class="prose legal-sec__body">
+            <p>Crestora has no passwords. You sign in with a one-time link sent to your email, and optionally a passkey or an authenticator app. That makes your email account the key to your Crestora account, so please protect it.</p>
+            <ul>
+              <li>Give us accurate details and keep them current, especially the email you sign in with and your billing address.</li>
+              <li>You’re responsible for what happens in your account, including what crew members you invite do there.</li>
+              <li>If you suspect someone else has signed in, tell us at once at <a href="mailto:security@crestora.example">security@crestora.example</a>. We can sign every device out for you.</li>
+            </ul>
+            <p>On Crew and Label, the workspace owner controls the workspace: who joins, which roles they get, and what happens to the lanes when someone leaves.</p>
+          </div>
+        </section>
+
+        <section class="legal-sec" aria-labelledby="content">
+          <h2 class="legal-sec__title" id="content" data-copy-link>Your content</h2>
+          <p class="legal-gist"><span class="legal-gist__label">In short</span>It’s yours. You give us only the narrow licence we need to host it and show it where you send it.</p>
+          <div class="prose legal-sec__body">
+            <h3>Ownership</h3>
+            <p>Everything you or your crew put into Crestora, from voice memos and briefs to renders, builds, mixes, notes and recaps (“your content”), stays yours. These terms don’t transfer any of your rights to us, and nothing in them ever will.</p>
+            <h3>A limited licence to host it</h3>
+            <p>To run Crestora we need your permission to do a few technical things with your content. You give us a worldwide, non-exclusive, royalty-free licence to store, copy, transcode, back up and display it, <strong>only</strong> to:</p>
+            <ul>
+              <li>show it to you, your crew and the reviewers and guests you invite;</li>
+              <li>publish it on the Share Pages and launch channels you choose, when you choose;</li>
+              <li>make the previews, waveforms, thumbnails and comparisons Crestora shows you; and</li>
+              <li>keep it safe, through backups and security scanning.</li>
+            </ul>
+            <p>The licence ends when you delete the content or close your account, except for copies in backups, which expire within 30 days, and anything you’ve already published to the world.</p>
+            <div class="legal-pull">
+              <span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-lock"/></svg></span>
+              <div>
+                <p>We never sell your content, never use it to advertise Crestora without asking, and never use it to train AI models.</p>
+                <p>If we want to feature your work in Field Notes or on our site, we ask first, every time.</p>
+              </div>
+            </div>
+            <h3>What you promise</h3>
+            <p>You confirm that you have the rights to everything you upload, including music, footage, fonts and the likenesses of the people in your work, or that you have permission from whoever does.</p>
+          </div>
+        </section>
+
+        <section class="legal-sec" aria-labelledby="acceptable-use">
+          <h2 class="legal-sec__title" id="acceptable-use" data-copy-link>Acceptable use</h2>
+          <p class="legal-gist"><span class="legal-gist__label">In short</span>Make what you like. Don’t break the law, hurt people or attack Crestora.</p>
+          <div class="prose legal-sec__body">
+            <p>Crestora is for making things, and we’re happy for those things to be strange, loud or unfinished. A few things aren’t welcome. You agree not to use Crestora to:</p>
+            <ul>
+              <li>store or share anything illegal where you or your audience are, including material that sexualises minors, which we report to the authorities;</li>
+              <li>harass, threaten, dox or impersonate anyone, or share someone’s intimate images without their consent;</li>
+              <li>infringe someone else’s copyright, trademark or privacy;</li>
+              <li>send spam or bulk messages through Countdown’s launch channels to people who didn’t ask for them;</li>
+              <li>distribute malware, or probe, scrape or overload Crestora beyond the published <a href="api.html">API limits</a>; or</li>
+              <li>resell Crestora, or get around plan limits, without a written agreement with us.</li>
+            </ul>
+            <p>If we find a problem, we’ll usually ask you to fix it first. If it’s serious or urgent, we may remove the content or pause the account straight away, and we’ll tell you why. Found a security flaw? Our <a href="security.html#disclosure">responsible disclosure</a> program offers safe harbour.</p>
+          </div>
+        </section>
+
+        <section class="legal-sec" aria-labelledby="billing">
+          <h2 class="legal-sec__title" id="billing" data-copy-link>Plans, billing &amp; refunds</h2>
+          <p class="legal-gist"><span class="legal-gist__label">In short</span>Solo is free. Paid plans renew until you cancel, refunds within 14 days need no reason, and downgrading never deletes your work.</p>
+          <div class="prose legal-sec__body">
+            <p>Our plans and prices are on the <a href="pricing.html">Pricing page</a>: Solo (free), Studio, Crew (per seat, two seats minimum) and Label (by agreement). Reviewers and guests are free on every plan.</p>
+            <div class="legal-table">
+              <table>
+                <thead><tr><th scope="col">Topic</th><th scope="col">How it works</th></tr></thead>
+                <tbody>
+                  <tr><td>Renewal</td><td data-label="How it works">Paid plans renew automatically each month or year until you cancel, in two clicks from Settings → Billing.</td></tr>
+                  <tr><td>Cancelling</td><td data-label="How it works">Your plan runs to the end of the period you paid for, then your lanes move to Solo. Nothing is deleted.</td></tr>
+                  <tr><td>Refunds</td><td data-label="How it works">Within 14 days of any charge, no questions asked. After that, yearly plans are refunded pro rata if Crestora hasn’t worked out for you.</td></tr>
+                  <tr><td>Downgrades</td><td data-label="How it works">Lanes over the new plan’s limits turn read-only: open, review and export them any time, and choose which ones keep moving.</td></tr>
+                  <tr><td>Price changes</td><td data-label="How it works">At least 60 days’ notice by email. A new price applies from your next renewal, never in the middle of a period you’ve paid for.</td></tr>
+                  <tr><td>Taxes</td><td data-label="How it works">Prices exclude VAT and sales tax, which we add where the law requires and show on every invoice.</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p>Billing questions go to <a href="mailto:billing@crestora.example">billing@crestora.example</a>, and a human sorts them out the same week. If you’re a consumer in the EU or UK, your statutory rights, including the right to withdraw, are unaffected by any of this.</p>
+          </div>
+        </section>
+
+        <section class="legal-sec" aria-labelledby="guests">
+          <h2 class="legal-sec__title" id="guests" data-copy-link>Guests &amp; review links</h2>
+          <p class="legal-gist"><span class="legal-gist__label">In short</span>Anyone with a review link can see what it shows. You decide who gets one, for how long and what they can do.</p>
+          <div class="prose legal-sec__body">
+            <p>Review links let people watch, listen, pin notes and approve without an account. That’s the point, and it also means <strong>anyone holding a link can open it</strong>. You choose who receives each link, and you can give it an expiry date, a password and a watermark, or revoke it in one click.</p>
+            <p>Guests and reviewers agree to the parts of these terms that apply to them, chiefly Acceptable use, when they open a link. Their notes become part of your lane and are covered by the licence in <a href="#content">Your content</a>. The names and emails they type are handled as our <a href="privacy.html#what-we-collect">Privacy policy</a> describes.</p>
+          </div>
+        </section>
+
+        <section class="legal-sec" aria-labelledby="integrations">
+          <h2 class="legal-sec__title" id="integrations" data-copy-link>Third-party integrations</h2>
+          <p class="legal-gist"><span class="legal-gist__label">In short</span>Connected tools are run by other companies, under their own terms. You approve what each one can see.</p>
+          <div class="prose legal-sec__body">
+            <p>Crestora connects to more than 120 other tools, listed in our <a href="integrations.html">Integrations directory</a>. When you connect one, you’re also entering into an agreement with the company that makes it, and its terms and privacy policy apply to what it does.</p>
+            <p>Before you connect, we show you exactly what the integration can read and write. We test every integration in the directory, but we don’t control them, and we aren’t responsible for how they behave or for content they bring into your lane. You can disconnect any of them at any time, and its access ends immediately.</p>
+          </div>
+        </section>
+
+        <section class="legal-sec" aria-labelledby="availability">
+          <h2 class="legal-sec__title" id="availability" data-copy-link>Availability</h2>
+          <p class="legal-gist"><span class="legal-gist__label">In short</span>We work hard to keep Crestora up, and we say so publicly. Label adds a written promise with credits.</p>
+          <div class="prose legal-sec__body">
+            <p>We aim to keep Crestora available around the clock, and our record over the last 12 months was 99.97%. Live status and the past 90 days are on our <a href="security.html#status">status board</a>. Planned maintenance is announced at least 48 hours ahead and scheduled for the quietest hours in your region.</p>
+            <p>On Solo, Studio and Crew, availability is a goal rather than a guarantee. Label plans include a 99.9% monthly uptime commitment with service credits, set out in the Label order form.</p>
+            <p>Crestora will keep changing, mostly by getting better. If we ever retire a feature you pay for, we’ll give you at least 90 days’ notice and a way to export what it held.</p>
+          </div>
+        </section>
+
+        <section class="legal-sec" aria-labelledby="termination">
+          <h2 class="legal-sec__title" id="termination" data-copy-link>Termination</h2>
+          <p class="legal-gist"><span class="legal-gist__label">In short</span>You can leave any time. We can end things for serious reasons, with notice wherever we can give it. Either way, you get your work.</p>
+          <div class="prose legal-sec__body">
+            <p><strong>You can stop at any time.</strong> Export everything from Settings, then close your account. Paid plans run to the end of the period you’ve paid for.</p>
+            <p><strong>We can suspend or close an account</strong> if it seriously or repeatedly breaks these terms, if the law requires it, or if it puts other people or Crestora at risk. Unless the situation is urgent or the law forbids it, we’ll warn you first and give you a chance to put it right.</p>
+            <p>When an account closes for any reason other than illegal content, you have 30 days to export your work, and we’ll refund any unused, prepaid time if we closed it. After that, your content is deleted as our <a href="privacy.html#retention">retention schedule</a> describes. The sections on content, disclaimers, liability and governing law survive the end of this agreement.</p>
+          </div>
+        </section>
+
+        <section class="legal-sec" aria-labelledby="disclaimers">
+          <h2 class="legal-sec__title" id="disclaimers" data-copy-link>Disclaimers</h2>
+          <p class="legal-gist"><span class="legal-gist__label">In short</span>We build carefully, but software has bugs. Keep your own copies of anything you can’t afford to lose.</p>
+          <div class="prose legal-sec__body">
+            <p>We provide Crestora with care and skill, but “as is” and “as available”. To the extent the law allows, we don’t promise that it will be uninterrupted or error-free, that it will suit every purpose, or that a launch scheduled through a third-party channel will be delivered by that channel on time.</p>
+            <p>Crestora is a workspace, not an archive. We back up everything, but please keep your own copies of work you can’t replace; export is free and unlimited for exactly this reason.</p>
+            <p>Nothing in these terms limits rights you have as a consumer that the law says can’t be limited.</p>
+          </div>
+        </section>
+
+        <section class="legal-sec" aria-labelledby="liability">
+          <h2 class="legal-sec__title" id="liability" data-copy-link>Liability</h2>
+          <p class="legal-gist"><span class="legal-gist__label">In short</span>If we let you down, our liability has a ceiling: what you paid us in the last 12 months, or €100 if that’s more.</p>
+          <div class="prose legal-sec__body">
+            <p>To the extent the law allows, neither you nor Crestora is liable to the other for indirect or consequential losses, such as lost profits, lost revenue or lost opportunities, even if they were foreseeable.</p>
+            <p>Our total liability for all claims relating to Crestora in any 12-month period is limited to the greater of the amount you paid us in the 12 months before the claim, and €100.</p>
+            <p>These limits don’t apply to liability that can’t be limited by law, including for death or personal injury caused by negligence, or for fraud. If you use Crestora for a business, you’re responsible for claims arising from content you upload or from your breach of these terms.</p>
+          </div>
+        </section>
+
+        <section class="legal-sec" aria-labelledby="governing-law">
+          <h2 class="legal-sec__title" id="governing-law" data-copy-link>Governing law</h2>
+          <p class="legal-gist"><span class="legal-gist__label">In short</span>Portuguese law, Lisbon courts. Consumers keep the protections of the country they live in.</p>
+          <div class="prose legal-sec__body">
+            <p>These terms are governed by the laws of Portugal, and disputes go to the courts of Lisbon. If you’re a consumer, you also keep the protection of the mandatory laws of the country where you live, and you can bring a claim in your local courts.</p>
+            <p>Before going to court, please write to us. Most problems are solved faster by a person than by a process, and we’ll try in good faith to settle things within 30 days.</p>
+          </div>
+        </section>
+
+        <section class="legal-sec" aria-labelledby="changes">
+          <h2 class="legal-sec__title" id="changes" data-copy-link>Changes to these terms</h2>
+          <p class="legal-gist"><span class="legal-gist__label">In short</span>Changes that affect you reach you 30 days ahead. If you don’t like them, you can leave with a refund.</p>
+          <div class="prose legal-sec__body">
+            <p>We’ll update these terms as Crestora changes or the law does. For changes that affect your rights or what you pay, we’ll email account owners and show a note in the app at least 30 days before they apply. If you don’t agree, you can close your account before then, and we’ll refund any unused, prepaid time.</p>
+            <ul class="legal-versions" aria-label="Version history">
+              <li><span class="legal-versions__v">3.4</span><time datetime="2026-11-01">1 Nov 2026</time><span>Added waveform notes on audio to the content licence, and named Label’s uptime commitment. <span class="legal-versions__now">Current</span></span></li>
+              <li><span class="legal-versions__v">3.3</span><time datetime="2026-08-14">14 Aug 2026</time><span>Review links without accounts: guests agree to Acceptable use when they open one.</span></li>
+              <li><span class="legal-versions__v">3.2</span><time datetime="2026-02-03">3 Feb 2026</time><span>Rewritten in plain language, with the refund policy written out in full.</span></li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="legal-sec" aria-labelledby="contact">
+          <h2 class="legal-sec__title" id="contact" data-copy-link>Contact</h2>
+          <p class="legal-gist"><span class="legal-gist__label">In short</span>Questions about these terms go to our legal team. They answer in plain words, too.</p>
+          <div class="prose legal-sec__body">
+            <ul class="legal-contacts">
+              <li>
+                <span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-scale"/></svg></span>
+                <strong>Legal team</strong>
+                <p><span class="legal-mail"><a href="mailto:legal@crestora.example">legal@crestora.example</a><button class="legal-copy" type="button" data-copy="legal@crestora.example" data-copy-toast="legal@crestora.example copied" aria-label="Copy legal@crestora.example"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg></button></span> · replies within two working days</p>
+              </li>
+              <li>
+                <span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-tag"/></svg></span>
+                <strong>Billing and refunds</strong>
+                <p><span class="legal-mail"><a href="mailto:billing@crestora.example">billing@crestora.example</a><button class="legal-copy" type="button" data-copy="billing@crestora.example" data-copy-toast="billing@crestora.example copied" aria-label="Copy billing@crestora.example"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg></button></span> · sorted the same week</p>
+              </li>
+              <li>
+                <span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-map"/></svg></span>
+                <strong>By post</strong>
+                <p>Crestora, Lda., Travessa do Farol Velho 12, 2º, 1200-417 Lisboa, Portugal</p>
+              </li>
+              <li>
+                <span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-users"/></svg></span>
+                <strong>Through the contact form</strong>
+                <p><a href="contact.html?topic=legal">Choose “Legal &amp; privacy”</a> and it reaches the same people.</p>
+              </li>
+            </ul>
+          </div>
+        </section>
+
+        <p class="legal-fiction"><svg class="icon" aria-hidden="true"><use href="#i-info"/></svg><span><strong>Crestora is a fictional company; figures are illustrative.</strong> These terms are sample text, written for a demonstration website. They aren’t legal advice, they describe no real service, and they bind no one.</span></p>
+      </div>
+    </div>
+  </section>
+
   <!-- The compact call to action that hands every page over to the footer. -->
 <section class="cta" aria-labelledby="cta-title">
   <div class="cta__glow" aria-hidden="true"></div>

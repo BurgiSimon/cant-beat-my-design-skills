@@ -5,7 +5,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <title>Cookie Policy — Crestora</title>
-<meta name="description" content="Cookie policy." />
+<meta name="description" content="What this site and the Crestora app keep on your device, why, and for how long, with a live list of what your browser holds right now and switches to change it." />
 <meta name="theme-color" content="#000000" />
 <meta name="color-scheme" content="dark" />
 <link rel="canonical" href="{{SITE_URL}}/cookies.html" />
@@ -13,7 +13,7 @@
 <meta property="og:site_name" content="Crestora" />
 <meta property="og:url" content="{{SITE_URL}}/cookies.html" />
 <meta property="og:title" content="Cookie Policy — Crestora" />
-<meta property="og:description" content="Cookie policy." />
+<meta property="og:description" content="What this site and the Crestora app keep on your device, why, and for how long, with a live list of what your browser holds right now and switches to change it." />
 <meta property="og:image" content="{{SITE_URL}}/assets/img/og.jpg" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
@@ -39,7 +39,7 @@
 <script defer src="vendor/lenis.min.js"></script>
 <script type="module" src="js/main.js?v={{VERSION}}"></script>
 </head>
-<body data-page="cookies" data-modules="">
+<body data-page="cookies" data-modules="toc copy page-cookies">
 <!-- The icon sprite: drawn on a 24 px grid in the footer's hand (round caps and joins; stroke set by .icon). Use as
      <svg class="icon" aria-hidden="true"><use href="#i-spark"/></svg>. -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
@@ -203,14 +203,241 @@
 </div>
 
 <main id="main">
-  <section class="page-hero">
+  <!-- Cookies: the legal template (67-legal.css). The honest part first: this demo site sets no cookies and keeps a
+       few crestora: items in local and session storage, each listed with what it holds in this browser right now
+       (page-cookies.js reads them and lists any it doesn't know). Then the app's own (fictional) cookies, and the
+       preferences panel: role="switch" toggles (Essential locked on), Save choices (stored in crestora:cookies, with a
+       toast) and Reset everything (clears every crestora: item from local and session storage, with a toast).
+       Without scripts the page reads in full and says the switches need JavaScript. -->
+  <section class="page-hero legal-hero" aria-labelledby="legal-title">
     <div class="page-hero__lanes" aria-hidden="true"></div>
     <div class="container page-hero__inner">
-      <p class="eyebrow">Legal</p>
-      <h1 class="title-1">Cookie policy.</h1>
-      <p class="lede">This page is being built.</p>
+      <p class="eyebrow" data-reveal="fade">Legal</p>
+      <h1 class="title-1" id="legal-title" data-split>Cookie policy.</h1>
+      <p class="lede" data-reveal data-delay="0.12">What this site and the Crestora app keep on your device, why, and for how long. It’s short, because we keep very little.</p>
+      <ul class="legal-hero__meta" data-reveal="fade" data-delay="0.2">
+        <li>Last updated&nbsp;<time datetime="2026-11-01">1 November 2026</time></li>
+        <li>Version&nbsp;<strong>2.1</strong></li>
+        <li><a class="link-arrow" href="#preferences" data-roll>Jump to your choices</a></li>
+      </ul>
+      <p class="fiction" data-reveal="fade" data-delay="0.25">Crestora is a fictional company; figures are illustrative. The app’s cookies below are sample text; this site’s storage is real.</p>
+    </div>
+    <div class="container">
+      <nav class="legal-nav" aria-label="Legal documents">
+        <ul class="legal-nav__list">
+          <li><a href="privacy.html"><svg class="icon" aria-hidden="true"><use href="#i-lock"/></svg>Privacy policy</a></li>
+          <li><a href="terms.html"><svg class="icon" aria-hidden="true"><use href="#i-scale"/></svg>Terms of service</a></li>
+          <li><a href="cookies.html" aria-current="page"><svg class="icon" aria-hidden="true"><use href="#i-cookie"/></svg>Cookie policy</a></li>
+          <li><a href="compliance.html"><svg class="icon" aria-hidden="true"><use href="#i-shield"/></svg>Compliance</a></li>
+          <li><a href="sitemap.html"><svg class="icon" aria-hidden="true"><use href="#i-sitemap"/></svg>Sitemap</a></li>
+        </ul>
+      </nav>
     </div>
   </section>
+
+  <section class="legal-body" aria-label="The cookie policy">
+    <div class="container with-toc legal-layout">
+      <nav class="toc legal-toc" aria-label="On this page">
+        <p class="toc__title">On this page</p>
+        <a href="#short-version">The short version</a>
+        <a href="#what-they-are" data-n="01">Cookies and local storage</a>
+        <a href="#this-site" data-n="02">What this site stores</a>
+        <a href="#the-app" data-n="03">What the app uses</a>
+        <a href="#preferences" data-n="04">Your choices</a>
+        <a href="#clearing" data-n="05">Clearing it yourself</a>
+        <a href="#contact" data-n="06">Changes &amp; contact</a>
+        <div class="legal-toc__help">
+          <strong>Questions about cookies?</strong>
+          <span class="legal-mail"><a href="mailto:privacy@crestora.example">privacy@crestora.example</a><button class="legal-copy" type="button" data-copy="privacy@crestora.example" data-copy-toast="privacy@crestora.example copied" aria-label="Copy privacy@crestora.example"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg></button></span>
+          <span>The same people who wrote this page.</span>
+        </div>
+      </nav>
+
+      <div class="legal-doc">
+        <details class="legal-jump">
+          <summary>On this page <span>6 sections</span><svg class="icon" aria-hidden="true"><use href="#i-chev-down"/></svg></summary>
+          <nav class="toc" aria-label="On this page">
+            <a href="#short-version">The short version</a>
+            <a href="#what-they-are" data-n="01">Cookies and local storage</a>
+            <a href="#this-site" data-n="02">What this site stores</a>
+            <a href="#the-app" data-n="03">What the app uses</a>
+            <a href="#preferences" data-n="04">Your choices</a>
+            <a href="#clearing" data-n="05">Clearing it yourself</a>
+            <a href="#contact" data-n="06">Changes &amp; contact</a>
+          </nav>
+        </details>
+
+        <section class="legal-short" aria-labelledby="short-version" data-reveal>
+          <div class="legal-short__head">
+            <h2 class="legal-short__title" id="short-version">The short version</h2>
+            <p>Six lines, all of them true of this very page.</p>
+          </div>
+          <ul class="legal-short__list">
+            <li><span class="lane-chip" data-stage="spark">No cookies</span><p><strong>This website sets no cookies at all.</strong> Not for ads, not for analytics, not even for us.</p></li>
+            <li><span class="lane-chip" data-stage="shape">A few notes</span><p><strong>It keeps a few small notes in your browser,</strong> all named <code>crestora:</code>, listed below with what each holds right now.</p></li>
+            <li><span class="lane-chip" data-stage="make">Stays here</span><p><strong>None of it leaves your device.</strong> No trackers, no third parties, nothing sent to a server.</p></li>
+            <li><span class="lane-chip" data-stage="review">Off by default</span><p><strong>In the Crestora app, analytics stay off</strong> until you choose to turn them on.</p></li>
+            <li><span class="lane-chip" data-stage="launch">One click</span><p><strong>Reset everything clears it all,</strong> from this browser, at once. It’s the second button in <a href="#preferences">Your choices</a>.</p></li>
+            <li><span class="lane-chip" data-stage="afterglow">Ask us</span><p><strong>Questions go to <a href="mailto:privacy@crestora.example">privacy@crestora.example</a>,</strong> and a person answers.</p></li>
+          </ul>
+        </section>
+
+        <section class="legal-sec" aria-labelledby="what-they-are">
+          <h2 class="legal-sec__title" id="what-they-are" data-copy-link>Cookies and local storage</h2>
+          <p class="legal-gist"><span class="legal-gist__label">In short</span>Cookies travel to the server with every visit. Local storage stays in your browser. We sort both into three kinds.</p>
+          <div class="prose legal-sec__body">
+            <p>A <strong>cookie</strong> is a small piece of text a website asks your browser to keep and to send back with every request to that site. That’s how a site remembers you’re signed in from one page to the next.</p>
+            <p><strong>Local storage</strong> is similar, but it stays in your browser: only the site’s own scripts can read it, and it’s never sent anywhere by itself. <strong>Session storage</strong> is the same thing with a shorter memory: it forgets everything when you close the tab.</p>
+            <p>Whatever we keep, we sort into three kinds:</p>
+            <div class="legal-table">
+              <table>
+                <thead><tr><th scope="col">Kind</th><th scope="col">What it’s for</th><th scope="col">Your say</th></tr></thead>
+                <tbody>
+                  <tr><td>Essential</td><td data-label="What it’s for">Signing in, keeping your account secure, opening review links, and remembering the choices you make on this page</td><td data-label="Your say">Always on</td></tr>
+                  <tr><td>Preferences</td><td data-label="What it’s for">Remembering settings you picked, so you don’t have to pick them again</td><td data-label="Your say">On, unless you turn it off</td></tr>
+                  <tr><td>Analytics</td><td data-label="What it’s for">Counting which tools get used and how fast they load, without names, so we know what to fix</td><td data-label="Your say">Off, unless you turn it on</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <section class="legal-sec" aria-labelledby="this-site">
+          <h2 class="legal-sec__title" id="this-site" data-copy-link>What this site stores</h2>
+          <p class="legal-gist"><span class="legal-gist__label">In short</span>No cookies, seven small notes, and this table shows which of them your browser holds at this moment.</p>
+          <div class="prose legal-sec__body">
+            <p>This is the honest list for the website you’re reading: every item it can keep on your device. It sets no cookies; everything below lives in your browser’s local or session storage, and each is written only when you use the thing it remembers.</p>
+            <p class="ck-now">
+              <svg class="icon" aria-hidden="true"><use href="#i-info"/></svg>
+              <span data-ck-js data-ck-count aria-live="polite">Checking this browser…</span>
+              <span data-ck-nojs>With JavaScript off, this site can’t store anything at all.</span>
+              <a class="link-arrow" href="#preferences" data-roll>Reset everything</a>
+            </p>
+            <div class="legal-table legal-wide ck-table">
+              <table>
+                <thead><tr><th scope="col">Name</th><th scope="col">What it remembers</th><th scope="col">How long</th><th scope="col">Kind</th></tr></thead>
+                <tbody data-ck-rows>
+                  <tr><td><code>crestora:seen</code><span class="ck-where">Session storage</span><span class="ck-live" data-ck-live="seen" data-ck-where="session"></span></td><td data-label="What it remembers">That the footer’s opening has played in this tab, so later pages give you a shorter intro</td><td data-label="How long">Until you close the tab</td><td data-label="Kind"><span class="ck-cat">Preferences</span></td></tr>
+                  <tr><td><code>crestora:billing</code><span class="ck-where">Local storage</span><span class="ck-live" data-ck-live="billing" data-ck-where="local"></span></td><td data-label="What it remembers">Monthly or Yearly, as you last set it on Pricing or the home page, so both show the same prices</td><td data-label="How long">Until you clear it</td><td data-label="Kind"><span class="ck-cat">Preferences</span></td></tr>
+                  <tr><td><code>crestora:api-lang</code><span class="ck-where">Local storage</span><span class="ck-live" data-ck-live="api-lang" data-ck-where="local"></span></td><td data-label="What it remembers">The code language you picked in the API reference: curl, JavaScript or Python</td><td data-label="How long">Until you clear it</td><td data-label="Kind"><span class="ck-cat">Preferences</span></td></tr>
+                  <tr><td><code>crestora:roadmap-votes</code><span class="ck-where">Local storage</span><span class="ck-live" data-ck-live="roadmap-votes" data-ck-where="local"></span></td><td data-label="What it remembers">The Roadmap ideas you voted for, so your votes stay counted</td><td data-label="How long">Until you clear it</td><td data-label="Kind"><span class="ck-cat">Preferences</span></td></tr>
+                  <tr><td><code>crestora:tutorials</code><span class="ck-where">Local storage</span><span class="ck-live" data-ck-live="tutorials" data-ck-where="local"></span></td><td data-label="What it remembers">Lessons you marked as done in Tutorials, which fill each path’s progress</td><td data-label="How long">Until you clear it</td><td data-label="Kind"><span class="ck-cat">Preferences</span></td></tr>
+                  <tr><td><code>crestora:docs-helpful</code><span class="ck-where">Local storage</span><span class="ck-live" data-ck-live="docs-helpful" data-ck-where="local"></span></td><td data-label="What it remembers">Your “Was this helpful?” answers in the Documentation, so we don’t ask twice</td><td data-label="How long">Until you clear it</td><td data-label="Kind"><span class="ck-cat">Preferences</span></td></tr>
+                  <tr><td><code>crestora:cookies</code><span class="ck-where">Local storage</span><span class="ck-live" data-ck-live="cookies" data-ck-where="local"></span></td><td data-label="What it remembers">The choices you save on this page</td><td data-label="How long">Until you clear it</td><td data-label="Kind"><span class="ck-cat ck-cat--essential">Essential</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <section class="legal-sec" aria-labelledby="the-app">
+          <h2 class="legal-sec__title" id="the-app" data-copy-link>What the Crestora app uses</h2>
+          <p class="legal-gist"><span class="legal-gist__label">In short</span>Five first-party cookies. Three keep you signed in and safe, one remembers your layout, one counts usage only if you say yes.</p>
+          <div class="prose legal-sec__body">
+            <p>Inside the Crestora app itself, where your lanes live, we use five cookies. All of them are first-party: set by Crestora and read only by Crestora.</p>
+            <div class="legal-table legal-wide">
+              <table>
+                <thead><tr><th scope="col">Name</th><th scope="col">What it does</th><th scope="col">How long</th><th scope="col">Kind</th></tr></thead>
+                <tbody>
+                  <tr><td><code>crestora_session</code></td><td data-label="What it does">Keeps you signed in after you follow your emailed link</td><td data-label="How long">30 days, renewed as you work</td><td data-label="Kind"><span class="ck-cat ck-cat--essential">Essential</span></td></tr>
+                  <tr><td><code>crestora_csrf</code></td><td data-label="What it does">Proves a form was sent from Crestora, and not from another site pretending to be it</td><td data-label="How long">Until you close the browser</td><td data-label="Kind"><span class="ck-cat ck-cat--essential">Essential</span></td></tr>
+                  <tr><td><code>crestora_guest</code></td><td data-label="What it does">Lets a reviewer open a review link without an account, and keeps their name on their notes</td><td data-label="How long">7 days</td><td data-label="Kind"><span class="ck-cat ck-cat--essential">Essential</span></td></tr>
+                  <tr><td><code>crestora_prefs</code></td><td data-label="What it does">Your layout: the view you last opened (Lane, Board or Calendar), panel widths and your time zone</td><td data-label="How long">12 months</td><td data-label="Kind"><span class="ck-cat">Preferences</span></td></tr>
+                  <tr><td><code>cr_metrics</code></td><td data-label="What it does">First-party analytics: which tools get used and how fast screens load, counted without names. Off by default.</td><td data-label="How long">13 months</td><td data-label="Kind"><span class="ck-cat">Analytics</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p>No advertising cookies, no social media pixels, no third-party analytics. If that ever changed, this page would change first, and you’d be asked before anything was set.</p>
+          </div>
+        </section>
+
+        <section class="legal-sec" aria-labelledby="preferences">
+          <h2 class="legal-sec__title" id="preferences" data-copy-link>Your choices</h2>
+          <p class="legal-gist"><span class="legal-gist__label">In short</span>Essential stays on. Preferences and Analytics are yours to switch. Saving remembers it; Reset forgets everything.</p>
+          <div class="prose legal-sec__body">
+            <p>These choices apply to this browser. Change them whenever you like; the app shows the same switches under Settings → Privacy.</p>
+            <div class="ck-prefs" data-ck-prefs>
+              <div class="ck-prefs__head">
+                <h3><svg class="icon" aria-hidden="true"><use href="#i-cookie"/></svg>Cookie preferences</h3>
+                <p class="ck-prefs__status" data-ck-status aria-live="polite">Using the defaults. Nothing saved yet.</p>
+              </div>
+              <ul class="ck-prefs__rows">
+                <li class="ck-row">
+                  <p class="ck-row__title" id="ck-essential">Essential</p>
+                  <p class="ck-row__desc" id="ck-essential-d">Signing in, security, review links and remembering these choices. Always on, because Crestora can’t work without them.</p>
+                  <p class="ck-row__keys"><code>crestora_session</code><code>crestora_csrf</code><code>crestora_guest</code><code>crestora:cookies</code></p>
+                  <div class="ck-row__ctl">
+                    <span class="ck-row__state" aria-hidden="true">Always on</span>
+                    <button class="switch" type="button" role="switch" aria-checked="true" aria-disabled="true" aria-labelledby="ck-essential" aria-describedby="ck-essential-d"></button>
+                  </div>
+                </li>
+                <li class="ck-row">
+                  <p class="ck-row__title" id="ck-preferences">Preferences</p>
+                  <p class="ck-row__desc" id="ck-preferences-d">Remembers what you pick: monthly or yearly prices, your code language, your votes and the lessons you’ve done. Turn it off and Save clears what’s already kept.</p>
+                  <p class="ck-row__keys"><code>crestora_prefs</code><code>crestora:billing</code><code>crestora:api-lang</code><code>crestora:roadmap-votes</code><code>crestora:tutorials</code><code>crestora:docs-helpful</code><code>crestora:seen</code></p>
+                  <div class="ck-row__ctl">
+                    <span class="ck-row__state" aria-hidden="true" data-ck-state="preferences">On</span>
+                    <button class="switch" type="button" role="switch" aria-checked="true" data-ck-switch="preferences" aria-labelledby="ck-preferences" aria-describedby="ck-preferences-d"></button>
+                  </div>
+                </li>
+                <li class="ck-row">
+                  <p class="ck-row__title" id="ck-analytics">Analytics</p>
+                  <p class="ck-row__desc" id="ck-analytics-d">Counts which tools get used and how fast they load, without names, so we know what to fix next. Off unless you turn it on.</p>
+                  <p class="ck-row__keys"><code>cr_metrics</code></p>
+                  <div class="ck-row__ctl">
+                    <span class="ck-row__state" aria-hidden="true" data-ck-state="analytics">Off</span>
+                    <button class="switch" type="button" role="switch" aria-checked="false" data-ck-switch="analytics" aria-labelledby="ck-analytics" aria-describedby="ck-analytics-d"></button>
+                  </div>
+                </li>
+              </ul>
+              <p class="ck-nojs">These switches need JavaScript. With it off, this site keeps nothing at all, so there’s nothing to choose.</p>
+              <div class="ck-prefs__foot">
+                <button class="btn btn--primary" type="button" data-ck-save>Save choices</button>
+                <button class="btn" type="button" data-ck-reset><svg aria-hidden="true"><use href="#i-close"/></svg>Reset everything</button>
+                <p>Reset clears every <code>crestora:</code> item this site keeps in this browser, these choices included.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="legal-sec" aria-labelledby="clearing">
+          <h2 class="legal-sec__title" id="clearing" data-copy-link>Clearing it yourself</h2>
+          <p class="legal-gist"><span class="legal-gist__label">In short</span>Your browser can delete all of this without us. Nothing breaks; the site just forgets.</p>
+          <div class="prose legal-sec__body">
+            <p>You don’t need our button. Every browser can remove a site’s data: look for <em>cookies and site data</em> in its settings and remove the entries for this site. A private window keeps nothing once you close it.</p>
+            <p>Clearing never breaks anything. The site simply forgets: Pricing goes back to yearly, your roadmap votes come undone, the API reference shows curl again, and the footer’s opening plays in full on your next page.</p>
+          </div>
+        </section>
+
+        <section class="legal-sec" aria-labelledby="contact">
+          <h2 class="legal-sec__title" id="contact" data-copy-link>Changes &amp; contact</h2>
+          <p class="legal-gist"><span class="legal-gist__label">In short</span>If we ever add a cookie, this page changes before the cookie does.</p>
+          <div class="prose legal-sec__body">
+            <p>Anything new we store gets a row here before it ships, and anything that needs your consent waits until you give it.</p>
+            <ul class="legal-versions" aria-label="Version history">
+              <li><span class="legal-versions__v">2.1</span><time datetime="2026-11-01">1 Nov 2026</time><span>Listed this site’s storage item by item, with what each holds in your browser. <span class="legal-versions__now">Current</span></span></li>
+              <li><span class="legal-versions__v">2.0</span><time datetime="2026-02-03">3 Feb 2026</time><span>Analytics in the app became opt-in, and off for everyone until they choose.</span></li>
+            </ul>
+            <ul class="legal-contacts">
+              <li>
+                <span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-mail"/></svg></span>
+                <strong>Privacy team</strong>
+                <p><span class="legal-mail"><a href="mailto:privacy@crestora.example">privacy@crestora.example</a><button class="legal-copy" type="button" data-copy="privacy@crestora.example" data-copy-toast="privacy@crestora.example copied" aria-label="Copy privacy@crestora.example"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg></button></span> · replies within a week</p>
+              </li>
+              <li>
+                <span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-lock"/></svg></span>
+                <strong>The rest of the story</strong>
+                <p>How we handle personal data is in the <a href="privacy.html">Privacy policy</a>; our subprocessors are on <a href="compliance.html#subprocessors">Compliance</a>.</p>
+              </li>
+            </ul>
+          </div>
+        </section>
+
+        <p class="legal-fiction"><svg class="icon" aria-hidden="true"><use href="#i-info"/></svg><span><strong>Crestora is a fictional company; figures are illustrative.</strong> The app’s cookies on this page are sample text for a demonstration website. The list of what this site stores in your browser is real, and complete.</span></p>
+      </div>
+    </div>
+  </section>
+
   <!-- The compact call to action that hands every page over to the footer. -->
 <section class="cta" aria-labelledby="cta-title">
   <div class="cta__glow" aria-hidden="true"></div>

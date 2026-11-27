@@ -1,17 +1,542 @@
 <!--page
 title: Community — Crestora
-description: The crew is bigger than us.
+description: The Crestora crew: a forum for showing your lane, Creator Circles in 30 cities, Launch Night every month, feedback swaps, and a short code of conduct that keeps it kind.
+modules: countdown ics forms page-community
 nav: resources
 -->
 <main id="main">
-  <section class="page-hero">
+  <!-- Community: the hero with three numbers and a jump row; the forum's five rooms (data-spotlight); Creator Circles,
+       eight meetups whose times page-community.js turns into the visitor's own zone (each with an .ics download from
+       the generic ics module); Launch Night with the generic countdown; Creator of the Month; feedback swaps; the code
+       of conduct; #elsewhere, which the footer's four social boxes point to; and the join form (generic forms).
+       Without scripts every time reads in the city's own zone and the countdown gives way to the date. -->
+  <section class="page-hero cm-hero" aria-labelledby="cm-title">
     <div class="page-hero__lanes" aria-hidden="true"></div>
-    <div class="container page-hero__inner">
-      <p class="eyebrow">Resources</p>
-      <h1 class="title-1">The crew is bigger than us.</h1>
-      <p class="lede">This page is being built.</p>
+    <div class="container cm-hero__grid">
+      <div class="cm-hero__intro">
+        <p class="eyebrow" data-reveal="fade">Community</p>
+        <h1 class="title-1 cm-hero__title" id="cm-title" data-split>The crew is bigger than us.</h1>
+        <p class="lede" data-reveal data-delay="0.15">Thousands of creators, builders and dreamers trading notes, feedback and launch-night nerves.</p>
+        <div class="btn-row" data-reveal data-delay="0.25">
+          <a class="btn btn--primary btn--lg" href="#join" data-roll>Join the crew</a>
+          <a class="btn btn--lg" href="#forum" data-roll>Browse the forum</a>
+        </div>
+      </div>
+      <div class="cm-hero__aside" data-reveal data-delay="0.3">
+        <dl class="cm-stats">
+          <div class="cm-stats__row"><dt>Creators in the crew</dt><dd><span class="cm-stats__n" data-odometer="38000" data-suffix="+">38,000+</span></dd></div>
+          <div class="cm-stats__row"><dt>Cities with a Creator Circle</dt><dd><span class="cm-stats__n" data-odometer="30">30</span></dd></div>
+          <div class="cm-stats__row"><dt>Launch Nights so far</dt><dd><span class="cm-stats__n" data-odometer="41">41</span></dd></div>
+        </dl>
+        <p class="fiction">Crestora is a fictional company; figures are illustrative.</p>
+      </div>
+    </div>
+    <div class="container">
+      <nav class="cm-jump" aria-label="On this page" data-reveal data-delay="0.4">
+        <a href="#forum">Forum</a>
+        <a href="#circles">Creator Circles</a>
+        <a href="#launch-night">Launch Night</a>
+        <a href="#creator-of-the-month">Creator of the Month</a>
+        <a href="#swaps">Feedback swaps</a>
+        <a href="#conduct">Code of conduct</a>
+        <a href="#elsewhere">Elsewhere</a>
+        <a href="#join">Join</a>
+      </nav>
     </div>
   </section>
-  <section class="section" id="elsewhere" aria-label="Crestora elsewhere"></section>
+
+  <!-- ================= the forum ================= -->
+  <section class="cm-forum" id="forum" aria-labelledby="cm-forum-title">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow" data-reveal="fade">The forum</p>
+          <h2 class="title-2" id="cm-forum-title" data-split>Where the crew talks shop.</h2>
+        </div>
+        <div class="section-head__aside" data-reveal>
+          <p class="lede">Five rooms, open to everyone with a Crestora account, free plan included. Read without signing in; post once you’ve joined.</p>
+        </div>
+      </div>
+
+      <ul class="cm-rooms" data-reveal-stagger>
+        <li class="cm-room cm-room--big" data-spotlight>
+          <div class="cm-room__top">
+            <span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-layers"/></svg></span>
+            <span class="chip cm-room__flag">Most active</span>
+          </div>
+          <h3 class="cm-room__name">Show your lane</h3>
+          <p class="cm-room__text">Post a lane from spark to launch and let the crew see how it really went: the moodboard, the messy middle and the night it shipped.</p>
+          <div class="stage-rail cm-room__rail" data-n="6" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          <p class="cm-room__count"><span class="cm-room__n" data-odometer="12.4" data-decimals="1" data-suffix="k">12.4k</span> <span class="cm-room__unit">posts</span><span class="cm-room__week">318 this week</span></p>
+          <div class="cm-room__latest">
+            <p class="cm-room__label">Latest threads</p>
+            <ul class="cm-threads">
+              <li data-stage="afterglow"><span class="avatar" aria-hidden="true">AO</span><span class="cm-threads__t"><strong>Night Bloom, all 41 days, with every storyboard</strong><span>Amara Okafor · 86 replies</span></span></li>
+              <li data-stage="make"><span class="avatar" aria-hidden="true">PN</span><span class="cm-threads__t"><strong>Field Notes Vol. 5: a zine in 19 days, again</strong><span>Priya Nair · 41 replies</span></span></li>
+              <li data-stage="launch"><span class="avatar" aria-hidden="true">TR</span><span class="cm-threads__t"><strong>Long Table: a supper club, opened in 9 days</strong><span>Tomás Ruiz · 57 replies</span></span></li>
+            </ul>
+          </div>
+        </li>
+        <li class="cm-room" data-stage="review" data-spotlight>
+          <div class="cm-room__top">
+            <span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-review"/></svg></span>
+            <span class="lane-chip">Review</span>
+          </div>
+          <h3 class="cm-room__name">Feedback swaps</h3>
+          <p class="cm-room__text">Trade a version for a version. New pairs go out every Tuesday and Friday.</p>
+          <p class="cm-room__count"><span class="cm-room__n" data-odometer="3.8" data-decimals="1" data-suffix="k">3.8k</span> <span class="cm-room__unit">posts</span></p>
+          <p class="cm-room__last"><span>Latest</span>A 90-second trailer for a 12-page zine?</p>
+        </li>
+        <li class="cm-room" data-stage="launch" data-spotlight>
+          <div class="cm-room__top">
+            <span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-launch"/></svg></span>
+            <span class="lane-chip">Launch</span>
+          </div>
+          <h3 class="cm-room__name">Launch stories</h3>
+          <p class="cm-room__text">Launch-night nerves, the real numbers and what you’d do differently next time.</p>
+          <p class="cm-room__count"><span class="cm-room__n" data-odometer="2.6" data-decimals="1" data-suffix="k">2.6k</span> <span class="cm-room__unit">posts</span></p>
+          <p class="cm-room__last"><span>Latest</span>Sold out in three hours. Here’s my checklist.</p>
+        </li>
+        <li class="cm-room" data-stage="shape" data-spotlight>
+          <div class="cm-room__top">
+            <span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-shape"/></svg></span>
+            <span class="lane-chip">Shape</span>
+          </div>
+          <h3 class="cm-room__name">Templates</h3>
+          <p class="cm-room__text">Blueprints, checklists and launch plans other creators swear by, free to copy into a lane.</p>
+          <p class="cm-room__count"><span class="cm-room__n" data-odometer="1.9" data-decimals="1" data-suffix="k">1.9k</span> <span class="cm-room__unit">posts</span></p>
+          <p class="cm-room__last"><span>Latest</span>A ten-episode podcast season, as one Blueprint</p>
+        </li>
+        <li class="cm-room" data-spotlight>
+          <div class="cm-room__top">
+            <span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-help"/></svg></span>
+            <span class="chip">Support crew inside</span>
+          </div>
+          <h3 class="cm-room__name">Help</h3>
+          <p class="cm-room__text">Questions about Crestora, answered by creators who’ve been there and by our support crew.</p>
+          <p class="cm-room__count"><span class="cm-room__n" data-odometer="9.1" data-decimals="1" data-suffix="k">9.1k</span> <span class="cm-room__unit">threads</span></p>
+          <p class="cm-room__last"><span>Latest</span>Merging two lanes with different launch dates?</p>
+        </li>
+      </ul>
+      <div class="cm-forum__foot"><p>Need an answer right now? <a class="link-arrow" href="{{ROOT}}help.html" data-roll>Try the Help Center<svg aria-hidden="true"><use href="#i-arrow"/></svg></a></p><p class="fiction">Crestora is a fictional company; figures are illustrative.</p></div>
+    </div>
+  </section>
+
+  <!-- ================= creator circles ================= -->
+  <section class="cm-circles" id="circles" aria-labelledby="cm-circles-title">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow" data-reveal="fade">Creator Circles</p>
+          <h2 class="title-2" id="cm-circles-title" data-split>Meet the crew in person.</h2>
+        </div>
+        <div class="section-head__aside" data-reveal>
+          <p class="lede">Local meetups in 30 cities, run by creators for creators. Bring a laptop, a sketchbook or a half-finished thing.</p>
+          <p class="cm-zone"><svg class="icon" aria-hidden="true"><use href="#i-globe"/></svg><span data-zone-note>Times are in each city’s own time zone.</span></p>
+        </div>
+      </div>
+
+      <ol class="cm-meets" data-reveal-stagger>
+        <li class="cm-meet" id="circle-lisbon">
+          <p class="cm-meet__date" aria-hidden="true"><span data-part="day">2</span><span data-part="month">Dec</span><span data-part="weekday">Wed</span></p>
+          <div class="cm-meet__main">
+            <h3 class="cm-meet__city">Lisbon <span>Portugal</span></h3>
+            <p class="cm-meet__t">First-launch show-and-tell</p>
+            <p class="cm-meet__where">Crestora Lisbon hub · hosted by Joana Prates</p>
+          </div>
+          <p class="cm-meet__when" data-when data-tz="Europe/Lisbon" data-city="Lisbon"><time class="cm-meet__time" datetime="2026-12-02T19:00:00Z">19:00</time><span class="cm-meet__zone">Lisbon time</span><span class="cm-meet__there">Wed 2 Dec, 19:00–21:30</span></p>
+          <p class="cm-meet__seats"><span>22 of 60 seats left</span><i style="--left:0.37" aria-hidden="true"></i></p>
+          <button class="btn btn--sm cm-meet__add" type="button" data-ics data-title="Creator Circle Lisbon: First-launch show-and-tell" data-start="2026-12-02T19:00:00Z" data-end="2026-12-02T21:30:00Z" data-location="Crestora Lisbon hub, Lisbon" data-description="Five first launches, five minutes each, then pastéis. Hosted by Joana Prates." aria-label="Add the Lisbon Circle on 2 December to your calendar"><svg aria-hidden="true"><use href="#i-calendar"/></svg>Add to calendar</button>
+        </li>
+        <li class="cm-meet" id="circle-lagos">
+          <p class="cm-meet__date" aria-hidden="true"><span data-part="day">3</span><span data-part="month">Dec</span><span data-part="weekday">Thu</span></p>
+          <div class="cm-meet__main">
+            <h3 class="cm-meet__city">Lagos <span>Nigeria</span></h3>
+            <p class="cm-meet__t">Animation crit night</p>
+            <p class="cm-meet__where">The Loom, Yaba · hosted by Amara Okafor</p>
+          </div>
+          <p class="cm-meet__when" data-when data-tz="Africa/Lagos" data-city="Lagos"><time class="cm-meet__time" datetime="2026-12-03T17:30:00Z">18:30</time><span class="cm-meet__zone">Lagos time</span><span class="cm-meet__there">Thu 3 Dec, 18:30–21:00</span></p>
+          <p class="cm-meet__seats is-low"><span>9 of 35 seats left</span><i style="--left:0.26" aria-hidden="true"></i></p>
+          <button class="btn btn--sm cm-meet__add" type="button" data-ics data-title="Creator Circle Lagos: Animation crit night" data-start="2026-12-03T17:30:00Z" data-end="2026-12-03T20:00:00Z" data-location="The Loom, Yaba, Lagos" data-description="Bring a shot that isn't working yet. Hosted by Amara Okafor." aria-label="Add the Lagos Circle on 3 December to your calendar"><svg aria-hidden="true"><use href="#i-calendar"/></svg>Add to calendar</button>
+        </li>
+        <li class="cm-meet" id="circle-seoul">
+          <p class="cm-meet__date" aria-hidden="true"><span data-part="day">5</span><span data-part="month">Dec</span><span data-part="weekday">Sat</span></p>
+          <div class="cm-meet__main">
+            <h3 class="cm-meet__city">Seoul <span>South Korea</span></h3>
+            <p class="cm-meet__t">Small studios, big launches</p>
+            <p class="cm-meet__where">Crestora Seoul hub · hosted by Ji-woo Han</p>
+          </div>
+          <p class="cm-meet__when" data-when data-tz="Asia/Seoul" data-city="Seoul"><time class="cm-meet__time" datetime="2026-12-05T06:00:00Z">15:00</time><span class="cm-meet__zone">Seoul time</span><span class="cm-meet__there">Sat 5 Dec, 15:00–17:30</span></p>
+          <p class="cm-meet__seats"><span>31 of 50 seats left</span><i style="--left:0.62" aria-hidden="true"></i></p>
+          <button class="btn btn--sm cm-meet__add" type="button" data-ics data-title="Creator Circle Seoul: Small studios, big launches" data-start="2026-12-05T06:00:00Z" data-end="2026-12-05T08:30:00Z" data-location="Crestora Seoul hub, Seoul" data-description="How three-person studios plan a launch. Hosted by Ji-woo Han." aria-label="Add the Seoul Circle on 5 December to your calendar"><svg aria-hidden="true"><use href="#i-calendar"/></svg>Add to calendar</button>
+        </li>
+        <li class="cm-meet" id="circle-toronto">
+          <p class="cm-meet__date" aria-hidden="true"><span data-part="day">8</span><span data-part="month">Dec</span><span data-part="weekday">Tue</span></p>
+          <div class="cm-meet__main">
+            <h3 class="cm-meet__city">Toronto <span>Canada</span></h3>
+            <p class="cm-meet__t">Ship-it supper for indie devs</p>
+            <p class="cm-meet__where">Crestora Toronto hub · hosted by Sam Adeyemi</p>
+          </div>
+          <p class="cm-meet__when" data-when data-tz="America/Toronto" data-city="Toronto"><time class="cm-meet__time" datetime="2026-12-08T23:30:00Z">18:30</time><span class="cm-meet__zone">Toronto time</span><span class="cm-meet__there">Tue 8 Dec, 18:30–21:00</span></p>
+          <p class="cm-meet__seats is-low"><span>6 of 40 seats left</span><i style="--left:0.15" aria-hidden="true"></i></p>
+          <button class="btn btn--sm cm-meet__add" type="button" data-ics data-title="Creator Circle Toronto: Ship-it supper for indie devs" data-start="2026-12-08T23:30:00Z" data-end="2026-12-09T02:00:00Z" data-location="Crestora Toronto hub, Toronto" data-description="Demo what you're shipping before the holidays. Hosted by Sam Adeyemi." aria-label="Add the Toronto Circle on 8 December to your calendar"><svg aria-hidden="true"><use href="#i-calendar"/></svg>Add to calendar</button>
+        </li>
+        <li class="cm-meet" id="circle-nairobi">
+          <p class="cm-meet__date" aria-hidden="true"><span data-part="day">11</span><span data-part="month">Dec</span><span data-part="weekday">Fri</span></p>
+          <div class="cm-meet__main">
+            <h3 class="cm-meet__city">Nairobi <span>Kenya</span></h3>
+            <p class="cm-meet__t">Tutorial jam: film your workflow</p>
+            <p class="cm-meet__where">Crestora Nairobi hub · hosted by Wanjiru Mwangi</p>
+          </div>
+          <p class="cm-meet__when" data-when data-tz="Africa/Nairobi" data-city="Nairobi"><time class="cm-meet__time" datetime="2026-12-11T14:30:00Z">17:30</time><span class="cm-meet__zone">Nairobi time</span><span class="cm-meet__there">Fri 11 Dec, 17:30–20:00</span></p>
+          <p class="cm-meet__seats"><span>18 of 45 seats left</span><i style="--left:0.4" aria-hidden="true"></i></p>
+          <button class="btn btn--sm cm-meet__add" type="button" data-ics data-title="Creator Circle Nairobi: Tutorial jam" data-start="2026-12-11T14:30:00Z" data-end="2026-12-11T17:00:00Z" data-location="Crestora Nairobi hub, Nairobi" data-description="Record a five-minute lesson on how you work. Hosted by Wanjiru Mwangi." aria-label="Add the Nairobi Circle on 11 December to your calendar"><svg aria-hidden="true"><use href="#i-calendar"/></svg>Add to calendar</button>
+        </li>
+        <li class="cm-meet" id="circle-mexico-city">
+          <p class="cm-meet__date" aria-hidden="true"><span data-part="day">12</span><span data-part="month">Dec</span><span data-part="weekday">Sat</span></p>
+          <div class="cm-meet__main">
+            <h3 class="cm-meet__city">Mexico City <span>Mexico</span></h3>
+            <p class="cm-meet__t">Merch makers’ table</p>
+            <p class="cm-meet__where">Common Thread studio, Roma Norte · hosted by Valeria Ortiz</p>
+          </div>
+          <p class="cm-meet__when" data-when data-tz="America/Mexico_City" data-city="Mexico City"><time class="cm-meet__time" datetime="2026-12-12T18:00:00Z">12:00</time><span class="cm-meet__zone">Mexico City time</span><span class="cm-meet__there">Sat 12 Dec, 12:00–14:30</span></p>
+          <p class="cm-meet__seats"><span>12 of 30 seats left</span><i style="--left:0.4" aria-hidden="true"></i></p>
+          <button class="btn btn--sm cm-meet__add" type="button" data-ics data-title="Creator Circle Mexico City: Merch makers' table" data-start="2026-12-12T18:00:00Z" data-end="2026-12-12T20:30:00Z" data-location="Common Thread studio, Roma Norte, Mexico City" data-description="Samples, suppliers and pricing, over lunch. Hosted by Valeria Ortiz." aria-label="Add the Mexico City Circle on 12 December to your calendar"><svg aria-hidden="true"><use href="#i-calendar"/></svg>Add to calendar</button>
+        </li>
+        <li class="cm-meet" id="circle-berlin">
+          <p class="cm-meet__date" aria-hidden="true"><span data-part="day">7</span><span data-part="month">Jan</span><span data-part="weekday">Thu</span></p>
+          <div class="cm-meet__main">
+            <h3 class="cm-meet__city">Berlin <span>Germany</span></h3>
+            <p class="cm-meet__t">Game demo playtest night</p>
+            <p class="cm-meet__where">Lanternfish, Kreuzberg · hosted by Felix Brandt</p>
+          </div>
+          <p class="cm-meet__when" data-when data-tz="Europe/Berlin" data-city="Berlin"><time class="cm-meet__time" datetime="2027-01-07T18:00:00Z">19:00</time><span class="cm-meet__zone">Berlin time</span><span class="cm-meet__there">Thu 7 Jan, 19:00–22:00</span></p>
+          <p class="cm-meet__seats"><span>25 of 50 seats left</span><i style="--left:0.5" aria-hidden="true"></i></p>
+          <button class="btn btn--sm cm-meet__add" type="button" data-ics data-title="Creator Circle Berlin: Game demo playtest night" data-start="2027-01-07T18:00:00Z" data-end="2027-01-07T21:00:00Z" data-location="Lanternfish, Kreuzberg, Berlin" data-description="Bring a build; leave with twenty playtests. Hosted by Felix Brandt." aria-label="Add the Berlin Circle on 7 January to your calendar"><svg aria-hidden="true"><use href="#i-calendar"/></svg>Add to calendar</button>
+        </li>
+        <li class="cm-meet" id="circle-melbourne">
+          <p class="cm-meet__date" aria-hidden="true"><span data-part="day">9</span><span data-part="month">Jan</span><span data-part="weekday">Sat</span></p>
+          <div class="cm-meet__main">
+            <h3 class="cm-meet__city">Melbourne <span>Australia</span></h3>
+            <p class="cm-meet__t">Zine swap and Blueprint clinic</p>
+            <p class="cm-meet__where">Atlas &amp; Ink, Fitzroy · hosted by Hannah Cole</p>
+          </div>
+          <p class="cm-meet__when" data-when data-tz="Australia/Melbourne" data-city="Melbourne"><time class="cm-meet__time" datetime="2027-01-09T03:00:00Z">14:00</time><span class="cm-meet__zone">Melbourne time</span><span class="cm-meet__there">Sat 9 Jan, 14:00–16:30</span></p>
+          <p class="cm-meet__seats"><span>20 of 40 seats left</span><i style="--left:0.5" aria-hidden="true"></i></p>
+          <button class="btn btn--sm cm-meet__add" type="button" data-ics data-title="Creator Circle Melbourne: Zine swap and Blueprint clinic" data-start="2027-01-09T03:00:00Z" data-end="2027-01-09T05:30:00Z" data-location="Atlas & Ink, Fitzroy, Melbourne" data-description="Swap a zine, plan your next one in a Blueprint. Hosted by Hannah Cole." aria-label="Add the Melbourne Circle on 9 January to your calendar"><svg aria-hidden="true"><use href="#i-calendar"/></svg>Add to calendar</button>
+        </li>
+      </ol>
+
+      <div class="cm-start" data-reveal>
+        <span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-map"/></svg></span>
+        <p><strong>Don’t see your city?</strong> Start a Circle. We send a starter kit, cover the first night’s snacks and lend you a Launch Night replay to open with.</p>
+        <a class="btn btn--sm" href="#join" data-interest="circle" data-roll>Start a Circle</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= launch night ================= -->
+  <section class="cm-night" id="launch-night" aria-labelledby="cm-night-title">
+    <div class="container">
+      <div class="cm-night__panel panel panel--raised" data-reveal>
+        <div class="cm-night__glow" aria-hidden="true"></div>
+        <div class="cm-night__grid">
+          <div class="cm-night__intro">
+            <p class="eyebrow">Launch Night · No. 42</p>
+            <h2 class="title-2" id="cm-night-title">Five launches, one night.</h2>
+            <p class="body-l">Once a month, five creators take five minutes each to walk one lane from first spark to launch, live, with the crew in chat and questions after. Then we all go and ship something.</p>
+            <p class="cm-night__when"><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg><time datetime="2026-12-16T19:00:00Z" data-night-time>Wednesday 16 December, 19:00 UTC</time><span class="cm-night__len">90 minutes · streamed in a Countdown launch room</span></p>
+            <div class="btn-row">
+              <button class="btn btn--primary" type="button" data-ics data-title="Crestora Launch Night No. 42" data-start="2026-12-16T19:00:00Z" data-end="2026-12-16T20:30:00Z" data-location="Online, in a Countdown launch room" data-description="Five creators, five minutes each, one lane from spark to launch. Live." data-roll><svg aria-hidden="true"><use href="#i-calendar"/></svg>Add to calendar</button>
+              <a class="btn" href="#join" data-interest="night" data-roll>Remind me by email</a>
+            </div>
+            <div class="cm-night__last">
+              <p class="cm-night__label">Last month, No. 41</p>
+              <dl>
+                <div><dt>Watched live</dt><dd>1,840</dd></div>
+                <div><dt>Questions from chat</dt><dd>212</dd></div>
+                <div><dt>Shipped that week</dt><dd>5 of 5</dd></div>
+              </dl>
+            </div>
+          </div>
+
+          <div class="cm-night__side">
+            <div class="cm-count" data-countdown="2026-12-16T19:00:00Z" role="timer" aria-label="Time until Launch Night No. 42">
+              <p class="cm-count__label">Lights go green in</p>
+              <div class="cm-count__row">
+                <span class="cm-count__u"><span class="cm-count__n" data-unit="d">00</span><span class="cm-count__l">days</span></span>
+                <span class="cm-count__sep" aria-hidden="true">:</span>
+                <span class="cm-count__u"><span class="cm-count__n" data-unit="h">00</span><span class="cm-count__l">hours</span></span>
+                <span class="cm-count__sep" aria-hidden="true">:</span>
+                <span class="cm-count__u"><span class="cm-count__n" data-unit="m">00</span><span class="cm-count__l">min</span></span>
+                <span class="cm-count__sep" aria-hidden="true">:</span>
+                <span class="cm-count__u"><span class="cm-count__n" data-unit="s">00</span><span class="cm-count__l">sec</span></span>
+              </div>
+              <p class="cm-count__live"><span class="chip chip--live">Live now</span></p>
+            </div>
+
+            <div class="cm-lineup">
+              <p class="cm-lineup__label">On the bill</p>
+              <ol class="cm-lineup__list">
+                <li data-stage="afterglow"><span class="avatar" aria-hidden="true">TL</span><span class="cm-lineup__who"><strong>Theo Lindqvist</strong><span>Tidepool 1.1, one week on</span></span><span class="lane-chip">Afterglow</span></li>
+                <li data-stage="review"><span class="avatar" aria-hidden="true">MC</span><span class="cm-lineup__who"><strong>Mei Chen</strong><span>Paper Lanterns, final proofs</span></span><span class="lane-chip">Review</span></li>
+                <li data-stage="make"><span class="avatar" aria-hidden="true">KM</span><span class="cm-lineup__who"><strong>Kai Moana</strong><span>Saltwater EP, pressed to vinyl</span></span><span class="lane-chip">Make</span></li>
+                <li data-stage="launch"><span class="avatar" aria-hidden="true">RV</span><span class="cm-lineup__who"><strong>Rosa Vidal</strong><span>Moth &amp; Lamp, demo day</span></span><span class="lane-chip">Launch</span></li>
+                <li data-stage="spark"><span class="avatar" aria-hidden="true">LK</span><span class="cm-lineup__who"><strong>Lena Kowalski</strong><span>Small Hours ep. 50, from a voice memo</span></span><span class="lane-chip">Spark</span></li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= creator of the month ================= -->
+  <section class="cm-cotm" id="creator-of-the-month" aria-labelledby="cm-cotm-title">
+    <div class="container cm-cotm__grid">
+      <figure class="cm-art" data-reveal="fade">
+        <svg class="cm-art__svg" viewBox="0 0 480 560" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+          <defs>
+            <radialGradient id="cm-art-glow" cx="50%" cy="44%" r="55%"><stop offset="0" stop-color="#ff7ad9" stop-opacity=".16"/><stop offset=".55" stop-color="#ff7ad9" stop-opacity=".04"/><stop offset="1" stop-color="#ff7ad9" stop-opacity="0"/></radialGradient>
+          </defs>
+          <rect width="480" height="560" fill="url(#cm-art-glow)"/>
+          <path class="cm-art__stars" d="M156.8 74.3h0M311.2 37.8h0M31.4 240.5h0M21.7 206.1h0M37 46.3h0M62.4 108h0M464.8 25.7h0M409.2 139h0M72.1 58.9h0M89.3 275h0M262.5 33.3h0M32.1 100h0M378.9 329.7h0M119.2 271.7h0M348.3 138.2h0M466.6 59h0M75.7 231.9h0M22.5 315.4h0M364.9 271h0M417.2 150.2h0M32.6 330.9h0M391.9 136.6h0M14.6 219.2h0M83.3 58.6h0M31.8 362h0M65 119.4h0M42 213.3h0M390.7 406.6h0M135.4 197.5h0M456 74.3h0M87.2 112.1h0M114.1 230h0M5.9 199.2h0M453.9 325.8h0M428.6 367.5h0M52.9 299.6h0M102.5 79.6h0M4.1 74.5h0M51.9 173.4h0M293.8 73.2h0M123.1 165.9h0"/>
+          <path class="cm-art__stars cm-art__stars--b" d="M323.2 29.2h0M416.8 375.8h0M33.4 35.4h0M164.5 28.5h0M16 411.4h0M440 210h0"/>
+          <g class="cm-art__stem" fill="none">
+            <path style="--c:var(--spark)" pathLength="1" d="M-30 600C120 560 232 450 240 240"/>
+            <path style="--c:var(--shape)" pathLength="1" d="M-28 606C123 565 235 452 242 240"/>
+            <path style="--c:var(--make)" pathLength="1" d="M-26 612C126 570 238 454 244 240"/>
+            <path style="--c:var(--review)" pathLength="1" d="M-24 618C129 575 241 456 246 240"/>
+            <path style="--c:var(--launch)" pathLength="1" d="M-22 624C132 580 244 458 248 240"/>
+            <path style="--c:var(--afterglow)" pathLength="1" d="M-20 630C135 585 247 460 250 240"/>
+          </g>
+          <path class="cm-art__horizon" d="M0 486H480"/>
+          <g transform="translate(245 236)">
+            <g class="cm-art__bloom">
+              <g class="cm-art__petal" style="--c:var(--spark);--i:0" transform="rotate(0)"><path pathLength="1" d="M0 0C48 -34 30 -104 0 -116C-30 -104 -48 -34 0 0"/><path pathLength="1" d="M0 0C38 -27 24 -84 0 -94C-24 -84 -38 -27 0 0"/><path pathLength="1" d="M0 0C28 -20 18 -62 0 -70C-18 -62 -28 -20 0 0"/></g>
+              <g class="cm-art__petal" style="--c:var(--shape);--i:1" transform="rotate(60)"><path pathLength="1" d="M0 0C48 -34 30 -104 0 -116C-30 -104 -48 -34 0 0"/><path pathLength="1" d="M0 0C38 -27 24 -84 0 -94C-24 -84 -38 -27 0 0"/><path pathLength="1" d="M0 0C28 -20 18 -62 0 -70C-18 -62 -28 -20 0 0"/></g>
+              <g class="cm-art__petal" style="--c:var(--make);--i:2" transform="rotate(120)"><path pathLength="1" d="M0 0C48 -34 30 -104 0 -116C-30 -104 -48 -34 0 0"/><path pathLength="1" d="M0 0C38 -27 24 -84 0 -94C-24 -84 -38 -27 0 0"/><path pathLength="1" d="M0 0C28 -20 18 -62 0 -70C-18 -62 -28 -20 0 0"/></g>
+              <g class="cm-art__petal" style="--c:var(--review);--i:3" transform="rotate(180)"><path pathLength="1" d="M0 0C48 -34 30 -104 0 -116C-30 -104 -48 -34 0 0"/><path pathLength="1" d="M0 0C38 -27 24 -84 0 -94C-24 -84 -38 -27 0 0"/><path pathLength="1" d="M0 0C28 -20 18 -62 0 -70C-18 -62 -28 -20 0 0"/></g>
+              <g class="cm-art__petal" style="--c:var(--launch);--i:4" transform="rotate(240)"><path pathLength="1" d="M0 0C48 -34 30 -104 0 -116C-30 -104 -48 -34 0 0"/><path pathLength="1" d="M0 0C38 -27 24 -84 0 -94C-24 -84 -38 -27 0 0"/><path pathLength="1" d="M0 0C28 -20 18 -62 0 -70C-18 -62 -28 -20 0 0"/></g>
+              <g class="cm-art__petal" style="--c:var(--afterglow);--i:5" transform="rotate(300)"><path pathLength="1" d="M0 0C48 -34 30 -104 0 -116C-30 -104 -48 -34 0 0"/><path pathLength="1" d="M0 0C38 -27 24 -84 0 -94C-24 -84 -38 -27 0 0"/><path pathLength="1" d="M0 0C28 -20 18 -62 0 -70C-18 -62 -28 -20 0 0"/></g>
+              <circle class="cm-art__core" r="15"/>
+              <circle class="cm-art__core cm-art__core--dash" r="9"/>
+              <circle class="cm-art__seed" r="3"/>
+            </g>
+          </g>
+        </svg>
+        <figcaption class="cm-art__cap"><span><strong>Night Bloom</strong> A seven-minute animated short</span><span class="lane-chip" data-stage="afterglow">Now in: Afterglow</span></figcaption>
+      </figure>
+
+      <div class="cm-cotm__body">
+        <p class="eyebrow" data-reveal="fade">Creator of the Month</p>
+        <h2 class="title-2" id="cm-cotm-title" data-split>Amara Okafor, Lagos.</h2>
+        <div class="cm-cotm__who" data-reveal>
+          <span class="avatar" data-stage="afterglow" aria-hidden="true">AO</span>
+          <p><strong>Animator and director</strong><span>Riding with Crestora since 2023 · 14 lanes launched</span></p>
+        </div>
+        <blockquote class="cm-cotm__quote" data-reveal>
+          <p>“I used to lose the thread between storyboard and render. In Crestora the thread is the whole point.”</p>
+        </blockquote>
+        <p class="body cm-cotm__why" data-reveal>For November, the crew nominated her 212 times. Her Night Bloom threads in Show your lane, every storyboard, every dead end and the 214 frames her two collaborators reviewed from another continent, became the most-saved posts of the year.</p>
+        <dl class="cm-cotm__facts" data-reveal-stagger>
+          <div><dt>Days from spark to premiere</dt><dd data-odometer="41">41</dd></div>
+          <div><dt>Frames reviewed</dt><dd data-odometer="214">214</dd></div>
+          <div><dt>Collaborators, two continents</dt><dd data-odometer="3">3</dd></div>
+        </dl>
+        <div class="cm-cotm__links" data-reveal>
+          <a class="link-arrow" href="{{ROOT}}blog/forty-one-days-to-night-bloom.html" data-roll>Read the launch story<svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+          <a class="link-arrow" href="#circle-lagos" data-roll>Meet her at the Lagos Circle, 3 Dec<svg aria-hidden="true"><use href="#i-arrow-down"/></svg></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= feedback swaps ================= -->
+  <section class="cm-swaps" id="swaps" data-stage="review" aria-labelledby="cm-swaps-title">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow" data-reveal="fade">Feedback swaps</p>
+          <h2 class="title-2" id="cm-swaps-title" data-split>Notes for notes.</h2>
+        </div>
+        <div class="section-head__aside" data-reveal>
+          <p class="lede">Get paired with a creator from a different craft, swap one version each, and leave real notes within 48 hours. Fresh eyes, no favours owed.</p>
+        </div>
+      </div>
+
+      <div class="cm-swaps__grid">
+        <ol class="cm-steps" data-reveal-stagger>
+          <li><span class="cm-steps__n" aria-hidden="true">01</span><strong>Post a version</strong><span>Share a review link in Feedback swaps and say what you want eyes on: the pacing, the pricing, the first ten seconds.</span></li>
+          <li><span class="cm-steps__n" aria-hidden="true">02</span><strong>Get paired</strong><span>Every Tuesday and Friday we match you with someone from another craft, so your work is seen fresh, not through your own habits.</span></li>
+          <li><span class="cm-steps__n" aria-hidden="true">03</span><strong>Swap notes in 48 hours</strong><span>Pin notes in Review Room, both ways. Miss two swaps and you sit the next month out, so everyone gets what they gave.</span></li>
+        </ol>
+
+        <div class="cm-pair" data-reveal>
+          <p class="cm-pair__label">This Friday’s pair, No. 2,184</p>
+          <div class="cm-pair__cards">
+            <article class="cm-pair__card mock" aria-label="Inés Navarro’s version">
+              <div class="mock__bar"><span class="cm-pair__file">lookbook_v4.pdf</span></div>
+              <div class="cm-pair__frame cm-pair__frame--pots" aria-hidden="true">
+                <span class="cm-pair__pot"></span><span class="cm-pair__pot"></span><span class="cm-pair__pot"></span>
+                <i class="cm-pair__pin" style="--x:24%;--y:38%">1</i><i class="cm-pair__pin" style="--x:71%;--y:62%">2</i>
+              </div>
+              <p class="cm-pair__who"><span class="avatar" data-stage="review" aria-hidden="true">IN</span><span><strong>Inés Navarro</strong> Kiln &amp; Co. spring lookbook</span></p>
+            </article>
+            <span class="cm-pair__swap" aria-hidden="true"><svg class="icon"><use href="#i-arrow"/></svg><svg class="icon"><use href="#i-arrow"/></svg></span>
+            <article class="cm-pair__card mock" aria-label="Theo Lindqvist’s version">
+              <div class="mock__bar"><span class="cm-pair__file">onboarding_build_219</span></div>
+              <div class="cm-pair__frame cm-pair__frame--app" aria-hidden="true">
+                <span class="cm-pair__phone"><i></i><i></i><i></i></span>
+                <i class="cm-pair__pin" style="--x:62%;--y:30%">1</i><i class="cm-pair__pin" style="--x:40%;--y:70%">2</i><i class="cm-pair__pin" style="--x:68%;--y:78%">3</i>
+              </div>
+              <p class="cm-pair__who"><span class="avatar" data-stage="review" aria-hidden="true">TL</span><span><strong>Theo Lindqvist</strong> Tidepool 1.1 onboarding</span></p>
+            </article>
+          </div>
+          <dl class="cm-pair__stats">
+            <div><dt>Swaps in November</dt><dd>2,180</dd></div>
+            <div><dt>Median to first note</dt><dd>19 h</dd></div>
+            <div><dt>Finished both ways</dt><dd>94%</dd></div>
+          </dl>
+          <div class="cm-pair__foot">
+            <a class="btn btn--primary" href="#join" data-interest="swaps" data-roll>Get paired<svg class="arrow" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+            <p class="fiction">Crestora is a fictional company; figures are illustrative.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= code of conduct ================= -->
+  <section class="cm-conduct" id="conduct" aria-labelledby="cm-conduct-title">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow" data-reveal="fade">Code of conduct</p>
+          <h2 class="title-2" id="cm-conduct-title" data-split>Four things we ask.</h2>
+        </div>
+        <div class="section-head__aside" data-reveal>
+          <p class="lede">The crew stays kind because everyone in it keeps these. Moderators enforce them, gently first.</p>
+        </div>
+      </div>
+      <ol class="cm-rules" data-reveal-stagger>
+        <li><span class="cm-rules__n" aria-hidden="true">01</span><h3>Leave the light on</h3><p>Be kind, especially at 2 a.m. Assume the person on the other end is tired, trying and about to hit publish.</p></li>
+        <li><span class="cm-rules__n" aria-hidden="true">02</span><h3>Notes on the work, never the person</h3><p>Be specific, honest and generous. Say what works before what doesn’t, and say why.</p></li>
+        <li><span class="cm-rules__n" aria-hidden="true">03</span><h3>What’s shared in a lane stays there</h3><p>Unreleased work is someone’s livelihood. Don’t screenshot it, repost it or borrow from it.</p></li>
+        <li><span class="cm-rules__n" aria-hidden="true">04</span><h3>Show, don’t sell</h3><p>Share your work freely. Keep pitches, client hunting and affiliate links out of the forum and the Circles.</p></li>
+      </ol>
+      <p class="cm-report" data-reveal><svg class="icon" aria-hidden="true"><use href="#i-shield"/></svg><span>Something wrong? Use the flag on any post, or write to <a href="mailto:conduct@crestora.example">conduct@crestora.example</a>. Fourteen volunteer moderators and two of our crew reply to every report within a day.</span></p>
+    </div>
+  </section>
+
+  <!-- ================= elsewhere: where the footer's social boxes lead ================= -->
+  <section class="cm-else" id="elsewhere" aria-labelledby="cm-else-title">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow" data-reveal="fade">Crestora elsewhere</p>
+          <h2 class="title-2" id="cm-else-title" data-split>Four channels, four jobs.</h2>
+        </div>
+        <div class="section-head__aside" data-reveal>
+          <p class="lede">The footer’s four boxes lead here. Crestora is fictional, and so are its accounts, but if they existed this is what each one would be for.</p>
+        </div>
+      </div>
+      <ul class="cm-nets" data-reveal-stagger>
+        <li class="cm-net" data-spotlight>
+          <span class="cm-net__box" aria-hidden="true"><svg viewBox="0 0 24 24"><path class="o" d="M4.6 4.3h4.1l10.7 15.4h-4.1z"/><path d="M18.9 4.3 13.2 10.8M10.7 13.4 5.1 19.7"/></svg></span>
+          <h3 class="cm-net__name">X <span class="cm-net__handle">@crestora</span></h3>
+          <p class="cm-net__text">Release notes the minute they ship, Launch Night play-by-play and the odd 2 a.m. thought from the crew.</p>
+          <dl class="cm-net__meta"><div><dt>How often</dt><dd>Most days</dd></div><div><dt>Best for</dt><dd>What’s new, right now</dd></div></dl>
+        </li>
+        <li class="cm-net" data-spotlight>
+          <span class="cm-net__box" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="4.6"/><circle cx="12" cy="12" r="3.7"/><circle class="f" cx="16.5" cy="7.5" r="1"/></svg></span>
+          <h3 class="cm-net__name">Instagram <span class="cm-net__handle">@crestora</span></h3>
+          <p class="cm-net__text">Work from the crew, frames, pots, covers and posters, always credited to the people who made them, plus stories from every Circle.</p>
+          <dl class="cm-net__meta"><div><dt>How often</dt><dd>Three posts a week</dd></div><div><dt>Best for</dt><dd>Seeing the work</dd></div></dl>
+        </li>
+        <li class="cm-net" data-spotlight>
+          <span class="cm-net__box" aria-hidden="true"><svg viewBox="0 0 24 24"><g class="f"><rect x="4.4" y="9.4" width="3.3" height="10.3" rx=".3"/><circle cx="6.05" cy="5.9" r="1.95"/><path d="M10.1 9.4h3.15v1.45c.55-1.02 1.83-1.72 3.33-1.72 2.85 0 3.62 1.78 3.62 4.48v6.09h-3.3v-5.4c0-1.33-.33-2.27-1.58-2.27-1.3 0-1.92.95-1.92 2.4v5.27h-3.3z"/></g></svg></span>
+          <h3 class="cm-net__name">LinkedIn <span class="cm-net__handle">Crestora</span></h3>
+          <p class="cm-net__text">Open roles, company news and longer notes on running a small creative business without burning out.</p>
+          <dl class="cm-net__meta"><div><dt>How often</dt><dd>Weekly</dd></div><div><dt>Best for</dt><dd>Jobs and the business side</dd></div></dl>
+        </li>
+        <li class="cm-net" data-spotlight>
+          <span class="cm-net__box" aria-hidden="true"><svg viewBox="0 0 24 24"><path class="f" fill-rule="evenodd" d="M6.2 6.1h11.6a3.6 3.6 0 0 1 3.6 3.6v4.6a3.6 3.6 0 0 1-3.6 3.6H6.2a3.6 3.6 0 0 1-3.6-3.6V9.7a3.6 3.6 0 0 1 3.6-3.6Zm4 3.05v5.7L15 12z"/></svg></span>
+          <h3 class="cm-net__name">YouTube <span class="cm-net__handle">@crestora</span></h3>
+          <p class="cm-net__text">Tutorials, Launch Night replays and every webinar, chaptered so you can skip straight to your stage.</p>
+          <dl class="cm-net__meta"><div><dt>How often</dt><dd>New every Thursday</dd></div><div><dt>Best for</dt><dd>Learning by watching</dd></div></dl>
+        </li>
+      </ul>
+      <p class="cm-else__note" data-reveal>Nothing here links out. Everything these accounts would share already lives on this site: <a href="{{ROOT}}blog.html">Field Notes</a>, <a href="{{ROOT}}tutorials.html">Tutorials</a>, <a href="{{ROOT}}webinars.html">Webinars</a> and the <a href="{{ROOT}}changelog.html">Changelog</a>.</p>
+    </div>
+  </section>
+
+  <!-- ================= join ================= -->
+  <section class="cm-join" id="join" aria-labelledby="cm-join-title">
+    <div class="container cm-join__grid">
+      <div class="cm-join__intro">
+        <p class="eyebrow" data-reveal="fade">Join the crew</p>
+        <h2 class="title-2" id="cm-join-title" data-split>Pull up a chair.</h2>
+        <p class="lede" data-reveal>Free, with or without a Crestora plan. One form and you’re in the forum, on the list for Circles near you, and in Friday’s digest of the best threads.</p>
+        <ul class="cm-gets" data-reveal-stagger>
+          <li><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-users"/></svg></span><span><strong>The forum</strong>Post in all five rooms, and save the threads you’ll want later.</span></li>
+          <li><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-map"/></svg></span><span><strong>Circle invites</strong>A note when a meetup is announced within reach of your city.</span></li>
+          <li><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-mail"/></svg></span><span><strong>The Friday digest</strong>Five threads, one Launch Night clip and nothing to sell you.</span></li>
+        </ul>
+      </div>
+
+      <form class="cm-form panel panel--raised" action="{{ROOT}}community.html#join" method="get" data-form data-demo data-success="Welcome to the crew. Your first Friday digest lands on 4 Dec. (Demo: nothing was sent.)" data-success-key="Joined" data-reveal>
+        <div class="cm-form__row">
+          <div class="field">
+            <label class="field__label" for="cm-name">Name</label>
+            <input class="input" id="cm-name" name="name" type="text" required maxlength="80" autocomplete="name" placeholder="Inés Navarro" data-msg-required="What should the crew call you?" />
+            <p class="field__error"></p>
+          </div>
+          <div class="field">
+            <label class="field__label" for="cm-email">Email</label>
+            <input class="input" id="cm-email" name="email" type="email" required maxlength="120" autocomplete="email" inputmode="email" placeholder="you@studio.example" data-msg-required="We need an address for your sign-in link." />
+            <p class="field__error"></p>
+          </div>
+        </div>
+        <div class="cm-form__row">
+          <div class="field">
+            <label class="field__label" for="cm-craft">What do you make?</label>
+            <select class="input" id="cm-craft" name="craft" required data-msg-required="Pick the closest; you can change it later.">
+              <option value="">Choose one</option>
+              <option value="film">Film &amp; animation</option>
+              <option value="apps">Apps &amp; games</option>
+              <option value="audio">Music &amp; audio</option>
+              <option value="writing">Writing &amp; zines</option>
+              <option value="objects">Objects &amp; merch</option>
+              <option value="everything">A bit of everything</option>
+            </select>
+            <p class="field__error"></p>
+          </div>
+          <div class="field">
+            <label class="field__label" for="cm-city">Nearest city <span class="cm-form__opt">(optional)</span></label>
+            <input class="input" id="cm-city" name="city" type="text" maxlength="60" autocomplete="address-level2" placeholder="Valencia" />
+            <p class="field__error"></p>
+          </div>
+        </div>
+        <fieldset class="cm-form__picks">
+          <legend class="field__label">Send me</legend>
+          <div class="cm-form__checks">
+            <label class="check"><input type="checkbox" name="send" value="digest" id="cm-i-digest" checked /><span>The Friday digest</span></label>
+            <label class="check"><input type="checkbox" name="send" value="circles" id="cm-i-circles" /><span>Circle invites near me</span></label>
+            <label class="check"><input type="checkbox" name="send" value="night" id="cm-i-night" /><span>Launch Night reminders</span></label>
+            <label class="check"><input type="checkbox" name="send" value="swaps" id="cm-i-swaps" /><span>Feedback swap pairings</span></label>
+            <label class="check cm-form__wide"><input type="checkbox" name="send" value="circle" id="cm-i-circle" /><span>I’d like to start a Circle in my city</span></label>
+          </div>
+        </fieldset>
+        <div class="field cm-form__agree">
+          <label class="check"><input type="checkbox" name="conduct" value="yes" id="cm-conduct" required data-msg-required="Joining means keeping the code of conduct; tick to agree." /><span>I’ll keep the <a href="#conduct">code of conduct</a>.</span></label>
+          <p class="field__error"></p>
+        </div>
+        <button class="btn btn--primary btn--lg btn--block" type="submit">Join the crew<svg class="arrow" aria-hidden="true"><use href="#i-arrow"/></svg></button>
+        <p class="cm-form__note"><svg class="icon" aria-hidden="true"><use href="#i-info"/></svg>This is a demo: nothing you type is stored or sent.</p>
+      </form>
+    </div>
+  </section>
+
   {{> cta}}
 </main>

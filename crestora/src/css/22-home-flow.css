@@ -1,0 +1,216 @@
+/* Home #features: the flow. The base layout (phones, reduced motion, no scripts) is a list of six stage blocks, each
+   with its colour streak, icon, copy and Night Bloom's card in that stage. On a wide screen with motion home-flow.js
+   adds .is-pinned: one pinned stage where the ribbon of six bands lights as you scroll, the card rides it and the copy
+   swaps with a short masked rise. */
+
+.home-flow { position: relative; }
+.home-flow__night, .home-flow__ride, .home-flow__rail { display: none; }
+
+/* ---- the list: six stage blocks ---- */
+.home-flow__list { display: grid; counter-reset: none; }
+.home-flow__block {
+  position: relative; display: grid; grid-template-columns: minmax(0, 620px) minmax(340px, 1fr); gap: 32px clamp(32px, 5vw, 96px); align-items: center; justify-items: start;
+  padding-block: clamp(40px, 5vw, 64px);
+  /* the stage's colour streak along its top edge */
+  background: linear-gradient(90deg, var(--stage), color-mix(in srgb, var(--stage) 30%, transparent) 22%, var(--line-faint) 58%) top left / 100% 1px no-repeat;
+}
+.home-flow__block::before { content: ""; position: absolute; left: 0; top: -3px; width: 7px; height: 7px; border-radius: 50%; background: var(--stage); box-shadow: 0 0 12px var(--stage); }
+.home-flow__block:last-child { padding-bottom: 0; }
+.home-flow__block > .hf-card { justify-self: center; }
+
+.home-flow__copy { display: grid; justify-items: start; max-width: 600px; }
+.home-flow__meta { display: flex; align-items: center; gap: 16px; }
+.home-flow__meta .icon-box { box-shadow: inset 0 0 0 1px var(--box); }
+.home-flow__label { display: grid; grid-template-columns: auto auto; gap: 7px 10px; align-items: baseline; }
+.home-flow__index { font: 400 11px/1 var(--font-brand); letter-spacing: 0.12em; color: #fff; }
+.home-flow__name { font: 400 11px/1 var(--font-brand); letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-muted); }
+.home-flow__tool { grid-column: 1 / -1; font: 500 15px/1.2 var(--font); color: #fff; letter-spacing: -0.005em; }
+.home-flow__headline { margin-top: 22px; }
+.home-flow__headline > span { display: block; }
+.home-flow__body { margin-top: 14px; max-width: 34em; }
+.home-flow__bullets { display: grid; gap: 9px; margin-top: 20px; }
+.home-flow__bullets li { position: relative; padding-left: 22px; font-size: 15px; line-height: 1.45; color: var(--ink-soft); }
+.home-flow__bullets li::before { content: ""; position: absolute; left: 0; top: 0.72em; width: 10px; height: 1px; background: var(--stage); box-shadow: 0 0 6px var(--stage); }
+
+/* ---- the card: Night Bloom, in each stage ---- */
+.hf-card {
+  --card-h: 282px;
+  position: relative; display: grid; grid-template-rows: auto 1fr auto; gap: 14px; width: 320px; min-height: var(--card-h); margin: 0; padding: 14px 16px;
+  border-radius: var(--radius-lg); color: var(--ink-soft); font-size: 13px; line-height: 1.4;
+  background: linear-gradient(180deg, rgb(255 255 255 / 0.07), rgb(255 255 255 / 0.02)), rgb(7 8 12 / 0.6);
+  box-shadow: inset 0 0 0 1px var(--line-soft), inset 0 1px 0 rgb(255 255 255 / 0.06), 0 40px 90px -40px #000;
+}
+.hf-card::after { content: ""; position: absolute; z-index: -1; inset: 12% 0 -12%; border-radius: 50%; background: radial-gradient(closest-side, color-mix(in srgb, var(--stage) 14%, transparent), transparent); pointer-events: none; }
+.hf-brief, .hf-make, .hf-review, .hf-launch, .hf-glow { display: flex; flex-direction: column; min-height: 0; }
+.hf-card__bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.hf-card__title { font: 600 14px/1 var(--font); color: #fff; letter-spacing: -0.005em; }
+.hf-card__bar .lane-chip { height: 24px; font-size: 11.5px; }
+.hf-card__foot { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding-top: 12px; border-top: 1px solid var(--line-faint); font-size: 11.5px; color: var(--ink-muted); }
+.hf-card__foot .stage-rail { flex: none; width: 76px; }
+.hf-kicker, .hf-brief__kicker, .hf-glow__kicker { font: 400 9.5px/1 var(--font-brand); letter-spacing: 0.15em; text-transform: uppercase; color: var(--ink-muted); }
+
+/* 01 Spark: a moodboard */
+.hf-mood { flex: 1; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); grid-auto-rows: 1fr; gap: 6px; }
+.hf-mood__tile { position: relative; display: flex; flex-direction: column; justify-content: space-between; gap: 6px; min-height: 72px; padding: 8px; border-radius: 9px; background: rgb(255 255 255 / 0.035); box-shadow: inset 0 0 0 1px var(--line-faint); overflow: hidden; }
+.hf-mood__cap { font-size: 10px; line-height: 1.2; color: var(--ink-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.hf-mood__wave { display: flex; align-items: center; gap: 2px; height: 26px; }
+.hf-mood__wave i { flex: 1; height: 30%; border-radius: 2px; background: var(--spark); opacity: 0.9; }
+.hf-mood__wave i:nth-child(3n) { height: 70%; } .hf-mood__wave i:nth-child(4n+1) { height: 46%; } .hf-mood__wave i:nth-child(5n+2) { height: 92%; } .hf-mood__wave i:nth-child(7n) { height: 20%; }
+.hf-mood__sketch { width: 100%; height: 34px; fill: none; stroke: #fff; stroke-width: 1.3; stroke-linecap: round; stroke-linejoin: round; opacity: 0.88; }
+.hf-mood__tile--bus { background: linear-gradient(180deg, #0a1230, #05060b 70%); }
+.hf-mood__bus { position: relative; display: block; height: 26px; margin-top: 6px; border-radius: 4px 4px 2px 2px; background: rgb(255 255 255 / 0.08); box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.14); }
+.hf-mood__bus i { position: absolute; top: 6px; width: 10px; height: 7px; border-radius: 1.5px; background: rgb(214 228 255 / 0.85); box-shadow: 0 0 8px rgb(120 160 255 / 0.8); }
+.hf-mood__bus i:nth-child(1) { left: 8px; } .hf-mood__bus i:nth-child(2) { left: 23px; } .hf-mood__bus i:nth-child(3) { left: 38px; opacity: 0.4; } .hf-mood__bus i:nth-child(4) { left: 53px; }
+.hf-mood__link { display: flex; align-items: flex-start; gap: 5px; font-size: 10.5px; line-height: 1.25; color: #fff; }
+.hf-mood__link .icon { width: 13px; height: 13px; flex: none; color: var(--spark); }
+.hf-mood__swatches { display: flex; gap: 4px; padding-top: 4px; }
+.hf-mood__swatches i { width: 16px; height: 16px; border-radius: 50%; box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.16); }
+.hf-mood__swatches i:nth-child(1) { background: #0a1230; } .hf-mood__swatches i:nth-child(2) { background: var(--spark); } .hf-mood__swatches i:nth-child(3) { background: #b9c8ff; } .hf-mood__swatches i:nth-child(4) { background: #f4f6ff; }
+.hf-mood__tile--note { justify-content: center; background: rgb(58 109 255 / 0.08); box-shadow: inset 0 0 0 1px rgb(58 109 255 / 0.3); }
+.hf-mood__note { font-size: 11px; line-height: 1.3; color: #fff; }
+
+/* 02 Shape: a one-page brief */
+.hf-brief__what { margin-top: 9px; font-size: 13.5px; line-height: 1.45; color: #fff; }
+.hf-brief__ms { position: relative; display: grid; gap: 9px; margin-top: auto; padding-top: 14px; }
+.hf-brief__ms::before { content: ""; position: absolute; left: 3.5px; top: 22px; bottom: 8px; width: 1px; background: color-mix(in srgb, var(--shape) 45%, transparent); }
+.hf-brief__ms li { position: relative; display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 12px; padding-left: 20px; font-size: 12.5px; color: var(--ink-soft); }
+.hf-brief__ms li::before { content: ""; position: absolute; left: 0; top: 50%; width: 8px; height: 8px; margin-top: -4px; border-radius: 50%; background: var(--shape); box-shadow: 0 0 8px var(--shape); }
+.hf-brief__ms li:last-child::before { background: #000; box-shadow: inset 0 0 0 1px var(--shape); }
+.hf-brief__ms b { font: 400 10px/1 var(--font-brand); letter-spacing: 0.08em; color: #fff; }
+
+/* 03 Make: a render, and the versions before it */
+.hf-make__file { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; color: #fff; }
+.hf-make__file .mono { font-size: 12px; }
+.hf-make__pct { font: 600 12.5px/1 var(--font); font-variant-numeric: tabular-nums; color: #fff; }
+.hf-make__eta { margin-top: 8px; font-size: 11.5px; color: var(--ink-muted); }
+.hf-make__bar { height: 4px; margin-top: 9px; border-radius: 4px; background: rgb(255 255 255 / 0.08); overflow: hidden; }
+.hf-make__bar i { display: block; width: 72%; height: 100%; border-radius: inherit; background: var(--make); box-shadow: 0 0 10px var(--make); }
+.hf-make__versions { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-top: auto; padding-top: 14px; }
+.hf-make__versions li { display: grid; gap: 6px; font-size: 10.5px; color: var(--ink-muted); white-space: nowrap; }
+.hf-make__thumb { display: block; aspect-ratio: 16 / 10; border-radius: 6px; box-shadow: inset 0 0 0 1px var(--line-soft);
+  background: radial-gradient(14px 14px at 50% 44%, rgb(240 244 255 / 0.9), rgb(200 214 255 / 0.4) 40%, transparent 72%), radial-gradient(60% 50% at 50% 110%, rgb(58 109 255 / 0.25), transparent), linear-gradient(180deg, #0b1024, #05060a); }
+.hf-make__versions li:nth-child(1) .hf-make__thumb { filter: saturate(0.4) brightness(0.75); }
+.hf-make__versions li:nth-child(2) .hf-make__thumb { filter: saturate(0.7) brightness(0.88); }
+.hf-make__versions .is-new { color: #fff; }
+.hf-make__versions .is-new .hf-make__thumb { box-shadow: inset 0 0 0 1px var(--make), 0 0 14px -4px var(--make); }
+
+/* 04 Review: a frame with notes pinned to it */
+.hf-review { flex: 1; }
+.hf-review__frame { position: relative; flex: 1; min-height: 112px; border-radius: 9px; overflow: hidden; box-shadow: inset 0 0 0 1px var(--line-soft);
+  background: radial-gradient(70% 60% at 50% 115%, rgb(58 109 255 / 0.22), transparent 70%), linear-gradient(180deg, #0c1022, #040509); }
+.hf-review__moon { position: absolute; left: 70%; top: 18%; width: 22px; height: 22px; border-radius: 50%; background: radial-gradient(circle at 35% 35%, #fff, #cfd8ff 60%, transparent 62%); box-shadow: 0 0 24px rgb(200 214 255 / 0.5); }
+.hf-review__stem { position: absolute; left: 46%; bottom: 0; width: 1.5px; height: 46%; background: linear-gradient(transparent, rgb(255 255 255 / 0.7)); }
+.hf-review__stem::before { content: ""; position: absolute; left: 50%; top: -12px; width: 26px; height: 16px; translate: -50% 0; border-radius: 50% 50% 46% 46%; background: radial-gradient(circle at 50% 70%, #fff, rgb(255 255 255 / 0.35) 55%, transparent 72%); }
+.hf-review__pin { position: absolute; left: var(--x); top: var(--y); display: grid; place-items: center; width: 20px; height: 20px; margin: -10px 0 0 -10px; border-radius: 50%; background: var(--review); color: #000; font: 700 10.5px/1 var(--font); box-shadow: 0 0 0 3px rgb(255 177 61 / 0.25), 0 4px 10px rgb(0 0 0 / 0.5); }
+.hf-review__tc { position: absolute; left: 8px; bottom: 7px; padding: 3px 6px; border-radius: 4px; font-size: 10px; color: #fff; background: rgb(0 0 0 / 0.55); }
+.hf-review__ok { display: flex; align-items: center; gap: 8px; margin-top: 12px; font-size: 13px; font-weight: 500; color: #fff; }
+.hf-review__ok .icon { width: 18px; height: 18px; padding: 3px; border-radius: 50%; color: #000; background: var(--review); stroke-width: 2.4; }
+
+/* 05 Launch: the countdown flips to Live */
+.hf-launch__what { font-size: 12.5px; color: var(--ink-soft); }
+.hf-launch__row { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 10px; }
+.hf-launch__count { display: flex; font: 400 27px/1 var(--font-brand); letter-spacing: 0.02em; color: #fff; font-variant-numeric: tabular-nums; }
+.hf-launch__d { display: inline-block; height: 1em; overflow: hidden; }
+.hf-launch__d > span { display: flex; flex-direction: column; translate: 0 -3em; }
+.hf-launch__d > span > span { height: 1em; }
+.hf-launch__live { display: inline-flex; align-items: center; gap: 7px; height: 26px; padding: 0 11px 0 9px; border-radius: 999px; font: 600 10.5px/1 var(--font); letter-spacing: 0.12em; text-transform: uppercase; color: #fff;
+  background: rgb(255 59 59 / 0.12); box-shadow: inset 0 0 0 1px rgb(255 59 59 / 0.6); }
+.hf-launch__live::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--launch); box-shadow: 0 0 10px var(--launch); }
+.hf-launch__ch { display: grid; gap: 7px; margin-top: 16px; font-size: 12.5px; color: var(--ink-soft); }
+.hf-launch__ch li { display: flex; align-items: center; gap: 8px; }
+.hf-launch__ch .icon { width: 15px; height: 15px; color: var(--launch); stroke-width: 2; }
+
+/* 06 Afterglow: the recap */
+.hf-glow__stats { display: flex; gap: 30px; margin-top: 12px; }
+.hf-glow__stats div { display: grid; gap: 6px; }
+.hf-glow__stats dd { order: -1; margin: 0; font: 400 25px/1 var(--font-brand); color: #fff; letter-spacing: -0.01em; }
+.hf-glow__stats dt { font-size: 11.5px; color: var(--ink-muted); }
+.hf-glow { flex: 1; }
+.hf-glow__line { display: block; flex: 1; width: 100%; min-height: 54px; margin-top: 14px; overflow: visible; }
+.hf-glow__area { fill: rgb(255 122 217 / 0.12); }
+.hf-glow__stroke { fill: none; stroke: var(--afterglow); stroke-width: 1.6; stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: 0; filter: drop-shadow(0 0 5px rgb(255 122 217 / 0.7)); }
+
+/* ---- below 760 px the blocks stack: copy, then the card ---- */
+@media (max-width: 759.98px) {
+  .home-flow__block { grid-template-columns: minmax(0, 1fr); }
+  .hf-card { width: min(100%, 340px); }
+}
+
+/* ================= the pinned stage (wide screens with motion; home-flow.js adds .is-pinned) ================= */
+.home-flow.is-pinned { --top: calc(var(--header-h) + clamp(12px, 3.4vh, 40px)); padding-block: 0; }
+.home-flow.is-pinned .home-flow__stage { position: relative; height: 100vh; overflow: hidden; }
+.home-flow.is-pinned .home-flow__night { display: block; position: absolute; inset: 0; z-index: 0; background: var(--bg); }
+.home-flow.is-pinned .home-flow__inner { position: relative; z-index: 1; height: 100%; }
+
+/* the section's title: what the stage shows as it arrives, before the first stage takes over */
+.home-flow.is-pinned .home-flow__head { position: absolute; left: 0; top: var(--top); width: min(620px, 46%); margin: 0; grid-template-columns: 1fr; gap: 22px; transition: opacity 0.6s var(--ease-out), translate 0.8s var(--ease-out), visibility 0s; }
+.home-flow.is-pinned:not(.is-title) .home-flow__head { opacity: 0; translate: 0 -22px; visibility: hidden; transition: opacity 0.35s var(--ease-out), translate 0.6s var(--ease-out), visibility 0s linear 0.6s; }
+
+/* the rail: six labelled stops on a hairline, a tablist that follows the scroll */
+.home-flow.is-pinned .home-flow__rail { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); position: absolute; right: 0; top: calc(var(--top) + 6px); width: min(560px, 42%); }
+.home-flow__rail::before, .home-flow__rail::after { content: ""; position: absolute; left: 4px; top: 4px; height: 1px; pointer-events: none; }
+.home-flow__rail::before { width: calc(500% / 6); background: var(--line-soft); }
+.home-flow__rail::after { width: calc(500% / 6 * var(--rail)); background: var(--rainbow); background-size: calc(100% / max(var(--rail), 0.001)) 100%; box-shadow: 0 0 8px rgb(35 211 255 / 0.5); }
+.home-flow__tab { position: relative; z-index: 1; display: grid; justify-items: start; align-content: start; gap: 8px; min-height: 52px; padding: 0 6px 6px 0; text-align: left; border-radius: 6px; color: var(--ink-muted); transition: color 0.4s var(--ease-out); }
+.home-flow__tab i { width: 9px; height: 9px; border-radius: 50%; background: #000; box-shadow: inset 0 0 0 1px var(--line); transition: background-color 0.4s var(--ease-out), box-shadow 0.4s var(--ease-out), scale 0.4s var(--ease-spring); }
+.home-flow__tab-n { margin-top: 6px; font: 400 10px/1 var(--font-brand); letter-spacing: 0.1em; }
+.home-flow__tab-name { font: 500 13.5px/1 var(--font); }
+.home-flow__tab.is-done i { background: var(--stage); box-shadow: 0 0 8px -1px var(--stage); }
+.home-flow__tab[aria-selected="true"] { color: #fff; }
+.home-flow__tab[aria-selected="true"] i { background: var(--stage); box-shadow: 0 0 0 4px color-mix(in srgb, var(--stage) 24%, transparent), 0 0 14px var(--stage); scale: 1.15; }
+@media (hover: hover) { .home-flow__tab:hover { color: #fff; } .home-flow__tab:hover i { box-shadow: inset 0 0 0 1px #fff; } .home-flow__tab.is-done:hover i, .home-flow__tab[aria-selected="true"]:hover i { box-shadow: 0 0 0 4px color-mix(in srgb, var(--stage) 30%, transparent), 0 0 14px var(--stage); } }
+.home-flow__tab:focus-visible { outline-offset: 6px; }
+
+/* the stage panel: one block's copy at a time, swapping with a short rise (the headline out of a mask) */
+.home-flow.is-pinned .home-flow__list { position: static; }
+.home-flow.is-pinned .home-flow__block { display: block; padding: 0; background: none; }
+.home-flow.is-pinned .home-flow__block::before { content: none; }
+.home-flow.is-pinned .home-flow__copy { position: absolute; left: 0; top: var(--top); width: min(540px, 42%); visibility: hidden; transition: visibility 0s linear 0.5s; }
+.home-flow.is-pinned .home-flow__copy > :not(.home-flow__headline) { opacity: 0; translate: 0 16px; transition: opacity 0.3s var(--ease-out), translate 0.5s var(--ease-out); }
+.home-flow.is-pinned .home-flow__headline { overflow: clip; padding-bottom: 0.08em; margin-bottom: -0.08em; }
+.home-flow.is-pinned .home-flow__headline > span { translate: 0 108%; transition: translate 0.45s var(--ease-out); }
+.home-flow.is-pinned .is-past .home-flow__copy > :not(.home-flow__headline) { translate: 0 -12px; }
+.home-flow.is-pinned .is-past .home-flow__headline > span { translate: 0 -108%; }
+.home-flow.is-pinned .is-current .home-flow__copy { visibility: visible; transition: visibility 0s; }
+.home-flow.is-pinned .is-current .home-flow__copy > :not(.home-flow__headline) { opacity: 1; translate: 0 0; transition: opacity 0.6s var(--ease-out) var(--d, 0.1s), translate 0.8s var(--ease-out) var(--d, 0.1s); }
+.home-flow.is-pinned .is-current .home-flow__headline > span { translate: 0 0; transition: translate 0.85s var(--ease-out) 0.08s; }
+.home-flow.is-pinned .home-flow__meta { --d: 0.05s; }
+.home-flow.is-pinned .home-flow__body { --d: 0.16s; }
+.home-flow.is-pinned .home-flow__bullets { --d: 0.22s; }
+.home-flow.is-pinned .home-flow__copy .icon-box { box-shadow: inset 0 0 0 1px var(--box), 0 0 22px -6px var(--stage); }
+
+/* the card: one pane of glass riding the ribbon; each stage's state crossfades inside it */
+.home-flow.is-pinned .home-flow__ride, .home-flow.is-pinned .home-flow__card { position: absolute; left: 0; top: 0; width: 320px; height: 282px; will-change: transform; }
+.home-flow.is-pinned .home-flow__ride {
+  display: block; z-index: 2; border-radius: var(--radius-lg);
+  background: linear-gradient(180deg, rgb(255 255 255 / 0.08), rgb(255 255 255 / 0.02)), rgb(6 8 14 / 0.64);
+  box-shadow: inset 0 0 0 1px var(--line-soft), inset 0 1px 0 rgb(255 255 255 / 0.08), 0 40px 90px -30px #000;
+  -webkit-backdrop-filter: blur(18px) saturate(1.4); backdrop-filter: blur(18px) saturate(1.4);
+}
+.home-flow.is-pinned .home-flow__card { z-index: 3; min-height: 0; background: none; box-shadow: none; opacity: 0; visibility: hidden; transition: opacity 0.28s var(--ease-out), visibility 0s linear 0.3s; }
+.home-flow.is-pinned .home-flow__card::after { content: none; }
+/* the title shows first; the card arrives with the first stage */
+.home-flow.is-pinned .home-flow__ride { transition: opacity 0.5s var(--ease-out), scale 0.6s var(--ease-spring); }
+.home-flow.is-pinned.is-title .home-flow__ride { opacity: 0; scale: 0.92; }
+.home-flow.is-pinned .is-current .home-flow__card { opacity: 1; visibility: visible; transition: opacity 0.5s var(--ease-out) 0.1s, visibility 0s; }
+
+/* each state plays a little as it arrives */
+@keyframes hf-pop { from { opacity: 0; scale: 0.86; } }
+@keyframes hf-in { from { opacity: 0; translate: 0 6px; } }
+@keyframes hf-bar { from { width: 38%; } }
+@keyframes hf-count { from { translate: 0 0; } }
+@keyframes hf-live { from { opacity: 0; scale: 0.6; } }
+@keyframes hf-draw { from { stroke-dashoffset: 1; } }
+@keyframes hf-fade { from { opacity: 0; } }
+.home-flow.is-pinned .is-current .hf-mood__tile { animation: hf-pop 0.55s var(--ease-spring) both calc(0.18s + var(--i) * 0.06s); }
+.home-flow.is-pinned .is-current .hf-brief__ms li { animation: hf-in 0.6s var(--ease-out) both calc(0.3s + var(--i) * 0.12s); }
+.home-flow.is-pinned .is-current .hf-make__bar i { animation: hf-bar 1.6s var(--ease-out) both 0.25s; }
+.home-flow.is-pinned .is-current .hf-make__versions li { animation: hf-in 0.6s var(--ease-out) both calc(0.2s + var(--i) * 0.1s); }
+.home-flow.is-pinned .is-current .hf-review__pin { animation: hf-pop 0.5s var(--ease-spring) both calc(0.3s + var(--i) * 0.16s); }
+.home-flow.is-pinned .is-current .hf-review__ok { animation: hf-in 0.6s var(--ease-out) both 0.85s; }
+.home-flow.is-pinned .is-current .hf-launch__d > span { animation: hf-count 1.5s steps(3, end) both 0.35s; }
+.home-flow.is-pinned .is-current .hf-launch__live { animation: hf-live 0.6s var(--ease-spring) both 1.95s; }
+.home-flow.is-pinned .is-current .hf-launch__ch li { animation: hf-in 0.5s var(--ease-out) both calc(2.1s + var(--i, 0) * 0.08s); }
+.home-flow.is-pinned .is-current .hf-launch__ch li:nth-child(2) { --i: 1; } .home-flow.is-pinned .is-current .hf-launch__ch li:nth-child(3) { --i: 2; }
+.home-flow.is-pinned .is-current .hf-glow__stroke { animation: hf-draw 1.4s var(--ease-in-out) both 0.25s; }
+.home-flow.is-pinned .is-current .hf-glow__area { animation: hf-fade 1s var(--ease-out) both 0.9s; }

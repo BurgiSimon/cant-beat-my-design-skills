@@ -1,16 +1,338 @@
 <!--page
 title: Security — Crestora
-description: Security without speed bumps.
+description: How Crestora keeps your unreleased work safe: encryption, access controls, infrastructure, incident response, responsible disclosure and live status.
+modules: toc copy page-security
 nav: product
 -->
 <main id="main">
-  <section class="page-hero">
+  <!-- Security: a fact band of Michroma numerals, then the long read in a .with-toc layout (the generic toc module
+       gives it scrollspy and copy-link buttons on the headings), ending at #status: a live chip and 90 days of
+       hairline ticks with a tooltip per day (fictional, fixed data). The security email has a copy button. -->
+  <section class="page-hero sec-hero" aria-labelledby="sec-title">
     <div class="page-hero__lanes" aria-hidden="true"></div>
     <div class="container page-hero__inner">
-      <p class="eyebrow">Product</p>
-      <h1 class="title-1">Security without speed bumps.</h1>
-      <p class="lede">This page is being built.</p>
+      <p class="eyebrow" data-reveal="fade">Security</p>
+      <h1 class="title-1 sec-hero__title" id="sec-title" data-split>Security without speed bumps.</h1>
+      <p class="lede" data-reveal data-delay="0.15">Your unreleased work is the most valuable thing you own. Here’s how we keep it that way.</p>
+      <div class="sec-hero__links" data-reveal data-delay="0.25">
+        <a class="chip chip--live sec-hero__status" href="#status">All systems normal</a>
+        <a class="link-arrow" href="#disclosure" data-roll>Report a vulnerability <svg aria-hidden="true"><use href="#i-arrow-down"/></svg></a>
+      </div>
     </div>
   </section>
+
+  <section class="sec-facts" aria-labelledby="sec-facts-title">
+    <div class="container">
+      <h2 class="sr" id="sec-facts-title">Security in four numbers</h2>
+      <ul class="sec-band" data-reveal-stagger>
+        <li class="sec-band__item">
+          <span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-lock"/></svg></span>
+          <span class="sec-band__n" data-odometer="256" data-prefix="AES-">AES-256</span>
+          <span class="sec-band__l">Encryption at rest, on every file, version and note</span>
+        </li>
+        <li class="sec-band__item">
+          <span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-shield"/></svg></span>
+          <span class="sec-band__n" data-odometer="1.3" data-decimals="1" data-prefix="TLS&nbsp;">TLS&nbsp;1.3</span>
+          <span class="sec-band__l">In transit, on every connection, with nothing older allowed</span>
+        </li>
+        <li class="sec-band__item">
+          <span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-server"/></svg></span>
+          <span class="sec-band__n"><span data-odometer="99.97" data-decimals="2">99.97</span><span class="sec-pct">%</span></span>
+          <span class="sec-band__l">Uptime over the last 12 months, across every tool</span>
+        </li>
+        <li class="sec-band__item">
+          <span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-clock"/></svg></span>
+          <span class="sec-band__n" data-odometer="24" data-suffix="/7">24/7</span>
+          <span class="sec-band__l">On-call security and infrastructure crew, in four time zones</span>
+        </li>
+      </ul>
+      <p class="fiction sec-fiction">Crestora is a fictional company; figures are illustrative.</p>
+    </div>
+  </section>
+
+  <section class="sec-doc" aria-label="How we protect your work">
+    <div class="container with-toc">
+      <nav class="toc sec-toc" aria-label="On this page">
+        <p class="toc__title">On this page</p>
+        <a href="#your-work">Your work stays yours</a>
+        <a href="#data-protection">Data protection</a>
+        <a href="#access">Access</a>
+        <a href="#infrastructure">Infrastructure</a>
+        <a href="#application-security">Application security</a>
+        <a href="#incident-response">Incident response</a>
+        <a href="#disclosure">Responsible disclosure</a>
+        <a href="#status">Status</a>
+      </nav>
+
+      <div class="sec-body">
+        <!-- 1 -->
+        <div class="prose sec-part">
+          <h2 id="your-work" data-copy-link>Your work stays yours</h2>
+          <p>Everything you put in a lane, from the first voice memo to the final master, belongs to you. We store it, process it and show it only in the ways you ask us to, and only to the people you invite.</p>
+          <ul class="sec-pledges">
+            <li>
+              <span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-shield"/></svg></span>
+              <strong>Never used to train models</strong>
+              <span>We don’t train AI models on your files, notes or recaps, and we don’t let anyone else do it either.</span>
+            </li>
+            <li>
+              <span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-download"/></svg></span>
+              <strong>Export any time</strong>
+              <span>Every file, version, note and recap, in open formats, from Settings. No ticket, no waiting, no fee.</span>
+            </li>
+            <li>
+              <span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-close"/></svg></span>
+              <strong>Delete means delete</strong>
+              <span>Deleted lanes leave our live systems within 24 hours and our backups within 30 days.</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- 2 -->
+        <div class="prose sec-part">
+          <h2 id="data-protection" data-copy-link>Data protection</h2>
+          <p>Your work is encrypted from the moment it leaves your device until an invited reviewer opens it, and copied somewhere safe four times a day.</p>
+          <dl class="sec-specs">
+            <div><dt>At rest</dt><dd><strong>AES-256</strong>On every file, version and note, with keys held in a dedicated key service and rotated every year.</dd></div>
+            <div><dt>In transit</dt><dd><strong>TLS 1.3</strong>On every connection, with HSTS and modern ciphers only. Older protocols are refused.</dd></div>
+            <div><dt>Backups</dt><dd><strong>Every 6 hours</strong>Encrypted copies, kept for 30 days in a second region, then deleted for good.</dd></div>
+            <div><dt>Per-lane keys</dt><dd><strong>On Label</strong>Each lane can have its own key, so access to one lane never opens another.</dd></div>
+          </dl>
+        </div>
+
+        <!-- 3 -->
+        <div class="prose sec-part">
+          <h2 id="access" data-copy-link>Access</h2>
+          <p>The right people see the right lane, and nobody else does. Every plan gets the basics; Crew and Label add the controls bigger teams ask for.</p>
+          <ul class="sec-access">
+            <li><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-key"/></svg></span><div><strong>Two-factor sign-in</strong><span>Your emailed sign-in link plus a code from an authenticator app.</span></div><em>All plans</em></li>
+            <li><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-lock"/></svg></span><div><strong>Passkeys</strong><span>Sign in with your face, fingerprint or device PIN. Nothing to phish.</span></div><em>All plans</em></li>
+            <li><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-users"/></svg></span><div><strong>SSO/SAML and SCIM</strong><span>Sign in through your identity provider; people join and leave with your directory.</span></div><em>Label</em></li>
+            <li><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-layers"/></svg></span><div><strong>Crew roles</strong><span>Owner, Maker, Reviewer and Guest, each seeing only what it needs.</span></div><em>Crew &amp; Label</em></li>
+            <li><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-link"/></svg></span><div><strong>Review links you control</strong><span>Give any link an expiry date and a password, and revoke it in one click.</span></div><em>All plans</em></li>
+            <li><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-doc"/></svg></span><div><strong>Watermarked review copies</strong><span>Reviewers see copies stamped with their name, so a leak has a return address.</span></div><em>Studio and up</em></li>
+          </ul>
+        </div>
+
+        <!-- 4 -->
+        <div class="prose sec-part">
+          <h2 id="infrastructure" data-copy-link>Infrastructure</h2>
+          <p>Crestora runs in two regions on an established cloud provider whose data centres hold ISO/IEC 27001 and SOC 2 certifications. Your workspace lives in one region; on Label, you choose which.</p>
+          <div class="sec-regions">
+            <div class="sec-region">
+              <span class="sec-region__code">EU</span>
+              <p><strong>Ireland and Germany</strong>The home of workspaces opened in Europe, Africa and the Middle East. Backups stay inside the EU.</p>
+            </div>
+            <div class="sec-region">
+              <span class="sec-region__code">US</span>
+              <p><strong>Oregon and Virginia</strong>The home of workspaces opened in the Americas and Asia-Pacific. Backups stay inside the US.</p>
+            </div>
+          </div>
+          <ul>
+            <li>Every workspace’s data is isolated from every other’s, and production runs in its own accounts, apart from staging and development.</li>
+            <li>Least privilege: engineers have no standing access to production. Access is requested, approved, time-boxed and logged.</li>
+            <li>Infrastructure is written as code and reviewed like code. Nothing in production is changed by hand.</li>
+          </ul>
+        </div>
+
+        <!-- 5 -->
+        <div class="prose sec-part">
+          <h2 id="application-security" data-copy-link>Application security</h2>
+          <p>Every change to Crestora is read by a second engineer before it ships, and checked by machines before and after.</p>
+          <ul>
+            <li>Code review on every change, with anything touching sign-in, sharing or billing also reviewed by our security team.</li>
+            <li>Dependency scanning on every build; critical fixes are patched within 72 hours.</li>
+            <li>Static analysis and secret scanning in the pipeline, so a key never reaches the repository.</li>
+            <li>An annual independent penetration test. The latest, in September 2026, found no critical or high-severity issues; the summary is available under NDA through <a href="{{ROOT}}compliance.html">Compliance</a>.</li>
+            <li>Security training for everyone when they join, and again every year.</li>
+          </ul>
+        </div>
+
+        <!-- 6 -->
+        <div class="prose sec-part">
+          <h2 id="incident-response" data-copy-link>Incident response</h2>
+          <p>If something goes wrong, we move fast and we tell you. The on-call crew works from a written playbook that we rehearse every quarter, and these are the promises we hold ourselves to for anything that touches your data.</p>
+          <ol class="sec-ir">
+            <li><span class="sec-ir__when">Minutes</span><strong>Detect</strong><span>Alerts page the on-call engineer, day or night, in every time zone.</span></li>
+            <li><span class="sec-ir__when">1 hour</span><strong>Contain</strong><span>We stop the damage first: revoke, isolate, roll back.</span></li>
+            <li><span class="sec-ir__when">72 hours</span><strong>Tell you</strong><span>Affected customers hear from a human, usually much sooner.</span></li>
+            <li><span class="sec-ir__when">10 days</span><strong>Learn</strong><span>A plain-language write-up of what happened and what we changed.</span></li>
+          </ol>
+        </div>
+
+        <!-- 7 -->
+        <div class="prose sec-part">
+          <h2 id="disclosure" data-copy-link>Responsible disclosure</h2>
+          <p>Found something? We want to hear about it, and we’ll thank you properly. Write to us with the steps to reproduce it, and please give us a fair chance to fix it before you tell anyone else.</p>
+          <div class="sec-contact panel panel--raised" data-spotlight>
+            <div class="sec-contact__who">
+              <span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-mail"/></svg></span>
+              <div>
+                <p class="sec-contact__label">Security team</p>
+                <p class="sec-contact__mail mono">security@crestora.example</p>
+              </div>
+            </div>
+            <div class="sec-contact__actions">
+              <button class="btn" type="button" data-copy="security@crestora.example" data-copy-toast="security@crestora.example copied"><svg aria-hidden="true"><use href="#i-copy"/></svg>Copy address</button>
+              <a class="btn btn--primary" href="mailto:security@crestora.example?subject=Security%20report">Write to us <svg class="arrow" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+            </div>
+            <dl class="sec-contact__facts">
+              <div><dt>Bounty</dt><dd>Up to $5,000</dd></div>
+              <div><dt>First reply</dt><dd>2 working days</dd></div>
+              <div><dt>Research</dt><dd>Safe harbour</dd></div>
+            </dl>
+          </div>
+          <ul>
+            <li>Test only against your own workspace. Never access, change or keep anyone else’s data.</li>
+            <li>No denial of service, spam or social engineering of our crew or our customers.</li>
+            <li>Act in good faith within these rules and we won’t pursue legal action; we’ll credit you, with your permission, when the fix ships.</li>
+            <li>Out of scope: reports from automated scanners without a working proof, and the demo forms on this site, which send nothing anywhere.</li>
+          </ul>
+        </div>
+
+        <!-- 8 -->
+        <div class="prose sec-part">
+          <h2 id="status" data-copy-link>Status</h2>
+          <p>Every part of Crestora, checked every minute from four regions. If something is slow, you’ll see it here before you see it in a lane.</p>
+          <div class="sec-status panel" data-status>
+            <div class="sec-status__head">
+              <span class="chip chip--live">All systems normal</span>
+              <p class="sec-status__sum"><span class="sec-status__pct">99.98<span class="sec-pct">%</span></span> uptime, last 90 days</p>
+            </div>
+            <div class="sec-uptime">
+              <div class="sec-uptime__bar" data-uptime role="img" aria-label="Daily status for the last 90 days, 30 August to 27 November 2026: 87 days without incidents and 3 days with short incidents, listed below.">
+                <i data-d="2026-08-30"></i>
+                <i data-d="2026-08-31"></i>
+                <i data-d="2026-09-01"></i>
+                <i data-d="2026-09-02"></i>
+                <i data-d="2026-09-03"></i>
+                <i data-d="2026-09-04"></i>
+                <i data-d="2026-09-05"></i>
+                <i data-d="2026-09-06"></i>
+                <i data-d="2026-09-07"></i>
+                <i data-d="2026-09-08"></i>
+                <i data-d="2026-09-09"></i>
+                <i data-d="2026-09-10"></i>
+                <i data-d="2026-09-11"></i>
+                <i data-d="2026-09-12"></i>
+                <i data-d="2026-09-13"></i>
+                <i data-d="2026-09-14"></i>
+                <i data-d="2026-09-15"></i>
+                <i data-d="2026-09-16"></i>
+                <i data-d="2026-09-17" data-stage="launch" data-tool="Countdown" data-min="22" data-note="Scheduled posts to two channels went out up to 9 minutes late."></i>
+                <i data-d="2026-09-18"></i>
+                <i data-d="2026-09-19"></i>
+                <i data-d="2026-09-20"></i>
+                <i data-d="2026-09-21"></i>
+                <i data-d="2026-09-22"></i>
+                <i data-d="2026-09-23"></i>
+                <i data-d="2026-09-24"></i>
+                <i data-d="2026-09-25"></i>
+                <i data-d="2026-09-26"></i>
+                <i data-d="2026-09-27"></i>
+                <i data-d="2026-09-28"></i>
+                <i data-d="2026-09-29"></i>
+                <i data-d="2026-09-30"></i>
+                <i data-d="2026-10-01"></i>
+                <i data-d="2026-10-02"></i>
+                <i data-d="2026-10-03"></i>
+                <i data-d="2026-10-04"></i>
+                <i data-d="2026-10-05"></i>
+                <i data-d="2026-10-06"></i>
+                <i data-d="2026-10-07"></i>
+                <i data-d="2026-10-08"></i>
+                <i data-d="2026-10-09"></i>
+                <i data-d="2026-10-10"></i>
+                <i data-d="2026-10-11"></i>
+                <i data-d="2026-10-12"></i>
+                <i data-d="2026-10-13"></i>
+                <i data-d="2026-10-14" data-stage="review" data-tool="Review Room" data-min="26" data-note="Video uploads slowed down in the EU region."></i>
+                <i data-d="2026-10-15"></i>
+                <i data-d="2026-10-16"></i>
+                <i data-d="2026-10-17"></i>
+                <i data-d="2026-10-18"></i>
+                <i data-d="2026-10-19"></i>
+                <i data-d="2026-10-20"></i>
+                <i data-d="2026-10-21"></i>
+                <i data-d="2026-10-22"></i>
+                <i data-d="2026-10-23"></i>
+                <i data-d="2026-10-24"></i>
+                <i data-d="2026-10-25"></i>
+                <i data-d="2026-10-26"></i>
+                <i data-d="2026-10-27"></i>
+                <i data-d="2026-10-28"></i>
+                <i data-d="2026-10-29"></i>
+                <i data-d="2026-10-30"></i>
+                <i data-d="2026-10-31"></i>
+                <i data-d="2026-11-01"></i>
+                <i data-d="2026-11-02"></i>
+                <i data-d="2026-11-03"></i>
+                <i data-d="2026-11-04"></i>
+                <i data-d="2026-11-05" data-stage="make" data-tool="Workbench" data-min="12" data-note="Version sync was delayed for some US workspaces."></i>
+                <i data-d="2026-11-06"></i>
+                <i data-d="2026-11-07"></i>
+                <i data-d="2026-11-08"></i>
+                <i data-d="2026-11-09"></i>
+                <i data-d="2026-11-10"></i>
+                <i data-d="2026-11-11"></i>
+                <i data-d="2026-11-12"></i>
+                <i data-d="2026-11-13"></i>
+                <i data-d="2026-11-14"></i>
+                <i data-d="2026-11-15"></i>
+                <i data-d="2026-11-16"></i>
+                <i data-d="2026-11-17"></i>
+                <i data-d="2026-11-18"></i>
+                <i data-d="2026-11-19"></i>
+                <i data-d="2026-11-20"></i>
+                <i data-d="2026-11-21"></i>
+                <i data-d="2026-11-22"></i>
+                <i data-d="2026-11-23"></i>
+                <i data-d="2026-11-24"></i>
+                <i data-d="2026-11-25"></i>
+                <i data-d="2026-11-26"></i>
+                <i data-d="2026-11-27"></i>
+              </div>
+              <div class="sec-uptime__axis" aria-hidden="true"><span>30 Aug</span><span>90 days</span><span>Today</span></div>
+              <p class="sec-uptime__legend">Each line is a day. A coloured day touched one tool, in that tool’s stage colour.<span class="sec-uptime__kbd"> Hover or focus a day for its details.</span></p>
+            </div>
+            <ul class="sec-tools">
+              <li data-stage="spark"><span class="dot" aria-hidden="true"></span>Sparkboard<em>Operational</em></li>
+              <li data-stage="shape"><span class="dot" aria-hidden="true"></span>Blueprints<em>Operational</em></li>
+              <li data-stage="make"><span class="dot" aria-hidden="true"></span>Workbench &amp; sync<em>Operational</em></li>
+              <li data-stage="review"><span class="dot" aria-hidden="true"></span>Review Room<em>Operational</em></li>
+              <li data-stage="launch"><span class="dot" aria-hidden="true"></span>Countdown<em>Operational</em></li>
+              <li data-stage="afterglow"><span class="dot" aria-hidden="true"></span>Afterglow<em>Operational</em></li>
+              <li class="sec-tools__plain"><span class="dot" aria-hidden="true"></span>API &amp; webhooks<em>Operational</em></li>
+              <li class="sec-tools__plain"><span class="dot" aria-hidden="true"></span>Share Pages<em>Operational</em></li>
+            </ul>
+            <div class="sec-incidents">
+              <h3 class="sec-incidents__title">Past incidents</h3>
+              <ol>
+                <li data-stage="make"><time datetime="2026-11-05">5 Nov 2026</time><span class="dot" aria-hidden="true"></span><p><strong>Workbench</strong> Version sync was delayed for some US workspaces. Resolved in 12 minutes.</p></li>
+                <li data-stage="review"><time datetime="2026-10-14">14 Oct 2026</time><span class="dot" aria-hidden="true"></span><p><strong>Review Room</strong> Video uploads slowed down in the EU region. Resolved in 26 minutes.</p></li>
+                <li data-stage="launch"><time datetime="2026-09-17">17 Sep 2026</time><span class="dot" aria-hidden="true"></span><p><strong>Countdown</strong> Scheduled posts to two channels went out up to 9 minutes late. Resolved in 22 minutes.</p></li>
+              </ol>
+            </div>
+          </div>
+        </div>
+
+        <!-- the paperwork -->
+        <div class="sec-more">
+          <a class="sec-more__card" href="{{ROOT}}compliance.html" data-spotlight>
+            <span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-scale"/></svg></span>
+            <span class="sec-more__text"><strong>Compliance</strong><span>GDPR, SOC 2 Type II, ISO/IEC 27001, our DPA and the list of subprocessors.</span></span>
+            <svg class="icon sec-more__go" aria-hidden="true"><use href="#i-arrow"/></svg>
+          </a>
+          <a class="sec-more__card" href="{{ROOT}}privacy.html" data-spotlight>
+            <span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-doc"/></svg></span>
+            <span class="sec-more__text"><strong>Privacy Policy</strong><span>What we collect, why we keep it, and how to use your rights.</span></span>
+            <svg class="icon sec-more__go" aria-hidden="true"><use href="#i-arrow"/></svg>
+          </a>
+        </div>
+        <p class="fiction sec-note">Crestora is a fictional company; figures are illustrative. This page describes a made-up product to show how a security page can read: plainly, with numbers you can hold us to.</p>
+      </div>
+    </div>
+  </section>
+
   {{> cta}}
 </main>

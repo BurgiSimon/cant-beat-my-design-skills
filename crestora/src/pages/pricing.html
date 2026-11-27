@@ -1,16 +1,707 @@
 <!--page
 title: Pricing — Crestora
-description: Free until it isn’t. Fair after that.
+description: Free for three lanes. Studio from $10 a month, Crew from $16 a seat. Reviewers and guests never pay, and Studio is free for a year for students and first-time founders.
+modules: billing page-pricing
 nav: pricing.html
 -->
 <main id="main">
-  <section class="page-hero">
+  <!-- pricing.html: four plans under the shared Monthly/Yearly switch (the generic billing module rolls every
+       [data-price-monthly] and remembers the choice for the home teaser), Crew's seat slider, the full comparison
+       (a table with a sticky head and a column lens on wide screens, a per-plan accordion on phones), creator grants
+       (#grants), the questions, then the shared CTA. Generated from a data table: keep the table and the accordion in
+       step. Without scripts the yearly prices show and the switch and the slider hide. -->
+  <section class="page-hero pr-hero" aria-labelledby="pr-title">
     <div class="page-hero__lanes" aria-hidden="true"></div>
-    <div class="container page-hero__inner">
-      <p class="eyebrow">Product</p>
-      <h1 class="title-1">Free until it isn’t. Fair after that.</h1>
-      <p class="lede">This page is being built.</p>
+    <div class="container pr-hero__grid">
+    <div class="page-hero__inner pr-hero__inner">
+      <p class="eyebrow" data-reveal="fade">Pricing</p>
+      <h1 class="title-1" id="pr-title" data-split>Free until it isn’t. Fair after&nbsp;that.</h1>
+      <p class="lede" data-reveal data-delay="0.15">Start with three lanes for free. Pay when your work outgrows them, and never for the people who only leave feedback.</p>
+      <div class="pr-period" data-reveal data-delay="0.25">
+        <div class="segmented" data-billing role="group" aria-label="Billing period">
+          <span class="segmented__thumb" aria-hidden="true"></span>
+          <button type="button" data-period="monthly" aria-pressed="false">Monthly</button>
+          <button type="button" data-period="yearly" aria-pressed="true">Yearly</button>
+        </div>
+        <p class="pr-period__note"><span class="pr-period__dot" aria-hidden="true"></span>Yearly: 2 months free</p>
+      </div>
+    </div>
+    <ul class="pr-promises" aria-label="On every plan" data-reveal-stagger="0.08">
+      <li><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-users"/></svg></span><span><b>Reviewers never pay.</b> Guests and reviewers join by link, free, on every plan.</span></li>
+      <li><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-download"/></svg></span><span><b>Export everything, always.</b> Your files leave in the formats they came in.</span></li>
+      <li><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-clock"/></svg></span><span><b>Cancel in two clicks.</b> No call, no exit survey, nothing deleted.</span></li>
+    </ul>
     </div>
   </section>
+
+  <!-- the four plans -->
+  <section class="pr-plans" id="plans" aria-label="Plans">
+    <div class="container">
+      <div class="pr-grid" data-reveal-stagger="0.08">
+        <article class="pr-plan panel" data-plan="solo" data-spotlight aria-labelledby="plan-solo">
+          <div class="pr-plan__rail"><span class="stage-rail" data-n="2" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span><span class="pr-plan__rail-l">Spark &amp; Shape</span></div>
+          <div class="pr-plan__head">
+            <h2 class="title-3 pr-plan__name" id="plan-solo">Solo</h2>
+            <p class="pr-plan__for">For one person and the first few ideas.</p>
+          </div>
+          <div class="pr-plan__cost">
+            <p class="pr-plan__price"><span class="pr-plan__word">Free</span></p>
+            <p class="pr-plan__billed">For good. No card, ever.</p>
+          </div>
+          <div class="pr-plan__slot">
+            <p class="pr-note"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-users"/></svg></span><span>Reviewers and guests join free, by link, on every plan.</span></p>
+          </div>
+          <a class="btn btn--lg btn--block pr-plan__cta" href="{{ROOT}}start.html?plan=solo" data-roll>Open a free lane</a>
+          <ul class="pr-plan__list">
+            <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg><span>3 active lanes</span></li>
+            <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg><span>5 GB of storage</span></li>
+            <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg><span>Sparkboard &amp; Blueprints</span></li>
+            <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg><span>Review links for unlimited guests</span></li>
+            <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg><span>1 launch channel</span></li>
+          </ul>
+        </article>
+
+        <article class="pr-plan pr-plan--studio panel panel--raised" data-plan="studio" data-spotlight aria-labelledby="plan-studio">
+          <div class="pr-plan__rail"><span class="stage-rail" data-n="6" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span><p class="pr-badge"><span aria-hidden="true"></span>Most creators ride here</p></div>
+          <div class="pr-plan__head">
+            <h2 class="title-3 pr-plan__name" id="plan-studio">Studio</h2>
+            <p class="pr-plan__for">For creators who ship all year round.</p>
+          </div>
+          <div class="pr-plan__cost">
+            <p class="pr-plan__price">
+              <span class="pr-plan__fig" aria-hidden="true"><span class="pr-plan__cur">$</span><span data-price-monthly="12" data-price-yearly="10">10</span></span><span class="pr-plan__per" aria-hidden="true">a month</span>
+              <span class="sr" data-say-monthly="$12 a month" data-say-yearly="$10 a month, billed yearly">$10 a month, billed yearly</span>
+            </p>
+            <p class="pr-plan__billed"><span data-billing-show="yearly">Billed yearly, $120 a year.</span><span data-billing-show="monthly" hidden>Billed monthly. Cancel any time.</span></p>
+          </div>
+          <div class="pr-plan__slot">
+            <a class="pr-note pr-note--link" href="#grants"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-learn"/></svg></span><span>Student, educator or first-time founder? Studio is free for a year.</span><svg class="pr-note__go" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+          </div>
+          <a class="btn btn--primary btn--lg btn--block pr-plan__cta" href="{{ROOT}}start.html?plan=studio" data-roll>Ride with Studio</a>
+          <ul class="pr-plan__list">
+            <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg><span>Unlimited lanes</span></li>
+            <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg><span>200 GB of storage</span></li>
+            <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg><span>Review Room on video &amp; audio</span></li>
+            <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg><span>Countdown to 14 channels</span></li>
+            <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg><span>Afterglow recaps</span></li>
+            <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg><span>Share Pages on your own domain</span></li>
+          </ul>
+        </article>
+
+        <article class="pr-plan pr-plan--crew panel" data-plan="crew" data-spotlight aria-labelledby="plan-crew">
+          <div class="pr-plan__rail"><span class="pr-twin" aria-hidden="true"><span class="stage-rail" data-n="6"><i></i><i></i><i></i><i></i><i></i><i></i></span></span><span class="pr-plan__rail-l">All six, shared</span></div>
+          <div class="pr-plan__head">
+            <h2 class="title-3 pr-plan__name" id="plan-crew">Crew</h2>
+            <p class="pr-plan__for">For studios and small teams, from two seats.</p>
+          </div>
+          <div class="pr-plan__cost">
+            <p class="pr-plan__price">
+              <span class="pr-plan__fig" aria-hidden="true"><span class="pr-plan__cur">$</span><span data-price-monthly="20" data-price-yearly="16">16</span></span><span class="pr-plan__per" aria-hidden="true">a seat, a month</span>
+              <span class="sr" data-say-monthly="$20 a seat, a month" data-say-yearly="$16 a seat, a month, billed yearly">$16 a seat, a month, billed yearly</span>
+            </p>
+            <p class="pr-plan__billed"><span data-billing-show="yearly">Billed yearly. 2-seat minimum.</span><span data-billing-show="monthly" hidden>Billed monthly. 2-seat minimum.</span></p>
+          </div>
+          <div class="pr-plan__slot">
+            <div class="pr-seats">
+              <div class="pr-seats__top">
+                <label class="pr-seats__label" for="pr-seats">Seats</label>
+                <output class="pr-seats__n" id="pr-seats-n" for="pr-seats">5</output>
+              </div>
+              <input class="pr-seats__range" id="pr-seats" type="range" min="2" max="50" step="1" value="5" aria-valuetext="5 seats, $80 a month" aria-describedby="pr-seats-total" style="--fill: 6.25%" />
+              <p class="pr-seats__total" id="pr-seats-total">
+                <span class="pr-seats__sum" aria-hidden="true"><span class="pr-seats__cur">$</span><span data-seats-total>80</span></span>
+                <span class="pr-seats__per" aria-hidden="true">a month for your crew</span>
+                <span class="sr" data-seats-say>5 seats: $80 a month, billed yearly as $960.</span>
+              </p>
+              <p class="pr-seats__year" aria-hidden="true"><span data-seats-year>Billed yearly as $960</span></p>
+            </div>
+          </div>
+          <a class="btn btn--lg btn--block pr-plan__cta" href="{{ROOT}}start.html?plan=crew" data-roll>Bring your crew</a>
+          <ul class="pr-plan__list">
+            <li class="pr-plan__lead">Everything in Studio, plus</li>
+            <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg><span>Shared lanes &amp; Crew roles</span></li>
+            <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg><span>Client review portals with your logo</span></li>
+            <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg><span>Approvals with an audit trail</span></li>
+            <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg><span>1 TB of pooled storage</span></li>
+            <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg><span>Priority support</span></li>
+          </ul>
+        </article>
+
+        <article class="pr-plan pr-plan--label panel" data-plan="label" data-spotlight aria-labelledby="plan-label">
+          <div class="pr-plan__rail"><span class="pr-twin pr-twin--three" aria-hidden="true"><span class="stage-rail" data-n="6"><i></i><i></i><i></i><i></i><i></i><i></i></span></span><span class="pr-plan__rail-l">All six, at scale</span></div>
+          <div class="pr-plan__head">
+            <h2 class="title-3 pr-plan__name" id="plan-label">Label</h2>
+            <p class="pr-plan__for">For studios, labels and agencies with many crews.</p>
+          </div>
+          <div class="pr-plan__cost">
+            <p class="pr-plan__price"><span class="pr-plan__word">Custom</span></p>
+            <p class="pr-plan__billed">A yearly agreement, invoiced.</p>
+          </div>
+          <div class="pr-plan__slot">
+            <p class="pr-note"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-shield"/></svg></span><span>Security review, DPA and residency paperwork handled with your legal team.</span></p>
+          </div>
+          <a class="btn btn--lg btn--block pr-plan__cta" href="{{ROOT}}contact.html?topic=sales" data-roll>Talk to sales</a>
+          <ul class="pr-plan__list">
+            <li class="pr-plan__lead">Everything in Crew, plus</li>
+            <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg><span>SSO/SAML &amp; SCIM</span></li>
+            <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg><span>EU or US data residency</span></li>
+            <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg><span>99.9% uptime SLA</span></li>
+            <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg><span>A dedicated success lead</span></li>
+          </ul>
+        </article>
+      </div>
+
+      <div class="pr-plans__foot">
+        <p>Prices in US dollars, before tax. Change plans or cancel any time from Settings.</p>
+        <a class="link-arrow" href="#compare">Compare every feature<svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- the full comparison -->
+  <section class="section pr-compare" id="compare" aria-labelledby="pr-compare-title">
+    <div class="container">
+      <header class="section-head">
+        <div>
+          <p class="eyebrow">Compare plans</p>
+          <h2 class="title-2" id="pr-compare-title" data-split>Every plan, stage by&nbsp;stage.</h2>
+        </div>
+        <div class="section-head__aside">
+          <p class="lede">Everything in every plan, in the order your work meets it: from the first spark to the recap on day 30.</p>
+        </div>
+      </header>
+
+      <div class="pr-table-wrap" data-reveal="fade">
+        <div class="pr-lens" aria-hidden="true"></div>
+        <table class="pr-table" data-col="2">
+          <caption class="sr">Crestora’s four plans compared, feature by feature, grouped by stage</caption>
+          <colgroup><col class="pr-table__fcol" /><col /><col /><col /><col /></colgroup>
+          <thead>
+            <tr>
+              <td class="pr-table__corner"><span>Plans</span></td>
+              <th scope="col"><span class="pr-th"><span class="pr-th__name">Solo</span><span class="pr-th__price">Free</span></span></th>
+              <th scope="col"><span class="pr-th"><span class="pr-th__name">Studio</span><span class="pr-th__price"><span aria-hidden="true">$<span data-price-monthly="12" data-price-yearly="10">10</span> a month</span><span class="sr" data-say-monthly="$12 a month" data-say-yearly="$10 a month">$10 a month</span></span></span></th>
+              <th scope="col"><span class="pr-th"><span class="pr-th__name">Crew</span><span class="pr-th__price"><span aria-hidden="true">$<span data-price-monthly="20" data-price-yearly="16">16</span> a seat</span><span class="sr" data-say-monthly="$20 a seat, a month" data-say-yearly="$16 a seat, a month">$16 a seat, a month</span></span></span></th>
+              <th scope="col"><span class="pr-th"><span class="pr-th__name">Label</span><span class="pr-th__price">Custom</span></span></th>
+            </tr>
+          </thead>
+          <tbody class="pr-group" data-stage="spark">
+            <tr class="pr-group__row"><th scope="colgroup" colspan="5"><span class="pr-group__h"><span class="pr-group__dot"></span><span class="pr-group__n">01</span><span class="pr-group__name">Spark</span><span class="pr-group__tool">Sparkboard</span></span></th></tr>
+            <tr><th scope="row">Capture from phone, browser and email</th><td><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></td><td><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></td><td><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></td><td><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></td></tr>
+            <tr><th scope="row">Auto-grouped constellations</th><td><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></td><td><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></td><td><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></td><td><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></td></tr>
+            <tr><th scope="row">Promote any spark to a lane</th><td><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></td><td><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></td><td><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></td><td><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></td></tr>
+            <tr><th scope="row">Active lanes</th><td><span class="pr-val">3</span></td><td><span class="pr-val">Unlimited</span></td><td><span class="pr-val">Unlimited</span></td><td><span class="pr-val">Unlimited</span></td></tr>
+          </tbody>
+          <tbody class="pr-group" data-stage="shape">
+            <tr class="pr-group__row"><th scope="colgroup" colspan="5"><span class="pr-group__h"><span class="pr-group__dot"></span><span class="pr-group__n">02</span><span class="pr-group__name">Shape</span><span class="pr-group__tool">Blueprints</span></span></th></tr>
+            <tr><th scope="row">Blueprint templates by working creators</th><td><span class="pr-val">12</span></td><td><span class="pr-val">All 40</span></td><td><span class="pr-val">All 40</span></td><td><span class="pr-val">All 40, plus your own</span></td></tr>
+            <tr><th scope="row">Milestones that know your calendar</th><td><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></td><td><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></td><td><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></td><td><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></td></tr>
+            <tr><th scope="row">Share a brief with one link</th><td><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></td><td><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></td><td><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></td><td><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></td></tr>
+          </tbody>
+          <tbody class="pr-group" data-stage="make">
+            <tr class="pr-group__row"><th scope="colgroup" colspan="5"><span class="pr-group__h"><span class="pr-group__dot"></span><span class="pr-group__n">03</span><span class="pr-group__name">Make</span><span class="pr-group__tool">Workbench</span></span></th></tr>
+            <tr><th scope="row">Storage</th><td><span class="pr-val">5 GB</span></td><td><span class="pr-val">200 GB</span></td><td><span class="pr-val">1 TB, pooled</span></td><td><span class="pr-val">Custom</span></td></tr>
+            <tr><th scope="row">Version history</th><td><span class="pr-val">30 days</span></td><td><span class="pr-val">Unlimited</span></td><td><span class="pr-val">Unlimited</span></td><td><span class="pr-val">Unlimited</span></td></tr>
+            <tr><th scope="row">Side-by-side compare</th><td><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></td><td><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></td><td><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></td><td><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></td></tr>
+            <tr><th scope="row">Connected integrations</th><td><span class="pr-val">3</span></td><td><span class="pr-val">120+</span></td><td><span class="pr-val">120+</span></td><td><span class="pr-val">120+, plus private</span></td></tr>
+          </tbody>
+          <tbody class="pr-group" data-stage="review">
+            <tr class="pr-group__row"><th scope="colgroup" colspan="5"><span class="pr-group__h"><span class="pr-group__dot"></span><span class="pr-group__n">04</span><span class="pr-group__name">Review</span><span class="pr-group__tool">Review Room</span></span></th></tr>
+            <tr><th scope="row">Review links for unlimited guests</th><td><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></td><td><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></td><td><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></td><td><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></td></tr>
+            <tr><th scope="row">Pinned notes on images and PDFs</th><td><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></td><td><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></td><td><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></td><td><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></td></tr>
+            <tr><th scope="row">Frame-accurate notes on video and audio</th><td><span class="pr-no" aria-hidden="true"></span><span class="sr">Not included</span></td><td><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></td><td><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></td><td><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></td></tr>
+            <tr><th scope="row">One-click approvals</th><td><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></td><td><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></td><td><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></td><td><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></td></tr>
+            <tr><th scope="row">Approvals with an audit trail</th><td><span class="pr-no" aria-hidden="true"></span><span class="sr">Not included</span></td><td><span class="pr-no" aria-hidden="true"></span><span class="sr">Not included</span></td><td><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></td><td><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></td></tr>
+            <tr><th scope="row">Client review portals with your logo</th><td><span class="pr-no" aria-hidden="true"></span><span class="sr">Not included</span></td><td><span class="pr-no" aria-hidden="true"></span><span class="sr">Not included</span></td><td><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></td><td><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></td></tr>
+          </tbody>
+          <tbody class="pr-group" data-stage="launch">
+            <tr class="pr-group__row"><th scope="colgroup" colspan="5"><span class="pr-group__h"><span class="pr-group__dot"></span><span class="pr-group__n">05</span><span class="pr-group__name">Launch</span><span class="pr-group__tool">Countdown</span></span></th></tr>
+            <tr><th scope="row">Launch checklists built from your plan</th><td><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></td><td><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></td><td><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></td><td><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></td></tr>
+            <tr><th scope="row">Launch channels</th><td><span class="pr-val">1</span></td><td><span class="pr-val">14</span></td><td><span class="pr-val">14</span></td><td><span class="pr-val">14, plus custom</span></td></tr>
+            <tr><th scope="row">Live launch rooms</th><td><span class="pr-no" aria-hidden="true"></span><span class="sr">Not included</span></td><td><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></td><td><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></td><td><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></td></tr>
+            <tr><th scope="row">Share Pages on your own domain</th><td><span class="pr-no" aria-hidden="true"></span><span class="sr">Not included</span></td><td><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></td><td><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></td><td><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></td></tr>
+          </tbody>
+          <tbody class="pr-group" data-stage="afterglow">
+            <tr class="pr-group__row"><th scope="colgroup" colspan="5"><span class="pr-group__h"><span class="pr-group__dot"></span><span class="pr-group__n">06</span><span class="pr-group__name">Afterglow</span></span></th></tr>
+            <tr><th scope="row">Recaps on day 1, 7 and 30</th><td><span class="pr-no" aria-hidden="true"></span><span class="sr">Not included</span></td><td><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></td><td><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></td><td><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></td></tr>
+            <tr><th scope="row">Every channel in one view</th><td><span class="pr-no" aria-hidden="true"></span><span class="sr">Not included</span></td><td><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></td><td><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></td><td><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></td></tr>
+            <tr><th scope="row">Next ideas sent back to the Sparkboard</th><td><span class="pr-no" aria-hidden="true"></span><span class="sr">Not included</span></td><td><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></td><td><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></td><td><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></td></tr>
+          </tbody>
+          <tbody class="pr-group">
+            <tr class="pr-group__row"><th scope="colgroup" colspan="5"><span class="pr-group__h"><span class="pr-group__dot pr-group__dot--plain"></span><span class="pr-group__name">Crew &amp; admin</span></span></th></tr>
+            <tr><th scope="row">People who make (seats)</th><td><span class="pr-val">1</span></td><td><span class="pr-val">1</span></td><td><span class="pr-val">2 to 50</span></td><td><span class="pr-val">Unlimited</span></td></tr>
+            <tr><th scope="row">Reviewers and guests</th><td><span class="pr-val">Free</span></td><td><span class="pr-val">Free</span></td><td><span class="pr-val">Free</span></td><td><span class="pr-val">Free</span></td></tr>
+            <tr><th scope="row">Crew roles: Owner, Maker, Reviewer, Guest</th><td><span class="pr-no" aria-hidden="true"></span><span class="sr">Not included</span></td><td><span class="pr-no" aria-hidden="true"></span><span class="sr">Not included</span></td><td><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></td><td><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></td></tr>
+            <tr><th scope="row">Shared lanes</th><td><span class="pr-no" aria-hidden="true"></span><span class="sr">Not included</span></td><td><span class="pr-no" aria-hidden="true"></span><span class="sr">Not included</span></td><td><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></td><td><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></td></tr>
+            <tr><th scope="row">Central billing and invoices</th><td><span class="pr-no" aria-hidden="true"></span><span class="sr">Not included</span></td><td><span class="pr-no" aria-hidden="true"></span><span class="sr">Not included</span></td><td><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></td><td><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></td></tr>
+            <tr><th scope="row">SSO/SAML and SCIM</th><td><span class="pr-no" aria-hidden="true"></span><span class="sr">Not included</span></td><td><span class="pr-no" aria-hidden="true"></span><span class="sr">Not included</span></td><td><span class="pr-no" aria-hidden="true"></span><span class="sr">Not included</span></td><td><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></td></tr>
+          </tbody>
+          <tbody class="pr-group">
+            <tr class="pr-group__row"><th scope="colgroup" colspan="5"><span class="pr-group__h"><span class="pr-group__dot pr-group__dot--plain"></span><span class="pr-group__name">Security</span></span></th></tr>
+            <tr><th scope="row">Two-factor sign-in and passkeys</th><td><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></td><td><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></td><td><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></td><td><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></td></tr>
+            <tr><th scope="row">Expiring, password-protected review links</th><td><span class="pr-no" aria-hidden="true"></span><span class="sr">Not included</span></td><td><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></td><td><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></td><td><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></td></tr>
+            <tr><th scope="row">Watermarked review copies</th><td><span class="pr-no" aria-hidden="true"></span><span class="sr">Not included</span></td><td><span class="pr-no" aria-hidden="true"></span><span class="sr">Not included</span></td><td><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></td><td><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></td></tr>
+            <tr><th scope="row">EU or US data residency</th><td><span class="pr-no" aria-hidden="true"></span><span class="sr">Not included</span></td><td><span class="pr-no" aria-hidden="true"></span><span class="sr">Not included</span></td><td><span class="pr-no" aria-hidden="true"></span><span class="sr">Not included</span></td><td><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></td></tr>
+            <tr><th scope="row">Per-lane encryption keys</th><td><span class="pr-no" aria-hidden="true"></span><span class="sr">Not included</span></td><td><span class="pr-no" aria-hidden="true"></span><span class="sr">Not included</span></td><td><span class="pr-no" aria-hidden="true"></span><span class="sr">Not included</span></td><td><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></td></tr>
+          </tbody>
+          <tbody class="pr-group">
+            <tr class="pr-group__row"><th scope="colgroup" colspan="5"><span class="pr-group__h"><span class="pr-group__dot pr-group__dot--plain"></span><span class="pr-group__name">Support</span></span></th></tr>
+            <tr><th scope="row">Help Center and community</th><td><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></td><td><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></td><td><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></td><td><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></td></tr>
+            <tr><th scope="row">Email support</th><td><span class="pr-val">Within 2 working days</span></td><td><span class="pr-val">Within 1 working day</span></td><td><span class="pr-val">Priority, same day</span></td><td><span class="pr-val">A dedicated success lead</span></td></tr>
+            <tr><th scope="row">Uptime SLA</th><td><span class="pr-no" aria-hidden="true"></span><span class="sr">Not included</span></td><td><span class="pr-no" aria-hidden="true"></span><span class="sr">Not included</span></td><td><span class="pr-no" aria-hidden="true"></span><span class="sr">Not included</span></td><td><span class="pr-val">99.9%</span></td></tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td></td>
+              <td><a class="btn btn--sm btn--block" href="{{ROOT}}start.html?plan=solo">Start free</a></td>
+              <td><a class="btn btn--primary btn--sm btn--block" href="{{ROOT}}start.html?plan=studio"><span class="pr-md-hide">Choose </span>Studio</a></td>
+              <td><a class="btn btn--sm btn--block" href="{{ROOT}}start.html?plan=crew"><span class="pr-md-hide">Choose </span>Crew</a></td>
+              <td><a class="btn btn--sm btn--block" href="{{ROOT}}contact.html?topic=sales">Talk to sales</a></td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+
+      <div class="pr-acc accordion">
+        <details class="pr-acc__item" data-plan="solo">
+          <summary><span class="pr-acc__name">Solo</span><span class="pr-acc__price">Free</span></summary>
+          <div class="accordion__body pr-acc__body">
+            <div class="pr-acc__group" data-stage="spark">
+              <h4 class="pr-group__h"><span class="pr-group__dot"></span><span class="pr-group__n">01</span><span class="pr-group__name">Spark</span></h4>
+              <ul>
+                <li class=""><span>Capture from phone, browser and email</span><span><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></span></li>
+                <li class=""><span>Auto-grouped constellations</span><span><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></span></li>
+                <li class=""><span>Promote any spark to a lane</span><span><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></span></li>
+                <li class=""><span>Active lanes</span><span><span class="pr-val">3</span></span></li>
+              </ul>
+            </div>
+            <div class="pr-acc__group" data-stage="shape">
+              <h4 class="pr-group__h"><span class="pr-group__dot"></span><span class="pr-group__n">02</span><span class="pr-group__name">Shape</span></h4>
+              <ul>
+                <li class=""><span>Blueprint templates by working creators</span><span><span class="pr-val">12</span></span></li>
+                <li class=""><span>Milestones that know your calendar</span><span><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></span></li>
+                <li class=""><span>Share a brief with one link</span><span><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></span></li>
+              </ul>
+            </div>
+            <div class="pr-acc__group" data-stage="make">
+              <h4 class="pr-group__h"><span class="pr-group__dot"></span><span class="pr-group__n">03</span><span class="pr-group__name">Make</span></h4>
+              <ul>
+                <li class=""><span>Storage</span><span><span class="pr-val">5 GB</span></span></li>
+                <li class=""><span>Version history</span><span><span class="pr-val">30 days</span></span></li>
+                <li class=""><span>Side-by-side compare</span><span><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></span></li>
+                <li class=""><span>Connected integrations</span><span><span class="pr-val">3</span></span></li>
+              </ul>
+            </div>
+            <div class="pr-acc__group" data-stage="review">
+              <h4 class="pr-group__h"><span class="pr-group__dot"></span><span class="pr-group__n">04</span><span class="pr-group__name">Review</span></h4>
+              <ul>
+                <li class=""><span>Review links for unlimited guests</span><span><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></span></li>
+                <li class=""><span>Pinned notes on images and PDFs</span><span><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></span></li>
+                <li class="is-off"><span>Frame-accurate notes on video and audio</span><span><span class="pr-no" aria-hidden="true"></span><span class="sr">Not included</span></span></li>
+                <li class=""><span>One-click approvals</span><span><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></span></li>
+                <li class="is-off"><span>Approvals with an audit trail</span><span><span class="pr-no" aria-hidden="true"></span><span class="sr">Not included</span></span></li>
+                <li class="is-off"><span>Client review portals with your logo</span><span><span class="pr-no" aria-hidden="true"></span><span class="sr">Not included</span></span></li>
+              </ul>
+            </div>
+            <div class="pr-acc__group" data-stage="launch">
+              <h4 class="pr-group__h"><span class="pr-group__dot"></span><span class="pr-group__n">05</span><span class="pr-group__name">Launch</span></h4>
+              <ul>
+                <li class=""><span>Launch checklists built from your plan</span><span><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></span></li>
+                <li class=""><span>Launch channels</span><span><span class="pr-val">1</span></span></li>
+                <li class="is-off"><span>Live launch rooms</span><span><span class="pr-no" aria-hidden="true"></span><span class="sr">Not included</span></span></li>
+                <li class="is-off"><span>Share Pages on your own domain</span><span><span class="pr-no" aria-hidden="true"></span><span class="sr">Not included</span></span></li>
+              </ul>
+            </div>
+            <div class="pr-acc__group" data-stage="afterglow">
+              <h4 class="pr-group__h"><span class="pr-group__dot"></span><span class="pr-group__n">06</span><span class="pr-group__name">Afterglow</span></h4>
+              <ul>
+                <li class="is-off"><span>Recaps on day 1, 7 and 30</span><span><span class="pr-no" aria-hidden="true"></span><span class="sr">Not included</span></span></li>
+                <li class="is-off"><span>Every channel in one view</span><span><span class="pr-no" aria-hidden="true"></span><span class="sr">Not included</span></span></li>
+                <li class="is-off"><span>Next ideas sent back to the Sparkboard</span><span><span class="pr-no" aria-hidden="true"></span><span class="sr">Not included</span></span></li>
+              </ul>
+            </div>
+            <div class="pr-acc__group">
+              <h4 class="pr-group__h"><span class="pr-group__dot pr-group__dot--plain"></span><span class="pr-group__name">Crew &amp; admin</span></h4>
+              <ul>
+                <li class=""><span>People who make (seats)</span><span><span class="pr-val">1</span></span></li>
+                <li class=""><span>Reviewers and guests</span><span><span class="pr-val">Free</span></span></li>
+                <li class="is-off"><span>Crew roles: Owner, Maker, Reviewer, Guest</span><span><span class="pr-no" aria-hidden="true"></span><span class="sr">Not included</span></span></li>
+                <li class="is-off"><span>Shared lanes</span><span><span class="pr-no" aria-hidden="true"></span><span class="sr">Not included</span></span></li>
+                <li class="is-off"><span>Central billing and invoices</span><span><span class="pr-no" aria-hidden="true"></span><span class="sr">Not included</span></span></li>
+                <li class="is-off"><span>SSO/SAML and SCIM</span><span><span class="pr-no" aria-hidden="true"></span><span class="sr">Not included</span></span></li>
+              </ul>
+            </div>
+            <div class="pr-acc__group">
+              <h4 class="pr-group__h"><span class="pr-group__dot pr-group__dot--plain"></span><span class="pr-group__name">Security</span></h4>
+              <ul>
+                <li class=""><span>Two-factor sign-in and passkeys</span><span><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></span></li>
+                <li class="is-off"><span>Expiring, password-protected review links</span><span><span class="pr-no" aria-hidden="true"></span><span class="sr">Not included</span></span></li>
+                <li class="is-off"><span>Watermarked review copies</span><span><span class="pr-no" aria-hidden="true"></span><span class="sr">Not included</span></span></li>
+                <li class="is-off"><span>EU or US data residency</span><span><span class="pr-no" aria-hidden="true"></span><span class="sr">Not included</span></span></li>
+                <li class="is-off"><span>Per-lane encryption keys</span><span><span class="pr-no" aria-hidden="true"></span><span class="sr">Not included</span></span></li>
+              </ul>
+            </div>
+            <div class="pr-acc__group">
+              <h4 class="pr-group__h"><span class="pr-group__dot pr-group__dot--plain"></span><span class="pr-group__name">Support</span></h4>
+              <ul>
+                <li class=""><span>Help Center and community</span><span><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></span></li>
+                <li class=""><span>Email support</span><span><span class="pr-val">Within 2 working days</span></span></li>
+                <li class="is-off"><span>Uptime SLA</span><span><span class="pr-no" aria-hidden="true"></span><span class="sr">Not included</span></span></li>
+              </ul>
+            </div>
+          </div>
+        </details>
+        <details class="pr-acc__item" data-plan="studio" open>
+          <summary><span class="pr-acc__name">Studio</span><span class="pr-acc__price"><span aria-hidden="true">$<span data-price-monthly="12" data-price-yearly="10">10</span> a month</span><span class="sr" data-say-monthly="$12 a month" data-say-yearly="$10 a month">$10 a month</span></span></summary>
+          <div class="accordion__body pr-acc__body">
+            <div class="pr-acc__group" data-stage="spark">
+              <h4 class="pr-group__h"><span class="pr-group__dot"></span><span class="pr-group__n">01</span><span class="pr-group__name">Spark</span></h4>
+              <ul>
+                <li class=""><span>Capture from phone, browser and email</span><span><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></span></li>
+                <li class=""><span>Auto-grouped constellations</span><span><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></span></li>
+                <li class=""><span>Promote any spark to a lane</span><span><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></span></li>
+                <li class=""><span>Active lanes</span><span><span class="pr-val">Unlimited</span></span></li>
+              </ul>
+            </div>
+            <div class="pr-acc__group" data-stage="shape">
+              <h4 class="pr-group__h"><span class="pr-group__dot"></span><span class="pr-group__n">02</span><span class="pr-group__name">Shape</span></h4>
+              <ul>
+                <li class=""><span>Blueprint templates by working creators</span><span><span class="pr-val">All 40</span></span></li>
+                <li class=""><span>Milestones that know your calendar</span><span><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></span></li>
+                <li class=""><span>Share a brief with one link</span><span><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></span></li>
+              </ul>
+            </div>
+            <div class="pr-acc__group" data-stage="make">
+              <h4 class="pr-group__h"><span class="pr-group__dot"></span><span class="pr-group__n">03</span><span class="pr-group__name">Make</span></h4>
+              <ul>
+                <li class=""><span>Storage</span><span><span class="pr-val">200 GB</span></span></li>
+                <li class=""><span>Version history</span><span><span class="pr-val">Unlimited</span></span></li>
+                <li class=""><span>Side-by-side compare</span><span><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></span></li>
+                <li class=""><span>Connected integrations</span><span><span class="pr-val">120+</span></span></li>
+              </ul>
+            </div>
+            <div class="pr-acc__group" data-stage="review">
+              <h4 class="pr-group__h"><span class="pr-group__dot"></span><span class="pr-group__n">04</span><span class="pr-group__name">Review</span></h4>
+              <ul>
+                <li class=""><span>Review links for unlimited guests</span><span><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></span></li>
+                <li class=""><span>Pinned notes on images and PDFs</span><span><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></span></li>
+                <li class=""><span>Frame-accurate notes on video and audio</span><span><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></span></li>
+                <li class=""><span>One-click approvals</span><span><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></span></li>
+                <li class="is-off"><span>Approvals with an audit trail</span><span><span class="pr-no" aria-hidden="true"></span><span class="sr">Not included</span></span></li>
+                <li class="is-off"><span>Client review portals with your logo</span><span><span class="pr-no" aria-hidden="true"></span><span class="sr">Not included</span></span></li>
+              </ul>
+            </div>
+            <div class="pr-acc__group" data-stage="launch">
+              <h4 class="pr-group__h"><span class="pr-group__dot"></span><span class="pr-group__n">05</span><span class="pr-group__name">Launch</span></h4>
+              <ul>
+                <li class=""><span>Launch checklists built from your plan</span><span><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></span></li>
+                <li class=""><span>Launch channels</span><span><span class="pr-val">14</span></span></li>
+                <li class=""><span>Live launch rooms</span><span><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></span></li>
+                <li class=""><span>Share Pages on your own domain</span><span><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></span></li>
+              </ul>
+            </div>
+            <div class="pr-acc__group" data-stage="afterglow">
+              <h4 class="pr-group__h"><span class="pr-group__dot"></span><span class="pr-group__n">06</span><span class="pr-group__name">Afterglow</span></h4>
+              <ul>
+                <li class=""><span>Recaps on day 1, 7 and 30</span><span><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></span></li>
+                <li class=""><span>Every channel in one view</span><span><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></span></li>
+                <li class=""><span>Next ideas sent back to the Sparkboard</span><span><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></span></li>
+              </ul>
+            </div>
+            <div class="pr-acc__group">
+              <h4 class="pr-group__h"><span class="pr-group__dot pr-group__dot--plain"></span><span class="pr-group__name">Crew &amp; admin</span></h4>
+              <ul>
+                <li class=""><span>People who make (seats)</span><span><span class="pr-val">1</span></span></li>
+                <li class=""><span>Reviewers and guests</span><span><span class="pr-val">Free</span></span></li>
+                <li class="is-off"><span>Crew roles: Owner, Maker, Reviewer, Guest</span><span><span class="pr-no" aria-hidden="true"></span><span class="sr">Not included</span></span></li>
+                <li class="is-off"><span>Shared lanes</span><span><span class="pr-no" aria-hidden="true"></span><span class="sr">Not included</span></span></li>
+                <li class="is-off"><span>Central billing and invoices</span><span><span class="pr-no" aria-hidden="true"></span><span class="sr">Not included</span></span></li>
+                <li class="is-off"><span>SSO/SAML and SCIM</span><span><span class="pr-no" aria-hidden="true"></span><span class="sr">Not included</span></span></li>
+              </ul>
+            </div>
+            <div class="pr-acc__group">
+              <h4 class="pr-group__h"><span class="pr-group__dot pr-group__dot--plain"></span><span class="pr-group__name">Security</span></h4>
+              <ul>
+                <li class=""><span>Two-factor sign-in and passkeys</span><span><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></span></li>
+                <li class=""><span>Expiring, password-protected review links</span><span><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></span></li>
+                <li class="is-off"><span>Watermarked review copies</span><span><span class="pr-no" aria-hidden="true"></span><span class="sr">Not included</span></span></li>
+                <li class="is-off"><span>EU or US data residency</span><span><span class="pr-no" aria-hidden="true"></span><span class="sr">Not included</span></span></li>
+                <li class="is-off"><span>Per-lane encryption keys</span><span><span class="pr-no" aria-hidden="true"></span><span class="sr">Not included</span></span></li>
+              </ul>
+            </div>
+            <div class="pr-acc__group">
+              <h4 class="pr-group__h"><span class="pr-group__dot pr-group__dot--plain"></span><span class="pr-group__name">Support</span></h4>
+              <ul>
+                <li class=""><span>Help Center and community</span><span><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></span></li>
+                <li class=""><span>Email support</span><span><span class="pr-val">Within 1 working day</span></span></li>
+                <li class="is-off"><span>Uptime SLA</span><span><span class="pr-no" aria-hidden="true"></span><span class="sr">Not included</span></span></li>
+              </ul>
+            </div>
+          </div>
+        </details>
+        <details class="pr-acc__item" data-plan="crew">
+          <summary><span class="pr-acc__name">Crew</span><span class="pr-acc__price"><span aria-hidden="true">$<span data-price-monthly="20" data-price-yearly="16">16</span> a seat</span><span class="sr" data-say-monthly="$20 a seat, a month" data-say-yearly="$16 a seat, a month">$16 a seat, a month</span></span></summary>
+          <div class="accordion__body pr-acc__body">
+            <div class="pr-acc__group" data-stage="spark">
+              <h4 class="pr-group__h"><span class="pr-group__dot"></span><span class="pr-group__n">01</span><span class="pr-group__name">Spark</span></h4>
+              <ul>
+                <li class=""><span>Capture from phone, browser and email</span><span><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></span></li>
+                <li class=""><span>Auto-grouped constellations</span><span><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></span></li>
+                <li class=""><span>Promote any spark to a lane</span><span><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></span></li>
+                <li class=""><span>Active lanes</span><span><span class="pr-val">Unlimited</span></span></li>
+              </ul>
+            </div>
+            <div class="pr-acc__group" data-stage="shape">
+              <h4 class="pr-group__h"><span class="pr-group__dot"></span><span class="pr-group__n">02</span><span class="pr-group__name">Shape</span></h4>
+              <ul>
+                <li class=""><span>Blueprint templates by working creators</span><span><span class="pr-val">All 40</span></span></li>
+                <li class=""><span>Milestones that know your calendar</span><span><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></span></li>
+                <li class=""><span>Share a brief with one link</span><span><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></span></li>
+              </ul>
+            </div>
+            <div class="pr-acc__group" data-stage="make">
+              <h4 class="pr-group__h"><span class="pr-group__dot"></span><span class="pr-group__n">03</span><span class="pr-group__name">Make</span></h4>
+              <ul>
+                <li class=""><span>Storage</span><span><span class="pr-val">1 TB, pooled</span></span></li>
+                <li class=""><span>Version history</span><span><span class="pr-val">Unlimited</span></span></li>
+                <li class=""><span>Side-by-side compare</span><span><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></span></li>
+                <li class=""><span>Connected integrations</span><span><span class="pr-val">120+</span></span></li>
+              </ul>
+            </div>
+            <div class="pr-acc__group" data-stage="review">
+              <h4 class="pr-group__h"><span class="pr-group__dot"></span><span class="pr-group__n">04</span><span class="pr-group__name">Review</span></h4>
+              <ul>
+                <li class=""><span>Review links for unlimited guests</span><span><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></span></li>
+                <li class=""><span>Pinned notes on images and PDFs</span><span><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></span></li>
+                <li class=""><span>Frame-accurate notes on video and audio</span><span><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></span></li>
+                <li class=""><span>One-click approvals</span><span><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></span></li>
+                <li class=""><span>Approvals with an audit trail</span><span><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></span></li>
+                <li class=""><span>Client review portals with your logo</span><span><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></span></li>
+              </ul>
+            </div>
+            <div class="pr-acc__group" data-stage="launch">
+              <h4 class="pr-group__h"><span class="pr-group__dot"></span><span class="pr-group__n">05</span><span class="pr-group__name">Launch</span></h4>
+              <ul>
+                <li class=""><span>Launch checklists built from your plan</span><span><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></span></li>
+                <li class=""><span>Launch channels</span><span><span class="pr-val">14</span></span></li>
+                <li class=""><span>Live launch rooms</span><span><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></span></li>
+                <li class=""><span>Share Pages on your own domain</span><span><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></span></li>
+              </ul>
+            </div>
+            <div class="pr-acc__group" data-stage="afterglow">
+              <h4 class="pr-group__h"><span class="pr-group__dot"></span><span class="pr-group__n">06</span><span class="pr-group__name">Afterglow</span></h4>
+              <ul>
+                <li class=""><span>Recaps on day 1, 7 and 30</span><span><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></span></li>
+                <li class=""><span>Every channel in one view</span><span><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></span></li>
+                <li class=""><span>Next ideas sent back to the Sparkboard</span><span><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></span></li>
+              </ul>
+            </div>
+            <div class="pr-acc__group">
+              <h4 class="pr-group__h"><span class="pr-group__dot pr-group__dot--plain"></span><span class="pr-group__name">Crew &amp; admin</span></h4>
+              <ul>
+                <li class=""><span>People who make (seats)</span><span><span class="pr-val">2 to 50</span></span></li>
+                <li class=""><span>Reviewers and guests</span><span><span class="pr-val">Free</span></span></li>
+                <li class=""><span>Crew roles: Owner, Maker, Reviewer, Guest</span><span><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></span></li>
+                <li class=""><span>Shared lanes</span><span><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></span></li>
+                <li class=""><span>Central billing and invoices</span><span><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></span></li>
+                <li class="is-off"><span>SSO/SAML and SCIM</span><span><span class="pr-no" aria-hidden="true"></span><span class="sr">Not included</span></span></li>
+              </ul>
+            </div>
+            <div class="pr-acc__group">
+              <h4 class="pr-group__h"><span class="pr-group__dot pr-group__dot--plain"></span><span class="pr-group__name">Security</span></h4>
+              <ul>
+                <li class=""><span>Two-factor sign-in and passkeys</span><span><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></span></li>
+                <li class=""><span>Expiring, password-protected review links</span><span><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></span></li>
+                <li class=""><span>Watermarked review copies</span><span><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></span></li>
+                <li class="is-off"><span>EU or US data residency</span><span><span class="pr-no" aria-hidden="true"></span><span class="sr">Not included</span></span></li>
+                <li class="is-off"><span>Per-lane encryption keys</span><span><span class="pr-no" aria-hidden="true"></span><span class="sr">Not included</span></span></li>
+              </ul>
+            </div>
+            <div class="pr-acc__group">
+              <h4 class="pr-group__h"><span class="pr-group__dot pr-group__dot--plain"></span><span class="pr-group__name">Support</span></h4>
+              <ul>
+                <li class=""><span>Help Center and community</span><span><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></span></li>
+                <li class=""><span>Email support</span><span><span class="pr-val">Priority, same day</span></span></li>
+                <li class="is-off"><span>Uptime SLA</span><span><span class="pr-no" aria-hidden="true"></span><span class="sr">Not included</span></span></li>
+              </ul>
+            </div>
+          </div>
+        </details>
+        <details class="pr-acc__item" data-plan="label">
+          <summary><span class="pr-acc__name">Label</span><span class="pr-acc__price">Custom</span></summary>
+          <div class="accordion__body pr-acc__body">
+            <div class="pr-acc__group" data-stage="spark">
+              <h4 class="pr-group__h"><span class="pr-group__dot"></span><span class="pr-group__n">01</span><span class="pr-group__name">Spark</span></h4>
+              <ul>
+                <li class=""><span>Capture from phone, browser and email</span><span><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></span></li>
+                <li class=""><span>Auto-grouped constellations</span><span><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></span></li>
+                <li class=""><span>Promote any spark to a lane</span><span><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></span></li>
+                <li class=""><span>Active lanes</span><span><span class="pr-val">Unlimited</span></span></li>
+              </ul>
+            </div>
+            <div class="pr-acc__group" data-stage="shape">
+              <h4 class="pr-group__h"><span class="pr-group__dot"></span><span class="pr-group__n">02</span><span class="pr-group__name">Shape</span></h4>
+              <ul>
+                <li class=""><span>Blueprint templates by working creators</span><span><span class="pr-val">All 40, plus your own</span></span></li>
+                <li class=""><span>Milestones that know your calendar</span><span><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></span></li>
+                <li class=""><span>Share a brief with one link</span><span><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></span></li>
+              </ul>
+            </div>
+            <div class="pr-acc__group" data-stage="make">
+              <h4 class="pr-group__h"><span class="pr-group__dot"></span><span class="pr-group__n">03</span><span class="pr-group__name">Make</span></h4>
+              <ul>
+                <li class=""><span>Storage</span><span><span class="pr-val">Custom</span></span></li>
+                <li class=""><span>Version history</span><span><span class="pr-val">Unlimited</span></span></li>
+                <li class=""><span>Side-by-side compare</span><span><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></span></li>
+                <li class=""><span>Connected integrations</span><span><span class="pr-val">120+, plus private</span></span></li>
+              </ul>
+            </div>
+            <div class="pr-acc__group" data-stage="review">
+              <h4 class="pr-group__h"><span class="pr-group__dot"></span><span class="pr-group__n">04</span><span class="pr-group__name">Review</span></h4>
+              <ul>
+                <li class=""><span>Review links for unlimited guests</span><span><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></span></li>
+                <li class=""><span>Pinned notes on images and PDFs</span><span><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></span></li>
+                <li class=""><span>Frame-accurate notes on video and audio</span><span><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></span></li>
+                <li class=""><span>One-click approvals</span><span><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></span></li>
+                <li class=""><span>Approvals with an audit trail</span><span><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></span></li>
+                <li class=""><span>Client review portals with your logo</span><span><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></span></li>
+              </ul>
+            </div>
+            <div class="pr-acc__group" data-stage="launch">
+              <h4 class="pr-group__h"><span class="pr-group__dot"></span><span class="pr-group__n">05</span><span class="pr-group__name">Launch</span></h4>
+              <ul>
+                <li class=""><span>Launch checklists built from your plan</span><span><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></span></li>
+                <li class=""><span>Launch channels</span><span><span class="pr-val">14, plus custom</span></span></li>
+                <li class=""><span>Live launch rooms</span><span><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></span></li>
+                <li class=""><span>Share Pages on your own domain</span><span><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></span></li>
+              </ul>
+            </div>
+            <div class="pr-acc__group" data-stage="afterglow">
+              <h4 class="pr-group__h"><span class="pr-group__dot"></span><span class="pr-group__n">06</span><span class="pr-group__name">Afterglow</span></h4>
+              <ul>
+                <li class=""><span>Recaps on day 1, 7 and 30</span><span><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></span></li>
+                <li class=""><span>Every channel in one view</span><span><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></span></li>
+                <li class=""><span>Next ideas sent back to the Sparkboard</span><span><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></span></li>
+              </ul>
+            </div>
+            <div class="pr-acc__group">
+              <h4 class="pr-group__h"><span class="pr-group__dot pr-group__dot--plain"></span><span class="pr-group__name">Crew &amp; admin</span></h4>
+              <ul>
+                <li class=""><span>People who make (seats)</span><span><span class="pr-val">Unlimited</span></span></li>
+                <li class=""><span>Reviewers and guests</span><span><span class="pr-val">Free</span></span></li>
+                <li class=""><span>Crew roles: Owner, Maker, Reviewer, Guest</span><span><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></span></li>
+                <li class=""><span>Shared lanes</span><span><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></span></li>
+                <li class=""><span>Central billing and invoices</span><span><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></span></li>
+                <li class=""><span>SSO/SAML and SCIM</span><span><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></span></li>
+              </ul>
+            </div>
+            <div class="pr-acc__group">
+              <h4 class="pr-group__h"><span class="pr-group__dot pr-group__dot--plain"></span><span class="pr-group__name">Security</span></h4>
+              <ul>
+                <li class=""><span>Two-factor sign-in and passkeys</span><span><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></span></li>
+                <li class=""><span>Expiring, password-protected review links</span><span><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></span></li>
+                <li class=""><span>Watermarked review copies</span><span><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></span></li>
+                <li class=""><span>EU or US data residency</span><span><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></span></li>
+                <li class=""><span>Per-lane encryption keys</span><span><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></span></li>
+              </ul>
+            </div>
+            <div class="pr-acc__group">
+              <h4 class="pr-group__h"><span class="pr-group__dot pr-group__dot--plain"></span><span class="pr-group__name">Support</span></h4>
+              <ul>
+                <li class=""><span>Help Center and community</span><span><svg class="icon pr-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Included</span></span></li>
+                <li class=""><span>Email support</span><span><span class="pr-val">A dedicated success lead</span></span></li>
+                <li class=""><span>Uptime SLA</span><span><span class="pr-val">99.9%</span></span></li>
+              </ul>
+            </div>
+          </div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- creator grants -->
+  <section class="section section--tight pr-grants" id="grants" aria-labelledby="pr-grants-title">
+    <div class="container">
+      <div class="pr-grants__band panel panel--raised">
+        <div class="pr-grants__copy">
+          <p class="eyebrow">Creator grants</p>
+          <h2 class="title-2" id="pr-grants-title" data-split>Studio, free for a&nbsp;year.</h2>
+          <p class="lede">For students, educators and first-time founders. If you’re making your first real thing, the road’s on us.</p>
+          <ol class="pr-grants__reqs">
+            <li><span class="pr-grants__n">01</span><span><b>Who.</b> A student, an educator, or a founder launching a first product.</span></li>
+            <li><span class="pr-grants__n">02</span><span><b>What.</b> A real project you mean to ship within the next 12 months.</span></li>
+            <li><span class="pr-grants__n">03</span><span><b>Proof.</b> A school or institution email, or a few lines about your launch. That’s it.</span></li>
+          </ol>
+          <div class="btn-row">
+            <a class="btn btn--primary btn--lg" href="{{ROOT}}contact.html?topic=grants" data-roll>Apply for a grant<svg class="arrow" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+            <p class="small">A human replies within 5 working days.</p>
+          </div>
+        </div>
+        <div class="pr-pass" aria-hidden="true">
+          <div class="pr-pass__top"><span class="mark"><span class="mark__sheen"></span></span><span class="pr-pass__kind">Creator grant</span><span class="pr-pass__no">No. 2611</span></div>
+          <p class="pr-pass__plan">Studio</p>
+          <p class="pr-pass__price"><s>$120</s><span>$0</span><small>for 12 months</small></p>
+          <span class="stage-rail" data-n="6"><i></i><i></i><i></i><i></i><i></i><i></i></span>
+          <dl class="pr-pass__facts">
+            <div><dt>Lanes</dt><dd>Unlimited</dd></div>
+            <div><dt>Storage</dt><dd>200 GB</dd></div>
+            <div><dt>Renews</dt><dd>While you study, teach or build</dd></div>
+          </dl>
+          <p class="pr-pass__cut"></p>
+          <p class="pr-pass__foot"><span>Nonprofits</span><span>50% off Studio &amp; Crew</span></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- questions -->
+  <section class="section pr-faq" id="faq" aria-labelledby="pr-faq-title">
+    <div class="container pr-faq__grid">
+      <div class="pr-faq__head">
+        <p class="eyebrow">Questions</p>
+        <h2 class="title-2" id="pr-faq-title" data-split>Asked, and answered.</h2>
+        <p class="body-l">The eight we hear most. Anything else goes to a human who knows billing inside out.</p>
+        <div class="pr-faq__links">
+          <a class="link-arrow" href="{{ROOT}}contact.html?topic=sales" data-roll>Ask about billing<svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+          <a class="link-arrow" href="{{ROOT}}help.html" data-roll>Browse the Help Center<svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+        </div>
+      </div>
+      <div class="accordion pr-faq__list">
+        <details open>
+          <summary>Can I cancel any time?</summary>
+          <div class="accordion__body"><p>Yes, in two clicks from Settings → Billing. Monthly plans stop at the end of the month you’re in; yearly plans run to the end of the year you paid for. After that your lanes move to Solo, and nothing is deleted.</p></div>
+        </details>
+        <details>
+          <summary>What counts as an active lane?</summary>
+          <div class="accordion__body"><p>A lane that hasn’t launched or been archived. Once a lane reaches Launch, or you archive it, it stops counting and stays readable for good. So Solo is three projects in motion at once, not three projects ever.</p></div>
+        </details>
+        <details>
+          <summary>Do reviewers pay?</summary>
+          <div class="accordion__body"><p>Never. Anyone you send a review link to can watch, listen, pin notes and approve without an account or a seat. Seats are for the people who make the work; reviewers and guests are free on every plan.</p></div>
+        </details>
+        <details>
+          <summary>What happens to my files if I downgrade?</summary>
+          <div class="accordion__body"><p>Nothing is deleted. If you’re over Solo’s 5 GB or three active lanes, the extra lanes turn read-only: you can still open, review and export everything, and you choose which three keep moving. Upgrade again and they pick up where they stopped.</p></div>
+        </details>
+        <details>
+          <summary>Do you give refunds?</summary>
+          <div class="accordion__body"><p>Yes. Within 14 days of any charge, no questions asked; after that, yearly plans are refunded pro rata if Crestora hasn’t worked out for you. Write to <a href="mailto:billing@crestora.example">billing@crestora.example</a> and a human will sort it the same week.</p></div>
+        </details>
+        <details>
+          <summary>Can I pay in my own currency?</summary>
+          <div class="accordion__body"><p>Prices are set in US dollars, and we also bill in euros, pounds, Canadian dollars, Korean won and Kenyan shillings at a fixed local price, so your bill never moves with the exchange rate. Cards and local bank transfers both work, and Crew and Label can pay by invoice.</p></div>
+        </details>
+        <details>
+          <summary>Is there a nonprofit discount?</summary>
+          <div class="accordion__body"><p>Yes: 50% off Studio and Crew for registered nonprofits and community arts groups. Students, educators and first-time founders can have Studio free for a year through a <a href="#grants">creator grant</a>.</p></div>
+        </details>
+        <details>
+          <summary>Who owns my work?</summary>
+          <div class="accordion__body"><p>You do, always. You give us a limited licence to store and show your work only the way you ask: to your crew, your reviewers and your Share Pages. We never sell it or train models on it, and you can export everything, any time, in the formats you brought it in. The details are in our <a href="{{ROOT}}terms.html">Terms of Service</a>.</p></div>
+        </details>
+      </div>
+    </div>
+  </section>
+
   {{> cta}}
 </main>

@@ -1,16 +1,449 @@
 <!--page
 title: About — Crestora
-description: We build roads for people who make things.
+description: Crestora was started in Lisbon in 2021 by a film editor, an engineer and a ceramicist who kept losing their work between tools. Meet the crew that builds the road.
+modules: page-about
 nav: company
 -->
 <main id="main">
-  <section class="page-hero">
+  <!-- About: the story (Lisbon, 2021, Mira's documentary as the first lane), the mission line, four values, the road so
+       far (a six-lane ribbon that grows a lane with each tool and draws itself as you scroll on desktop; a vertical
+       list on phones), the numbers in odometers, and twelve of the crew, whose cards turn over to show what they are
+       making on the side. -->
+  <section class="page-hero ab-hero" aria-labelledby="ab-title">
     <div class="page-hero__lanes" aria-hidden="true"></div>
     <div class="container page-hero__inner">
-      <p class="eyebrow">Company</p>
-      <h1 class="title-1">We build roads for people who make things.</h1>
-      <p class="lede">This page is being built.</p>
+      <p class="eyebrow" data-reveal="fade">About us</p>
+      <h1 class="title-1 ab-hero__title" id="ab-title" data-split>We build roads for people who make things.</h1>
+      <p class="lede" data-reveal data-delay="0.15">Crestora started as a fix for three friends who kept losing their projects between tools. Five years on, 64 of us build it for more than 38,000 creators, builders and dreamers.</p>
+      <div class="ab-hero__links" data-reveal data-delay="0.25">
+        <a class="link-arrow" href="#story" data-roll>Read how it started <svg aria-hidden="true"><use href="#i-arrow-down"/></svg></a>
+        <a class="link-arrow" href="#crew" data-roll>Meet the crew <svg aria-hidden="true"><use href="#i-arrow-down"/></svg></a>
+      </div>
     </div>
   </section>
+
+  <!-- the story -->
+  <section class="section ab-story" id="story" aria-labelledby="ab-story-title">
+    <div class="container ab-story__grid">
+      <div class="ab-story__aside">
+        <div class="ab-story__head">
+          <p class="eyebrow">Our story</p>
+          <h2 class="title-2" id="ab-story-title" data-split>It started with a lost thread.</h2>
+        </div>
+        <figure class="panel panel--raised ab-lane" data-reveal>
+          <div class="ab-lane__top">
+            <span class="mono ab-lane__id">Lane 001</span>
+            <span class="lane-chip" data-stage="afterglow">Now in: Afterglow</span>
+          </div>
+          <p class="ab-lane__name">Salt Roads</p>
+          <p class="ab-lane__by">A documentary by Mira Castell</p>
+          <div class="stage-rail" data-n="6" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          <dl class="ab-lane__facts">
+            <div><dt>Spark</dt><dd>9 Feb 2021</dd></div>
+            <div><dt>Premiere</dt><dd>27 Apr 2021, Porto</dd></div>
+            <div><dt>On the road</dt><dd>11 weeks</dd></div>
+          </dl>
+          <figcaption class="ab-lane__cap">The first lane ever opened, still in the founders’ workspace.</figcaption>
+        </figure>
+      </div>
+
+      <div class="ab-story__body">
+        <div class="ab-story__text" data-reveal>
+          <p class="ab-story__lead">In the winter of 2021, in a shared studio above a bakery in Lisbon, three friends kept losing their work.</p>
+          <p>Mira Castell was cutting a documentary. Jonah Feld was writing code for anyone who would pay him. Ama Boateng was firing a kiln twice a week and selling what came out of it online. Between them they used fifteen tools, and every project fell through the gaps: the brief in one, the files in another, the feedback in a chat nobody could find on launch day.</p>
+          <p>So they drew a road on the studio wall. Six lanes, from the first spark to the night it goes out, and a magnet for every project that showed where it really was. Their first lane was Mira’s documentary, <em>Salt Roads</em>. It premiered in Porto eleven weeks later, on the day she said it would.</p>
+          <p>Friends asked for the wall. Then friends of friends. By the summer, the wall was software, and the three of them were a company.</p>
+        </div>
+        <ul class="ab-founders" data-reveal-stagger>
+          <li class="ab-founder">
+            <span class="avatar" data-stage="review" aria-hidden="true">MC</span>
+            <span><strong>Mira Castell</strong><span>CEO · film editor</span></span>
+          </li>
+          <li class="ab-founder">
+            <span class="avatar" data-stage="make" aria-hidden="true">JF</span>
+            <span><strong>Jonah Feld</strong><span>CTO · engineer</span></span>
+          </li>
+          <li class="ab-founder">
+            <span class="avatar" data-stage="launch" aria-hidden="true">AB</span>
+            <span><strong>Ama Boateng</strong><span>Product · ceramicist</span></span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- the mission -->
+  <section class="ab-mission" id="mission" aria-labelledby="ab-mission-title">
+    <div class="ab-mission__glow" aria-hidden="true"></div>
+    <div class="container ab-mission__inner">
+      <h2 class="eyebrow" id="ab-mission-title">Our mission</h2>
+      <p class="ab-mission__line" data-split>Make the distance between an idea and its audience as short as a night drive.</p>
+      <div class="streak ab-mission__streak" aria-hidden="true"></div>
+    </div>
+  </section>
+
+  <!-- values -->
+  <section class="section ab-values" id="values" aria-labelledby="ab-values-title">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">What we hold to</p>
+          <h2 class="title-2" id="ab-values-title" data-split>Four rules for the road.</h2>
+        </div>
+        <div class="section-head__aside">
+          <p class="lede">We wrote these on the studio wall, next to the first lane. They still settle most arguments.</p>
+        </div>
+      </div>
+      <ol class="ab-values__grid" data-reveal-stagger="0.1">
+        <li class="ab-value" data-spotlight>
+          <span class="ab-value__n" aria-hidden="true">01</span>
+          <span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-users"/></svg></span>
+          <h3 class="title-3">Makers first</h3>
+          <p>We build for the person with the idea, not the person with the org chart. Every feature spends a week in a real maker’s lane before it ships.</p>
+        </li>
+        <li class="ab-value" data-spotlight>
+          <span class="ab-value__n" aria-hidden="true">02</span>
+          <span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-map"/></svg></span>
+          <h3 class="title-3">Clear roads</h3>
+          <p>Say what’s next, who has it and when it lands. If a plan or a pull request needs a meeting to explain it, it isn’t finished yet.</p>
+        </li>
+        <li class="ab-value" data-spotlight>
+          <span class="ab-value__n" aria-hidden="true">03</span>
+          <span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-bolt"/></svg></span>
+          <h3 class="title-3">Ship, then shine</h3>
+          <p>Small and real beats big and someday. We put things in people’s hands early, then polish the parts they actually use.</p>
+        </li>
+        <li class="ab-value" data-spotlight>
+          <span class="ab-value__n" aria-hidden="true">04</span>
+          <span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-clock"/></svg></span>
+          <h3 class="title-3">Leave the light on</h3>
+          <p>Be kind, especially at 2 a.m. Launch nights run long and somebody is always further from home than you. Answer the message.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- the road so far: a ribbon that grows a lane with each tool (drawn by page-about.js) over six milestones -->
+  <section class="ab-time" id="road" aria-labelledby="ab-time-title">
+    <div class="ab-time__pin">
+      <div class="container">
+        <div class="section-head ab-time__head">
+          <div>
+            <p class="eyebrow">The road so far</p>
+            <h2 class="title-2" id="ab-time-title" data-split>Five years, six lanes.</h2>
+          </div>
+          <div class="section-head__aside">
+            <p class="lede">From a wall in Lisbon to 38,000 creators. Almost every year added a lane to the road.</p>
+          </div>
+        </div>
+        <div class="ab-ribbon" aria-hidden="true">
+          <svg class="ab-ribbon__svg ab-ribbon__base"></svg>
+          <svg class="ab-ribbon__svg ab-ribbon__lit"></svg>
+          <span class="ab-ribbon__front"></span>
+        </div>
+        <ol class="ab-miles">
+          <li class="ab-mile">
+            <span class="ab-mile__year">2021</span>
+            <h3 class="ab-mile__title">Founded in Lisbon</h3>
+            <p class="ab-mile__text">Mira, Jonah and Ama open the first lane: Mira’s documentary, <em>Salt Roads</em>.</p>
+            <p class="ab-mile__lanes"><span><i style="--c: var(--spark)"></i>Spark</span></p>
+          </li>
+          <li class="ab-mile">
+            <span class="ab-mile__year">2022</span>
+            <h3 class="ab-mile__title">Public beta</h3>
+            <p class="ab-mile__text">Sparkboard, Blueprints and Workbench open to everyone. 1,000 creators ride in the first year.</p>
+            <p class="ab-mile__lanes"><span><i style="--c: var(--shape)"></i>Shape</span><span><i style="--c: var(--make)"></i>Make</span></p>
+          </li>
+          <li class="ab-mile">
+            <span class="ab-mile__year">2023</span>
+            <h3 class="ab-mile__title">Review Room</h3>
+            <p class="ab-mile__text">Notes pinned to a frame, a pixel or a second of audio. Reviewers need a link, not an account.</p>
+            <p class="ab-mile__lanes"><span><i style="--c: var(--review)"></i>Review</span></p>
+          </li>
+          <li class="ab-mile">
+            <span class="ab-mile__year">2024</span>
+            <h3 class="ab-mile__title">Countdown</h3>
+            <p class="ab-mile__text">Launch rooms and checklists that fill themselves. 10,000 creators on the road.</p>
+            <p class="ab-mile__lanes"><span><i style="--c: var(--launch)"></i>Launch</span></p>
+          </li>
+          <li class="ab-mile">
+            <span class="ab-mile__year">2025</span>
+            <h3 class="ab-mile__title">Afterglow and iOS</h3>
+            <p class="ab-mile__text">Recaps on day 1, 7 and 30, and a Sparkboard that fits in your pocket.</p>
+            <p class="ab-mile__lanes"><span><i style="--c: var(--afterglow)"></i>Afterglow</span></p>
+          </li>
+          <li class="ab-mile">
+            <span class="ab-mile__year">2026</span>
+            <h3 class="ab-mile__title">38,000 creators, four hubs</h3>
+            <p class="ab-mile__text">Lisbon, Toronto, Seoul and Nairobi. 64 of us, working from 19 countries.</p>
+            <p class="ab-mile__lanes"><span><i class="ab-mile__all"></i>The whole flow</span></p>
+          </li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- numbers -->
+  <section class="section--tight ab-numbers" id="numbers" aria-labelledby="ab-numbers-title">
+    <div class="container">
+      <h2 class="sr" id="ab-numbers-title">Crestora in numbers</h2>
+      <ul class="ab-band" data-reveal-stagger>
+        <li class="ab-band__item">
+          <span class="ab-band__n" data-odometer="64">64</span>
+          <span class="ab-band__l">People on the crew, from engineers to a full-time kiln tester</span>
+        </li>
+        <li class="ab-band__item">
+          <span class="ab-band__n" data-odometer="4">4</span>
+          <span class="ab-band__l">Hubs: Lisbon, Toronto, Seoul and Nairobi</span>
+        </li>
+        <li class="ab-band__item">
+          <span class="ab-band__n" data-odometer="19">19</span>
+          <span class="ab-band__l">Countries we work from, most of us remote</span>
+        </li>
+        <li class="ab-band__item">
+          <span class="ab-band__n" data-odometer="38000" data-suffix="+">38,000+</span>
+          <span class="ab-band__l">Creators, builders and dreamers on the road</span>
+        </li>
+      </ul>
+      <ul class="ab-hubs" aria-label="Our hubs">
+        <li><span class="ab-hubs__city">Lisbon</span><span class="ab-hubs__note">Where it started · since 2021</span></li>
+        <li><span class="ab-hubs__city">Toronto</span><span class="ab-hubs__note">Engineering &amp; support · since 2024</span></li>
+        <li><span class="ab-hubs__city">Seoul</span><span class="ab-hubs__note">Design &amp; iOS · since 2025</span></li>
+        <li><span class="ab-hubs__city">Nairobi</span><span class="ab-hubs__note">Sync &amp; data · since 2026</span></li>
+      </ul>
+      <p class="fiction ab-fiction">Crestora is a fictional company; figures are illustrative.</p>
+    </div>
+  </section>
+
+  <!-- the crew: cards turn over (hover, focus or tap) to show what each person is making -->
+  <section class="section ab-crew" id="crew" aria-labelledby="ab-crew-title">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">The crew</p>
+          <h2 class="title-2" id="ab-crew-title" data-split>The people behind the road.</h2>
+        </div>
+        <div class="section-head__aside">
+          <p class="lede">Most of us make things on the side. Turn a card over to see what’s on someone’s bench this month, and which lane it’s in.</p>
+        </div>
+      </div>
+      <ul class="ab-crew__grid" data-reveal-stagger="0.05">
+        <li class="ab-person" data-stage="review">
+          <button class="ab-person__card" type="button" aria-pressed="false">
+            <span class="ab-person__face ab-person__front">
+              <span class="ab-person__hub">Lisbon</span>
+              <span class="avatar ab-person__avatar" aria-hidden="true">MC</span>
+              <span class="ab-person__name">Mira Castell</span>
+              <span class="ab-person__role">CEO &amp; co-founder</span>
+            </span>
+            <span class="ab-person__face ab-person__back">
+              <span class="ab-person__who"><span class="avatar" aria-hidden="true">MC</span><span><span class="ab-person__label">On the bench</span><span class="ab-person__first">Mira</span></span></span>
+              <span class="ab-person__making">A radio play, recorded on her balcony at night</span>
+              <span class="ab-person__detail">The cast hears the final mix on Sunday.</span>
+              <span class="lane-chip">Now in: Review</span>
+            </span>
+          </button>
+        </li>
+        <li class="ab-person" data-stage="make">
+          <button class="ab-person__card" type="button" aria-pressed="false">
+            <span class="ab-person__face ab-person__front">
+              <span class="ab-person__hub">Lisbon</span>
+              <span class="avatar ab-person__avatar" aria-hidden="true">JF</span>
+              <span class="ab-person__name">Jonah Feld</span>
+              <span class="ab-person__role">CTO &amp; co-founder</span>
+            </span>
+            <span class="ab-person__face ab-person__back">
+              <span class="ab-person__who"><span class="avatar" aria-hidden="true">JF</span><span><span class="ab-person__label">On the bench</span><span class="ab-person__first">Jonah</span></span></span>
+              <span class="ab-person__making">A modular synth, one module a month</span>
+              <span class="ab-person__detail">Module seven is a filter. It hums.</span>
+              <span class="lane-chip">Now in: Make</span>
+            </span>
+          </button>
+        </li>
+        <li class="ab-person" data-stage="launch">
+          <button class="ab-person__card" type="button" aria-pressed="false">
+            <span class="ab-person__face ab-person__front">
+              <span class="ab-person__hub">Lisbon</span>
+              <span class="avatar ab-person__avatar" aria-hidden="true">AB</span>
+              <span class="ab-person__name">Ama Boateng</span>
+              <span class="ab-person__role">Product &amp; co-founder</span>
+            </span>
+            <span class="ab-person__face ab-person__back">
+              <span class="ab-person__who"><span class="avatar" aria-hidden="true">AB</span><span><span class="ab-person__label">On the bench</span><span class="ab-person__first">Ama</span></span></span>
+              <span class="ab-person__making">Forty tea bowls for a kiln opening</span>
+              <span class="ab-person__detail">Doors open 6 March. The kiln is booked.</span>
+              <span class="lane-chip">Now in: Launch</span>
+            </span>
+          </button>
+        </li>
+        <li class="ab-person" data-stage="review">
+          <button class="ab-person__card" type="button" aria-pressed="false">
+            <span class="ab-person__face ab-person__front">
+              <span class="ab-person__hub">Seoul</span>
+              <span class="avatar ab-person__avatar" aria-hidden="true">HP</span>
+              <span class="ab-person__name">Hye-jin Park</span>
+              <span class="ab-person__role">Design lead, Review Room</span>
+            </span>
+            <span class="ab-person__face ab-person__back">
+              <span class="ab-person__who"><span class="avatar" aria-hidden="true">HP</span><span><span class="ab-person__label">On the bench</span><span class="ab-person__first">Hye-jin</span></span></span>
+              <span class="ab-person__making">A sourdough zine, issue three</span>
+              <span class="ab-person__detail">Proofs are with two bakers and her mum.</span>
+              <span class="lane-chip">Now in: Review</span>
+            </span>
+          </button>
+        </li>
+        <li class="ab-person" data-stage="make">
+          <button class="ab-person__card" type="button" aria-pressed="false">
+            <span class="ab-person__face ab-person__front">
+              <span class="ab-person__hub">Nairobi</span>
+              <span class="avatar ab-person__avatar" aria-hidden="true">DO</span>
+              <span class="ab-person__name">Daniel Okoth</span>
+              <span class="ab-person__role">Engineering manager, Sync</span>
+            </span>
+            <span class="ab-person__face ab-person__back">
+              <span class="ab-person__who"><span class="avatar" aria-hidden="true">DO</span><span><span class="ab-person__label">On the bench</span><span class="ab-person__first">Daniel</span></span></span>
+              <span class="ab-person__making">A solar field recorder for birdsong</span>
+              <span class="ab-person__detail">Version three survived a week of rain.</span>
+              <span class="lane-chip">Now in: Make</span>
+            </span>
+          </button>
+        </li>
+        <li class="ab-person" data-stage="launch">
+          <button class="ab-person__card" type="button" aria-pressed="false">
+            <span class="ab-person__face ab-person__front">
+              <span class="ab-person__hub">Lisbon</span>
+              <span class="avatar ab-person__avatar" aria-hidden="true">RM</span>
+              <span class="ab-person__name">Rafael Mendes</span>
+              <span class="ab-person__role">Engineer, Countdown</span>
+            </span>
+            <span class="ab-person__face ab-person__back">
+              <span class="ab-person__who"><span class="avatar" aria-hidden="true">RM</span><span><span class="ab-person__label">On the bench</span><span class="ab-person__first">Rafael</span></span></span>
+              <span class="ab-person__making">A 7-inch of fado covers</span>
+              <span class="ab-person__detail">Pressed in Porto, out this Friday.</span>
+              <span class="lane-chip">Now in: Launch</span>
+            </span>
+          </button>
+        </li>
+        <li class="ab-person" data-stage="afterglow">
+          <button class="ab-person__card" type="button" aria-pressed="false">
+            <span class="ab-person__face ab-person__front">
+              <span class="ab-person__hub">Nairobi</span>
+              <span class="avatar ab-person__avatar" aria-hidden="true">WK</span>
+              <span class="ab-person__name">Wanjiru Kamau</span>
+              <span class="ab-person__role">Data lead, Afterglow</span>
+            </span>
+            <span class="ab-person__face ab-person__back">
+              <span class="ab-person__who"><span class="avatar" aria-hidden="true">WK</span><span><span class="ab-person__label">On the bench</span><span class="ab-person__first">Wanjiru</span></span></span>
+              <span class="ab-person__making">A quilt from her grandmother’s kanga cloths</span>
+              <span class="ab-person__detail">Shown at the Nairobi craft fair in October.</span>
+              <span class="lane-chip">Now in: Afterglow</span>
+            </span>
+          </button>
+        </li>
+        <li class="ab-person" data-stage="spark">
+          <button class="ab-person__card" type="button" aria-pressed="false">
+            <span class="ab-person__face ab-person__front">
+              <span class="ab-person__hub">Seoul</span>
+              <span class="avatar ab-person__avatar" aria-hidden="true">MK</span>
+              <span class="ab-person__name">Min-seo Kang</span>
+              <span class="ab-person__role">iOS engineer</span>
+            </span>
+            <span class="ab-person__face ab-person__back">
+              <span class="ab-person__who"><span class="avatar" aria-hidden="true">MK</span><span><span class="ab-person__label">On the bench</span><span class="ab-person__first">Min-seo</span></span></span>
+              <span class="ab-person__making">A pixel-art calendar for 2027</span>
+              <span class="ab-person__detail">Twelve months, twelve sketches so far.</span>
+              <span class="lane-chip">Now in: Spark</span>
+            </span>
+          </button>
+        </li>
+        <li class="ab-person" data-stage="spark">
+          <button class="ab-person__card" type="button" aria-pressed="false">
+            <span class="ab-person__face ab-person__front">
+              <span class="ab-person__hub">Toronto</span>
+              <span class="avatar ab-person__avatar" aria-hidden="true">OT</span>
+              <span class="ab-person__name">Owen Tremblay</span>
+              <span class="ab-person__role">Support lead</span>
+            </span>
+            <span class="ab-person__face ab-person__back">
+              <span class="ab-person__who"><span class="avatar" aria-hidden="true">OT</span><span><span class="ab-person__label">On the bench</span><span class="ab-person__first">Owen</span></span></span>
+              <span class="ab-person__making">A board game about Toronto’s streetcars</span>
+              <span class="ab-person__detail">Still a napkin, a die and a lot of hope.</span>
+              <span class="lane-chip">Now in: Spark</span>
+            </span>
+          </button>
+        </li>
+        <li class="ab-person" data-stage="shape">
+          <button class="ab-person__card" type="button" aria-pressed="false">
+            <span class="ab-person__face ab-person__front">
+              <span class="ab-person__hub">Lisbon</span>
+              <span class="avatar ab-person__avatar" aria-hidden="true">SM</span>
+              <span class="ab-person__name">Sofia Marques</span>
+              <span class="ab-person__role">Brand designer</span>
+            </span>
+            <span class="ab-person__face ab-person__back">
+              <span class="ab-person__who"><span class="avatar" aria-hidden="true">SM</span><span><span class="ab-person__label">On the bench</span><span class="ab-person__first">Sofia</span></span></span>
+              <span class="ab-person__making">A typeface drawn from azulejo tiles</span>
+              <span class="ab-person__detail">Capitals done, lowercase on the grid.</span>
+              <span class="lane-chip">Now in: Shape</span>
+            </span>
+          </button>
+        </li>
+        <li class="ab-person" data-stage="shape">
+          <button class="ab-person__card" type="button" aria-pressed="false">
+            <span class="ab-person__face ab-person__front">
+              <span class="ab-person__hub">Toronto</span>
+              <span class="avatar ab-person__avatar" aria-hidden="true">KA</span>
+              <span class="ab-person__name">Kwame Asante</span>
+              <span class="ab-person__role">Security engineer</span>
+            </span>
+            <span class="ab-person__face ab-person__back">
+              <span class="ab-person__who"><span class="avatar" aria-hidden="true">KA</span><span><span class="ab-person__label">On the bench</span><span class="ab-person__first">Kwame</span></span></span>
+              <span class="ab-person__making">A cedar-strip canoe, in the garage</span>
+              <span class="ab-person__detail">The forms are cut. The garage is full.</span>
+              <span class="lane-chip">Now in: Shape</span>
+            </span>
+          </button>
+        </li>
+        <li class="ab-person" data-stage="afterglow">
+          <button class="ab-person__card" type="button" aria-pressed="false">
+            <span class="ab-person__face ab-person__front">
+              <span class="ab-person__hub">Toronto</span>
+              <span class="avatar ab-person__avatar" aria-hidden="true">NR</span>
+              <span class="ab-person__name">Nadia Rahman</span>
+              <span class="ab-person__role">Community lead</span>
+            </span>
+            <span class="ab-person__face ab-person__back">
+              <span class="ab-person__who"><span class="avatar" aria-hidden="true">NR</span><span><span class="ab-person__label">On the bench</span><span class="ab-person__first">Nadia</span></span></span>
+              <span class="ab-person__making">A podcast about corner shops</span>
+              <span class="ab-person__detail">Episode twelve went out last week.</span>
+              <span class="lane-chip">Now in: Afterglow</span>
+            </span>
+          </button>
+        </li>
+      </ul>
+      <p class="small ab-crew__more">And 52 more across four hubs and 19 countries. <a class="link-arrow" href="{{ROOT}}careers.html" data-roll>There’s a seat for you <svg aria-hidden="true"><use href="#i-arrow"/></svg></a></p>
+    </div>
+  </section>
+
+  <!-- next: careers and press -->
+  <section class="section--tight ab-next" aria-label="More about Crestora">
+    <div class="container ab-next__grid">
+      <a class="panel ab-next__card" href="{{ROOT}}careers.html" data-spotlight data-reveal>
+        <span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-briefcase"/></svg></span>
+        <span class="ab-next__kicker">Careers · 8 open roles</span>
+        <span class="title-3 ab-next__title">Come build the road.</span>
+        <span class="ab-next__text">Remote-first across four hubs, with published pay bands and one Friday a month for your own project.</span>
+        <span class="link-arrow ab-next__go">See open roles <svg aria-hidden="true"><use href="#i-arrow"/></svg></span>
+      </a>
+      <a class="panel ab-next__card" href="{{ROOT}}press.html" data-spotlight data-reveal data-delay="0.08">
+        <span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-news"/></svg></span>
+        <span class="ab-next__kicker">Press kit</span>
+        <span class="title-3 ab-next__title">Writing about us?</span>
+        <span class="ab-next__text">Boilerplates, fast facts, logos, colours, product screens and founder bios, all on one page.</span>
+        <span class="link-arrow ab-next__go">Open the press kit <svg aria-hidden="true"><use href="#i-arrow"/></svg></span>
+      </a>
+    </div>
+  </section>
+
   {{> cta}}
 </main>

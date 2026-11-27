@@ -5,7 +5,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <title>Changelog — Crestora</title>
-<meta name="description" content="What’s new on the road." />
+<meta name="description" content="Every Crestora release, newest first: what’s new, what got better and what we fixed, every other Friday." />
 <meta name="theme-color" content="#000000" />
 <meta name="color-scheme" content="dark" />
 <link rel="canonical" href="{{SITE_URL}}/changelog.html" />
@@ -13,7 +13,7 @@
 <meta property="og:site_name" content="Crestora" />
 <meta property="og:url" content="{{SITE_URL}}/changelog.html" />
 <meta property="og:title" content="Changelog — Crestora" />
-<meta property="og:description" content="What’s new on the road." />
+<meta property="og:description" content="Every Crestora release, newest first: what’s new, what got better and what we fixed, every other Friday." />
 <meta property="og:image" content="{{SITE_URL}}/assets/img/og.jpg" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
@@ -39,7 +39,7 @@
 <script defer src="vendor/lenis.min.js"></script>
 <script type="module" src="js/main.js?v={{VERSION}}"></script>
 </head>
-<body data-page="changelog" data-modules="">
+<body data-page="changelog" data-modules="filter forms page-changelog">
 <!-- The icon sprite: drawn on a 24 px grid in the footer's hand (round caps and joins; stroke set by .icon). Use as
      <svg class="icon" aria-hidden="true"><use href="#i-spark"/></svg>. -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
@@ -203,14 +203,413 @@
 </div>
 
 <main id="main">
-  <section class="page-hero">
+  <!-- The changelog: a vertical lane. Each release is a stop on a hairline rail at the left that fills with the
+       stages' colours as you read down, its node lighting in the release's stage colour as it reaches the middle of
+       the screen. Chips focus the page on what's new, improved or fixed; every release is an anchor (#v4-12) with a
+       copy-link button. Without scripts every release shows in full and the rail is lit. -->
+  <section class="page-hero cl-hero" aria-labelledby="cl-title">
     <div class="page-hero__lanes" aria-hidden="true"></div>
-    <div class="container page-hero__inner">
-      <p class="eyebrow">Product</p>
-      <h1 class="title-1">What’s new on the road.</h1>
-      <p class="lede">This page is being built.</p>
+    <div class="container cl-hero__grid">
+      <div class="cl-hero__intro">
+        <p class="eyebrow" data-reveal="fade">Changelog</p>
+        <h1 class="title-1 cl-hero__title" id="cl-title" data-split>What’s new on the road.</h1>
+        <p class="lede" data-reveal data-delay="0.15">A release every two weeks, give or take a review stop.</p>
+        <dl class="cl-facts" data-reveal data-delay="0.25">
+          <div class="cl-facts__item"><dt>Latest</dt><dd><a href="#v4-12" data-roll>v4.12 · 20 Nov 2026</a></dd></div>
+          <div class="cl-facts__item"><dt>Cadence</dt><dd>Every other Friday</dd></div>
+          <div class="cl-facts__item"><dt>Next stop</dt><dd>v4.13 · 4 Dec 2026</dd></div>
+        </dl>
+      </div>
+
+      <aside class="cl-sub panel panel--raised" aria-labelledby="cl-sub-title" data-reveal data-delay="0.2">
+        <div class="cl-sub__head">
+          <span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-mail"/></svg></span>
+          <div>
+            <h2 class="title-4" id="cl-sub-title">Release notes, by email</h2>
+            <p class="small">One short email when a release lands, every other Friday. Nothing in between.</p>
+          </div>
+        </div>
+        <form class="cl-sub__form" action="changelog.html" method="get" data-form data-demo data-success="You’re on the list. v4.13 lands on 4 Dec. (Demo: nothing was sent.)" data-success-key="Subscribed">
+          <div class="field">
+            <label class="field__label" for="cl-email">Email</label>
+            <div class="cl-sub__row">
+              <input class="input" id="cl-email" name="email" type="email" required maxlength="120" autocomplete="email" inputmode="email" placeholder="you@studio.example" data-msg-required="Add an email and we’ll send the next one." />
+              <button class="btn btn--primary" type="submit">Subscribe</button>
+            </div>
+            <p class="field__error"></p>
+          </div>
+          <label class="check"><input type="checkbox" name="fixes" value="yes" checked /> Include the small fixes, not just the headlines</label>
+        </form>
+      </aside>
     </div>
   </section>
+
+  <section class="cl-log" aria-labelledby="cl-log-title" data-filter-scope>
+    <div class="container">
+      <div class="cl-bar" data-reveal="fade">
+        <h2 class="cl-bar__title" id="cl-log-title">Releases</h2>
+        <div class="cl-chips" data-filter-group role="group" aria-label="Show changes">
+          <button type="button" class="cl-chip" data-filter="all" aria-pressed="true">All</button>
+          <button type="button" class="cl-chip" data-filter="new" aria-pressed="false">New</button>
+          <button type="button" class="cl-chip" data-filter="improved" aria-pressed="false">Improved</button>
+          <button type="button" class="cl-chip" data-filter="fixed" aria-pressed="false">Fixed</button>
+        </div>
+        <p class="cl-count" data-filter-count data-filter-noun="release" aria-live="polite">8 releases · 30 changes</p>
+      </div>
+
+      <div class="cl-road">
+        <div class="cl-rail" aria-hidden="true"><span class="cl-rail__fill"></span><span class="cl-rail__head"></span></div>
+
+        <!-- the next stop, still ahead -->
+        <div class="cl-next">
+          <span class="cl-node cl-node--next" aria-hidden="true"></span>
+          <div class="cl-next__meta"><span class="cl-ver cl-ver--next">v4.13</span><span class="cl-date">4 Dec 2026</span></div>
+          <p class="cl-next__text"><span class="cl-next__label">Up next.</span> Shared Sparkboards go to early access, and Android opens its beta. <a class="link-arrow" href="roadmap.html">See the roadmap <svg aria-hidden="true"><use href="#i-arrow"/></svg></a></p>
+        </div>
+
+        <ol class="cl-timeline" data-filter-list>
+          <!-- v4.12 -->
+          <li class="cl-entry" id="v4-12" data-stage="review" data-tags="new improved fixed" data-reveal>
+            <span class="cl-node" aria-hidden="true"></span>
+            <div class="cl-entry__meta">
+              <a class="cl-ver" href="#v4-12" aria-label="v4.12, link to this release">v4.12</a>
+              <time class="cl-date" datetime="2026-11-20">20 Nov 2026</time>
+              <span class="lane-chip">Review Room</span>
+              <button class="cl-copy" type="button" data-cl-copy="v4-12" hidden><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg><span>Copy link</span></button>
+            </div>
+            <article class="cl-entry__body" aria-labelledby="v4-12-title">
+              <div class="cl-tags"><span class="cl-tag cl-tag--new" data-k="new">New</span><span class="cl-tag" data-k="improved">Improved</span><span class="cl-tag" data-k="fixed">Fixed</span></div>
+              <h2 class="title-3 cl-entry__title" id="v4-12-title">Review Room hears you</h2>
+              <div class="cl-text" data-kind="new">
+                <p>Pin a note to a second of audio the way you pin one to a frame. Mixes, podcast episodes and voiceovers now open as a waveform in Review Room: click anywhere on it to leave a timestamped note, and your reviewer hears the exact moment you mean, looped with half a second either side.</p>
+              </div>
+              <figure class="cl-shot mock" data-kind="new">
+                <div class="mock__bar"><svg class="icon" aria-hidden="true"><use href="#i-review"/></svg>Small Hours ep. 49 · master_v3.wav</div>
+                <div class="cl-wave">
+                  <svg class="cl-wave__svg" viewBox="0 0 360 72" aria-hidden="true" preserveAspectRatio="none">
+                    <defs><clipPath id="cl-wave-played"><rect x="0" y="0" width="268" height="72"/></clipPath></defs>
+                    <path class="cl-wave__all" d="M6.0 30.2V41.8M11.5 23.9V48.1M17.0 26.1V45.9M22.6 25.4V46.6M28.1 20.5V51.5M33.6 21.5V50.5M39.1 23.2V48.8M44.7 20.2V51.8M50.2 21.1V50.9M55.7 23.6V48.4M61.2 23.4V48.6M66.8 24.2V47.8M72.3 22.9V49.1M77.8 26.0V46.0M83.3 24.0V48.0M88.9 19.6V52.4M94.4 17.7V54.3M99.9 22.5V49.5M105.4 14.3V57.7M111.0 15.9V56.1M116.5 10.2V61.8M122.0 12.1V59.9M127.5 21.1V50.9M133.0 18.4V53.6M138.6 16.6V55.4M144.1 20.9V51.1M149.6 23.2V48.8M155.1 25.2V46.8M160.7 24.6V47.4M166.2 25.5V46.5M171.7 28.4V43.6M177.2 28.3V43.7M182.8 25.4V46.6M188.3 27.4V44.6M193.8 27.6V44.4M199.3 25.4V46.6M204.9 22.8V49.2M210.4 22.1V49.9M215.9 13.5V58.5M221.4 15.5V56.5M227.0 11.9V60.1M232.5 9.1V62.9M238.0 19.5V52.5M243.5 17.4V54.6M249.0 15.2V56.8M254.6 17.6V54.4M260.1 20.4V51.6M265.6 24.2V47.8M271.1 20.3V51.7M276.7 27.5V44.5M282.2 26.1V45.9M287.7 26.4V45.6M293.2 24.1V47.9M298.8 21.9V50.1M304.3 24.1V47.9M309.8 26.2V45.8M315.3 24.6V47.4M320.9 25.9V46.1M326.4 26.3V45.7M331.9 27.2V44.8M337.4 28.2V43.8M343.0 25.6V46.4M348.5 23.7V48.3M354.0 25.4V46.6"/>
+                    <path class="cl-wave__played" clip-path="url(#cl-wave-played)" d="M6.0 30.2V41.8M11.5 23.9V48.1M17.0 26.1V45.9M22.6 25.4V46.6M28.1 20.5V51.5M33.6 21.5V50.5M39.1 23.2V48.8M44.7 20.2V51.8M50.2 21.1V50.9M55.7 23.6V48.4M61.2 23.4V48.6M66.8 24.2V47.8M72.3 22.9V49.1M77.8 26.0V46.0M83.3 24.0V48.0M88.9 19.6V52.4M94.4 17.7V54.3M99.9 22.5V49.5M105.4 14.3V57.7M111.0 15.9V56.1M116.5 10.2V61.8M122.0 12.1V59.9M127.5 21.1V50.9M133.0 18.4V53.6M138.6 16.6V55.4M144.1 20.9V51.1M149.6 23.2V48.8M155.1 25.2V46.8M160.7 24.6V47.4M166.2 25.5V46.5M171.7 28.4V43.6M177.2 28.3V43.7M182.8 25.4V46.6M188.3 27.4V44.6M193.8 27.6V44.4M199.3 25.4V46.6M204.9 22.8V49.2M210.4 22.1V49.9M215.9 13.5V58.5M221.4 15.5V56.5M227.0 11.9V60.1M232.5 9.1V62.9M238.0 19.5V52.5M243.5 17.4V54.6M249.0 15.2V56.8M254.6 17.6V54.4M260.1 20.4V51.6M265.6 24.2V47.8"/>
+                  </svg>
+                  <span class="cl-wave__head" style="--x: 74.4%" aria-hidden="true"></span>
+                  <span class="cl-pin" style="--x: 16%">0:42</span>
+                  <span class="cl-pin" style="--x: 44%">1:18</span>
+                  <span class="cl-pin is-open" style="--x: 74.4%">2:51</span>
+                </div>
+                <div class="cl-note">
+                  <span class="avatar" data-stage="review" style="--size: 28px" aria-hidden="true">LK</span>
+                  <p><strong>Lena K.</strong> <span class="cl-note__at">at 2:51</span><br />“There’s a breath right before the outro. Can we lose it?”</p>
+                </div>
+                <figcaption class="sr">A podcast master open as a waveform in Review Room, with three timestamped notes; the one at 2:51 is open.</figcaption>
+              </figure>
+              <div class="cl-more">
+                <h3 class="cl-more__title">Also in v4.12</h3>
+                <ul class="cl-changes">
+                  <li class="cl-change" data-kind="improved"><span class="cl-tag">Improved</span><span>Notes on video show the frame number and the timecode side by side.</span></li>
+                  <li class="cl-change" data-kind="fixed"><span class="cl-tag">Fixed</span><span>Approving a version from the email digest no longer asks you to sign in twice.</span></li>
+                  <li class="cl-change" data-kind="fixed"><span class="cl-tag">Fixed</span><span>Long reviewer names no longer push the Approve button off small screens.</span></li>
+                </ul>
+              </div>
+            </article>
+          </li>
+
+          <!-- v4.11 -->
+          <li class="cl-entry" id="v4-11" data-stage="afterglow" data-tags="new improved fixed" data-reveal>
+            <span class="cl-node" aria-hidden="true"></span>
+            <div class="cl-entry__meta">
+              <a class="cl-ver" href="#v4-11" aria-label="v4.11, link to this release">v4.11</a>
+              <time class="cl-date" datetime="2026-11-06">6 Nov 2026</time>
+              <span class="lane-chip">Afterglow</span>
+              <button class="cl-copy" type="button" data-cl-copy="v4-11" hidden><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg><span>Copy link</span></button>
+            </div>
+            <article class="cl-entry__body" aria-labelledby="v4-11-title">
+              <div class="cl-tags"><span class="cl-tag cl-tag--new" data-k="new">New</span><span class="cl-tag" data-k="improved">Improved</span><span class="cl-tag" data-k="fixed">Fixed</span></div>
+              <h2 class="title-3 cl-entry__title" id="v4-11-title">Afterglow recaps on day 1, 7 and 30</h2>
+              <div class="cl-text" data-kind="new">
+                <p>Every launch now gets three recaps without you asking: the first night, the first week and the first month. Views, sales, replies and reviews from every connected channel sit on one page, the comments worth reading float to the top, and the ideas they spark go straight back to your Sparkboard.</p>
+              </div>
+              <figure class="cl-shot mock" data-kind="new">
+                <div class="mock__bar"><svg class="icon" aria-hidden="true"><use href="#i-afterglow"/></svg>Night Bloom · recap</div>
+                <div class="cl-recap">
+                  <div class="cl-recap__days" aria-hidden="true"><span>Day 1</span><span class="is-on">Day 7</span><span>Day 30</span></div>
+                  <dl class="cl-recap__nums">
+                    <div><dt>Views</dt><dd>12.4k</dd></div>
+                    <div><dt>Comments</dt><dd>318</dd></div>
+                    <div><dt>Saves</dt><dd>2.1k</dd></div>
+                  </dl>
+                  <svg class="cl-recap__spark" viewBox="0 0 320 64" preserveAspectRatio="none" aria-hidden="true">
+                    <defs><linearGradient id="cl-recap-fill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff7ad9" stop-opacity="0.22"/><stop offset="1" stop-color="#ff7ad9" stop-opacity="0"/></linearGradient></defs>
+                    <path class="cl-recap__area" d="M2.0 37.6L12.5 24.6L23.1 12.3L33.6 6.7L44.1 12.2L54.7 27.7L65.2 43.2L75.7 48.9L86.3 48.1L96.8 49.7L107.3 52.7L117.9 51.6L128.4 49.8L138.9 52.2L149.5 54.2L160.0 52.0L170.5 51.3L181.1 54.3L191.6 54.8L202.1 51.8L212.7 50.4L223.2 49.3L233.7 47.7L244.3 49.4L254.8 53.9L265.3 56.5L275.9 54.4L286.4 53.2L296.9 55.9L307.5 56.7L318.0 54.0L318 64L2 64Z" fill="url(#cl-recap-fill)"/>
+                    <path class="cl-recap__line" d="M2.0 37.6L12.5 24.6L23.1 12.3L33.6 6.7L44.1 12.2L54.7 27.7L65.2 43.2L75.7 48.9L86.3 48.1L96.8 49.7L107.3 52.7L117.9 51.6L128.4 49.8L138.9 52.2L149.5 54.2L160.0 52.0L170.5 51.3L181.1 54.3L191.6 54.8L202.1 51.8L212.7 50.4L223.2 49.3L233.7 47.7L244.3 49.4L254.8 53.9L265.3 56.5L275.9 54.4L286.4 53.2L296.9 55.9L307.5 56.7L318.0 54.0"/>
+                  </svg>
+                  <p class="cl-recap__quote">“Watched it twice on the bus home.” <span>· top comment</span></p>
+                </div>
+                <figcaption class="sr">A day 7 recap for Night Bloom: 12.4k views, 318 comments and 2.1k saves, with a sparkline that peaks on launch night.</figcaption>
+              </figure>
+              <div class="cl-more">
+                <h3 class="cl-more__title">Also in v4.11</h3>
+                <ul class="cl-changes">
+                  <li class="cl-change" data-kind="improved"><span class="cl-tag">Improved</span><span>Share a recap with your crew or a client as a read-only page.</span></li>
+                  <li class="cl-change" data-kind="fixed"><span class="cl-tag">Fixed</span><span>Sales from two storefronts on the same day are no longer counted twice.</span></li>
+                  <li class="cl-change" data-kind="fixed"><span class="cl-tag">Fixed</span><span>The day 1 recap now runs on the launch’s time zone, not the viewer’s.</span></li>
+                </ul>
+              </div>
+            </article>
+          </li>
+
+          <!-- v4.10 -->
+          <li class="cl-entry" id="v4-10" data-stage="make" data-tags="new improved fixed" data-reveal>
+            <span class="cl-node" aria-hidden="true"></span>
+            <div class="cl-entry__meta">
+              <a class="cl-ver" href="#v4-10" aria-label="v4.10, link to this release">v4.10</a>
+              <time class="cl-date" datetime="2026-10-23">23 Oct 2026</time>
+              <span class="lane-chip">Workbench</span>
+              <button class="cl-copy" type="button" data-cl-copy="v4-10" hidden><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg><span>Copy link</span></button>
+            </div>
+            <article class="cl-entry__body" aria-labelledby="v4-10-title">
+              <div class="cl-tags"><span class="cl-tag cl-tag--new" data-k="new">New</span><span class="cl-tag" data-k="improved">Improved</span><span class="cl-tag" data-k="fixed">Fixed</span></div>
+              <h2 class="title-3 cl-entry__title" id="v4-10-title">Lanes can merge</h2>
+              <div class="cl-text" data-kind="new">
+                <p>Two lanes that turned out to be one project can now become one. Merge them and Crestora keeps both version histories side by side, folds the reviews together and asks you which plan wins, so nothing gets left at the side of the road.</p>
+              </div>
+              <figure class="cl-shot mock" data-kind="new">
+                <div class="mock__bar"><svg class="icon" aria-hidden="true"><use href="#i-make"/></svg>Merge lanes</div>
+                <div class="cl-merge">
+                  <svg class="cl-merge__svg" viewBox="0 0 400 180" preserveAspectRatio="none" aria-hidden="true">
+                    <g class="cl-merge__a">
+                      <path d="M0 34H130C196 34 194 72 262 72H400"/><path d="M0 40H130C196 40 194 78 262 78H400"/><path d="M0 46H130C196 46 194 84 262 84H400"/>
+                    </g>
+                    <g class="cl-merge__b">
+                      <path d="M0 134H130C196 134 194 90 262 90H400"/><path d="M0 140H130C196 140 194 96 262 96H400"/><path d="M0 146H130C196 146 194 102 262 102H400"/>
+                    </g>
+                    <circle class="cl-merge__dot" cx="262" cy="87" r="4.5"/>
+                  </svg>
+                  <span class="cl-merge__label cl-merge__label--a">Tidepool · iOS <em>48 versions</em></span>
+                  <span class="cl-merge__label cl-merge__label--b">Tidepool · Android <em>31 versions</em></span>
+                  <span class="cl-merge__label cl-merge__label--c">Tidepool 1.0 <em>79 versions, 1 lane</em></span>
+                </div>
+                <figcaption class="sr">Two lanes, Tidepool iOS with 48 versions and Tidepool Android with 31, merging into one lane, Tidepool 1.0, with all 79 versions.</figcaption>
+              </figure>
+              <div class="cl-more">
+                <h3 class="cl-more__title">Also in v4.10</h3>
+                <ul class="cl-changes">
+                  <li class="cl-change" data-kind="improved"><span class="cl-tag">Improved</span><span>Compare works across lanes, not just inside one.</span></li>
+                  <li class="cl-change" data-kind="fixed"><span class="cl-tag">Fixed</span><span>A version dragged to another lane now brings its new thumbnail with it.</span></li>
+                  <li class="cl-change" data-kind="fixed"><span class="cl-tag">Fixed</span><span>Restoring an archived lane brings back its pinned notes too.</span></li>
+                </ul>
+              </div>
+            </article>
+          </li>
+
+          <!-- v4.9 -->
+          <li class="cl-entry" id="v4-9" data-stage="launch" data-tags="new improved fixed" data-reveal>
+            <span class="cl-node" aria-hidden="true"></span>
+            <div class="cl-entry__meta">
+              <a class="cl-ver" href="#v4-9" aria-label="v4.9, link to this release">v4.9</a>
+              <time class="cl-date" datetime="2026-10-09">9 Oct 2026</time>
+              <span class="lane-chip">Countdown</span>
+              <button class="cl-copy" type="button" data-cl-copy="v4-9" hidden><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg><span>Copy link</span></button>
+            </div>
+            <article class="cl-entry__body" aria-labelledby="v4-9-title">
+              <div class="cl-tags"><span class="cl-tag cl-tag--new" data-k="new">New</span><span class="cl-tag" data-k="improved">Improved</span><span class="cl-tag" data-k="fixed">Fixed</span></div>
+              <h2 class="title-3 cl-entry__title" id="v4-9-title">Countdown launch rooms</h2>
+              <div class="cl-text" data-kind="new">
+                <p>Launch night has a room now. Open it from any Countdown and the whole crew sees the checklist, the schedule for every channel and the last seconds ticking down together, then watches the first replies come in, live, in one place instead of six group chats.</p>
+              </div>
+              <figure class="cl-shot mock" data-kind="new">
+                <div class="mock__bar"><svg class="icon" aria-hidden="true"><use href="#i-launch"/></svg>Tidepool 1.0 · launch room<span class="cl-room__watch">6 watching</span></div>
+                <div class="cl-room">
+                  <div class="cl-room__count">
+                    <span class="cl-room__label">Goes live in</span>
+                    <span class="cl-room__digits">00:00:03</span>
+                    <span class="cl-room__track" aria-hidden="true"><i></i></span>
+                  </div>
+                  <ul class="cl-room__list">
+                    <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Store build approved</li>
+                    <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Launch post queued on 14 channels</li>
+                    <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Press kit link live</li>
+                  </ul>
+                  <div class="cl-room__crew" aria-hidden="true">
+                    <span class="avatar" data-stage="launch" style="--size: 26px">TL</span>
+                    <span class="avatar" data-stage="make" style="--size: 26px">SA</span>
+                    <span class="avatar" data-stage="review" style="--size: 26px">LK</span>
+                    <span class="avatar" data-stage="shape" style="--size: 26px">+3</span>
+                  </div>
+                </div>
+                <figcaption class="sr">The launch room for Tidepool 1.0, three seconds before it goes live, with a finished checklist and six of the crew watching.</figcaption>
+              </figure>
+              <div class="cl-more">
+                <h3 class="cl-more__title">Also in v4.9</h3>
+                <ul class="cl-changes">
+                  <li class="cl-change" data-kind="improved"><span class="cl-tag">Improved</span><span>Countdown schedules to 14 channels, up from 9.</span></li>
+                  <li class="cl-change" data-kind="fixed"><span class="cl-tag">Fixed</span><span>Checklist items moved between sections keep their owner.</span></li>
+                  <li class="cl-change" data-kind="fixed"><span class="cl-tag">Fixed</span><span>The countdown no longer drifts a second behind on phones left asleep.</span></li>
+                </ul>
+              </div>
+            </article>
+          </li>
+
+          <!-- v4.8 -->
+          <li class="cl-entry" id="v4-8" data-stage="spark" data-tags="improved fixed" data-reveal>
+            <span class="cl-node" aria-hidden="true"></span>
+            <div class="cl-entry__meta">
+              <a class="cl-ver" href="#v4-8" aria-label="v4.8, link to this release">v4.8</a>
+              <time class="cl-date" datetime="2026-09-25">25 Sep 2026</time>
+              <span class="lane-chip">Sparkboard</span>
+              <button class="cl-copy" type="button" data-cl-copy="v4-8" hidden><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg><span>Copy link</span></button>
+            </div>
+            <article class="cl-entry__body" aria-labelledby="v4-8-title">
+              <div class="cl-tags"><span class="cl-tag cl-tag--improved" data-k="improved">Improved</span><span class="cl-tag" data-k="fixed">Fixed</span></div>
+              <h2 class="title-3 cl-entry__title" id="v4-8-title">Sparkboard works offline on iOS</h2>
+              <div class="cl-text" data-kind="improved">
+                <p>Capture on the train; it syncs when you surface. Voice memos, photos and notes caught without signal wait safely on your phone, keep the time and place you caught them, and land on the right board the moment you’re back online.</p>
+              </div>
+              <figure class="cl-shot mock" data-kind="improved">
+                <div class="mock__bar"><svg class="icon" aria-hidden="true"><use href="#i-spark"/></svg>Sparkboard · iPhone</div>
+                <div class="cl-offline">
+                  <p class="cl-offline__state"><span class="cl-offline__dot" aria-hidden="true"></span>Offline · 3 sparks waiting to sync</p>
+                  <ul class="cl-offline__list">
+                    <li><span class="cl-offline__kind">Voice memo · 0:48</span><span class="cl-offline__where">Tram 28, Lisbon · 07:42</span><span class="cl-offline__q">Queued</span></li>
+                    <li><span class="cl-offline__kind">Photo · glaze test, kiln 2</span><span class="cl-offline__where">Studio · 08:15</span><span class="cl-offline__q">Queued</span></li>
+                    <li><span class="cl-offline__kind">Note · what if the moth narrates?</span><span class="cl-offline__where">Café · 09:03</span><span class="cl-offline__q">Queued</span></li>
+                  </ul>
+                </div>
+                <figcaption class="sr">Sparkboard on an iPhone with no signal: a voice memo, a photo and a note queued to sync.</figcaption>
+              </figure>
+              <div class="cl-more">
+                <h3 class="cl-more__title">Also in v4.8</h3>
+                <ul class="cl-changes">
+                  <li class="cl-change" data-kind="improved"><span class="cl-tag">Improved</span><span>The share sheet remembers the last board you sent something to.</span></li>
+                  <li class="cl-change" data-kind="fixed"><span class="cl-tag">Fixed</span><span>Voice memos longer than ten minutes upload in one piece.</span></li>
+                  <li class="cl-change" data-kind="fixed"><span class="cl-tag">Fixed</span><span>Sparks caught just after midnight land on the right day.</span></li>
+                </ul>
+              </div>
+            </article>
+          </li>
+
+          <!-- v4.7 -->
+          <li class="cl-entry" id="v4-7" data-stage="shape" data-tags="new fixed" data-reveal>
+            <span class="cl-node" aria-hidden="true"></span>
+            <div class="cl-entry__meta">
+              <a class="cl-ver" href="#v4-7" aria-label="v4.7, link to this release">v4.7</a>
+              <time class="cl-date" datetime="2026-09-11">11 Sep 2026</time>
+              <span class="lane-chip">Blueprints</span>
+              <button class="cl-copy" type="button" data-cl-copy="v4-7" hidden><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg><span>Copy link</span></button>
+            </div>
+            <article class="cl-entry__body" aria-labelledby="v4-7-title">
+              <div class="cl-tags"><span class="cl-tag cl-tag--new" data-k="new">New</span><span class="cl-tag" data-k="fixed">Fixed</span></div>
+              <h2 class="title-3 cl-entry__title" id="v4-7-title">40 Blueprint templates from working creators</h2>
+              <div class="cl-text" data-kind="new">
+                <p>Start your plan from one that already shipped. Forty Blueprint templates, each written by someone who uses it: a short-film schedule from an animator, a beta plan from an indie developer, a spring drop from a potter. Pick one and its milestones land on your calendar, ready to bend.</p>
+              </div>
+              <figure class="cl-shot mock" data-kind="new">
+                <div class="mock__bar"><svg class="icon" aria-hidden="true"><use href="#i-shape"/></svg>Blueprints · templates</div>
+                <ul class="cl-tpl">
+                  <li style="--m: 12"><strong>Short film</strong><span>Amara O. · 12 milestones</span><i aria-hidden="true"></i></li>
+                  <li style="--m: 9"><strong>App beta</strong><span>Theo L. · 9 milestones</span><i aria-hidden="true"></i></li>
+                  <li style="--m: 7"><strong>Ceramics drop</strong><span>Inés N. · 7 milestones</span><i aria-hidden="true"></i></li>
+                  <li style="--m: 10"><strong>Podcast season</strong><span>Lena K. · 10 milestones</span><i aria-hidden="true"></i></li>
+                  <li style="--m: 6"><strong>Zine</strong><span>Priya N. · 6 milestones</span><i aria-hidden="true"></i></li>
+                  <li style="--m: 8"><strong>EP release</strong><span>Kai M. · 8 milestones</span><i aria-hidden="true"></i></li>
+                </ul>
+                <figcaption class="sr">Six of the forty templates: short film, app beta, ceramics drop, podcast season, zine and EP release, each with its author and number of milestones.</figcaption>
+              </figure>
+              <div class="cl-more">
+                <h3 class="cl-more__title">Also in v4.7</h3>
+                <ul class="cl-changes">
+                  <li class="cl-change" data-kind="fixed"><span class="cl-tag">Fixed</span><span>Milestones on the last day of a month no longer slip into the next one.</span></li>
+                  <li class="cl-change" data-kind="fixed"><span class="cl-tag">Fixed</span><span>Duplicating a Blueprint keeps its crew, not just its pages.</span></li>
+                </ul>
+              </div>
+            </article>
+          </li>
+
+          <!-- v4.6 -->
+          <li class="cl-entry" id="v4-6" data-stage="make" data-tags="improved fixed" data-reveal>
+            <span class="cl-node" aria-hidden="true"></span>
+            <div class="cl-entry__meta">
+              <a class="cl-ver" href="#v4-6" aria-label="v4.6, link to this release">v4.6</a>
+              <time class="cl-date" datetime="2026-08-28">28 Aug 2026</time>
+              <span class="lane-chip">Workbench</span>
+              <button class="cl-copy" type="button" data-cl-copy="v4-6" hidden><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg><span>Copy link</span></button>
+            </div>
+            <article class="cl-entry__body" aria-labelledby="v4-6-title">
+              <div class="cl-tags"><span class="cl-tag cl-tag--improved" data-k="improved">Improved</span><span class="cl-tag" data-k="fixed">Fixed</span></div>
+              <h2 class="title-3 cl-entry__title" id="v4-6-title">Lanes open 2.3× faster</h2>
+              <div class="cl-text" data-kind="improved">
+                <p>We rebuilt how a lane loads. Big ones, with hundreds of versions and thousands of notes, now open in under a second on an ordinary laptop: 2.3 times faster than before, and easier on your battery while they’re open.</p>
+              </div>
+              <figure class="cl-shot mock" data-kind="improved">
+                <div class="mock__bar"><svg class="icon" aria-hidden="true"><use href="#i-bolt"/></svg>Northbound · 600 versions, 4,200 notes</div>
+                <div class="cl-speed">
+                  <p class="cl-speed__big"><span>2.3×</span> faster to open</p>
+                  <dl class="cl-speed__bars">
+                    <div style="--w: 100%"><dt>v4.5</dt><dd><i aria-hidden="true"></i><span>1.84 s</span></dd></div>
+                    <div class="is-now" style="--w: 43.5%"><dt>v4.6</dt><dd><i aria-hidden="true"></i><span>0.80 s</span></dd></div>
+                  </dl>
+                </div>
+                <figcaption class="sr">A lane with 600 versions opened in 1.84 seconds on v4.5 and in 0.80 seconds on v4.6.</figcaption>
+              </figure>
+              <div class="cl-more">
+                <h3 class="cl-more__title">Also in v4.6</h3>
+                <ul class="cl-changes">
+                  <li class="cl-change" data-kind="improved"><span class="cl-tag">Improved</span><span>Thumbnails for long videos are made in the background, so uploads finish sooner.</span></li>
+                  <li class="cl-change" data-kind="fixed"><span class="cl-tag">Fixed</span><span>Scrolling a long version history no longer jumps back to the top.</span></li>
+                  <li class="cl-change" data-kind="fixed"><span class="cl-tag">Fixed</span><span>Search finds notes on archived versions again.</span></li>
+                </ul>
+              </div>
+            </article>
+          </li>
+
+          <!-- v4.5 -->
+          <li class="cl-entry" id="v4-5" data-stage="review" data-tags="new improved fixed" data-reveal>
+            <span class="cl-node" aria-hidden="true"></span>
+            <div class="cl-entry__meta">
+              <a class="cl-ver" href="#v4-5" aria-label="v4.5, link to this release">v4.5</a>
+              <time class="cl-date" datetime="2026-08-14">14 Aug 2026</time>
+              <span class="lane-chip">Review Room</span>
+              <button class="cl-copy" type="button" data-cl-copy="v4-5" hidden><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg><span>Copy link</span></button>
+            </div>
+            <article class="cl-entry__body" aria-labelledby="v4-5-title">
+              <div class="cl-tags"><span class="cl-tag cl-tag--new" data-k="new">New</span><span class="cl-tag" data-k="improved">Improved</span><span class="cl-tag" data-k="fixed">Fixed</span></div>
+              <h2 class="title-3 cl-entry__title" id="v4-5-title">Review links without accounts</h2>
+              <div class="cl-text" data-kind="new">
+                <p>Reviewers need a link, not an account. Send one to a client, a sister or a festival programmer and they can watch, listen, pin notes and approve without signing up for anything. You choose how long the link lives and whether it asks for a password.</p>
+              </div>
+              <figure class="cl-shot mock" data-kind="new">
+                <div class="mock__bar"><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg>Review link · Kiln &amp; Co. spring drop</div>
+                <div class="cl-link">
+                  <p class="cl-link__url"><span class="mono">crestora.example/r/kiln-spring</span><span class="cl-link__copy" aria-hidden="true">Copy</span></p>
+                  <ul class="cl-link__opts">
+                    <li><span>Anyone with the link can leave notes</span><span class="switch" aria-checked="true" aria-hidden="true"></span></li>
+                    <li><span>Expires after 7 days</span><span class="switch" aria-checked="true" aria-hidden="true"></span></li>
+                    <li><span>Ask for a password</span><span class="switch" aria-checked="false" aria-hidden="true"></span></li>
+                  </ul>
+                  <p class="cl-link__who"><span class="avatar" data-stage="review" style="--size: 26px" aria-hidden="true">LN</span><span><strong>Lucía N.</strong> · guest, no account · 4 notes</span></p>
+                </div>
+                <figcaption class="sr">A review link for the Kiln &amp; Co. spring drop: anyone with it can leave notes, it expires after seven days, and a guest without an account has left four notes.</figcaption>
+              </figure>
+              <div class="cl-more">
+                <h3 class="cl-more__title">Also in v4.5</h3>
+                <ul class="cl-changes">
+                  <li class="cl-change" data-kind="improved"><span class="cl-tag">Improved</span><span>On Crew and Label, guests see your logo and lane name, not ours.</span></li>
+                  <li class="cl-change" data-kind="fixed"><span class="cl-tag">Fixed</span><span>Review links opened inside a chat app’s browser keep the reviewer’s name.</span></li>
+                </ul>
+              </div>
+            </article>
+          </li>
+        </ol>
+
+        <p class="cl-empty" data-filter-empty hidden>Nothing here yet. Try All.</p>
+
+        <div class="cl-end">
+          <span class="cl-node cl-node--end" aria-hidden="true"></span>
+          <p class="cl-end__text">That’s three months of the road, and it runs on back to v1.0 in March 2022: one lane, one film, a lot of hope. Want the next stop in your inbox? <a href="#cl-email">Subscribe at the top</a>.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- The compact call to action that hands every page over to the footer. -->
 <section class="cta" aria-labelledby="cta-title">
   <div class="cta__glow" aria-hidden="true"></div>

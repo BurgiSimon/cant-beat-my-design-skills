@@ -1,17 +1,182 @@
 <!--page
 title: Open a lane — Crestora
-description: Your lane is open.
+description: Open your first Crestora lane in under a minute: free for 3 lanes, no card. Or sign in with a one-time email link, no password.
+modules: tabs forms page-start
 nav: start.html
 -->
 <main id="main">
-  <section class="page-hero">
-    <div class="page-hero__lanes" aria-hidden="true"></div>
-    <div class="container page-hero__inner">
-      <p class="eyebrow">Crestora</p>
-      <h1 class="title-1">Your lane is open.</h1>
-      <p class="lede">This page is being built.</p>
+  <!-- The target of every "Open a lane" and "Sign in". Two tabs (open a lane / sign in with an emailed link; no
+       passwords), a live Lane 001 card that fills in as you type, and a success state that launches the footer.
+       It reads ?idea= ?email= ?name= ?plan= from the home page and pricing. Without scripts both forms show. -->
+  <section class="start-hero" aria-labelledby="start-title">
+    <div class="start-hero__night" aria-hidden="true">
+      <div class="page-hero__lanes"></div>
+      <div class="start-hero__glow"></div>
+    </div>
+
+    <div class="container start-hero__grid">
+      <div class="start-hero__intro">
+        <p class="eyebrow" data-reveal="fade">Get started</p>
+        <h1 class="title-1 start-hero__title" id="start-title" data-split>Bring one idea.</h1>
+        <p class="lede start-hero__lede" data-reveal data-delay="0.2">Crestora brings the road. Open a lane in under a minute: free for 3 lanes, no card, and everything you make exports, always.</p>
+      </div>
+
+      <div class="start-box panel panel--raised" data-reveal data-delay="0.1">
+        <div class="segmented start-tabs" role="tablist" aria-label="Open a lane or sign in">
+          <span class="segmented__thumb" aria-hidden="true"></span>
+          <button type="button" role="tab" id="tab-open" aria-controls="open" aria-selected="true">Open a lane</button>
+          <button type="button" role="tab" id="tab-signin" aria-controls="signin" aria-selected="false" tabindex="-1">Sign in</button>
+        </div>
+
+        <!-- open a lane -->
+        <div class="start-panel" id="open" role="tabpanel" aria-labelledby="tab-open">
+          <h2 class="start-panel__title">Open a lane</h2>
+          <form class="start-form" id="open-form" action="{{ROOT}}start.html" method="get" data-form data-demo data-keep data-success="Your lane is open. Check your inbox. (Demo: nothing was sent.)" data-success-key="Lane 001">
+            <div class="start-form__pair">
+              <div class="field">
+                <label class="field__label" for="so-name">Your name</label>
+                <input class="input" id="so-name" name="name" type="text" required maxlength="60" autocomplete="name" placeholder="Mira Castell" data-msg-required="What should your crew call you?" />
+                <p class="field__error"></p>
+              </div>
+              <div class="field">
+                <label class="field__label" for="so-email">Email</label>
+                <input class="input" id="so-email" name="email" type="email" required maxlength="120" autocomplete="email" inputmode="email" placeholder="you@studio.example" data-msg-required="We need an email to send your lane to." />
+                <p class="field__error"></p>
+              </div>
+            </div>
+            <div class="field">
+              <label class="field__label" for="so-idea">What are you making?</label>
+              <input class="input" id="so-idea" name="idea" type="text" required maxlength="60" autocomplete="off" placeholder="a short film…" aria-describedby="so-idea-hint" data-msg-required="Give it a name, even a rough one." data-ideas="a short film…|an app…|a pottery drop…|your first podcast…|a zine…" />
+              <p class="field__hint" id="so-idea-hint">It becomes your lane’s name. You can change it any time.</p>
+              <p class="field__error"></p>
+            </div>
+            <fieldset class="start-who">
+              <legend class="field__label">Which sounds most like you?</legend>
+              <div class="start-who__opts">
+                <label class="start-who__opt"><input type="radio" name="persona" value="creator" /><span class="start-who__name">Creator</span><span class="start-who__line">Films, art, music and words</span></label>
+                <label class="start-who__opt"><input type="radio" name="persona" value="builder" /><span class="start-who__name">Builder</span><span class="start-who__line">Apps, tools, games and code</span></label>
+                <label class="start-who__opt"><input type="radio" name="persona" value="dreamer" /><span class="start-who__name">Dreamer</span><span class="start-who__line">Shops, drops and first launches</span></label>
+              </div>
+            </fieldset>
+            <div class="start-plan">
+              <input type="hidden" name="plan" value="solo" />
+              <span class="start-plan__label">Plan</span>
+              <span class="start-plan__what"><strong data-plan-name>Solo</strong> <span data-plan-price>Free for 3 lanes</span></span>
+              <a class="start-plan__link" href="{{ROOT}}pricing.html" data-roll>Compare plans</a>
+            </div>
+            <button class="btn btn--primary btn--lg btn--block start-form__go" type="submit">Open my lane<svg class="arrow" aria-hidden="true"><use href="#i-arrow"/></svg></button>
+            <p class="start-form__note"><svg class="icon" aria-hidden="true"><use href="#i-info"/></svg>This is a demo: nothing you type here is stored or sent.</p>
+          </form>
+
+          <!-- the success state -->
+          <div class="start-done" id="open-done" tabindex="-1" aria-labelledby="done-title" hidden>
+            <p class="start-done__no"><span class="stage-rail" data-n="6" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span><span data-done-lane>Lane 001</span></p>
+            <h2 class="title-2 start-done__title" id="done-title">Your lane is <span class="ink-spectrum">open</span>.</h2>
+            <p class="body-l start-done__text">We sent a link to <strong data-done-email>your inbox</strong>. Open it on any device and <strong data-done-idea>your next thing</strong> will be waiting at Spark.</p>
+            <p class="small start-done__demo">Demo: nothing was sent, and nothing was stored.</p>
+            <div class="btn-row start-done__actions">
+              <a class="btn btn--primary btn--lg" href="#footer" data-launch>Take it for a drive<svg aria-hidden="true"><use href="#i-arrow-down"/></svg></a>
+              <button class="btn btn--lg" type="button" data-again>Open another lane</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- sign in: a magic link, never a password -->
+        <div class="start-panel" id="signin" role="tabpanel" aria-labelledby="tab-signin" hidden>
+          <h2 class="start-panel__title">Sign in</h2>
+          <div class="start-signin__intro">
+            <p class="start-signin__hello">Welcome back.</p>
+            <p class="body">Enter the email you ride with. We’ll send a one-time link that opens your lanes. It works once, for 15 minutes.</p>
+          </div>
+          <form class="start-form" id="signin-form" action="{{ROOT}}start.html#signin" method="get" data-form data-demo data-success="Your sign-in link is on its way. (Demo: nothing was sent.)" data-success-key="Link">
+            <div class="field">
+              <label class="field__label" for="si-email">Email</label>
+              <input class="input" id="si-email" name="email" type="email" required maxlength="120" autocomplete="email" inputmode="email" placeholder="you@studio.example" data-msg-required="Which email should we send the link to?" />
+              <p class="field__error"></p>
+            </div>
+            <button class="btn btn--primary btn--lg btn--block" type="submit"><svg aria-hidden="true"><use href="#i-mail"/></svg>Email me a link</button>
+            <p class="start-signin__sent" data-signin-sent role="status" hidden></p>
+          </form>
+          <div class="start-signin__foot">
+            <p class="start-signin__why"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-key"/></svg></span><span>No passwords at Crestora. A fresh link each time is safer than a password you reuse, and there’s nothing to forget.</span></p>
+            <p class="start-signin__new">New here? <button class="start-signin__switch" type="button" data-goto-tab="tab-open">Open a lane</button></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- the live preview -->
+      <div class="start-hero__preview" data-reveal="up" data-delay="0.3">
+        <figure class="lane-card start-card" data-lane-card data-stage="spark" aria-label="Preview: your first lane">
+          <div class="lane-card__top">
+            <span class="lane-card__no" data-lane-no>Lane 001</span>
+            <span class="lane-chip lane-card__chip" data-lane-chip>Now in: Spark</span>
+          </div>
+          <p class="lane-card__title"><span data-lane-title>Your next thing</span><i class="lane-card__caret" aria-hidden="true"></i></p>
+          <p class="lane-card__meta"><span data-lane-started>Started today</span> <span aria-hidden="true">·</span> <span data-lane-tool>Sparkboard is open</span></p>
+          <div class="lane-card__road">
+            <span class="stage-rail" data-n="1" data-lane-rail aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span>
+          </div>
+          <ol class="start-card__stages">
+            <li class="is-lit is-now" data-lane-row data-stage="spark"><i aria-hidden="true"></i><b>01</b><span>Spark</span><em>Sparkboard</em></li>
+            <li data-lane-row data-stage="shape"><i aria-hidden="true"></i><b>02</b><span>Shape</span><em>Blueprints</em></li>
+            <li data-lane-row data-stage="make"><i aria-hidden="true"></i><b>03</b><span>Make</span><em>Workbench</em></li>
+            <li data-lane-row data-stage="review"><i aria-hidden="true"></i><b>04</b><span>Review</span><em>Review Room</em></li>
+            <li data-lane-row data-stage="launch"><i aria-hidden="true"></i><b>05</b><span>Launch</span><em>Countdown</em></li>
+            <li data-lane-row data-stage="afterglow"><i aria-hidden="true"></i><b>06</b><span>Afterglow</span><em>Afterglow</em></li>
+          </ol>
+          <div class="lane-card__foot">
+            <span class="lane-card__avatar" data-lane-avatar aria-hidden="true"></span>
+            <span class="lane-card__who"><span class="lane-card__name is-empty" data-lane-name>Waiting for its maker</span><span class="lane-card__mail" data-lane-mail>Add your name and email to sign it</span></span>
+            <span class="start-card__tags"><span class="start-card__tag" data-lane-persona hidden></span><span class="start-card__tag" data-lane-plan>Solo</span></span>
+          </div>
+        </figure>
+        <p class="start-hero__fine">Free for 3 lanes <span aria-hidden="true">·</span> No card <span aria-hidden="true">·</span> Export everything, always.</p>
+      </div>
     </div>
   </section>
-  <section class="section" id="signin" aria-label="Sign in"></section>
-  {{> cta}}
+
+  <!-- what happens after the green light -->
+  <section class="section start-next" aria-labelledby="next-title">
+    <div class="container">
+      <header class="section-head">
+        <div>
+          <p class="eyebrow">What happens next</p>
+          <h2 class="title-2" id="next-title" data-split>The first ten minutes.</h2>
+        </div>
+        <div class="section-head__aside">
+          <p class="lede">Every lane starts at Spark. Here’s how most people spend their first ten minutes, and none of it needs a manual.</p>
+        </div>
+      </header>
+
+      <ol class="start-steps" data-reveal-stagger="0.1">
+        <li class="start-step" data-stage="spark">
+          <span class="start-step__mark" aria-hidden="true"></span>
+          <div class="start-step__head"><span class="icon-box"><svg class="icon icon--lg" aria-hidden="true"><use href="#i-spark"/></svg></span><span class="start-step__n">01</span></div>
+          <h3 class="title-4">Catch the first spark</h3>
+          <p class="body">Drop in a voice memo, a screenshot or one honest sentence. Sparkboard keeps it, and groups it with the next ones as they come.</p>
+          <p class="start-step__foot"><span class="lane-chip">Sparkboard</span><span class="start-step__time">About 2 minutes</span></p>
+        </li>
+        <li class="start-step" data-stage="shape">
+          <span class="start-step__mark" aria-hidden="true"></span>
+          <div class="start-step__head"><span class="icon-box"><svg class="icon icon--lg" aria-hidden="true"><use href="#i-shape"/></svg></span><span class="start-step__n">02</span></div>
+          <h3 class="title-4">Shape it on one page</h3>
+          <p class="body">Pick one of 40 Blueprint templates by working creators, or start blank: what it is, who’s riding along and when the lights go green.</p>
+          <p class="start-step__foot"><span class="lane-chip">Blueprints</span><span class="start-step__time">About 6 minutes</span></p>
+        </li>
+        <li class="start-step" data-stage="review">
+          <span class="start-step__mark" aria-hidden="true"></span>
+          <div class="start-step__head"><span class="icon-box"><svg class="icon icon--lg" aria-hidden="true"><use href="#i-review"/></svg></span><span class="start-step__n">03</span></div>
+          <h3 class="title-4">Bring someone along</h3>
+          <p class="body">Send a review link to the first person whose opinion you trust. Reviewers need a link, not an account, and they never pay.</p>
+          <p class="start-step__foot"><span class="lane-chip">Review Room</span><span class="start-step__time">About 2 minutes</span></p>
+        </li>
+      </ol>
+
+      <div class="start-next__more" data-reveal="fade">
+        <a class="link-arrow" href="{{ROOT}}docs.html">Read the getting-started guide<svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+        <a class="link-arrow" href="{{ROOT}}pricing.html">Compare every plan<svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+        <a class="link-arrow" href="{{ROOT}}contact.html?topic=support">Ask a human<svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+      </div>
+    </div>
+  </section>
 </main>

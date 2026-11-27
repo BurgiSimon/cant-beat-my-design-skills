@@ -1,4 +1,161 @@
-<!-- home #integrations: placeholder, replaced by its builder -->
-<section class="section" id="integrations" aria-labelledby="integrations-title">
-  <div class="container"><h2 class="title-2" id="integrations-title">Bring your tools along for the ride.</h2></div>
+<!-- home #integrations: the on-ramps. Twelve apps (invented, with self-drawn monograms) sit in two staggered columns;
+     from each a hairline on-ramp curves into a six-lane strip, joining the lane of its stage. Hover or focus an app: its
+     ramp lights in its stage colour, a white dash runs along it into the strip, the lane glows, what it brings arrives
+     at the lane's end and the caption below says so (aria-live). No idle pulse: at rest Framewright's ramp is lit.
+     The roads below are a static drawing for 1292 px (without scripts they stretch to fit); home-integrations.js redraws
+     them to the real width. Under 1100 px the apps become a grid with their lanes written under them.
+     Generated layout: keep the --k order (by stage, top to bottom) so no two ramps cross. -->
+<section class="section onramps" id="integrations" aria-labelledby="integrations-title">
+  <div class="container">
+    <header class="section-head">
+      <div>
+        <p class="eyebrow">Integrations</p>
+        <h2 class="title-2" id="integrations-title" data-split>Bring your tools along for the ride.</h2>
+      </div>
+      <div class="section-head__aside">
+        <p class="lede">Crestora connects to the apps you already make with. Their work merges into your lane: renders, builds, mixes and orders arrive as versions and stats, not as another inbox.</p>
+        <a class="link-arrow" href="{{ROOT}}integrations.html" data-roll>Browse all 120+ integrations<svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+      </div>
+    </header>
+
+    <div class="ramp" style="--xs: 749px">
+      <svg class="ramp__roads" viewBox="0 0 1292 502" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+        <defs>
+          <linearGradient id="ramp-glow-spark" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#3a6dff" stop-opacity=".22"/><stop offset=".55" stop-color="#3a6dff" stop-opacity=".07"/><stop offset="1" stop-color="#3a6dff" stop-opacity="0"/></linearGradient>
+          <linearGradient id="ramp-glow-shape" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#23d3ff" stop-opacity=".22"/><stop offset=".55" stop-color="#23d3ff" stop-opacity=".07"/><stop offset="1" stop-color="#23d3ff" stop-opacity="0"/></linearGradient>
+          <linearGradient id="ramp-glow-make" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#20d69b" stop-opacity=".22"/><stop offset=".55" stop-color="#20d69b" stop-opacity=".07"/><stop offset="1" stop-color="#20d69b" stop-opacity="0"/></linearGradient>
+          <linearGradient id="ramp-glow-review" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#ffb13d" stop-opacity=".22"/><stop offset=".55" stop-color="#ffb13d" stop-opacity=".07"/><stop offset="1" stop-color="#ffb13d" stop-opacity="0"/></linearGradient>
+          <linearGradient id="ramp-glow-launch" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#ff3b3b" stop-opacity=".22"/><stop offset=".55" stop-color="#ff3b3b" stop-opacity=".07"/><stop offset="1" stop-color="#ff3b3b" stop-opacity="0"/></linearGradient>
+          <linearGradient id="ramp-glow-afterglow" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#ff7ad9" stop-opacity=".22"/><stop offset=".55" stop-color="#ff7ad9" stop-opacity=".07"/><stop offset="1" stop-color="#ff7ad9" stop-opacity="0"/></linearGradient>
+        </defs>
+        <g class="ramp__glows">
+          <rect data-stage="spark" x="749" y="161" width="543" height="30" fill="url(#ramp-glow-spark)"/>
+          <rect data-stage="shape" x="749" y="191" width="543" height="30" fill="url(#ramp-glow-shape)"/>
+          <rect class="is-on" data-stage="make" x="749" y="221" width="543" height="30" fill="url(#ramp-glow-make)"/>
+          <rect data-stage="review" x="749" y="251" width="543" height="30" fill="url(#ramp-glow-review)"/>
+          <rect data-stage="launch" x="749" y="281" width="543" height="30" fill="url(#ramp-glow-launch)"/>
+          <rect data-stage="afterglow" x="749" y="311" width="543" height="30" fill="url(#ramp-glow-afterglow)"/>
+        </g>
+        <g class="ramp__lanes">
+          <path data-stage="spark" d="M749 176H1292"/>
+          <path data-stage="shape" d="M749 206H1292"/>
+          <path class="is-on" data-stage="make" d="M749 236H1292"/>
+          <path data-stage="review" d="M749 266H1292"/>
+          <path data-stage="launch" d="M749 296H1292"/>
+          <path data-stage="afterglow" d="M749 326H1292"/>
+        </g>
+        <g class="ramp__ramps">
+          <path data-stage="spark" d="M149 42H400C574.5 42 574.5 176 749 176"/>
+          <path data-stage="shape" d="M325 80H400C574.5 80 574.5 206 749 206"/>
+          <path data-stage="shape" d="M136 118H400C574.5 118 574.5 206 749 206"/>
+          <path class="is-on" data-stage="make" d="M365 156H400C574.5 156 574.5 236 749 236"/>
+          <path data-stage="make" d="M146 194H400C574.5 194 574.5 236 749 236"/>
+          <path data-stage="make" d="M333 232H400C574.5 232 574.5 236 749 236"/>
+          <path data-stage="make" d="M129 270H400C574.5 270 574.5 236 749 236"/>
+          <path data-stage="review" d="M338 308H400C574.5 308 574.5 266 749 266"/>
+          <path data-stage="launch" d="M156 346H400C574.5 346 574.5 296 749 296"/>
+          <path data-stage="launch" d="M358 384H400C574.5 384 574.5 296 749 296"/>
+          <path data-stage="launch" d="M195 422H400C574.5 422 574.5 296 749 296"/>
+          <path data-stage="afterglow" d="M338 460H400C574.5 460 574.5 326 749 326"/>
+        </g>
+        <g class="ramp__nodes">
+          <circle data-stage="spark" cx="749" cy="176" r="3"/>
+          <circle data-stage="shape" cx="749" cy="206" r="3"/>
+          <circle class="is-on" data-stage="make" cx="749" cy="236" r="3"/>
+          <circle data-stage="review" cx="749" cy="266" r="3"/>
+          <circle data-stage="launch" cx="749" cy="296" r="3"/>
+          <circle data-stage="afterglow" cx="749" cy="326" r="3"/>
+        </g>
+        <path class="ramp__dash ramp__dash--glow" d="M0 0"/>
+        <path class="ramp__dash" d="M0 0"/>
+      </svg>
+
+      <ul class="ramp__apps" aria-label="Twelve of the apps that ride along" data-reveal-stagger="0.04">
+        <li class="ramp__stop" data-stage="spark" style="--k:0;--col:0">
+          <a class="ramp__app" href="{{ROOT}}integrations.html#moodwell" data-lane="Spark" data-says="boards land as sparks" data-lands="moodboard · 24 images">
+            <span class="ramp__box" data-magnetic="0.35"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 18v-6.2a3.3 3.3 0 0 1 6.6 0V18m0-6.2a3.3 3.3 0 0 1 6.6 0V18"/><circle class="f" cx="18.4" cy="5.6" r="1.2"/></svg></span>
+            <span class="ramp__text"><span class="ramp__name">Moodwell</span><span class="ramp__kind">Moodboards</span><span class="ramp__lane">Spark lane</span></span>
+          </a>
+        </li>
+        <li class="ramp__stop" data-stage="shape" style="--k:1;--col:1">
+          <a class="ramp__app" href="{{ROOT}}integrations.html#inkwell" data-lane="Shape" data-says="drafts land in the brief" data-lands="brief_v2.md">
+            <span class="ramp__box" data-magnetic="0.35"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.6c1.7 2.1 2.6 3.5 2.6 4.6a2.6 2.6 0 0 1-5.2 0c0-1.1.9-2.5 2.6-4.6Z"/><path d="M12 13.2v6.3M9.2 19.5h5.6"/></svg></span>
+            <span class="ramp__text"><span class="ramp__name">Inkwell</span><span class="ramp__kind">Writing</span><span class="ramp__lane">Shape lane</span></span>
+          </a>
+        </li>
+        <li class="ramp__stop" data-stage="shape" style="--k:2;--col:0">
+          <a class="ramp__app" href="{{ROOT}}integrations.html#dayplan" data-lane="Shape" data-says="dates become milestones" data-lands="Premiere · Fri 12 Dec">
+            <span class="ramp__box" data-magnetic="0.35"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 5h4.6a7 7 0 0 1 0 14H6.5Z"/><circle class="f" cx="11" cy="12" r="1.6"/></svg></span>
+            <span class="ramp__text"><span class="ramp__name">Dayplan</span><span class="ramp__kind">Calendar</span><span class="ramp__lane">Shape lane</span></span>
+          </a>
+        </li>
+        <li class="ramp__stop" data-stage="make" style="--k:3;--col:1">
+          <a class="ramp__app is-on" href="{{ROOT}}integrations.html#framewright" data-lane="Make" data-says="renders land as versions" data-lands="render_v8.mov">
+            <span class="ramp__box" data-magnetic="0.35"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 17V7.5h5.5M10 12.3h4"/><path d="M4.5 8.5v-4h4M15.5 4.5h4v4M19.5 15.5v4h-4M8.5 19.5h-4v-4"/></svg></span>
+            <span class="ramp__text"><span class="ramp__name">Framewright</span><span class="ramp__kind">Video editing</span><span class="ramp__lane">Make lane</span></span>
+          </a>
+        </li>
+        <li class="ramp__stop" data-stage="make" style="--k:4;--col:0">
+          <a class="ramp__app" href="{{ROOT}}integrations.html#pixelmill" data-lane="Make" data-says="frames land as versions" data-lands="poster_final.png">
+            <span class="ramp__box" data-magnetic="0.35"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 19.5v-15h6.5l3 3v3l-3 3H7"/><rect class="f" x="15.6" y="16.4" width="3.1" height="3.1" rx=".5"/></svg></span>
+            <span class="ramp__text"><span class="ramp__name">Pixelmill</span><span class="ramp__kind">Design</span><span class="ramp__lane">Make lane</span></span>
+          </a>
+        </li>
+        <li class="ramp__stop" data-stage="make" style="--k:5;--col:1">
+          <a class="ramp__app" href="{{ROOT}}integrations.html#tapedeck" data-lane="Make" data-says="mixes land as versions" data-lands="score_mix_v5.wav">
+            <span class="ramp__box" data-magnetic="0.35"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5h14M12 5v5"/><circle cx="8.2" cy="15" r="2.7"/><circle cx="15.8" cy="15" r="2.7"/><path d="M8.2 17.7h7.6"/></svg></span>
+            <span class="ramp__text"><span class="ramp__name">Tapedeck</span><span class="ramp__kind">Audio</span><span class="ramp__lane">Make lane</span></span>
+          </a>
+        </li>
+        <li class="ramp__stop" data-stage="make" style="--k:6;--col:0">
+          <a class="ramp__app" href="{{ROOT}}integrations.html#gitloom" data-lane="Make" data-says="builds and pull requests land as versions" data-lands="build 216 · PR #88">
+            <span class="ramp__box" data-magnetic="0.35"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.4 7.5A7 7 0 1 0 19 12.5h-4.2"/><circle cx="13.3" cy="12.5" r="1.5"/></svg></span>
+            <span class="ramp__text"><span class="ramp__name">Gitloom</span><span class="ramp__kind">Code</span><span class="ramp__lane">Make lane</span></span>
+          </a>
+        </li>
+        <li class="ramp__stop" data-stage="review" style="--k:7;--col:1">
+          <a class="ramp__app" href="{{ROOT}}integrations.html#chatter" data-lane="Review" data-says="threads become review notes" data-lands="3 notes from #crew">
+            <span class="ramp__box" data-magnetic="0.35"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.4 7A7 7 0 1 0 17.4 16"/><path d="M7.2 16.6 5.4 20.3l4.2-2.1"/></svg></span>
+            <span class="ramp__text"><span class="ramp__name">Chatter</span><span class="ramp__kind">Team chat</span><span class="ramp__lane">Review lane</span></span>
+          </a>
+        </li>
+        <li class="ramp__stop" data-stage="launch" style="--k:8;--col:0">
+          <a class="ramp__app" href="{{ROOT}}integrations.html#postbox" data-lane="Launch" data-says="the launch letter goes out on cue" data-lands="Launch letter · 2,140">
+            <span class="ramp__box" data-magnetic="0.35"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.5 20V4.5H13a4.6 4.6 0 0 1 0 9.2H7.5"/><path d="M10.4 9.1h3.2"/></svg></span>
+            <span class="ramp__text"><span class="ramp__name">Postbox</span><span class="ramp__kind">Newsletters</span><span class="ramp__lane">Launch lane</span></span>
+          </a>
+        </li>
+        <li class="ramp__stop" data-stage="launch" style="--k:9;--col:1">
+          <a class="ramp__app" href="{{ROOT}}integrations.html#shopfront" data-lane="Launch" data-says="the drop opens on the minute" data-lands="60 pieces · live 09:00">
+            <span class="ramp__box" data-magnetic="0.35"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8.2 6.3 4.5h11.4L19 8.2Z"/><path d="M14.7 12.3c-.5-.7-1.4-1.1-2.6-1.1-1.5 0-2.5.7-2.5 1.7 0 2.4 5.4 1.3 5.4 3.7 0 1.1-1.1 1.9-2.8 1.9-1.4 0-2.4-.5-2.9-1.2"/></svg></span>
+            <span class="ramp__text"><span class="ramp__name">Shopfront</span><span class="ramp__kind">Online store</span><span class="ramp__lane">Launch lane</span></span>
+          </a>
+        </li>
+        <li class="ramp__stop" data-stage="launch" style="--k:10;--col:0">
+          <a class="ramp__app" href="{{ROOT}}integrations.html#clipdeck" data-lane="Launch" data-says="posts go out on every channel" data-lands="14 posts scheduled">
+            <span class="ramp__box" data-magnetic="0.35"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.6 7.4A7 7 0 1 0 17.6 16.6"/><path d="M12 8.3V12l2.6 1.6"/></svg></span>
+            <span class="ramp__text"><span class="ramp__name">Clipdeck</span><span class="ramp__kind">Social scheduling</span><span class="ramp__lane">Launch lane</span></span>
+          </a>
+        </li>
+        <li class="ramp__stop" data-stage="afterglow" style="--k:11;--col:1">
+          <a class="ramp__app" href="{{ROOT}}integrations.html#pulse" data-lane="Afterglow" data-says="the numbers land in your recap" data-lands="12.4k views · day 7">
+            <span class="ramp__box" data-magnetic="0.35"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 12.5h4l2.2-5.5 3.4 10.5 2.2-5h5.2"/></svg></span>
+            <span class="ramp__text"><span class="ramp__name">Pulse</span><span class="ramp__kind">Analytics</span><span class="ramp__lane">Afterglow lane</span></span>
+          </a>
+        </li>
+      </ul>
+
+      <p class="ramp__into" aria-hidden="true">Your lane</p>
+      <ol class="ramp__key" aria-hidden="true">
+        <li data-stage="spark" style="--ly:176"><b>01</b>Spark</li>
+        <li data-stage="shape" style="--ly:206"><b>02</b>Shape</li>
+        <li class="is-on" data-stage="make" style="--ly:236"><b>03</b>Make</li>
+        <li data-stage="review" style="--ly:266"><b>04</b>Review</li>
+        <li data-stage="launch" style="--ly:296"><b>05</b>Launch</li>
+        <li data-stage="afterglow" style="--ly:326"><b>06</b>Afterglow</li>
+      </ol>
+      <p class="ramp__arrival" data-stage="make" style="--ly:236" aria-hidden="true"><span>render_v8.mov</span></p>
+      <p class="ramp__caption" aria-live="polite"><span class="ramp__caption-app">Framewright</span><span class="ramp__caption-to" aria-hidden="true">→</span><span class="sr"> into the </span><span class="ramp__caption-lane" data-stage="make">Make lane</span><span class="ramp__caption-says"> · renders land as versions.</span></p>
+    </div>
+  </div>
 </section>

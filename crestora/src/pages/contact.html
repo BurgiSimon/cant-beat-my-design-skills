@@ -1,16 +1,394 @@
 <!--page
 title: Contact — Crestora
-description: Talk to a human.
+description: Talk to a human at Crestora. Sales, support, press, partnerships, careers, legal and creator grants, each with a person behind it, in four hubs across four time zones.
+modules: copy forms page-contact
 nav: company
 -->
 <main id="main">
-  <section class="page-hero">
+  <!-- Contact: the hero with three numbers (one of them live); eight doors, each with an email and a reply time; the
+       form, whose fields follow the topic (?topic= and ?role= preselect; fields for other topics carry hidden, so
+       they can't be focused); and the four hubs with their local time, open or closed, and a weekday drawn as four
+       lanes in the visitor's own time. Without scripts the form shows every field and the hubs show their hours. -->
+  <section class="page-hero ct-hero" aria-labelledby="ct-title">
     <div class="page-hero__lanes" aria-hidden="true"></div>
-    <div class="container page-hero__inner">
-      <p class="eyebrow">Company</p>
-      <h1 class="title-1">Talk to a human.</h1>
-      <p class="lede">This page is being built.</p>
+    <div class="container ct-hero__grid">
+      <div class="ct-hero__intro">
+        <p class="eyebrow" data-reveal="fade">Contact</p>
+        <h1 class="title-1 ct-hero__title" id="ct-title" data-split>Talk to a human.</h1>
+        <p class="lede" data-reveal data-delay="0.15">Real people in four time zones. Replies within a working day.</p>
+        <div class="btn-row" data-reveal data-delay="0.25">
+          <a class="btn btn--primary btn--lg" href="#write" data-roll>Write to us</a>
+          <a class="btn btn--lg" href="{{ROOT}}help.html" data-roll>Help Center</a>
+        </div>
+      </div>
+      <div class="ct-hero__aside" data-reveal data-delay="0.3">
+        <dl class="ct-stats">
+          <div class="ct-stats__row"><dt>Median first reply</dt><dd><span class="ct-stats__n" data-odometer="3.2" data-decimals="1" data-suffix=" h">3.2 h</span></dd></div>
+          <div class="ct-stats__row"><dt>Replies written by a person</dt><dd><span class="ct-stats__n" data-odometer="100" data-suffix="%">100%</span></dd></div>
+          <div class="ct-stats__row ct-stats__row--live" data-open-row><dt>Hubs open right now</dt><dd><span class="ct-stats__n"><span data-open-count>2</span><span class="ct-stats__of"> of 4</span></span></dd></div>
+        </dl>
+        <p class="fiction">Crestora is a fictional company; figures are illustrative.</p>
+      </div>
     </div>
   </section>
+
+  <!-- eight doors: seven teams and a catch-all -->
+  <section class="ct-topics" id="topics" aria-labelledby="ct-topics-title">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow" data-reveal="fade">Who to write to</p>
+          <h2 class="title-2" id="ct-topics-title" data-split>Seven doors, one crew.</h2>
+        </div>
+        <div class="section-head__aside" data-reveal>
+          <p class="lede">Write straight to the people who can help. Every inbox is read by a person, and the reply comes from them, with their name on it.</p>
+        </div>
+      </div>
+      <ul class="ct-grid" data-reveal-stagger>
+        <li class="ct-topic" id="topic-sales" data-topic-card="sales">
+          <article class="ct-topic__in" data-spotlight aria-labelledby="ct-t-sales">
+            <div class="ct-topic__top">
+              <span class="icon-box" aria-hidden="true"><svg class="icon icon--lg"><use href="#i-tag"/></svg></span>
+              <span class="ct-topic__time"><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg>Within 4 working hours</span>
+            </div>
+            <h3 class="ct-topic__name" id="ct-t-sales">Sales <span class="ct-topic__sub">Crew &amp; Label</span></h3>
+            <p class="ct-topic__text">Crew seats, Label contracts, SSO and data residency, or a walkthrough for your studio.</p>
+            <div class="ct-topic__foot">
+              <span class="ct-mail"><a href="mailto:sales@crestora.example">sales@crestora.example</a><button class="ct-copy" type="button" data-copy="sales@crestora.example" data-copy-toast="sales@crestora.example copied" aria-label="Copy sales@crestora.example"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg></button></span>
+              <a class="ct-topic__go" href="{{ROOT}}contact.html?topic=sales#write" data-topic-link="sales">Write to Sales<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+            </div>
+          </article>
+        </li>
+        <li class="ct-topic" id="topic-support" data-topic-card="support">
+          <article class="ct-topic__in" data-spotlight aria-labelledby="ct-t-support">
+            <div class="ct-topic__top">
+              <span class="icon-box" aria-hidden="true"><svg class="icon icon--lg"><use href="#i-help"/></svg></span>
+              <span class="ct-topic__time"><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg>Under 2 hours on weekdays</span>
+            </div>
+            <h3 class="ct-topic__name" id="ct-t-support">Support</h3>
+            <p class="ct-topic__text">A lane stuck in a stage, a billing question, or an export you need today.</p>
+            <div class="ct-topic__foot">
+              <span class="ct-mail"><a href="mailto:support@crestora.example">support@crestora.example</a><button class="ct-copy" type="button" data-copy="support@crestora.example" data-copy-toast="support@crestora.example copied" aria-label="Copy support@crestora.example"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg></button></span>
+              <a class="ct-topic__go" href="{{ROOT}}contact.html?topic=support#write" data-topic-link="support">Write to Support<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+            </div>
+          </article>
+        </li>
+        <li class="ct-topic" id="topic-press" data-topic-card="press">
+          <article class="ct-topic__in" data-spotlight aria-labelledby="ct-t-press">
+            <div class="ct-topic__top">
+              <span class="icon-box" aria-hidden="true"><svg class="icon icon--lg"><use href="#i-news"/></svg></span>
+              <span class="ct-topic__time"><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg>The same working day</span>
+            </div>
+            <h3 class="ct-topic__name" id="ct-t-press">Press</h3>
+            <p class="ct-topic__text">Interviews, founder quotes, product screens and launch-day embargoes.</p>
+            <div class="ct-topic__foot">
+              <span class="ct-mail"><a href="mailto:press@crestora.example">press@crestora.example</a><button class="ct-copy" type="button" data-copy="press@crestora.example" data-copy-toast="press@crestora.example copied" aria-label="Copy press@crestora.example"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg></button></span>
+              <a class="ct-topic__go" href="{{ROOT}}contact.html?topic=press#write" data-topic-link="press">Write to Press<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+            </div>
+          </article>
+        </li>
+        <li class="ct-topic" id="topic-partners" data-topic-card="partners">
+          <article class="ct-topic__in" data-spotlight aria-labelledby="ct-t-partners">
+            <div class="ct-topic__top">
+              <span class="icon-box" aria-hidden="true"><svg class="icon icon--lg"><use href="#i-handshake"/></svg></span>
+              <span class="ct-topic__time"><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg>Within 2 working days</span>
+            </div>
+            <h3 class="ct-topic__name" id="ct-t-partners">Partnerships</h3>
+            <p class="ct-topic__text">Integrations, studio and education partners, and the partner program.</p>
+            <div class="ct-topic__foot">
+              <span class="ct-mail"><a href="mailto:partners@crestora.example">partners@crestora.example</a><button class="ct-copy" type="button" data-copy="partners@crestora.example" data-copy-toast="partners@crestora.example copied" aria-label="Copy partners@crestora.example"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg></button></span>
+              <a class="ct-topic__go" href="{{ROOT}}contact.html?topic=partners#write" data-topic-link="partners">Write to Partnerships<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+            </div>
+          </article>
+        </li>
+        <li class="ct-topic" id="topic-careers" data-topic-card="careers">
+          <article class="ct-topic__in" data-spotlight aria-labelledby="ct-t-careers">
+            <div class="ct-topic__top">
+              <span class="icon-box" aria-hidden="true"><svg class="icon icon--lg"><use href="#i-briefcase"/></svg></span>
+              <span class="ct-topic__time"><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg>Within 10 days, always</span>
+            </div>
+            <h3 class="ct-topic__name" id="ct-t-careers">Careers</h3>
+            <p class="ct-topic__text">A question about a role, the hiring process or the paid trial day.</p>
+            <div class="ct-topic__foot">
+              <span class="ct-mail"><a href="mailto:careers@crestora.example">careers@crestora.example</a><button class="ct-copy" type="button" data-copy="careers@crestora.example" data-copy-toast="careers@crestora.example copied" aria-label="Copy careers@crestora.example"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg></button></span>
+              <a class="ct-topic__go" href="{{ROOT}}contact.html?topic=careers#write" data-topic-link="careers">Write to Careers<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+            </div>
+          </article>
+        </li>
+        <li class="ct-topic" id="topic-legal" data-topic-card="legal">
+          <article class="ct-topic__in" data-spotlight aria-labelledby="ct-t-legal">
+            <div class="ct-topic__top">
+              <span class="icon-box" aria-hidden="true"><svg class="icon icon--lg"><use href="#i-scale"/></svg></span>
+              <span class="ct-topic__time"><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg>Within 3 working days</span>
+            </div>
+            <h3 class="ct-topic__name" id="ct-t-legal">Legal &amp; privacy</h3>
+            <p class="ct-topic__text">Data requests, DPAs, the terms and anything for our data protection officer.</p>
+            <div class="ct-topic__foot">
+              <span class="ct-mail"><a href="mailto:privacy@crestora.example">privacy@crestora.example</a><button class="ct-copy" type="button" data-copy="privacy@crestora.example" data-copy-toast="privacy@crestora.example copied" aria-label="Copy privacy@crestora.example"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg></button></span>
+              <a class="ct-topic__go" href="{{ROOT}}contact.html?topic=legal#write" data-topic-link="legal">Write to Legal<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+            </div>
+          </article>
+        </li>
+        <li class="ct-topic" id="topic-grants" data-topic-card="grants">
+          <article class="ct-topic__in" data-spotlight aria-labelledby="ct-t-grants">
+            <div class="ct-topic__top">
+              <span class="icon-box" aria-hidden="true"><svg class="icon icon--lg"><use href="#i-star"/></svg></span>
+              <span class="ct-topic__time"><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg>A decision within 2 weeks</span>
+            </div>
+            <h3 class="ct-topic__name" id="ct-t-grants">Creator grants</h3>
+            <p class="ct-topic__text">Studio free for a year for students, educators and first-time founders.</p>
+            <div class="ct-topic__foot">
+              <span class="ct-mail"><a href="mailto:grants@crestora.example">grants@crestora.example</a><button class="ct-copy" type="button" data-copy="grants@crestora.example" data-copy-toast="grants@crestora.example copied" aria-label="Copy grants@crestora.example"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg></button></span>
+              <a class="ct-topic__go" href="{{ROOT}}contact.html?topic=grants#write" data-topic-link="grants">Apply for a grant<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+            </div>
+          </article>
+        </li>
+        <li class="ct-topic ct-topic--any" data-topic-card="">
+          <article class="ct-topic__in" aria-labelledby="ct-t-any">
+            <div class="ct-topic__top">
+              <span class="icon-box" aria-hidden="true"><svg class="icon icon--lg"><use href="#i-mail"/></svg></span>
+              <span class="ct-topic__time"><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg>Within a working day</span>
+            </div>
+            <h3 class="ct-topic__name" id="ct-t-any">Not sure?</h3>
+            <p class="ct-topic__text">Write to all of us. Whoever is awake reads it and hands it to the right person, with your message attached.</p>
+            <div class="ct-topic__foot">
+              <span class="ct-mail"><a href="mailto:hello@crestora.example">hello@crestora.example</a><button class="ct-copy" type="button" data-copy="hello@crestora.example" data-copy-toast="hello@crestora.example copied" aria-label="Copy hello@crestora.example"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg></button></span>
+              <a class="ct-topic__go" href="#write">Use the form<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+            </div>
+          </article>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- the form: its fields follow the topic -->
+  <section class="ct-write" id="write" aria-labelledby="ct-write-title">
+    <div class="container ct-write__grid">
+      <div class="ct-write__intro">
+        <p class="eyebrow" data-reveal="fade">Write to us</p>
+        <h2 class="title-2" id="ct-write-title" data-split>A few lines will do.</h2>
+        <p class="lede" data-reveal>Pick a topic and the form asks only what that team needs. Your message lands in their inbox, not in a queue.</p>
+
+        <div class="ct-route" data-reveal>
+          <p class="ct-route__label">Goes to</p>
+          <p class="ct-route__team" aria-live="polite"><span data-route-team>Whoever is awake</span> <span class="ct-route__mail" data-route-mail>hello@crestora.example</span></p>
+          <ul class="ct-route__meta">
+            <li><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg><span data-route-time>Within a working day</span></li>
+            <li><svg class="icon" aria-hidden="true"><use href="#i-globe"/></svg><span data-route-where>Read in all four hubs</span></li>
+          </ul>
+        </div>
+
+        <ol class="ct-next" data-reveal-stagger>
+          <li><span class="ct-next__n" aria-hidden="true">01</span><strong>A person reads it</strong><span>Not a bot and not a ticket queue: the team you picked, in their own inbox.</span></li>
+          <li><span class="ct-next__n" aria-hidden="true">02</span><strong>They reply from their own address</strong><span>With their name on it, so you can write straight back.</span></li>
+          <li><span class="ct-next__n" aria-hidden="true">03</span><strong>Handed over, never bounced</strong><span>If it belongs with another team, they pass it on with your message. You never repeat yourself.</span></li>
+        </ol>
+      </div>
+
+      <form class="ct-form panel panel--raised" id="ct-form" action="{{ROOT}}contact.html#write" method="get" data-form data-demo data-success="Thanks. A human will reply by tomorrow. (Demo: nothing was sent.)" data-success-key="Sent" data-reveal>
+        <fieldset class="field ct-pick">
+          <legend class="field__label">What’s it about?</legend>
+          <div class="ct-pick__row">
+            <label class="ct-pick__opt"><input type="radio" name="topic" value="sales" required data-msg-required="Pick a topic, so the right person reads it." /><span>Sales</span></label>
+            <label class="ct-pick__opt"><input type="radio" name="topic" value="support" required data-msg-required="Pick a topic, so the right person reads it." /><span>Support</span></label>
+            <label class="ct-pick__opt"><input type="radio" name="topic" value="press" required data-msg-required="Pick a topic, so the right person reads it." /><span>Press</span></label>
+            <label class="ct-pick__opt"><input type="radio" name="topic" value="partners" required data-msg-required="Pick a topic, so the right person reads it." /><span>Partnerships</span></label>
+            <label class="ct-pick__opt"><input type="radio" name="topic" value="careers" required data-msg-required="Pick a topic, so the right person reads it." /><span>Careers</span></label>
+            <label class="ct-pick__opt"><input type="radio" name="topic" value="legal" required data-msg-required="Pick a topic, so the right person reads it." /><span>Legal &amp; privacy</span></label>
+            <label class="ct-pick__opt"><input type="radio" name="topic" value="grants" required data-msg-required="Pick a topic, so the right person reads it." /><span>Creator grants</span></label>
+          </div>
+          <p class="field__error"></p>
+        </fieldset>
+
+        <div class="ct-form__row">
+          <div class="field">
+            <label class="field__label" for="ct-name">Name</label>
+            <input class="input" id="ct-name" name="name" type="text" required maxlength="80" autocomplete="name" placeholder="Amara Okafor" data-msg-required="What should we call you?" />
+            <p class="field__error"></p>
+          </div>
+          <div class="field">
+            <label class="field__label" for="ct-email">Email</label>
+            <input class="input" id="ct-email" name="email" type="email" required maxlength="120" autocomplete="email" inputmode="email" placeholder="you@studio.example" data-msg-required="We need an address to reply to." />
+            <p class="field__error"></p>
+          </div>
+        </div>
+
+        <!-- Sales and Partnerships only -->
+        <div class="ct-cond ct-form__row" data-show="sales partners" hidden>
+          <div class="field">
+            <label class="field__label" for="ct-company">Company <span class="ct-only">Sales &amp; Partnerships</span></label>
+            <input class="input" id="ct-company" name="company" type="text" maxlength="80" autocomplete="organization" placeholder="Kiln &amp; Co." data-required data-msg-required="Which company or studio is this for?" />
+            <p class="field__error"></p>
+          </div>
+          <div class="field">
+            <label class="field__label" for="ct-size">Team size <span class="ct-only">Sales &amp; Partnerships</span></label>
+            <select class="input" id="ct-size" name="team_size" data-required data-msg-required="Roughly how many of you are there?">
+              <option value="">Choose one</option>
+              <option value="1">Just me</option>
+              <option value="2-5">2 to 5 people</option>
+              <option value="6-20">6 to 20 people</option>
+              <option value="21-100">21 to 100 people</option>
+              <option value="100+">More than 100</option>
+            </select>
+            <p class="field__error"></p>
+          </div>
+        </div>
+
+        <!-- Careers only -->
+        <div class="ct-cond ct-form__row" data-show="careers" hidden>
+          <div class="field">
+            <label class="field__label" for="ct-role">Role <span class="ct-only">Careers</span></label>
+            <select class="input" id="ct-role" name="role" data-required data-msg-required="Which role is it about?">
+              <option value="">Choose a role</option>
+              <option value="senior-graphics-engineer-webgl">Senior Graphics Engineer, WebGL</option>
+              <option value="product-designer-review">Product Designer, Review</option>
+              <option value="ios-engineer">iOS Engineer</option>
+              <option value="staff-backend-engineer-sync">Staff Backend Engineer, Sync</option>
+              <option value="community-lead-latam">Community Lead, LATAM</option>
+              <option value="support-specialist-korean-english">Support Specialist, Korean &amp; English</option>
+              <option value="tutorial-producer">Tutorial Producer</option>
+              <option value="security-engineer">Security Engineer</option>
+              <option value="open-application">Open application</option>
+            </select>
+            <p class="field__error"></p>
+          </div>
+          <div class="field">
+            <label class="field__label" for="ct-work">Link to your work <span class="ct-form__opt">(optional)</span></label>
+            <input class="input" id="ct-work" name="work" type="text" inputmode="url" maxlength="160" autocomplete="url" placeholder="portfolio.example" />
+            <p class="field__error"></p>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="field__label" for="ct-msg" id="ct-msg-label">Message</label>
+          <textarea class="input" id="ct-msg" name="message" required minlength="20" maxlength="2000" rows="5" placeholder="A few lines are plenty. Tell us what you’re making and where you’re stuck." aria-describedby="ct-msg-hint" data-msg-required="A line or two, so we know where to start."></textarea>
+          <p class="field__hint" id="ct-msg-hint">The more specific, the faster the right person can help.</p>
+          <p class="field__error"></p>
+        </div>
+
+        <div class="field">
+          <label class="check"><input type="checkbox" name="consent" required data-msg-required="Please tick this, so we’re allowed to write back." /><span>Crestora may use these details to reply to me, as the <a href="{{ROOT}}privacy.html">privacy policy</a> describes.</span></label>
+          <p class="field__error"></p>
+        </div>
+
+        <button class="btn btn--primary btn--lg btn--block" type="submit"><span data-submit-label>Send message</span> <svg class="arrow" aria-hidden="true"><use href="#i-arrow"/></svg></button>
+        <p class="ct-form__note"><svg class="icon" aria-hidden="true"><use href="#i-info"/></svg>This is a demo: nothing you type here is stored or sent.</p>
+      </form>
+    </div>
+  </section>
+
+  <!-- the four hubs -->
+  <section class="ct-hubs" id="hubs" aria-labelledby="ct-hubs-title">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow" data-reveal="fade">Four hubs</p>
+          <h2 class="title-2" id="ct-hubs-title" data-split>Somebody is always awake.</h2>
+        </div>
+        <div class="section-head__aside" data-reveal>
+          <p class="lede">Between them, Lisbon, Toronto, Seoul and Nairobi cover <span data-cover>23</span> hours of every weekday. Come by for coffee; ring the bell first.</p>
+        </div>
+      </div>
+
+      <figure class="ct-sun" data-sun data-reveal>
+        <figcaption class="ct-sun__head">
+          <span class="ct-sun__title">A weekday at the four hubs, in <span data-sun-zone>UTC</span></span>
+          <span class="ct-sun__now" data-sun-label hidden><span class="ct-sun__dot" aria-hidden="true"></span>Now, <span data-sun-now>12:00</span></span>
+        </figcaption>
+        <div class="ct-sun__grid">
+          <div class="ct-sun__row" data-sun-row="lisbon">
+            <span class="ct-sun__city">Lisbon</span>
+            <span class="ct-sun__track"><i class="ct-sun__win" style="--a:540;--b:1080"></i></span>
+          </div>
+          <div class="ct-sun__row" data-sun-row="toronto">
+            <span class="ct-sun__city">Toronto</span>
+            <span class="ct-sun__track"><i class="ct-sun__win" style="--a:840;--b:1380"></i></span>
+          </div>
+          <div class="ct-sun__row" data-sun-row="seoul">
+            <span class="ct-sun__city">Seoul</span>
+            <span class="ct-sun__track"><i class="ct-sun__win" style="--a:0;--b:540"></i></span>
+          </div>
+          <div class="ct-sun__row" data-sun-row="nairobi">
+            <span class="ct-sun__city">Nairobi</span>
+            <span class="ct-sun__track"><i class="ct-sun__win" style="--a:360;--b:900"></i></span>
+          </div>
+          <div class="ct-sun__axis" aria-hidden="true"><span>00:00</span><span>06:00</span><span>12:00</span><span>18:00</span><span>24:00</span></div>
+          <span class="ct-sun__line" data-sun-line aria-hidden="true" hidden></span>
+        </div>
+      </figure>
+
+      <ul class="ct-hubgrid" data-reveal-stagger>
+        <li class="ct-hub" data-hub="lisbon" data-tz="Europe/Lisbon" data-city="Lisbon">
+          <article class="ct-hub__in" aria-labelledby="ct-h-lisbon">
+            <header class="ct-hub__head">
+              <h3 class="ct-hub__city" id="ct-h-lisbon">Lisbon</h3>
+              <span class="ct-state" data-state hidden>Closed</span>
+            </header>
+            <p class="ct-hub__kind">Headquarters · 26 people</p>
+            <div class="ct-hub__time" data-time hidden>
+              <p class="ct-clock"><span class="sr" data-clock-sr></span><span class="ct-clock__digits" aria-hidden="true"><span class="ct-clock__d" data-h>00</span><span class="ct-clock__sep">:</span><span class="ct-clock__d" data-m>00</span></span></p>
+              <p class="ct-hub__rel"><span data-zone>UTC+0</span><span data-rel></span></p>
+              <p class="ct-hub__next" data-next></p>
+            </div>
+            <p class="ct-hub__hours"><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg>Mon–Fri, 09:00–18:00 local time</p>
+            <address class="ct-hub__addr">Travessa do Farol Velho 12, 2º<br />1200-417 Lisboa<br />Portugal</address>
+            <p class="ct-hub__does">Product, design and support for Europe.</p>
+          </article>
+        </li>
+        <li class="ct-hub" data-hub="toronto" data-tz="America/Toronto" data-city="Toronto">
+          <article class="ct-hub__in" aria-labelledby="ct-h-toronto">
+            <header class="ct-hub__head">
+              <h3 class="ct-hub__city" id="ct-h-toronto">Toronto</h3>
+              <span class="ct-state" data-state hidden>Closed</span>
+            </header>
+            <p class="ct-hub__kind">Hub · 15 people</p>
+            <div class="ct-hub__time" data-time hidden>
+              <p class="ct-clock"><span class="sr" data-clock-sr></span><span class="ct-clock__digits" aria-hidden="true"><span class="ct-clock__d" data-h>00</span><span class="ct-clock__sep">:</span><span class="ct-clock__d" data-m>00</span></span></p>
+              <p class="ct-hub__rel"><span data-zone>UTC−5</span><span data-rel></span></p>
+              <p class="ct-hub__next" data-next></p>
+            </div>
+            <p class="ct-hub__hours"><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg>Mon–Fri, 09:00–18:00 local time</p>
+            <address class="ct-hub__addr">88 Lantern Mews, Studio 4<br />Toronto, ON M6J 1X2<br />Canada</address>
+            <p class="ct-hub__does">iOS, partnerships and support for the Americas.</p>
+          </article>
+        </li>
+        <li class="ct-hub" data-hub="seoul" data-tz="Asia/Seoul" data-city="Seoul">
+          <article class="ct-hub__in" aria-labelledby="ct-h-seoul">
+            <header class="ct-hub__head">
+              <h3 class="ct-hub__city" id="ct-h-seoul">Seoul</h3>
+              <span class="ct-state" data-state hidden>Closed</span>
+            </header>
+            <p class="ct-hub__kind">Hub · 12 people</p>
+            <div class="ct-hub__time" data-time hidden>
+              <p class="ct-clock"><span class="sr" data-clock-sr></span><span class="ct-clock__digits" aria-hidden="true"><span class="ct-clock__d" data-h>00</span><span class="ct-clock__sep">:</span><span class="ct-clock__d" data-m>00</span></span></p>
+              <p class="ct-hub__rel"><span data-zone>UTC+9</span><span data-rel></span></p>
+              <p class="ct-hub__next" data-next></p>
+            </div>
+            <p class="ct-hub__hours"><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg>Mon–Fri, 09:00–18:00 local time</p>
+            <address class="ct-hub__addr">4F, 27 Dalbit-ro, Mapo-gu<br />Seoul 04044<br />South Korea</address>
+            <p class="ct-hub__does">Sync, infrastructure and support for Asia-Pacific.</p>
+          </article>
+        </li>
+        <li class="ct-hub" data-hub="nairobi" data-tz="Africa/Nairobi" data-city="Nairobi">
+          <article class="ct-hub__in" aria-labelledby="ct-h-nairobi">
+            <header class="ct-hub__head">
+              <h3 class="ct-hub__city" id="ct-h-nairobi">Nairobi</h3>
+              <span class="ct-state" data-state hidden>Closed</span>
+            </header>
+            <p class="ct-hub__kind">Hub · 11 people</p>
+            <div class="ct-hub__time" data-time hidden>
+              <p class="ct-clock"><span class="sr" data-clock-sr></span><span class="ct-clock__digits" aria-hidden="true"><span class="ct-clock__d" data-h>00</span><span class="ct-clock__sep">:</span><span class="ct-clock__d" data-m>00</span></span></p>
+              <p class="ct-hub__rel"><span data-zone>UTC+3</span><span data-rel></span></p>
+              <p class="ct-hub__next" data-next></p>
+            </div>
+            <p class="ct-hub__hours"><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg>Mon–Fri, 09:00–18:00 local time</p>
+            <address class="ct-hub__addr">Taa House, 3rd floor, 14 Mwangaza Road<br />Westlands, Nairobi 00800<br />Kenya</address>
+            <p class="ct-hub__does">Tutorials, community and support for Africa.</p>
+          </article>
+        </li>
+      </ul>
+    </div>
+  </section>
+
   {{> cta}}
 </main>

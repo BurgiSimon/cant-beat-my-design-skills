@@ -5,7 +5,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <title>Press kit — Crestora</title>
-<meta name="description" content="Press kit." />
+<meta name="description" content="Words, marks, colours, faces and facts: boilerplates, fast facts, logo downloads, the six stage colours, type, product screens and founder bios for writing about Crestora." />
 <meta name="theme-color" content="#000000" />
 <meta name="color-scheme" content="dark" />
 <link rel="canonical" href="{{SITE_URL}}/press.html" />
@@ -13,7 +13,7 @@
 <meta property="og:site_name" content="Crestora" />
 <meta property="og:url" content="{{SITE_URL}}/press.html" />
 <meta property="og:title" content="Press kit — Crestora" />
-<meta property="og:description" content="Press kit." />
+<meta property="og:description" content="Words, marks, colours, faces and facts: boilerplates, fast facts, logo downloads, the six stage colours, type, product screens and founder bios for writing about Crestora." />
 <meta property="og:image" content="{{SITE_URL}}/assets/img/og.jpg" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
@@ -39,7 +39,7 @@
 <script defer src="vendor/lenis.min.js"></script>
 <script type="module" src="js/main.js?v={{VERSION}}"></script>
 </head>
-<body data-page="press" data-modules="">
+<body data-page="press" data-modules="copy page-press">
 <!-- The icon sprite: drawn on a 24 px grid in the footer's hand (round caps and joins; stroke set by .icon). Use as
      <svg class="icon" aria-hidden="true"><use href="#i-spark"/></svg>. -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
@@ -203,14 +203,501 @@
 </div>
 
 <main id="main">
-  <section class="page-hero">
+  <!-- Press kit: boilerplates with copy buttons (generic copy), fast facts, the logo built from the kit with SVG
+       downloads generated in the browser (page-press.js), three don'ts, eight swatches that copy their hex, the two
+       typefaces with a Michroma type tester, three product screens drawn in HTML, the founders, coverage from
+       fictional outlets, and the press contact. -->
+  <section class="page-hero pr-hero" aria-labelledby="pr-title">
     <div class="page-hero__lanes" aria-hidden="true"></div>
-    <div class="container page-hero__inner">
-      <p class="eyebrow">Company</p>
-      <h1 class="title-1">Press kit.</h1>
-      <p class="lede">This page is being built.</p>
+    <div class="container pr-hero__grid">
+      <div class="page-hero__inner">
+        <p class="eyebrow" data-reveal="fade">Press kit</p>
+        <h1 class="title-1" id="pr-title" data-split>Press kit.</h1>
+        <p class="lede" data-reveal data-delay="0.15">Words, marks, colours, faces and facts: everything you need to write about Crestora.</p>
+        <div class="btn-row" data-reveal data-delay="0.25">
+          <button class="btn btn--primary btn--lg pr-js" type="button" data-logo="lockup" data-theme="dark"><svg aria-hidden="true"><use href="#i-download"/></svg>Download the logo</button>
+          <a class="btn btn--lg" href="#contact" data-roll>Press contact</a>
+        </div>
+      </div>
+      <div class="pr-hero__mark" aria-hidden="true" data-reveal="fade" data-delay="0.2">
+        <span class="pr-hero__ring"></span>
+        <span class="mark"><span class="mark__sheen"></span></span>
+      </div>
+    </div>
+    <nav class="container pr-jump" aria-label="On this page">
+      <a href="#boilerplate">Boilerplate</a>
+      <a href="#facts">Fast facts</a>
+      <a href="#logo">Logo</a>
+      <a href="#colour">Colour</a>
+      <a href="#type">Type</a>
+      <a href="#screens">Product</a>
+      <a href="#founders">Founders</a>
+      <a href="#coverage">Coverage</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </section>
+
+  <!-- boilerplate -->
+  <section class="section pr-sec pr-boiler" id="boilerplate" aria-labelledby="pr-boiler-title">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Boilerplate</p>
+          <h2 class="title-2" id="pr-boiler-title" data-split>Words you can paste.</h2>
+        </div>
+        <div class="section-head__aside">
+          <p class="lede">Two lengths, both checked and current. Copy either one as it is; we’d rather you didn’t trim the middle.</p>
+        </div>
+      </div>
+      <div class="pr-boiler__grid">
+        <article class="panel pr-boiler__card" data-copy-scope data-reveal>
+          <header class="pr-boiler__head">
+            <h3 class="pr-label">Short <span>50 words</span></h3>
+            <button class="btn btn--sm pr-js" type="button" data-copy="" data-copy-toast="Short boilerplate copied" aria-label="Copy the short boilerplate"><svg aria-hidden="true"><use href="#i-copy"/></svg>Copy</button>
+          </header>
+          <p class="pr-boiler__text" data-copy-source>Crestora is the creative workspace that carries a project from first spark to launch day, then shows how it landed. Each project rides a single lane through six stages, from Sparkboard to Afterglow. Founded in Lisbon in 2021, Crestora serves more than 38,000 creators, builders and dreamers around the world.</p>
+        </article>
+        <article class="panel pr-boiler__card" data-copy-scope data-reveal data-delay="0.08">
+          <header class="pr-boiler__head">
+            <h3 class="pr-label">Long <span>120 words</span></h3>
+            <button class="btn btn--sm pr-js" type="button" data-copy="" data-copy-toast="Long boilerplate copied" aria-label="Copy the long boilerplate"><svg aria-hidden="true"><use href="#i-copy"/></svg>Copy</button>
+          </header>
+          <p class="pr-boiler__text" data-copy-source>Crestora is the creative workspace that carries a project from first spark to launch day, then shows how it landed. Every project rides a lane through six stages, each with its own tool: Sparkboard for catching ideas, Blueprints for one-page plans, Workbench for versions, Review Room for frame-accurate feedback, Countdown for launches across 14 channels, and Afterglow for recaps on day 1, 7 and 30. Reviewers need a link, not an account, and creators can export everything, always. Founded in Lisbon in early 2021 by film editor Mira Castell, engineer Jonah Feld and ceramicist Ama Boateng, Crestora has carried more than 1.2 million launches for 38,000 creators. Its 64 people work from four hubs in Lisbon, Toronto, Seoul and Nairobi.</p>
+        </article>
+      </div>
     </div>
   </section>
+
+  <!-- fast facts -->
+  <section class="section pr-sec pr-facts" id="facts" aria-labelledby="pr-facts-title">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Fast facts</p>
+          <h2 class="title-2" id="pr-facts-title" data-split>The numbers, checked.</h2>
+        </div>
+        <div class="section-head__aside">
+          <p class="lede">Updated with every release. The latest is v4.12, shipped on 20 November 2026.</p>
+        </div>
+      </div>
+      <ul class="pr-band" data-reveal-stagger>
+        <li><span class="pr-band__n">2021</span><span class="pr-band__l">Founded in Lisbon</span></li>
+        <li><span class="pr-band__n" data-odometer="64">64</span><span class="pr-band__l">People in 19 countries</span></li>
+        <li><span class="pr-band__n" data-odometer="38000" data-suffix="+">38,000+</span><span class="pr-band__l">Creators on the road</span></li>
+        <li><span class="pr-band__n" data-odometer="1.2" data-decimals="1" data-suffix="M">1.2M</span><span class="pr-band__l">Launches shipped</span></li>
+        <li><span class="pr-band__n" data-odometer="4">4</span><span class="pr-band__l">Hubs on four continents</span></li>
+      </ul>
+      <dl class="pr-facts__list">
+        <div><dt>Founders</dt><dd>Mira Castell (CEO), Jonah Feld (CTO), Ama Boateng (Product)</dd></div>
+        <div><dt>Headquarters</dt><dd>Lisbon, Portugal</dd></div>
+        <div><dt>Hubs</dt><dd>Lisbon, Toronto, Seoul, Nairobi</dd></div>
+        <div><dt>Brief to launch</dt><dd>9.6 days, median</dd></div>
+        <div><dt>Reviews</dt><dd>71% closed within a day</dd></div>
+        <div><dt>Integrations</dt><dd>120+ connected tools</dd></div>
+        <div><dt>Uptime</dt><dd>99.97% over the last 12 months</dd></div>
+        <div><dt>Latest release</dt><dd><a href="changelog.html#v4-12">v4.12, 20 Nov 2026</a></dd></div>
+        <div><dt>Plans</dt><dd>Solo free, Studio $12/mo, Crew $20/seat, Label custom</dd></div>
+      </dl>
+      <p class="fiction pr-fiction">Crestora is a fictional company; figures are illustrative.</p>
+    </div>
+  </section>
+
+  <!-- logo -->
+  <section class="section pr-sec pr-logo" id="logo" aria-labelledby="pr-logo-title">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Logo</p>
+          <h2 class="title-2" id="pr-logo-title" data-split>The C and the name.</h2>
+        </div>
+        <div class="section-head__aside">
+          <p class="lede">A chrome C, open to the right like a road bending out of sight, and the name in Michroma. Use the lockup where there’s room and the C alone where there isn’t.</p>
+        </div>
+      </div>
+      <div class="pr-logo__grid">
+        <figure class="pr-tile pr-tile--dark" data-reveal>
+          <div class="pr-tile__stage">
+            <span class="pr-lockup" role="img" aria-label="Crestora lockup on black">
+              <span class="mark" aria-hidden="true"><span class="mark__sheen"></span></span>
+              <span class="wordmark" aria-hidden="true">Crestora</span>
+            </span>
+          </div>
+          <figcaption class="pr-tile__foot">
+            <span class="pr-tile__name"><strong>On dark</strong> Chrome C, white name</span>
+            <span class="pr-tile__dl pr-js" role="group" aria-label="Download for dark backgrounds">
+              <button class="btn btn--sm" type="button" data-logo="lockup" data-theme="dark" aria-label="Download the lockup for dark backgrounds, SVG"><svg aria-hidden="true"><use href="#i-download"/></svg>Lockup</button>
+              <button class="btn btn--sm" type="button" data-logo="mark" data-theme="dark" aria-label="Download the C for dark backgrounds, SVG"><svg aria-hidden="true"><use href="#i-download"/></svg>Mark</button>
+              <button class="btn btn--sm" type="button" data-logo="wordmark" data-theme="dark" aria-label="Download the wordmark for dark backgrounds, SVG"><svg aria-hidden="true"><use href="#i-download"/></svg>Wordmark</button>
+            </span>
+          </figcaption>
+        </figure>
+        <figure class="pr-tile pr-tile--light" data-reveal data-delay="0.08">
+          <div class="pr-tile__stage">
+            <span class="pr-lockup" role="img" aria-label="Crestora lockup on white">
+              <span class="mark" aria-hidden="true"></span>
+              <span class="wordmark" aria-hidden="true">Crestora</span>
+            </span>
+          </div>
+          <figcaption class="pr-tile__foot">
+            <span class="pr-tile__name"><strong>On light</strong> Solid black, C and name</span>
+            <span class="pr-tile__dl pr-js" role="group" aria-label="Download for light backgrounds">
+              <button class="btn btn--sm" type="button" data-logo="lockup" data-theme="light" aria-label="Download the lockup for light backgrounds, SVG"><svg aria-hidden="true"><use href="#i-download"/></svg>Lockup</button>
+              <button class="btn btn--sm" type="button" data-logo="mark" data-theme="light" aria-label="Download the C for light backgrounds, SVG"><svg aria-hidden="true"><use href="#i-download"/></svg>Mark</button>
+              <button class="btn btn--sm" type="button" data-logo="wordmark" data-theme="light" aria-label="Download the wordmark for light backgrounds, SVG"><svg aria-hidden="true"><use href="#i-download"/></svg>Wordmark</button>
+            </span>
+          </figcaption>
+        </figure>
+      </div>
+      <ul class="pr-logo__specs">
+        <li><strong>Clear space</strong> Half the C’s height on every side.</li>
+        <li><strong>Smallest lockup</strong> 96 px wide on screen, 24 mm in print.</li>
+        <li><strong>Smallest C</strong> 16 px. Below that, write the name.</li>
+        <li><strong>Files</strong> SVG, outlined, built in your browser.</li>
+      </ul>
+      <p class="pr-nojs">Logo downloads are built in your browser and need JavaScript. Write to <a href="mailto:press@crestora.example">press@crestora.example</a> and we’ll send the files.</p>
+
+      <h3 class="pr-subhead">Three don’ts</h3>
+      <ul class="pr-donts" data-reveal-stagger>
+        <li class="pr-dont">
+          <div class="pr-dont__stage" aria-hidden="true"><span class="mark pr-dont__mark pr-dont__mark--recolour"></span></div>
+          <p class="pr-dont__label"><span class="pr-dont__x"><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg></span><span><strong>Don’t recolour the C.</strong> It’s chrome on dark and black on light. The stage colours mean stages, never the brand.</span></p>
+        </li>
+        <li class="pr-dont">
+          <div class="pr-dont__stage" aria-hidden="true"><span class="mark pr-dont__mark pr-dont__mark--stretch"></span></div>
+          <p class="pr-dont__label"><span class="pr-dont__x"><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg></span><span><strong>Don’t stretch it.</strong> Scale the C and the lockup evenly, from a corner, every time.</span></p>
+        </li>
+        <li class="pr-dont">
+          <div class="pr-dont__stage pr-dont__stage--busy" aria-hidden="true"><span class="mark pr-dont__mark"></span></div>
+          <p class="pr-dont__label"><span class="pr-dont__x"><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg></span><span><strong>Don’t set it on busy images.</strong> Give it a calm, dark field, or a white one, and the clear space it needs.</span></p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- colour -->
+  <section class="section pr-sec pr-colour" id="colour" aria-labelledby="pr-colour-title">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Colour</p>
+          <h2 class="title-2" id="pr-colour-title" data-split>Six stages, one night.</h2>
+        </div>
+        <div class="section-head__aside">
+          <p class="lede">Every colour means a stage of the lane, always. Set them as light on black: hairlines, dots and soft glows, never big flat fills. Click a swatch to copy its hex.</p>
+        </div>
+      </div>
+      <ul class="pr-swatches" data-reveal-stagger="0.05">
+        <li><button class="pr-swatch" type="button" style="--c: #3a6dff" data-copy="#3a6dff" data-copy-toast="#3a6dff copied" aria-label="Copy Spark blue, #3a6dff">
+          <span class="pr-swatch__light" aria-hidden="true"><i></i></span>
+          <span class="pr-swatch__body"><span class="pr-swatch__n">01 · Spark</span><span class="pr-swatch__name">Spark blue</span><span class="pr-swatch__tool">Sparkboard</span>
+          <span class="pr-swatch__codes"><span>#3A6DFF</span><span>RGB 58 109 255</span></span></span>
+          <svg class="icon pr-swatch__copy" aria-hidden="true"><use href="#i-copy"/></svg></button></li>
+        <li><button class="pr-swatch" type="button" style="--c: #23d3ff" data-copy="#23d3ff" data-copy-toast="#23d3ff copied" aria-label="Copy Shape cyan, #23d3ff">
+          <span class="pr-swatch__light" aria-hidden="true"><i></i></span>
+          <span class="pr-swatch__body"><span class="pr-swatch__n">02 · Shape</span><span class="pr-swatch__name">Shape cyan</span><span class="pr-swatch__tool">Blueprints</span>
+          <span class="pr-swatch__codes"><span>#23D3FF</span><span>RGB 35 211 255</span></span></span>
+          <svg class="icon pr-swatch__copy" aria-hidden="true"><use href="#i-copy"/></svg></button></li>
+        <li><button class="pr-swatch" type="button" style="--c: #20d69b" data-copy="#20d69b" data-copy-toast="#20d69b copied" aria-label="Copy Make green, #20d69b">
+          <span class="pr-swatch__light" aria-hidden="true"><i></i></span>
+          <span class="pr-swatch__body"><span class="pr-swatch__n">03 · Make</span><span class="pr-swatch__name">Make green</span><span class="pr-swatch__tool">Workbench</span>
+          <span class="pr-swatch__codes"><span>#20D69B</span><span>RGB 32 214 155</span></span></span>
+          <svg class="icon pr-swatch__copy" aria-hidden="true"><use href="#i-copy"/></svg></button></li>
+        <li><button class="pr-swatch" type="button" style="--c: #ffb13d" data-copy="#ffb13d" data-copy-toast="#ffb13d copied" aria-label="Copy Review amber, #ffb13d">
+          <span class="pr-swatch__light" aria-hidden="true"><i></i></span>
+          <span class="pr-swatch__body"><span class="pr-swatch__n">04 · Review</span><span class="pr-swatch__name">Review amber</span><span class="pr-swatch__tool">Review Room</span>
+          <span class="pr-swatch__codes"><span>#FFB13D</span><span>RGB 255 177 61</span></span></span>
+          <svg class="icon pr-swatch__copy" aria-hidden="true"><use href="#i-copy"/></svg></button></li>
+        <li><button class="pr-swatch" type="button" style="--c: #ff3b3b" data-copy="#ff3b3b" data-copy-toast="#ff3b3b copied" aria-label="Copy Launch red, #ff3b3b">
+          <span class="pr-swatch__light" aria-hidden="true"><i></i></span>
+          <span class="pr-swatch__body"><span class="pr-swatch__n">05 · Launch</span><span class="pr-swatch__name">Launch red</span><span class="pr-swatch__tool">Countdown</span>
+          <span class="pr-swatch__codes"><span>#FF3B3B</span><span>RGB 255 59 59</span></span></span>
+          <svg class="icon pr-swatch__copy" aria-hidden="true"><use href="#i-copy"/></svg></button></li>
+        <li><button class="pr-swatch" type="button" style="--c: #ff7ad9" data-copy="#ff7ad9" data-copy-toast="#ff7ad9 copied" aria-label="Copy Afterglow pink, #ff7ad9">
+          <span class="pr-swatch__light" aria-hidden="true"><i></i></span>
+          <span class="pr-swatch__body"><span class="pr-swatch__n">06 · Afterglow</span><span class="pr-swatch__name">Afterglow pink</span><span class="pr-swatch__tool">Afterglow</span>
+          <span class="pr-swatch__codes"><span>#FF7AD9</span><span>RGB 255 122 217</span></span></span>
+          <svg class="icon pr-swatch__copy" aria-hidden="true"><use href="#i-copy"/></svg></button></li>
+        <li><button class="pr-swatch pr-swatch--night" type="button" style="--c: #000000" data-copy="#000000" data-copy-toast="#000000 copied" aria-label="Copy Night, #000000">
+          <span class="pr-swatch__light" aria-hidden="true"><i></i></span>
+          <span class="pr-swatch__body"><span class="pr-swatch__n">Ground</span><span class="pr-swatch__name">Night</span><span class="pr-swatch__tool">Every surface</span>
+          <span class="pr-swatch__codes"><span>#000000</span><span>RGB 0 0 0</span></span></span>
+          <svg class="icon pr-swatch__copy" aria-hidden="true"><use href="#i-copy"/></svg></button></li>
+        <li><button class="pr-swatch pr-swatch--white" type="button" style="--c: #ffffff" data-copy="#ffffff" data-copy-toast="#ffffff copied" aria-label="Copy White, #ffffff">
+          <span class="pr-swatch__light" aria-hidden="true"><i></i></span>
+          <span class="pr-swatch__body"><span class="pr-swatch__n">Ink</span><span class="pr-swatch__name">White</span><span class="pr-swatch__tool">Type, hairlines, the C</span>
+          <span class="pr-swatch__codes"><span>#FFFFFF</span><span>RGB 255 255 255</span></span></span>
+          <svg class="icon pr-swatch__copy" aria-hidden="true"><use href="#i-copy"/></svg></button></li>
+      </ul>
+      <div class="pr-flow">
+        <span class="pr-flow__streak" aria-hidden="true"></span>
+        <p><strong>The whole flow.</strong> All six together, in stage order, mean the whole road: a launch, the final call to action, the reading line at the top of the page. One word of spectrum ink per screen, at most.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- type -->
+  <section class="section pr-sec pr-type" id="type" aria-labelledby="pr-type-title">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Type</p>
+          <h2 class="title-2" id="pr-type-title" data-split>Two typefaces, two jobs.</h2>
+        </div>
+        <div class="section-head__aside">
+          <p class="lede">Michroma is the road: wide, technical, for display and numerals. Inter is the people: everything you read, click or quote.</p>
+        </div>
+      </div>
+      <div class="pr-specimens">
+        <article class="panel pr-spec pr-spec--michroma" data-reveal>
+          <span class="pr-spec__aa" aria-hidden="true">Aa</span>
+          <h3 class="pr-spec__name">Michroma</h3>
+          <p class="pr-spec__job">Display and numerals</p>
+          <ul class="pr-spec__rules">
+            <li>Headlines of six words or fewer, in sentence case</li>
+            <li>Stage and plan names, prices, counters, version numbers</li>
+            <li>Never for paragraphs, and never as small coloured text</li>
+          </ul>
+          <p class="pr-spec__glyphs" aria-hidden="true">ABCDEFGHIJKLMNOPQRSTUVWXYZ<br>abcdefghijklmnopqrstuvwxyz<br>0123456789 &amp; + / · #</p>
+        </article>
+        <article class="panel pr-spec pr-spec--inter" data-reveal data-delay="0.08">
+          <span class="pr-spec__aa" aria-hidden="true">Aa</span>
+          <h3 class="pr-spec__name">Inter</h3>
+          <p class="pr-spec__job">Everything human</p>
+          <ul class="pr-spec__rules">
+            <li>Body copy, buttons, labels, quotes and names</li>
+            <li>400 to read, 500 for buttons, 600 for names and labels</li>
+            <li>Sentence case everywhere, with real apostrophes</li>
+          </ul>
+          <p class="pr-spec__weights" aria-hidden="true"><span style="font-weight: 400">Regular 400</span><span style="font-weight: 500">Medium 500</span><span style="font-weight: 600">Semibold 600</span></p>
+        </article>
+      </div>
+
+      <div class="panel panel--raised pr-tester" data-reveal>
+        <div class="pr-tester__controls">
+          <div class="field pr-tester__text">
+            <label class="field__label" for="pr-tt-text">Type a line in Michroma</label>
+            <input class="input" id="pr-tt-text" type="text" maxlength="60" value="Every idea gets a lane." autocomplete="off" spellcheck="false" />
+          </div>
+          <div class="field pr-tester__size">
+            <label class="field__label" for="pr-tt-size">Size <output class="pr-tester__out" for="pr-tt-size" id="pr-tt-out">64 px</output></label>
+            <input class="pr-range" id="pr-tt-size" type="range" min="24" max="120" step="1" value="64" />
+          </div>
+          <div class="pr-tester__presets" role="group" aria-label="Try a preset">
+            <button class="pr-preset" type="button" data-tt="Night Bloom">Night Bloom</button>
+            <button class="pr-preset" type="button" data-tt="v4.12">v4.12</button>
+            <button class="pr-preset" type="button" data-tt="38,000+ creators">38,000+</button>
+            <button class="pr-preset" type="button" data-tt="Ship on the day you said.">A promise</button>
+          </div>
+        </div>
+        <p class="pr-tester__preview" id="pr-tt-preview">Every idea gets a lane.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- product screens -->
+  <section class="section pr-sec pr-screens" id="screens" aria-labelledby="pr-screens-title">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Product</p>
+          <h2 class="title-2" id="pr-screens-title" data-split>Three screens, drawn live.</h2>
+        </div>
+        <div class="section-head__aside">
+          <p class="lede">Built in HTML, so they’re sharp at any size. Need full-resolution captures for print? Ask, and they’ll be with you within a working day.</p>
+        </div>
+      </div>
+      <div class="pr-screens__grid">
+        <!-- 1: a lane -->
+        <figure class="pr-shot" data-reveal>
+          <div class="mock pr-mock" role="img" aria-label="The lane view of Night Bloom: six stages, the project now in Review with three notes on frame 118">
+            <div class="mock__bar"><span class="mark" aria-hidden="true"></span>Night Bloom<span class="pr-mock__bar-r">Lane</span></div>
+            <div class="pr-lanev">
+              <div class="pr-lanev__top">
+                <span class="pr-lanev__title">Night Bloom</span>
+                <span class="lane-chip" data-stage="review">Now in: Review</span>
+              </div>
+              <div class="stage-rail" data-n="4"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+              <ol class="pr-lanev__rows">
+                <li data-stage="spark"><span class="pr-lanev__dot"></span><span class="pr-lanev__st">Spark</span><span class="pr-lanev__item">24 sparks · moodboard</span><span class="pr-lanev__when">Oct 2</span></li>
+                <li data-stage="shape"><span class="pr-lanev__dot"></span><span class="pr-lanev__st">Shape</span><span class="pr-lanev__item mono">storyboard_v3.pdf</span><span class="pr-lanev__when">Oct 9</span></li>
+                <li data-stage="make"><span class="pr-lanev__dot"></span><span class="pr-lanev__st">Make</span><span class="pr-lanev__item mono">render_v7.mov</span><span class="pr-lanev__when">Nov 20</span></li>
+                <li data-stage="review" class="is-now"><span class="pr-lanev__dot"></span><span class="pr-lanev__st">Review</span><span class="pr-lanev__item">Frame 118 · 3 notes</span><span class="pr-lanev__when">Today</span></li>
+                <li data-stage="launch" class="is-next"><span class="pr-lanev__dot"></span><span class="pr-lanev__st">Launch</span><span class="pr-lanev__item">Festival upload</span><span class="pr-lanev__when">Dec 12</span></li>
+                <li data-stage="afterglow" class="is-next"><span class="pr-lanev__dot"></span><span class="pr-lanev__st">Afterglow</span><span class="pr-lanev__item">Day 1 recap</span><span class="pr-lanev__when">Dec 13</span></li>
+              </ol>
+            </div>
+          </div>
+          <figcaption><strong>The lane.</strong> A whole project on one road, every piece where it really is.</figcaption>
+        </figure>
+        <!-- 2: Review Room -->
+        <figure class="pr-shot" data-reveal data-delay="0.08">
+          <div class="mock pr-mock" role="img" aria-label="Review Room: frame 118 of Night Bloom with three numbered notes and an approval from Lena K.">
+            <div class="mock__bar"><span class="mark" aria-hidden="true"></span>Review Room<span class="pr-mock__bar-r mono">render_v7.mov</span></div>
+            <div class="pr-review">
+              <div class="pr-review__frame">
+                <span class="pr-review__bloom"></span>
+                <span class="pr-review__pin" style="left: 34%; top: 38%">1</span>
+                <span class="pr-review__pin" style="left: 62%; top: 30%">2</span>
+                <span class="pr-review__pin" style="left: 55%; top: 68%">3</span>
+                <span class="pr-review__tc mono">01:12:18 · frame 118</span>
+              </div>
+              <div class="pr-review__scrub"><i style="left: 22%"></i><i style="left: 41%"></i><i style="left: 63%"></i><b style="width: 41%"></b></div>
+              <div class="pr-review__note">
+                <span class="avatar" data-stage="review">LK</span>
+                <span><strong>Lena K.</strong> <span class="pr-review__t">01:12</span><br>Warmer on the petals here, then hold two frames longer.</span>
+              </div>
+              <span class="pr-review__ok"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Approved by Lena K.</span>
+            </div>
+          </div>
+          <figcaption><strong>Review Room.</strong> Notes pinned to the frame, approvals on the record.</figcaption>
+        </figure>
+        <!-- 3: Afterglow -->
+        <figure class="pr-shot" data-reveal data-delay="0.16">
+          <div class="mock pr-mock" role="img" aria-label="An Afterglow recap for Night Bloom on day 7: 12.4 thousand views, 318 comments, and views by channel">
+            <div class="mock__bar"><span class="mark" aria-hidden="true"></span>Afterglow<span class="pr-mock__bar-r">Day 7 recap</span></div>
+            <div class="pr-glow" data-stage="afterglow">
+              <div class="pr-glow__stats">
+                <span><b>12.4k</b>views</span>
+                <span><b>318</b>comments</span>
+                <span><b>41</b>festival saves</span>
+              </div>
+              <svg class="pr-glow__spark" viewBox="0 0 300 80" preserveAspectRatio="none" aria-hidden="true">
+                <defs><linearGradient id="pr-glow-fill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff7ad9" stop-opacity="0.22"/><stop offset="1" stop-color="#ff7ad9" stop-opacity="0"/></linearGradient></defs>
+                <path d="M0 70 L25 64 L50 40 L75 22 L100 30 L125 38 L150 34 L175 44 L200 41 L225 50 L250 47 L275 54 L300 52 L300 80 L0 80 Z" fill="url(#pr-glow-fill)"/>
+                <path d="M0 70 L25 64 L50 40 L75 22 L100 30 L125 38 L150 34 L175 44 L200 41 L225 50 L250 47 L275 54 L300 52" fill="none" stroke="#ff7ad9" stroke-width="1.6" vector-effect="non-scaling-stroke" stroke-linejoin="round"/>
+              </svg>
+              <ul class="pr-glow__ch">
+                <li><span>Share Page</span><i style="--w: 100%"></i><b>6.8k</b></li>
+                <li><span>Newsletter</span><i style="--w: 47%"></i><b>3.2k</b></li>
+                <li><span>Clipdeck</span><i style="--w: 35%"></i><b>2.4k</b></li>
+              </ul>
+            </div>
+          </div>
+          <figcaption><strong>Afterglow.</strong> How it landed, on day 1, 7 and 30, from every channel.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- founders -->
+  <section class="section pr-sec pr-founders" id="founders" aria-labelledby="pr-founders-title">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Founders</p>
+          <h2 class="title-2" id="pr-founders-title" data-split>The three of them.</h2>
+        </div>
+        <div class="section-head__aside">
+          <p class="lede">All three take interviews. Portraits are available on request, shot in the Lisbon studio where the first lane was drawn.</p>
+        </div>
+      </div>
+      <ul class="pr-founders__grid" data-reveal-stagger="0.1">
+        <li class="panel pr-founder" data-stage="review">
+          <div class="pr-founder__top">
+            <span class="avatar" aria-hidden="true">MC</span>
+            <div><h3 class="pr-founder__name">Mira Castell</h3><p class="pr-founder__role">CEO &amp; co-founder</p></div>
+          </div>
+          <p class="pr-founder__bio">A film editor for twelve years before Crestora, Mira cut two feature documentaries and more commercials than she’ll admit to. She runs the company the way she ran an edit: one timeline, clear notes, and ship on the day you said. She still edits one short film a year, in Crestora.</p>
+          <p class="pr-founder__talks"><span>Talks about</span>Creative tools · Running a remote company · Documentary</p>
+        </li>
+        <li class="panel pr-founder" data-stage="make">
+          <div class="pr-founder__top">
+            <span class="avatar" aria-hidden="true">JF</span>
+            <div><h3 class="pr-founder__name">Jonah Feld</h3><p class="pr-founder__role">CTO &amp; co-founder</p></div>
+          </div>
+          <p class="pr-founder__bio">Jonah spent a decade freelancing as an engineer for studios, labels and one very demanding bakery. He leads engineering across the four hubs and still reviews changes to the sync engine himself. On weekends he builds a modular synthesizer, one module a month, and he says none of them are finished.</p>
+          <p class="pr-founder__talks"><span>Talks about</span>Offline sync · Large creative files · Small engineering teams</p>
+        </li>
+        <li class="panel pr-founder" data-stage="launch">
+          <div class="pr-founder__top">
+            <span class="avatar" aria-hidden="true">AB</span>
+            <div><h3 class="pr-founder__name">Ama Boateng</h3><p class="pr-founder__role">Product &amp; co-founder</p></div>
+          </div>
+          <p class="pr-founder__bio">Ama is a ceramicist who sold her work online long before she designed software. She leads product and design, and tests every feature on her own spring drop before it ships to anyone else. Her studio is two streets from the Lisbon hub, and her kiln is booked for March.</p>
+          <p class="pr-founder__talks"><span>Talks about</span>Designing for non-managers · Craft businesses · Launching small</p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- coverage -->
+  <section class="section pr-sec pr-coverage" id="coverage" aria-labelledby="pr-coverage-title">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Coverage</p>
+          <h2 class="title-2" id="pr-coverage-title" data-split>What they wrote.</h2>
+        </div>
+        <div class="section-head__aside">
+          <p class="lede">Recent pieces about Crestora and the people who ride with it.</p>
+        </div>
+      </div>
+      <ol class="pr-press">
+        <li class="pr-press__item" data-reveal>
+          <span class="icon-box pr-press__mono" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="4.5" y="4.5" width="15" height="15" rx="1.5"/><path d="M4.5 9.5h15M9.5 4.5v15"/><rect x="13" y="13" width="3" height="3" rx=".5"/></svg></span>
+          <div class="pr-press__src"><strong>Frame &amp; Pixel</strong><time datetime="2026-11-24">24 Nov 2026</time></div>
+          <div class="pr-press__body">
+            <h3 class="pr-press__title">Review Room learns to listen</h3>
+            <p>“Waveform comments put audio notes where they belong: on the sound itself, not in a thread three screens away.”</p>
+          </div>
+        </li>
+        <li class="pr-press__item" data-reveal>
+          <span class="icon-box pr-press__mono" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4.5 17.5 8 6.5l4 8 4-8 3.5 11"/></svg></span>
+          <div class="pr-press__src"><strong>The Maker Weekly</strong><time datetime="2026-11-12">12 Nov 2026</time></div>
+          <div class="pr-press__body">
+            <h3 class="pr-press__title">The workspace that thinks like a film edit</h3>
+            <p>“Crestora’s lanes read like a timeline, and that’s the point: you always know what comes next and who has it.”</p>
+          </div>
+        </li>
+        <li class="pr-press__item" data-reveal>
+          <span class="icon-box pr-press__mono" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 5v14"/><path d="M11.5 15.5a5 5 0 0 0 0-7M14.5 18.5a9 9 0 0 0 0-13"/></svg></span>
+          <div class="pr-press__src"><strong>Indie Signal</strong><time datetime="2026-10-02">2 Oct 2026</time></div>
+          <div class="pr-press__body">
+            <h3 class="pr-press__title">An editor, an engineer and a potter walk into a studio</h3>
+            <p>“The founding story is charming. The real story is how many small creators now finish what they start.”</p>
+          </div>
+        </li>
+        <li class="pr-press__item" data-reveal>
+          <span class="icon-box pr-press__mono" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4.5 17.5 8 6.5l4 8 4-8 3.5 11"/></svg></span>
+          <div class="pr-press__src"><strong>The Maker Weekly</strong><time datetime="2026-03-19">19 Mar 2026</time></div>
+          <div class="pr-press__body">
+            <h3 class="pr-press__title">Five tools that made small launches feel big</h3>
+            <p>“Countdown turned launch day into a party you can actually run, with a checklist that fills itself.”</p>
+          </div>
+        </li>
+      </ol>
+      <p class="fiction pr-fiction">Outlets, articles and quotes are fictional.</p>
+    </div>
+  </section>
+
+  <!-- press contact -->
+  <section class="section pr-sec pr-contact" id="contact" aria-labelledby="pr-contact-title">
+    <div class="container">
+      <div class="panel panel--raised pr-contact__card" data-reveal>
+        <div class="pr-contact__main">
+          <p class="eyebrow">Press contact</p>
+          <h2 class="title-2" id="pr-contact-title">Talk to the press team.</h2>
+          <div class="pr-contact__person">
+            <span class="avatar" aria-hidden="true">TL</span>
+            <span><strong>Teodora Lima</strong> Communications lead · Lisbon</span>
+          </div>
+          <div class="pr-contact__mail">
+            <a class="pr-contact__email" href="mailto:press@crestora.example">press@crestora.example</a>
+            <button class="btn btn--sm pr-js" type="button" data-copy="press@crestora.example" data-copy-toast="press@crestora.example copied" aria-label="Copy the press email address"><svg aria-hidden="true"><use href="#i-copy"/></svg>Copy</button>
+          </div>
+          <a class="link-arrow" href="contact.html?topic=press" data-roll>Or use the contact form <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+        </div>
+        <ul class="pr-contact__offer">
+          <li><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-clock"/></svg></span><span><strong>A reply within a working day</strong> From Lisbon, Toronto or Seoul, whichever is awake.</span></li>
+          <li><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-users"/></svg></span><span><strong>Interviews with the founders</strong> In English, Portuguese or, with Hye-jin’s help, Korean.</span></li>
+          <li><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-lock"/></svg></span><span><strong>Early access under embargo</strong> Releases ship every two weeks; we brief a few days ahead.</span></li>
+          <li><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-download"/></svg></span><span><strong>Captures and portraits</strong> Full-resolution product screens and founder photos, on request.</span></li>
+        </ul>
+      </div>
+      <p class="fiction pr-fiction">Crestora is a fictional company; figures are illustrative. The marks on this page may be used freely to write about it.</p>
+    </div>
+  </section>
+
   <!-- The compact call to action that hands every page over to the footer. -->
 <section class="cta" aria-labelledby="cta-title">
   <div class="cta__glow" aria-hidden="true"></div>

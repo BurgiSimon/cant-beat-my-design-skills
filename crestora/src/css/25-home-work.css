@@ -1,0 +1,173 @@
+/* Home #work: the mileage in Michroma odometers, then a wall of twelve launches. Every tile is a night poster drawn
+   from lane lines in the project's colours, with its maker, a mini six-lane bar (the time it spent in each stage) and
+   "Spark → launch in N days". Chips filter the wall (the generic filter module); the tiles that stay glide to their new
+   places and the ones that leave fade out. Under 600 px the wall becomes a strip you swipe. */
+
+.work .work-live { margin-top: 2px; }
+.work .work-live b { font: 400 11.5px/1 var(--font-brand); letter-spacing: 0.02em; color: #fff; margin-right: 2px; }
+.work .work-live:not(.is-on)::before, .is-calm .work .work-live::before { animation-play-state: paused; }
+
+/* ---- the mileage ---- */
+.work .work-mileage { margin-bottom: clamp(64px, 7vw, 108px); }
+.work .work-stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-block: 1px solid var(--line-soft); }
+.work .work-stat { position: relative; display: grid; gap: 14px; align-content: start; padding: clamp(28px, 3vw, 44px) clamp(18px, 2.2vw, 32px) clamp(26px, 2.8vw, 40px); }
+.work .work-stat + .work-stat { box-shadow: inset 1px 0 0 var(--line-faint); }
+.work .work-stat:first-child { padding-left: 0; }
+.work .work-stat__v { display: flex; align-items: baseline; gap: 0.22em; font: 400 clamp(32px, 3.7vw, 58px)/1.15 var(--font-brand); letter-spacing: -0.02em; color: #fff; white-space: nowrap; }
+.work .work-stat__u { font-size: 0.4em; letter-spacing: 0.02em; color: var(--ink-soft); }
+/* Michroma draws its per cent as o/o: the sign is set in Inter, light, beside the digits */
+.work .work-stat__u--sym { margin-left: -0.3em; font: 400 0.5em/1 var(--font); letter-spacing: 0; }
+.work .work-stat__l { font-size: 15px; line-height: 1.45; color: var(--ink-soft); max-width: 15em; }
+.work .work-fiction { margin-top: 16px; }
+
+/* ---- the filters ---- */
+.work .work-tools { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 18px 32px; margin-bottom: 28px; }
+.work .work-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.work .work-chip {
+  display: inline-flex; align-items: center; gap: 9px; height: 40px; padding: 0 14px 0 16px; border-radius: 999px;
+  font: 500 14px/1 var(--font); color: var(--ink-soft); background: rgb(255 255 255 / 0.03); box-shadow: inset 0 0 0 1px var(--line-soft);
+  transition: color var(--dur) var(--ease-out), background-color var(--dur) var(--ease-out), box-shadow var(--dur) var(--ease-out);
+}
+.work .work-chip__n { font: 400 9.5px/1 var(--font-brand); color: var(--ink-faint); transition: color var(--dur) var(--ease-out); }
+@media (hover: hover) { .work .work-chip:hover { color: #fff; box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.34); } }
+.work .work-chip[aria-pressed="true"] { color: #000; background: #fff; box-shadow: none; }
+.work .work-chip[aria-pressed="true"] .work-chip__n { color: rgb(0 0 0 / 0.5); }
+.work .work-chip:focus-visible { outline-offset: 3px; border-radius: 999px; }
+.work .work-count { font-size: 14px; color: var(--ink-muted); font-variant-numeric: tabular-nums; }
+/* without scripts the chips could not filter: the whole wall shows, and so does the line that says so */
+.no-js .work .work-chips { display: none; }
+
+/* ---- the wall ---- */
+.work .work-grid { position: relative; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); grid-auto-rows: clamp(250px, 20vw, 310px); gap: 16px; }
+.work .work-tile { position: relative; min-width: 0; }
+.work .work-tile[hidden] { display: none; }
+.work .work-tile--big { grid-column: span 2; grid-row: span 2; }
+.work .work-tile--wide { grid-column: span 2; }
+
+.work .work-card {
+  position: relative; z-index: 0; display: flex; flex-direction: column; justify-content: flex-end; height: 100%;
+  overflow: hidden; isolation: isolate; border-radius: var(--radius-lg); background: #000;
+}
+.work .work-card:focus-visible { outline-offset: 4px; border-radius: var(--radius-lg); }
+/* its hairline, and the spectrum ring that lights on hover or focus (the footer's social boxes) */
+.work .work-card::after { content: ""; position: absolute; z-index: 3; inset: 0; border-radius: inherit; pointer-events: none; box-shadow: inset 0 0 0 1px var(--line-soft); }
+.work .work-card::before {
+  content: ""; position: absolute; z-index: 4; inset: 0; border-radius: inherit; padding: 1px; pointer-events: none; opacity: 0;
+  background: conic-gradient(from var(--spin), var(--spectrum), #3a6dff);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  transition: opacity 0.4s var(--ease-out); animation: sheen 3.2s linear infinite paused;
+}
+.work .work-card:is(:hover, :focus-visible, :focus-within)::before { opacity: 1; animation-play-state: running; }
+.is-calm .work .work-card::before { animation: none; }
+
+/* the poster */
+.work .work-art {
+  position: absolute; z-index: -1; inset: 0; overflow: hidden;
+  background: radial-gradient(72% 62% at 54% 38%, color-mix(in srgb, var(--stage) 17%, transparent), transparent 72%), #000;
+}
+.work .work-art::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(180deg, rgb(0 0 0 / 0.5), transparent 20%, transparent 46%, rgb(0 0 0 / 0.8) 76%, #000);
+  transition: opacity 0.5s var(--ease-out);
+}
+.work .work-art::before {
+  content: ""; position: absolute; z-index: 1; inset: 0; pointer-events: none; opacity: 0;
+  background: linear-gradient(180deg, transparent 20%, rgb(0 0 0 / 0.78) 62%);
+  transition: opacity 0.5s var(--ease-out);
+}
+.work .work-poster {
+  position: absolute; left: -8px; top: -8px; width: calc(100% + 16px); height: calc(100% + 16px);
+  fill: none; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round;
+  transform: translate3d(calc(var(--px, 0) * 6px), calc(var(--py, 0) * 6px), 0); transition: transform 0.7s var(--ease-out);
+}
+.work .work-poster * { vector-effect: non-scaling-stroke; }
+.work .work-poster .s1 { stroke: var(--spark); } .work .work-poster .s2 { stroke: var(--shape); } .work .work-poster .s3 { stroke: var(--make); }
+.work .work-poster .s4 { stroke: var(--review); } .work .work-poster .s5 { stroke: var(--launch); } .work .work-poster .s6 { stroke: var(--afterglow); }
+.work .work-poster .w { stroke: #fff; }
+.work .work-poster .fw { fill: #fff; stroke: none; }
+.work .work-poster .f1 { fill: var(--spark); stroke: none; } .work .work-poster .f2 { fill: var(--shape); stroke: none; } .work .work-poster .f3 { fill: var(--make); stroke: none; }
+.work .work-poster .f4 { fill: var(--review); stroke: none; } .work .work-poster .f5 { fill: var(--launch); stroke: none; } .work .work-poster .f6 { fill: var(--afterglow); stroke: none; }
+.work .work-poster .st { stroke: #fff; stroke-width: 1.1; opacity: 0.38; }
+.work .work-poster .st--b { stroke-width: 1.8; opacity: 0.7; }
+
+/* what it is, on the poster */
+.work .work-kind {
+  position: absolute; z-index: 1; top: 18px; left: 20px; right: 20px; display: flex; align-items: center; gap: 10px;
+  font: 400 9.5px/1.2 var(--font-brand); letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-soft);
+}
+.work .work-kind::before { content: ""; flex: none; width: 6px; height: 6px; border-radius: 50%; background: var(--stage); box-shadow: 0 0 8px var(--stage); }
+
+/* who made it, and how long the road was */
+.work .work-info { display: grid; padding: 18px 20px 18px; }
+.work .work-title { font: 600 18px/1.25 var(--font); letter-spacing: -0.012em; color: #fff; text-wrap: balance; }
+.work .work-tile--big .work-title { font-size: clamp(20px, 1.7vw, 26px); letter-spacing: -0.018em; }
+.work .work-link::after { content: ""; position: absolute; z-index: 2; inset: 0; border-radius: var(--radius-lg); }
+.work .work-link:focus-visible { outline: none; }
+.work .work-link:focus-visible::after { outline: 1px solid rgb(255 255 255 / 0.9); outline-offset: 4px; }
+.work .work-maker { margin-top: 3px; font-size: 14px; line-height: 1.4; color: var(--ink-soft); }
+.work .work-more { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.5s var(--ease-out); }
+.work .work-more__in { min-height: 0; overflow: hidden; opacity: 0; transition: opacity 0.25s var(--ease-out); }
+.work .work-desc { padding-top: 10px; font-size: 14px; line-height: 1.5; color: var(--ink-soft); max-width: 32em; text-wrap: pretty; }
+.work .work-story { display: inline-flex; align-items: center; gap: 8px; margin-top: 10px; font: 500 14px/1.2 var(--font); color: #fff; }
+.work .work-story svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.work .work-card:is(:hover, :focus-visible, :focus-within) .work-more { grid-template-rows: 1fr; }
+.work .work-card:is(:hover, :focus-visible, :focus-within) .work-more__in { opacity: 1; transition: opacity 0.45s var(--ease-out) 0.12s; }
+.work .work-card:is(:hover, :focus-visible, :focus-within) .work-art::before { opacity: 1; }
+
+.work .work-run { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; margin-top: 12px; font-size: 12.5px; line-height: 1.3; color: var(--ink-muted); font-variant-numeric: tabular-nums; }
+/* the mini six-lane bar: one hairline per stage, lit for the days the project spent there (the last, Afterglow, runs on) */
+.work .work-bar { flex: none; display: grid; grid-template-rows: repeat(6, 1fr); width: 76px; height: 17px; }
+.work .work-bar i { position: relative; }
+.work .work-bar i::before { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 1px; background: rgb(255 255 255 / 0.1); }
+.work .work-bar i::after {
+  content: ""; position: absolute; top: calc(50% - 0.75px); left: var(--a); width: var(--w); height: 1.5px; border-radius: 1px;
+  background: var(--lc); box-shadow: 0 0 6px color-mix(in srgb, var(--lc) 70%, transparent);
+}
+.work .work-bar i:nth-child(1) { --lc: var(--spark); } .work .work-bar i:nth-child(2) { --lc: var(--shape); } .work .work-bar i:nth-child(3) { --lc: var(--make); }
+.work .work-bar i:nth-child(4) { --lc: var(--review); } .work .work-bar i:nth-child(5) { --lc: var(--launch); }
+.work .work-bar i:nth-child(6)::after { --lc: var(--afterglow); background: linear-gradient(90deg, var(--afterglow), transparent); box-shadow: none; }
+.work .work-tile--big .work-bar { width: 110px; height: 20px; }
+
+/* a tile that leaves fades where it stood (home-work.js) */
+.work .work-ghost { position: absolute; z-index: 1; pointer-events: none; margin: 0; }
+
+/* ---- smaller screens ---- */
+@media (max-width: 1179.98px) {
+  .work .work-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); grid-auto-rows: clamp(240px, 26vw, 290px); }
+  .work .work-tile--end { grid-column: span 3; }
+}
+@media (max-width: 899.98px) {
+  .work .work-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .work .work-stat:nth-child(3) { padding-left: 0; box-shadow: inset 0 1px 0 var(--line-faint); }
+  .work .work-stat:nth-child(4) { box-shadow: inset 1px 0 0 var(--line-faint), inset 0 1px 0 var(--line-faint); }
+  .work .work-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: 236px; gap: 14px; }
+  .work .work-tile--end { grid-column: span 2; }
+  .work .work-tools { align-items: flex-start; flex-direction: column; }
+}
+/* phones: the wall becomes a strip you swipe, edge to edge, with each tile's line always shown */
+@media (max-width: 599.98px) {
+  .work .work-stat { padding: 24px 14px 22px; gap: 10px; }
+  .work .work-stat:nth-child(odd) { padding-left: 0; }
+  .work .work-stat__v { font-size: clamp(26px, 8vw, 34px); }
+  .work .work-stat__l { font-size: 14px; }
+  .work .work-chips {
+    flex-wrap: nowrap; max-width: calc(100% + 2 * var(--gutter)); margin-inline: calc(-1 * var(--gutter)); padding: 2px var(--gutter) 4px;
+    overflow-x: auto; scrollbar-width: none; -webkit-mask: linear-gradient(90deg, transparent, #000 var(--gutter), #000 calc(100% - var(--gutter)), transparent); mask: linear-gradient(90deg, transparent, #000 var(--gutter), #000 calc(100% - var(--gutter)), transparent);
+  }
+  .work .work-chips::-webkit-scrollbar { display: none; }
+  .work .work-chip { flex: none; }
+  .work .work-tools { gap: 14px; margin-bottom: 20px; }
+  .work .work-grid {
+    grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: min(82%, 340px); grid-auto-rows: auto; grid-template-rows: 380px; gap: 12px;
+    margin-inline: calc(-1 * var(--gutter)); padding: 0 var(--gutter) 8px; overflow-x: auto; overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory; scroll-padding-inline: var(--gutter); scrollbar-width: none;
+  }
+  .work .work-grid::-webkit-scrollbar { display: none; }
+  .work .work-tile, .work .work-tile--big, .work .work-tile--wide, .work .work-tile--end { grid-column: auto; grid-row: auto; scroll-snap-align: start; }
+  .work .work-more { grid-template-rows: 1fr; }
+  .work .work-more__in { opacity: 1; }
+  .work .work-art::before { opacity: 1; }
+  .work .work-tile--big .work-title { font-size: 20px; }
+  .work .work-tile--big .work-bar { width: 76px; height: 17px; }
+}

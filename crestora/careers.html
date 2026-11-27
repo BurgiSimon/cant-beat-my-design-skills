@@ -5,7 +5,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <title>Careers — Crestora</title>
-<meta name="description" content="Come build the road." />
+<meta name="description" content="Come build the road. Eight open roles across Lisbon, Toronto, Seoul, Nairobi and remote, with published pay bands and a hiring process in four honest steps." />
 <meta name="theme-color" content="#000000" />
 <meta name="color-scheme" content="dark" />
 <link rel="canonical" href="{{SITE_URL}}/careers.html" />
@@ -13,7 +13,7 @@
 <meta property="og:site_name" content="Crestora" />
 <meta property="og:url" content="{{SITE_URL}}/careers.html" />
 <meta property="og:title" content="Careers — Crestora" />
-<meta property="og:description" content="Come build the road." />
+<meta property="og:description" content="Come build the road. Eight open roles across Lisbon, Toronto, Seoul, Nairobi and remote, with published pay bands and a hiring process in four honest steps." />
 <meta property="og:image" content="{{SITE_URL}}/assets/img/og.jpg" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
@@ -39,7 +39,7 @@
 <script defer src="vendor/lenis.min.js"></script>
 <script type="module" src="js/main.js?v={{VERSION}}"></script>
 </head>
-<body data-page="careers" data-modules="">
+<body data-page="careers" data-modules="filter page-careers">
 <!-- The icon sprite: drawn on a 24 px grid in the footer's hand (round caps and joins; stroke set by .icon). Use as
      <svg class="icon" aria-hidden="true"><use href="#i-spark"/></svg>. -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
@@ -203,14 +203,495 @@
 </div>
 
 <main id="main">
-  <section class="page-hero">
+  <!-- Careers: how we work (four numbers), perks with their figures, eight roles as <details> rows filtered by team
+       (chips, the generic filter) and location (a select that drives a hidden filter group), and the hiring process
+       drawn as four lanes on a four-week road that light as they come into view. -->
+  <section class="page-hero cr-hero" aria-labelledby="cr-title">
     <div class="page-hero__lanes" aria-hidden="true"></div>
     <div class="container page-hero__inner">
-      <p class="eyebrow">Company</p>
-      <h1 class="title-1">Come build the road.</h1>
-      <p class="lede">This page is being built.</p>
+      <p class="eyebrow" data-reveal="fade">Careers</p>
+      <h1 class="title-1" id="cr-title" data-split>Come build the road.</h1>
+      <p class="lede" data-reveal data-delay="0.15">We’re 64 people across four hubs, making tools for people who make things. Most of us make things too.</p>
+      <div class="btn-row" data-reveal data-delay="0.25">
+        <a class="btn btn--primary btn--lg" href="#roles" data-roll>See 8 open roles <svg aria-hidden="true"><use href="#i-arrow-down"/></svg></a>
+        <a class="btn btn--lg" href="#process" data-roll>How we hire</a>
+      </div>
+      <ul class="cr-hero__facts" data-reveal data-delay="0.35" aria-label="At a glance">
+        <li>Remote-first</li>
+        <li>Lisbon · Toronto · Seoul · Nairobi</li>
+        <li>Every pay band published</li>
+      </ul>
     </div>
   </section>
+
+  <!-- how we work -->
+  <section class="section cr-how" id="how" aria-labelledby="cr-how-title">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">How we work</p>
+          <h2 class="title-2" id="cr-how-title" data-split>Remote-first, never remote-only.</h2>
+        </div>
+        <div class="section-head__aside">
+          <p class="lede">We work from 19 countries and meet in four hubs. The rules are few, and they’re written down.</p>
+        </div>
+      </div>
+      <ul class="cr-how__grid" data-reveal-stagger>
+        <li class="cr-how__item">
+          <span class="cr-how__n"><span data-odometer="19">19</span></span>
+          <span class="cr-how__unit">countries</span>
+          <h3 class="title-4">Remote-first</h3>
+          <p>Every decision lives in writing, in a lane anyone can find. Nobody has to be in the room for it to count.</p>
+        </li>
+        <li class="cr-how__item">
+          <span class="cr-how__n"><span data-odometer="4">4</span></span>
+          <span class="cr-how__unit">hubs</span>
+          <h3 class="title-4">Four hubs</h3>
+          <p>Lisbon, Toronto, Seoul and Nairobi: desks, good coffee and a crit wall whenever you want company. Getting to your nearest one is on us.</p>
+        </li>
+        <li class="cr-how__item">
+          <span class="cr-how__n"><span data-odometer="4">4</span></span>
+          <span class="cr-how__unit">core hours</span>
+          <h3 class="title-4">Overlap, not office hours</h3>
+          <p>Each team picks four shared hours a day, so nobody calls in at midnight. The rest of the day is yours to arrange.</p>
+        </li>
+        <li class="cr-how__item">
+          <span class="cr-how__n"><span data-odometer="12">12</span></span>
+          <span class="cr-how__unit">Fridays a year</span>
+          <h3 class="title-4">Maker Fridays</h3>
+          <p>One Friday a month is for your own project. Finish the song, fix the bike, print the zine. Show it at the crit if you like.</p>
+        </li>
+      </ul>
+      <figure class="cr-quote" data-reveal>
+        <span class="avatar" data-stage="review" aria-hidden="true">HP</span>
+        <blockquote>“On my first Maker Friday I finished a zine I’d been starting for three years. Issue three is with the proofreaders now.”</blockquote>
+        <figcaption><strong>Hye-jin Park</strong> Design lead, Review Room · Seoul</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- perks -->
+  <section class="section cr-perks" id="perks" aria-labelledby="cr-perks-title">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Perks</p>
+          <h2 class="title-2" id="cr-perks-title" data-split>What comes with the seat.</h2>
+        </div>
+        <div class="section-head__aside">
+          <p class="lede">Published, not negotiated in the dark. The same for everyone at the same level, wherever they live.</p>
+        </div>
+      </div>
+      <ul class="cr-perks__grid" data-reveal-stagger>
+        <li class="cr-perk">
+          <span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-scale"/></svg></span>
+          <span class="cr-perk__fig">8/8</span>
+          <h3 class="title-4">Published pay bands</h3>
+          <p>Every role below shows its band before you apply. No haggling, no secret ladders.</p>
+        </li>
+        <li class="cr-perk">
+          <span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-pen"/></svg></span>
+          <span class="cr-perk__fig">$1,500</span>
+          <h3 class="title-4">Yearly creative budget</h3>
+          <p>Courses, tools, clay, a festival pass, studio time. You decide what counts as creative.</p>
+        </li>
+        <li class="cr-perk">
+          <span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-calendar"/></svg></span>
+          <span class="cr-perk__fig">30 days</span>
+          <h3 class="title-4">Off, plus local holidays</h3>
+          <p>Thirty days a year on top of your public holidays, and your lead checks that you take them.</p>
+        </li>
+        <li class="cr-perk">
+          <span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-layers"/></svg></span>
+          <span class="cr-perk__fig">$1,200</span>
+          <h3 class="title-4">Home studio stipend</h3>
+          <p>To set up a desk, a chair and decent light when you join, then $400 a year to keep it good.</p>
+        </li>
+        <li class="cr-perk">
+          <span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-users"/></svg></span>
+          <span class="cr-perk__fig">20 weeks</span>
+          <h3 class="title-4">Parental leave</h3>
+          <p>Fully paid, for every parent, however your family arrives. Come back part-time for a month if you like.</p>
+        </li>
+        <li class="cr-perk">
+          <span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-globe"/></svg></span>
+          <span class="cr-perk__fig">2 trips</span>
+          <h3 class="title-4">Hub time, together</h3>
+          <p>A week at your nearest hub each year, and the all-crew week in Lisbon every May.</p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- open roles -->
+  <section class="section cr-open" id="roles" aria-labelledby="cr-roles-title">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Open roles</p>
+          <h2 class="title-2" id="cr-roles-title" data-split>Eight seats on the crew.</h2>
+        </div>
+        <div class="section-head__aside">
+          <p class="lede">Every band is published, and every application gets a reply from a human within 10 days.</p>
+        </div>
+      </div>
+
+      <div class="cr-board" data-filter-scope>
+        <div class="cr-tools">
+          <div class="cr-chips" data-filter-group role="group" aria-label="Filter roles by team">
+            <button class="cr-chip" type="button" data-filter="all" aria-pressed="true">All teams <span class="cr-chip__n">8</span></button>
+            <button class="cr-chip" type="button" data-filter="engineering" aria-pressed="false">Engineering <span class="cr-chip__n">4</span></button>
+            <button class="cr-chip" type="button" data-filter="design" aria-pressed="false">Design <span class="cr-chip__n">1</span></button>
+            <button class="cr-chip" type="button" data-filter="community" aria-pressed="false">Community <span class="cr-chip__n">1</span></button>
+            <button class="cr-chip" type="button" data-filter="support" aria-pressed="false">Support <span class="cr-chip__n">1</span></button>
+            <button class="cr-chip" type="button" data-filter="content" aria-pressed="false">Content <span class="cr-chip__n">1</span></button>
+          </div>
+          <div class="cr-tools__end">
+            <div class="cr-loc">
+              <label class="cr-loc__label" for="cr-loc">Location</label>
+              <select class="input cr-loc__select" id="cr-loc" name="location">
+                <option value="all">Anywhere</option>
+                <option value="remote">Remote</option>
+                <option value="lisbon">Lisbon</option>
+                <option value="toronto">Toronto</option>
+                <option value="seoul">Seoul</option>
+                <option value="nairobi">Nairobi</option>
+              </select>
+            </div>
+            <p class="cr-count" data-filter-count data-filter-noun="open role" aria-live="polite">8 open roles</p>
+          </div>
+          <!-- the location select drives this group, so the generic filter combines it with the team chips -->
+          <div class="cr-locgroup" data-filter-group hidden>
+            <button type="button" data-filter="all" aria-pressed="true" tabindex="-1">Anywhere</button>
+            <button type="button" data-filter="remote" aria-pressed="false" tabindex="-1">Remote</button>
+            <button type="button" data-filter="lisbon" aria-pressed="false" tabindex="-1">Lisbon</button>
+            <button type="button" data-filter="toronto" aria-pressed="false" tabindex="-1">Toronto</button>
+            <button type="button" data-filter="seoul" aria-pressed="false" tabindex="-1">Seoul</button>
+            <button type="button" data-filter="nairobi" aria-pressed="false" tabindex="-1">Nairobi</button>
+          </div>
+        </div>
+
+        <ul class="cr-roles" data-filter-list>
+          <li id="senior-graphics-engineer-webgl" data-tags="engineering remote">
+            <details class="cr-role">
+              <summary class="cr-role__sum">
+                <span class="cr-role__title">Senior Graphics Engineer, WebGL</span>
+                <span class="cr-role__meta"><span class="cr-role__team">Engineering</span><span class="cr-role__loc"><svg class="icon" aria-hidden="true"><use href="#i-map"/></svg>Remote (EU)</span></span>
+                <span class="cr-role__band"><span class="cr-cur">€</span>84–104k</span>
+                <span class="cr-role__toggle" aria-hidden="true"></span>
+              </summary>
+              <div class="cr-role__body">
+                <div class="cr-role__col">
+                  <h3 class="cr-role__h">What you’ll do</h3>
+                  <ul>
+                    <li>Own the WebGL that draws lanes, ribbons and launch rooms across the product and on Share Pages.</li>
+                    <li>Keep every scene smooth on a five-year-old laptop, and asleep when it’s off screen.</li>
+                    <li>Build the tools our designers use to tune light, motion and colour without waiting for a deploy.</li>
+                  </ul>
+                </div>
+                <div class="cr-role__col">
+                  <h3 class="cr-role__h">What you bring</h3>
+                  <ul>
+                    <li>Shipped WebGL or WebGPU work that people use every day.</li>
+                    <li>Shaders you can explain to a designer, and the patience to do it.</li>
+                    <li>Care for the quiet parts: reduced motion and fallbacks are the job, not an afterthought.</li>
+                  </ul>
+                </div>
+                <div class="cr-role__apply">
+                  <span class="cr-role__h">The band</span>
+                  <span class="cr-role__big"><span class="cr-cur">€</span>84–104k</span>
+                  <p>Senior level, paid in your local currency, with equity on top.</p>
+                  <a class="btn btn--primary" href="contact.html?topic=careers&amp;role=senior-graphics-engineer-webgl" data-roll>Apply <svg class="arrow" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+                </div>
+              </div>
+            </details>
+          </li>
+          <li id="product-designer-review" data-tags="design lisbon remote">
+            <details class="cr-role">
+              <summary class="cr-role__sum">
+                <span class="cr-role__title">Product Designer, Review</span>
+                <span class="cr-role__meta"><span class="cr-role__team">Design</span><span class="cr-role__loc"><svg class="icon" aria-hidden="true"><use href="#i-map"/></svg>Lisbon or remote (EU)</span></span>
+                <span class="cr-role__band"><span class="cr-cur">€</span>62–78k</span>
+                <span class="cr-role__toggle" aria-hidden="true"></span>
+              </summary>
+              <div class="cr-role__body">
+                <div class="cr-role__col">
+                  <h3 class="cr-role__h">What you’ll do</h3>
+                  <ul>
+                    <li>Design Review Room’s next year: 3D files, audio notes and approvals that clients trust.</li>
+                    <li>Sit in on real reviews with studios, and turn what you see into prototypes within the week.</li>
+                    <li>Work in the open with two engineers and Hye-jin, who leads design for Review.</li>
+                  </ul>
+                </div>
+                <div class="cr-role__col">
+                  <h3 class="cr-role__h">What you bring</h3>
+                  <ul>
+                    <li>A portfolio of shipped product work, with the messy middle left in.</li>
+                    <li>Comfort prototyping in code, or close to it.</li>
+                    <li>A feel for how creative feedback goes wrong, ideally from giving and getting it.</li>
+                  </ul>
+                </div>
+                <div class="cr-role__apply">
+                  <span class="cr-role__h">The band</span>
+                  <span class="cr-role__big"><span class="cr-cur">€</span>62–78k</span>
+                  <p>Mid to senior level, paid in your local currency, with equity on top.</p>
+                  <a class="btn btn--primary" href="contact.html?topic=careers&amp;role=product-designer-review" data-roll>Apply <svg class="arrow" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+                </div>
+              </div>
+            </details>
+          </li>
+          <li id="ios-engineer" data-tags="engineering toronto remote">
+            <details class="cr-role">
+              <summary class="cr-role__sum">
+                <span class="cr-role__title">iOS Engineer</span>
+                <span class="cr-role__meta"><span class="cr-role__team">Engineering</span><span class="cr-role__loc"><svg class="icon" aria-hidden="true"><use href="#i-map"/></svg>Toronto or remote (Americas)</span></span>
+                <span class="cr-role__band"><span class="cr-cur">CA$</span>118–142k</span>
+                <span class="cr-role__toggle" aria-hidden="true"></span>
+              </summary>
+              <div class="cr-role__body">
+                <div class="cr-role__col">
+                  <h3 class="cr-role__h">What you’ll do</h3>
+                  <ul>
+                    <li>Build Sparkboard capture on iOS: voice memos, screenshots, the share sheet and the widget.</li>
+                    <li>Make offline the default. Capture on the train, sync when you surface.</li>
+                    <li>Ship every two weeks with the rest of the release train.</li>
+                  </ul>
+                </div>
+                <div class="cr-role__col">
+                  <h3 class="cr-role__h">What you bring</h3>
+                  <ul>
+                    <li>Several years of Swift and SwiftUI in apps people pay for.</li>
+                    <li>Experience with sync, background work or media capture.</li>
+                    <li>Taste: you notice when an animation runs 50 ms too long.</li>
+                  </ul>
+                </div>
+                <div class="cr-role__apply">
+                  <span class="cr-role__h">The band</span>
+                  <span class="cr-role__big"><span class="cr-cur">CA$</span>118–142k</span>
+                  <p>Senior level, paid in your local currency, with equity on top.</p>
+                  <a class="btn btn--primary" href="contact.html?topic=careers&amp;role=ios-engineer" data-roll>Apply <svg class="arrow" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+                </div>
+              </div>
+            </details>
+          </li>
+          <li id="staff-backend-engineer-sync" data-tags="engineering remote">
+            <details class="cr-role">
+              <summary class="cr-role__sum">
+                <span class="cr-role__title">Staff Backend Engineer, Sync</span>
+                <span class="cr-role__meta"><span class="cr-role__team">Engineering</span><span class="cr-role__loc"><svg class="icon" aria-hidden="true"><use href="#i-map"/></svg>Remote</span></span>
+                <span class="cr-role__band"><span class="cr-cur">€</span>104–126k</span>
+                <span class="cr-role__toggle" aria-hidden="true"></span>
+              </summary>
+              <div class="cr-role__body">
+                <div class="cr-role__col">
+                  <h3 class="cr-role__h">What you’ll do</h3>
+                  <ul>
+                    <li>Lead the sync engine that moves versions, notes and lanes between devices and regions.</li>
+                    <li>Make merging lanes and multi-gigabyte renders boringly reliable.</li>
+                    <li>Mentor four engineers across Nairobi and Lisbon, with Daniel.</li>
+                  </ul>
+                </div>
+                <div class="cr-role__col">
+                  <h3 class="cr-role__h">What you bring</h3>
+                  <ul>
+                    <li>Deep experience with distributed systems, replication or CRDTs.</li>
+                    <li>A record of making systems simpler, not only bigger.</li>
+                    <li>Clear writing: most of our design reviews happen in documents.</li>
+                  </ul>
+                </div>
+                <div class="cr-role__apply">
+                  <span class="cr-role__h">The band</span>
+                  <span class="cr-role__big"><span class="cr-cur">€</span>104–126k</span>
+                  <p>Staff level, paid in your local currency, with equity on top.</p>
+                  <a class="btn btn--primary" href="contact.html?topic=careers&amp;role=staff-backend-engineer-sync" data-roll>Apply <svg class="arrow" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+                </div>
+              </div>
+            </details>
+          </li>
+          <li id="community-lead-latam" data-tags="community remote">
+            <details class="cr-role">
+              <summary class="cr-role__sum">
+                <span class="cr-role__title">Community Lead, LATAM</span>
+                <span class="cr-role__meta"><span class="cr-role__team">Community</span><span class="cr-role__loc"><svg class="icon" aria-hidden="true"><use href="#i-map"/></svg>Remote (Americas)</span></span>
+                <span class="cr-role__band"><span class="cr-cur">US$</span>58–72k</span>
+                <span class="cr-role__toggle" aria-hidden="true"></span>
+              </summary>
+              <div class="cr-role__body">
+                <div class="cr-role__col">
+                  <h3 class="cr-role__h">What you’ll do</h3>
+                  <ul>
+                    <li>Grow Creator Circles across Latin America, starting with Mexico City, Bogotá and São Paulo.</li>
+                    <li>Host Launch Night in Spanish and Portuguese once a quarter.</li>
+                    <li>Bring what creators tell you back to the product team, every week.</li>
+                  </ul>
+                </div>
+                <div class="cr-role__col">
+                  <h3 class="cr-role__h">What you bring</h3>
+                  <ul>
+                    <li>Spanish and Portuguese, plus English for the rest of us.</li>
+                    <li>Experience running a creative community, online or in a room.</li>
+                    <li>You make things yourself, and you know what launch night feels like.</li>
+                  </ul>
+                </div>
+                <div class="cr-role__apply">
+                  <span class="cr-role__h">The band</span>
+                  <span class="cr-role__big"><span class="cr-cur">US$</span>58–72k</span>
+                  <p>Lead level, paid in your local currency, with equity on top.</p>
+                  <a class="btn btn--primary" href="contact.html?topic=careers&amp;role=community-lead-latam" data-roll>Apply <svg class="arrow" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+                </div>
+              </div>
+            </details>
+          </li>
+          <li id="support-specialist-korean-english" data-tags="support seoul">
+            <details class="cr-role">
+              <summary class="cr-role__sum">
+                <span class="cr-role__title">Support Specialist, Korean &amp; English</span>
+                <span class="cr-role__meta"><span class="cr-role__team">Support</span><span class="cr-role__loc"><svg class="icon" aria-hidden="true"><use href="#i-map"/></svg>Seoul</span></span>
+                <span class="cr-role__band"><span class="cr-cur">KRW </span>52–64M</span>
+                <span class="cr-role__toggle" aria-hidden="true"></span>
+              </summary>
+              <div class="cr-role__body">
+                <div class="cr-role__col">
+                  <h3 class="cr-role__h">What you’ll do</h3>
+                  <ul>
+                    <li>Answer creators in Korean and English, by email and in the app, within a working day.</li>
+                    <li>Write and translate the answers in our Help Center.</li>
+                    <li>Spot patterns early and take them to the product team, with evidence.</li>
+                  </ul>
+                </div>
+                <div class="cr-role__col">
+                  <h3 class="cr-role__h">What you bring</h3>
+                  <ul>
+                    <li>Fluent Korean and English, written above all.</li>
+                    <li>Patience with people on a deadline, and good humour about it.</li>
+                    <li>Some experience with creative tools. Any discipline counts.</li>
+                  </ul>
+                </div>
+                <div class="cr-role__apply">
+                  <span class="cr-role__h">The band</span>
+                  <span class="cr-role__big"><span class="cr-cur">KRW </span>52–64M</span>
+                  <p>Specialist level, at our Seoul hub, with equity on top.</p>
+                  <a class="btn btn--primary" href="contact.html?topic=careers&amp;role=support-specialist-korean-english" data-roll>Apply <svg class="arrow" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+                </div>
+              </div>
+            </details>
+          </li>
+          <li id="tutorial-producer" data-tags="content nairobi remote">
+            <details class="cr-role">
+              <summary class="cr-role__sum">
+                <span class="cr-role__title">Tutorial Producer</span>
+                <span class="cr-role__meta"><span class="cr-role__team">Content</span><span class="cr-role__loc"><svg class="icon" aria-hidden="true"><use href="#i-map"/></svg>Nairobi or remote (Africa)</span></span>
+                <span class="cr-role__band"><span class="cr-cur">KES </span>4.6–5.8M</span>
+                <span class="cr-role__toggle" aria-hidden="true"></span>
+              </summary>
+              <div class="cr-role__body">
+                <div class="cr-role__col">
+                  <h3 class="cr-role__h">What you’ll do</h3>
+                  <ul>
+                    <li>Script, record and edit short lessons, from a first lane to a launch room.</li>
+                    <li>Work with creators to turn their launches into learning paths.</li>
+                    <li>Keep every lesson current while the product ships every two weeks.</li>
+                  </ul>
+                </div>
+                <div class="cr-role__col">
+                  <h3 class="cr-role__h">What you bring</h3>
+                  <ul>
+                    <li>A reel of teaching or explainer videos you made yourself.</li>
+                    <li>A clear voice, on camera or off.</li>
+                    <li>Comfort with screen recording, editing and captioning.</li>
+                  </ul>
+                </div>
+                <div class="cr-role__apply">
+                  <span class="cr-role__h">The band</span>
+                  <span class="cr-role__big"><span class="cr-cur">KES </span>4.6–5.8M</span>
+                  <p>Mid level, paid in your local currency, with equity on top.</p>
+                  <a class="btn btn--primary" href="contact.html?topic=careers&amp;role=tutorial-producer" data-roll>Apply <svg class="arrow" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+                </div>
+              </div>
+            </details>
+          </li>
+          <li id="security-engineer" data-tags="engineering remote">
+            <details class="cr-role">
+              <summary class="cr-role__sum">
+                <span class="cr-role__title">Security Engineer</span>
+                <span class="cr-role__meta"><span class="cr-role__team">Engineering</span><span class="cr-role__loc"><svg class="icon" aria-hidden="true"><use href="#i-map"/></svg>Remote</span></span>
+                <span class="cr-role__band"><span class="cr-cur">€</span>88–108k</span>
+                <span class="cr-role__toggle" aria-hidden="true"></span>
+              </summary>
+              <div class="cr-role__body">
+                <div class="cr-role__col">
+                  <h3 class="cr-role__h">What you’ll do</h3>
+                  <ul>
+                    <li>Run application security: reviews, dependency scanning and the yearly penetration test.</li>
+                    <li>Answer bug bounty reports, and thank the people who send them.</li>
+                    <li>Help design per-lane encryption keys for Label customers.</li>
+                  </ul>
+                </div>
+                <div class="cr-role__col">
+                  <h3 class="cr-role__h">What you bring</h3>
+                  <ul>
+                    <li>Hands-on application or cloud security experience.</li>
+                    <li>The habit of explaining risk to people who aren’t security engineers.</li>
+                    <li>Calm under pressure, and a sense of humour about it afterwards.</li>
+                  </ul>
+                </div>
+                <div class="cr-role__apply">
+                  <span class="cr-role__h">The band</span>
+                  <span class="cr-role__big"><span class="cr-cur">€</span>88–108k</span>
+                  <p>Senior level, paid in your local currency, with equity on top.</p>
+                  <a class="btn btn--primary" href="contact.html?topic=careers&amp;role=security-engineer" data-roll>Apply <svg class="arrow" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+                </div>
+              </div>
+            </details>
+          </li>
+        </ul>
+        <p class="cr-empty" data-filter-empty hidden>No roles match that pair right now. Try another team or hub, or <a href="contact.html?topic=careers">write to us anyway</a>.</p>
+      </div>
+      <p class="cr-open__more">Don’t see your role? We read open applications too. <a class="link-arrow" href="contact.html?topic=careers" data-roll>Write to the crew <svg aria-hidden="true"><use href="#i-arrow"/></svg></a></p>
+    </div>
+  </section>
+
+  <!-- the hiring process: four lanes on a four-week road -->
+  <section class="section cr-process" id="process" aria-labelledby="cr-process-title">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">How we hire</p>
+          <h2 class="title-2" id="cr-process-title" data-split>Four stops, no trick questions.</h2>
+        </div>
+        <div class="section-head__aside">
+          <p class="lede">The whole road usually takes three to four weeks. You’ll know where you are on it at every stop.</p>
+          <p class="cr-promise"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-clock"/></svg></span>We reply to every application within 10 days.</p>
+        </div>
+      </div>
+      <div class="cr-road">
+        <div class="cr-road__weeks" aria-hidden="true"><div><span>Week 1</span><span>Week 2</span><span>Week 3</span><span>Week 4</span></div></div>
+        <ol class="cr-lanes">
+          <li class="cr-lane" style="--from: 0.02; --to: 0.2">
+            <div class="cr-lane__label"><span class="cr-lane__n">01</span><h3 class="cr-lane__title">Chat</h3><span class="cr-lane__time">30 minutes · week 1</span></div>
+            <div class="cr-lane__track" aria-hidden="true"><i></i></div>
+            <p class="cr-lane__text">A video call with someone from the team you’d join. We talk about your work and ours, and you can ask anything, the band included.</p>
+          </li>
+          <li class="cr-lane" style="--from: 0.27; --to: 0.46">
+            <div class="cr-lane__label"><span class="cr-lane__n">02</span><h3 class="cr-lane__title">Craft conversation</h3><span class="cr-lane__time">90 minutes · week 2</span></div>
+            <div class="cr-lane__track" aria-hidden="true"><i></i></div>
+            <p class="cr-lane__text">Walk us through something you made. No whiteboard puzzles: we want to hear how you decide, not watch you perform.</p>
+          </li>
+          <li class="cr-lane" style="--from: 0.54; --to: 0.66">
+            <div class="cr-lane__label"><span class="cr-lane__n">03</span><h3 class="cr-lane__title">Paid trial day</h3><span class="cr-lane__time">1 day, paid · week 3</span></div>
+            <div class="cr-lane__track" aria-hidden="true"><i></i></div>
+            <p class="cr-lane__text">A real, scoped problem with the people you’d work with, on a day that suits you. We pay it at the top of the band.</p>
+          </li>
+          <li class="cr-lane" style="--from: 0.72; --to: 0.94">
+            <div class="cr-lane__label"><span class="cr-lane__n">04</span><h3 class="cr-lane__title">Meet the crew</h3><span class="cr-lane__time">2–3 short calls · weeks 3–4</span></div>
+            <div class="cr-lane__track" aria-hidden="true"><i></i></div>
+            <p class="cr-lane__text">Meet the people you’d ride with, one of the founders among them. Then we decide quickly, and tell you why either way.</p>
+          </li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
   <!-- The compact call to action that hands every page over to the footer. -->
 <section class="cta" aria-labelledby="cta-title">
   <div class="cta__glow" aria-hidden="true"></div>

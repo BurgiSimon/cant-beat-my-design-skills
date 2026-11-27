@@ -1,4 +1,58 @@
-<!-- home #start: placeholder, replaced by its builder -->
-<section class="section" id="start" aria-labelledby="start-title">
-  <div class="container"><h2 class="title-2" id="start-title">Your lane is open.</h2></div>
+<!-- home #start: the finale. One idea and an email open Lane 001 (the card beside the form fills in as you type). On
+     "Hit the green light" the generic forms module validates; home-start.js then fills the card's stage rail from Spark
+     to Afterglow and launches the footer (crestora:launch), which glides in below. Reduced motion: the rail fills and
+     the toast shows, nothing moves. Without scripts the form goes to start.html?idea=…&email=…. -->
+<section class="home-start" id="start" aria-labelledby="start-title">
+  <div class="home-start__night" aria-hidden="true">
+    <svg class="home-start__stars" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" fill="#fff" focusable="false"><circle cx="698" cy="706" r="0.52" opacity="0.82"/><circle cx="661" cy="357" r="0.51" opacity="0.77"/><circle cx="1125" cy="72" r="0.57" opacity="0.81"/><circle cx="68" cy="588" r="0.48" opacity="0.64"/><circle cx="987" cy="82" r="0.52" opacity="0.35"/><circle cx="1161" cy="317" r="0.55" opacity="0.89"/><circle cx="1194" cy="764" r="0.97" opacity="0.67"/><circle cx="353" cy="19" r="0.52" opacity="0.56"/><circle cx="114" cy="197" r="0.45" opacity="0.31"/><circle cx="399" cy="243" r="0.73" opacity="0.66"/><circle cx="138" cy="97" r="0.84" opacity="0.82"/><circle cx="1192" cy="313" r="0.50" opacity="0.85"/><circle cx="375" cy="311" r="0.60" opacity="0.30"/><circle cx="542" cy="306" r="0.48" opacity="0.37"/><circle cx="22" cy="740" r="0.46" opacity="0.62"/><circle cx="159" cy="769" r="1.25" opacity="0.25"/><circle cx="1173" cy="813" r="0.82" opacity="0.45"/><circle cx="863" cy="815" r="0.90" opacity="0.75"/><circle cx="1390" cy="508" r="0.73" opacity="0.31"/><circle cx="272" cy="608" r="1.25" opacity="0.30"/><circle cx="578" cy="437" r="0.71" opacity="0.49"/><circle cx="215" cy="193" r="0.53" opacity="0.26"/><circle cx="447" cy="602" r="1.20" opacity="0.82"/><circle cx="90" cy="654" r="1.03" opacity="0.77"/><circle cx="243" cy="520" r="0.96" opacity="0.81"/><circle cx="896" cy="252" r="1.21" opacity="0.44"/><circle cx="907" cy="249" r="0.52" opacity="0.84"/><circle cx="1338" cy="193" r="0.46" opacity="0.83"/><circle cx="742" cy="293" r="0.63" opacity="0.40"/><circle cx="160" cy="665" r="0.58" opacity="0.89"/><circle cx="387" cy="115" r="0.81" opacity="0.84"/><circle cx="1036" cy="730" r="1.09" opacity="0.81"/><circle cx="677" cy="705" r="0.57" opacity="0.64"/><circle cx="632" cy="756" r="0.59" opacity="0.71"/><circle cx="876" cy="120" r="0.52" opacity="0.37"/><circle cx="291" cy="681" r="0.89" opacity="0.47"/><circle cx="284" cy="322" r="0.79" opacity="0.87"/><circle cx="681" cy="876" r="0.70" opacity="0.88"/><circle cx="993" cy="98" r="1.04" opacity="0.78"/><circle cx="345" cy="357" r="0.54" opacity="0.80"/><circle cx="579" cy="347" r="0.85" opacity="0.35"/><circle cx="1032" cy="323" r="0.58" opacity="0.38"/><circle cx="125" cy="174" r="0.46" opacity="0.62"/><circle cx="36" cy="844" r="0.46" opacity="0.90"/><circle cx="924" cy="56" r="0.58" opacity="0.67"/><circle cx="921" cy="716" r="0.64" opacity="0.52"/><circle cx="240" cy="746" r="0.79" opacity="0.62"/><circle cx="524" cy="378" r="1.02" opacity="0.62"/><circle cx="1178" cy="147" r="0.59" opacity="0.64"/><circle cx="639" cy="553" r="0.70" opacity="0.29"/><circle cx="182" cy="314" r="0.54" opacity="0.78"/><circle cx="509" cy="159" r="0.46" opacity="0.88"/><circle cx="518" cy="245" r="0.46" opacity="0.39"/><circle cx="327" cy="199" r="0.45" opacity="0.55"/><circle cx="651" cy="460" r="0.51" opacity="0.85"/><circle cx="22" cy="280" r="0.81" opacity="0.85"/><circle cx="1245" cy="412" r="0.80" opacity="0.40"/><circle cx="1057" cy="783" r="0.47" opacity="0.37"/><circle cx="981" cy="503" r="0.47" opacity="0.76"/><circle cx="1033" cy="833" r="0.75" opacity="0.56"/><circle cx="308" cy="548" r="0.47" opacity="0.72"/><circle cx="228" cy="500" r="0.94" opacity="0.39"/><circle cx="902" cy="574" r="1.18" opacity="0.28"/><circle cx="677" cy="138" r="0.45" opacity="0.62"/><circle cx="614" cy="797" r="0.82" opacity="0.86"/><circle cx="1004" cy="160" r="0.89" opacity="0.63"/><circle cx="614" cy="572" r="0.50" opacity="0.47"/><circle cx="595" cy="210" r="0.90" opacity="0.86"/><circle cx="1102" cy="876" r="0.95" opacity="0.85"/><circle cx="1163" cy="312" r="0.82" opacity="0.28"/><circle cx="128" cy="704" r="0.69" opacity="0.31"/><circle cx="118" cy="137" r="0.66" opacity="0.87"/><circle cx="1256" cy="104" r="0.47" opacity="0.66"/><circle cx="534" cy="442" r="0.50" opacity="0.85"/><circle cx="577" cy="537" r="0.50" opacity="0.89"/><circle cx="387" cy="564" r="0.74" opacity="0.66"/><circle cx="1338" cy="95" r="0.50" opacity="0.44"/><circle cx="312" cy="134" r="1.23" opacity="0.89"/><circle cx="508" cy="886" r="0.82" opacity="0.60"/><circle cx="828" cy="379" r="0.86" opacity="0.30"/><circle cx="181" cy="636" r="0.90" opacity="0.32"/><circle cx="1027" cy="523" r="0.48" opacity="0.42"/><circle cx="669" cy="529" r="0.48" opacity="0.50"/><circle cx="1386" cy="266" r="0.49" opacity="0.85"/><circle cx="1362" cy="180" r="1.08" opacity="0.42"/><circle cx="531" cy="96" r="0.45" opacity="0.31"/><circle cx="949" cy="634" r="0.60" opacity="0.42"/><circle cx="1293" cy="64" r="0.82" opacity="0.72"/><circle cx="51" cy="4" r="0.46" opacity="0.42"/><circle cx="952" cy="704" r="0.83" opacity="0.69"/></svg>
+    <div class="home-start__glow"></div>
+    <svg class="home-start__horizon" viewBox="0 0 1600 262" preserveAspectRatio="none" fill="none" focusable="false">
+      <defs><path id="hs-l0" d="M-53 262Q800 -127.8 1653 262" pathLength="1"/><path id="hs-l1" d="M-32 262Q800 -106.0 1632 262" pathLength="1"/><path id="hs-l2" d="M-11 262Q800 -84.2 1611 262" pathLength="1"/><path id="hs-l3" d="M10 262Q800 -62.4 1590 262" pathLength="1"/><path id="hs-l4" d="M31 262Q800 -40.6 1569 262" pathLength="1"/><path id="hs-l5" d="M52 262Q800 -18.8 1548 262" pathLength="1"/></defs>
+      <g class="home-start__lanes"><path d="M-60 262Q800 -134.0 1660 262" stroke="#3a6dff" opacity="0.95"/><path d="M-53 262Q800 -127.8 1653 262" stroke="#3a6dff" opacity="0.6"/><path d="M-46 262Q800 -121.6 1646 262" stroke="#3a6dff" opacity="0.32"/><path d="M-39 262Q800 -112.2 1639 262" stroke="#23d3ff" opacity="0.95"/><path d="M-32 262Q800 -106.0 1632 262" stroke="#23d3ff" opacity="0.6"/><path d="M-25 262Q800 -99.8 1625 262" stroke="#23d3ff" opacity="0.32"/><path d="M-18 262Q800 -90.4 1618 262" stroke="#20d69b" opacity="0.95"/><path d="M-11 262Q800 -84.2 1611 262" stroke="#20d69b" opacity="0.6"/><path d="M-4 262Q800 -78.0 1604 262" stroke="#20d69b" opacity="0.32"/><path d="M3 262Q800 -68.6 1597 262" stroke="#ffb13d" opacity="0.95"/><path d="M10 262Q800 -62.4 1590 262" stroke="#ffb13d" opacity="0.6"/><path d="M17 262Q800 -56.2 1583 262" stroke="#ffb13d" opacity="0.32"/><path d="M24 262Q800 -46.8 1576 262" stroke="#ff3b3b" opacity="0.95"/><path d="M31 262Q800 -40.6 1569 262" stroke="#ff3b3b" opacity="0.6"/><path d="M38 262Q800 -34.4 1562 262" stroke="#ff3b3b" opacity="0.32"/><path d="M45 262Q800 -25.0 1555 262" stroke="#ff7ad9" opacity="0.95"/><path d="M52 262Q800 -18.8 1548 262" stroke="#ff7ad9" opacity="0.6"/><path d="M59 262Q800 -12.6 1541 262" stroke="#ff7ad9" opacity="0.32"/></g>
+      <g class="home-start__glint" stroke="#fff"><use href="#hs-l0"/><use href="#hs-l1"/><use href="#hs-l2"/><use href="#hs-l3"/><use href="#hs-l4"/><use href="#hs-l5"/></g>
+    </svg>
+  </div>
+
+  <div class="container home-start__inner">
+    <header class="home-start__head">
+      <p class="eyebrow" data-reveal="fade">Your turn</p>
+      <h2 class="display home-start__title" id="start-title" data-split>Your lane is <span class="ink-spectrum">open</span>.</h2>
+      <p class="lede home-start__sub" data-reveal data-delay="0.15">Bring one idea. Crestora brings the road.</p>
+    </header>
+
+    <div class="home-start__body">
+      <form class="home-start__form" action="{{ROOT}}start.html" method="get" data-form data-demo data-reveal data-delay="0.1">
+        <div class="field home-start__field">
+          <label class="field__label" for="hs-idea">What are you making?</label>
+          <input class="input home-start__input" id="hs-idea" name="idea" type="text" required maxlength="60" autocomplete="off" spellcheck="true" placeholder="a short film…" data-msg-required="Give it a name, even a rough one." data-ideas="a short film…|an app…|a pottery drop…|your first podcast…|a zine…" />
+          <p class="field__error" id="hs-idea-error"></p>
+        </div>
+        <div class="field home-start__field">
+          <label class="field__label" for="hs-email">Email</label>
+          <input class="input home-start__input" id="hs-email" name="email" type="email" required autocomplete="email" inputmode="email" placeholder="you@studio.example" data-msg-required="We need an email to send your lane to." />
+          <p class="field__error" id="hs-email-error"></p>
+        </div>
+        <button class="btn btn--primary btn--lg btn--block home-start__go" type="submit">Hit the green light<svg class="arrow" aria-hidden="true"><use href="#i-arrow"/></svg></button>
+        <p class="small home-start__fine">Free for 3 lanes <span aria-hidden="true">·</span> No card <span aria-hidden="true">·</span> Export everything, always.</p>
+        <p class="home-start__done" hidden><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg><span><span data-done-lane>Lane 001</span> is open. Type a new idea to start <span data-done-next>Lane 002</span>.</span></p>
+      </form>
+
+      <figure class="lane-card home-start__card" data-lane-card data-stage="spark" aria-label="Preview: your first lane" data-reveal="right" data-delay="0.2">
+        <div class="lane-card__top">
+          <span class="lane-card__no" data-lane-no>Lane 001</span>
+          <span class="lane-chip lane-card__chip" data-lane-chip>Now in: Spark</span>
+        </div>
+        <p class="lane-card__title"><span data-lane-title>Your next thing</span><i class="lane-card__caret" aria-hidden="true"></i></p>
+        <p class="lane-card__meta"><span data-lane-started>Started today</span> <span aria-hidden="true">·</span> <span data-lane-tool>Sparkboard is open</span></p>
+        <div class="lane-card__road">
+          <span class="stage-rail" data-n="1" data-lane-rail aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span>
+          <ol class="lane-card__names" aria-hidden="true"><li class="is-lit is-now">Spark</li><li>Shape</li><li>Make</li><li>Review</li><li>Launch</li><li>Afterglow</li></ol>
+        </div>
+        <div class="lane-card__foot">
+          <span class="lane-card__avatar" data-lane-avatar aria-hidden="true"></span>
+          <span class="lane-card__who"><span class="lane-card__name" data-lane-name>Waiting for its maker</span><span class="lane-card__mail" data-lane-mail>Add your email to sign it</span></span>
+        </div>
+      </figure>
+    </div>
+  </div>
 </section>

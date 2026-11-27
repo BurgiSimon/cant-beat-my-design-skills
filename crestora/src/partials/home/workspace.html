@@ -1,4 +1,274 @@
-<!-- home #workspace: placeholder, replaced by its builder -->
-<section class="section" id="workspace" aria-labelledby="workspace-title">
-  <div class="container"><h2 class="title-2" id="workspace-title">Your whole project on one road.</h2></div>
+<!-- home #workspace: inside a lane. The app window is drawn in HTML/CSS at 1200 × 720 design px and scaled to its
+     frame with --u (1 design px), like the footer's --fu, so it is the same picture from a phone to a wall screen.
+     A real tablist switches its three views; a short scripted story plays in it (home-workspace.js): frame 118 waits in
+     Review, Lena approves it, its chip turns green and it rolls on to Launch. Without scripts, and under reduced motion,
+     the window rests on the story's last frame. Under 680 px the window is a pane you can pan, with its own tabs above. -->
+<section class="section workspace" id="workspace" aria-labelledby="workspace-title">
+  <div class="container">
+    <header class="section-head">
+      <div>
+        <p class="eyebrow">Inside a lane</p>
+        <h2 class="title-2" id="workspace-title" data-split>Your whole project on one road.</h2>
+      </div>
+      <div class="section-head__aside">
+        <p class="lede">See every piece of work where it actually is, not buried in a folder, a thread or somebody’s head.</p>
+      </div>
+    </header>
+
+    <!-- phones: the window's tabs at a size a thumb can use (kept in step with the ones inside the window) -->
+    <div class="ws-ptabs segmented" role="tablist" aria-label="Night Bloom’s lane, as" data-tabs-sync="ws-view">
+      <span class="segmented__thumb" aria-hidden="true"></span>
+      <button type="button" role="tab" id="ws-ptab-lane" aria-controls="ws-view-lane" aria-selected="true" data-value="lane">Lane</button>
+      <button type="button" role="tab" id="ws-ptab-board" aria-controls="ws-view-board" aria-selected="false" tabindex="-1" data-value="board">Board</button>
+      <button type="button" role="tab" id="ws-ptab-cal" aria-controls="ws-view-cal" aria-selected="false" tabindex="-1" data-value="calendar">Calendar</button>
+    </div>
+
+    <figure class="ws-frame" data-reveal="up">
+      <div class="ws-pane">
+        <div class="ws-mock mock is-approved is-moved is-logged" data-spotlight role="group" aria-label="The Crestora app, open on the Night Bloom lane">
+
+          <!-- the title bar -->
+          <div class="ws-bar">
+            <p class="ws-bar__crumbs"><span class="mark" aria-hidden="true"></span><span>Late Shift</span><svg class="icon" aria-hidden="true"><use href="#i-chev-right"/></svg><span>Lanes</span><svg class="icon" aria-hidden="true"><use href="#i-chev-right"/></svg><b>Night Bloom</b></p>
+            <p class="ws-bar__search"><svg class="icon" aria-hidden="true"><use href="#i-search"/></svg><span>Search lanes, files and people</span><kbd>⌘ K</kbd></p>
+            <div class="ws-bar__end">
+              <p class="ws-bar__count" data-stage="launch"><i aria-hidden="true"></i>Premiere in <b>2</b> days</p>
+              <span class="ws-bar__btn">Share</span>
+            </div>
+          </div>
+
+          <!-- the sidebar: where you are, and your lanes -->
+          <div class="ws-side" role="group" aria-label="Sidebar">
+            <div class="ws-team">
+              <span class="ws-team__mark" aria-hidden="true">LS</span>
+              <p class="ws-team__name">Late Shift<span>Crew · 6 people</span></p>
+              <svg class="icon" aria-hidden="true"><use href="#i-chev-down"/></svg>
+            </div>
+            <ul class="ws-nav">
+              <li><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 10.5 12 4.5l7.5 6v9h-5v-5.5h-5v5.5h-5Z"/></svg>Home</li>
+              <li><svg class="icon" aria-hidden="true"><use href="#i-mail"/></svg>Inbox<span class="ws-nav__n">3</span></li>
+              <li><svg class="icon" aria-hidden="true"><use href="#i-spark"/></svg>Sparkboard</li>
+              <li><svg class="icon" aria-hidden="true"><use href="#i-review"/></svg>Review Room<span class="ws-nav__n"><span class="ws-swap ws-swap--a">2</span><span class="ws-swap ws-swap--b">1</span></span></li>
+              <li><svg class="icon" aria-hidden="true"><use href="#i-launch"/></svg>Countdown</li>
+            </ul>
+            <p class="ws-side__label">Lanes <span>4</span></p>
+            <ul class="ws-lanes">
+              <li class="is-current" data-stage="review" aria-current="true"><i aria-hidden="true"></i><span>Night Bloom</span><small>Review</small></li>
+              <li data-stage="launch"><i aria-hidden="true"></i><span>Tidepool 1.0</span><small>Launch</small></li>
+              <li data-stage="review"><i aria-hidden="true"></i><span>Kiln spring drop</span><small>Review</small></li>
+              <li data-stage="make"><i aria-hidden="true"></i><span>Small Hours ep. 49</span><small>Make</small></li>
+            </ul>
+            <div class="ws-store">
+              <p>Pooled storage<span>212 GB of 1 TB</span></p>
+              <span class="ws-store__bar" aria-hidden="true"><i></i></span>
+            </div>
+            <div class="ws-me">
+              <span class="ws-av" data-stage="afterglow" aria-hidden="true">AO</span>
+              <p>Amara Okafor<span>Owner</span></p>
+            </div>
+          </div>
+
+          <!-- the lane -->
+          <div class="ws-main">
+            <div class="ws-head">
+              <div class="ws-head__text">
+                <p class="ws-head__kicker">Lane 014 · Started 3 Nov</p>
+                <p class="ws-head__title">Night Bloom</p>
+                <p class="ws-head__sub">A seven-minute animated short · Amara Okafor, Lagos</p>
+              </div>
+              <div class="ws-head__where">
+                <p class="ws-chip" data-stage="review">Now in: Review</p>
+                <span class="ws-rail6" aria-hidden="true"><i class="is-on"></i><i class="is-on"></i><i class="is-on"></i><i class="is-on"></i><i></i><i></i></span>
+              </div>
+            </div>
+
+            <div class="ws-tools">
+              <div class="ws-tabs segmented" role="tablist" aria-label="Show the lane as" data-tabs-sync="ws-view">
+                <span class="segmented__thumb" aria-hidden="true"></span>
+                <button type="button" role="tab" id="ws-tab-lane" aria-controls="ws-view-lane" aria-selected="true" data-value="lane">Lane</button>
+                <button type="button" role="tab" id="ws-tab-board" aria-controls="ws-view-board" aria-selected="false" tabindex="-1" data-value="board">Board</button>
+                <button type="button" role="tab" id="ws-tab-cal" aria-controls="ws-view-cal" aria-selected="false" tabindex="-1" data-value="calendar">Calendar</button>
+              </div>
+              <p class="ws-tools__meta"><span>37 days on the road</span><span class="ws-stack" aria-hidden="true"><span class="ws-av" data-stage="afterglow">AO</span><span class="ws-av" data-stage="make">TB</span><span class="ws-av" data-stage="review">LK</span></span></p>
+            </div>
+
+            <div class="ws-views">
+
+              <!-- LANE: one road of six stages, the work sitting where it is -->
+              <div class="ws-view ws-lane" role="tabpanel" id="ws-view-lane" aria-labelledby="ws-tab-lane" tabindex="0">
+                <ol class="ws-lane__stages">
+                  <li data-stage="spark" class="is-done"><b>01</b>Spark<svg class="icon" role="img" aria-label="done"><use href="#i-check"/></svg></li>
+                  <li data-stage="shape" class="is-done"><b>02</b>Shape<svg class="icon" role="img" aria-label="done"><use href="#i-check"/></svg></li>
+                  <li data-stage="make" class="is-done"><b>03</b>Make<svg class="icon" role="img" aria-label="done"><use href="#i-check"/></svg></li>
+                  <li data-stage="review" class="is-now"><b>04</b>Review<span class="ws-now">Now</span></li>
+                  <li data-stage="launch"><b>05</b>Launch</li>
+                  <li data-stage="afterglow"><b>06</b>Afterglow</li>
+                </ol>
+                <ul class="ws-lane__items">
+                  <li class="ws-item" data-stage="spark" style="--col:0;--y:62"><span class="ws-item__name">night-bus.m4a</span><span class="ws-item__meta">Voice memo · 0:42 · 3 Nov</span></li>
+                  <li class="ws-item" data-stage="shape" style="--col:1;--y:120"><span class="ws-item__name">storyboard_v3.pdf</span><span class="ws-item__meta">v3 · Amara · 12 Nov</span></li>
+                  <li class="ws-item" data-stage="make" style="--col:2;--y:178"><span class="ws-item__name">render_v7.mov</span><span class="ws-item__meta">v7 · Amara · this morning</span></li>
+                  <li class="ws-item ws-item--story ws-story" data-stage="review" style="--y:236">
+                    <span class="ws-item__name">frame 118 note</span>
+                    <span class="ws-item__meta">3 notes · the bloom opens</span>
+                    <span class="ws-status"><span class="ws-swap ws-swap--a">Waiting on Lena</span><span class="ws-swap ws-swap--b"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Approved</span></span>
+                  </li>
+                  <li class="ws-item" data-stage="launch" style="--col:4;--y:326"><span class="ws-item__name ws-item__name--text">Festival upload</span><span class="ws-item__meta">Due Thu 11 Dec</span></li>
+                  <li class="ws-item" data-stage="launch" style="--col:4;--y:384"><span class="ws-item__name ws-item__name--text">Press kit</span><span class="ws-item__meta">Draft · 4 files</span></li>
+                  <li class="ws-item ws-item--ghost" data-stage="afterglow" style="--col:5;--y:442"><span class="ws-item__name ws-item__name--text">Day 1 recap</span><span class="ws-item__meta">Sat 13 Dec</span></li>
+                </ul>
+              </div>
+
+              <!-- BOARD: six narrow columns of cards -->
+              <div class="ws-view ws-board" role="tabpanel" id="ws-view-board" aria-labelledby="ws-tab-board" tabindex="0" hidden>
+                <div class="ws-col" data-stage="spark">
+                  <p class="ws-col__head"><i aria-hidden="true"></i>Spark<span>3</span></p>
+                  <ul class="ws-col__cards">
+                    <li class="ws-card"><span class="ws-card__t">Night bus memo</span><span class="ws-card__m"><span class="ws-av" data-stage="afterglow" aria-hidden="true">AO</span>0:42</span></li>
+                    <li class="ws-card"><span class="ws-card__t">Moonflower timelapse</span><span class="ws-card__m"><span class="ws-av" data-stage="afterglow" aria-hidden="true">AO</span>Link</span></li>
+                    <li class="ws-card"><span class="ws-card__t">Blue-hour palette</span><span class="ws-card__m"><span class="ws-av" data-stage="afterglow" aria-hidden="true">AO</span>4 tones</span></li>
+                  </ul>
+                  <p class="ws-col__add" aria-hidden="true">+ Add a card</p>
+                </div>
+                <div class="ws-col" data-stage="shape">
+                  <p class="ws-col__head"><i aria-hidden="true"></i>Shape<span>3</span></p>
+                  <ul class="ws-col__cards">
+                    <li class="ws-card"><span class="ws-card__t ws-card__t--file">storyboard_<wbr>v3.pdf</span><span class="ws-card__m"><span class="ws-av" data-stage="afterglow" aria-hidden="true">AO</span>v3</span></li>
+                    <li class="ws-card"><span class="ws-card__t">Shot list, 64 shots</span><span class="ws-card__m"><span class="ws-av" data-stage="afterglow" aria-hidden="true">AO</span>Signed</span></li>
+                    <li class="ws-card"><span class="ws-card__t">Festival brief</span><span class="ws-card__m"><span class="ws-av" data-stage="review" aria-hidden="true">LK</span>1 page</span></li>
+                  </ul>
+                  <p class="ws-col__add" aria-hidden="true">+ Add a card</p>
+                </div>
+                <div class="ws-col" data-stage="make">
+                  <p class="ws-col__head"><i aria-hidden="true"></i>Make<span>3</span></p>
+                  <ul class="ws-col__cards">
+                    <li class="ws-card"><span class="ws-card__t ws-card__t--file">render_<wbr>v7.mov</span><span class="ws-card__m"><span class="ws-av" data-stage="afterglow" aria-hidden="true">AO</span>v7</span></li>
+                    <li class="ws-card"><span class="ws-card__t">Score stems</span><span class="ws-card__m"><span class="ws-av" data-stage="make" aria-hidden="true">TB</span>v4</span></li>
+                    <li class="ws-card"><span class="ws-card__t">Credits roll</span><span class="ws-card__m"><span class="ws-av" data-stage="make" aria-hidden="true">TB</span>v2</span></li>
+                  </ul>
+                  <p class="ws-col__add" aria-hidden="true">+ Add a card</p>
+                </div>
+                <div class="ws-col ws-col--from" data-stage="review">
+                  <p class="ws-col__head"><i aria-hidden="true"></i>Review<span><span class="ws-swap ws-swap--a">2</span><span class="ws-swap ws-swap--b">1</span></span></p>
+                  <ul class="ws-col__cards">
+                    <li class="ws-card"><span class="ws-card__t">Colour pass, reel 2</span><span class="ws-card__m"><span class="ws-av" data-stage="review" aria-hidden="true">LK</span>2 notes</span></li>
+                  </ul>
+                  <p class="ws-col__add" aria-hidden="true">+ Add a card</p>
+                </div>
+                <div class="ws-col ws-col--to" data-stage="launch">
+                  <p class="ws-col__head"><i aria-hidden="true"></i>Launch<span><span class="ws-swap ws-swap--a">2</span><span class="ws-swap ws-swap--b">3</span></span></p>
+                  <ul class="ws-col__cards">
+                    <li class="ws-card"><span class="ws-card__t">Festival upload</span><span class="ws-card__m"><span class="ws-av" data-stage="afterglow" aria-hidden="true">AO</span>Thu</span></li>
+                    <li class="ws-card"><span class="ws-card__t">Press kit</span><span class="ws-card__m"><span class="ws-av" data-stage="afterglow" aria-hidden="true">AO</span>4 files</span></li>
+                  </ul>
+                  <p class="ws-col__add" aria-hidden="true">+ Add a card</p>
+                </div>
+                <div class="ws-col" data-stage="afterglow">
+                  <p class="ws-col__head"><i aria-hidden="true"></i>Afterglow<span>0</span></p>
+                  <ul class="ws-col__cards">
+                    <li class="ws-card ws-card--ghost"><span class="ws-card__t">Recaps start after the premiere</span></li>
+                  </ul>
+                  <p class="ws-col__add" aria-hidden="true">+ Add a card</p>
+                </div>
+                <div class="ws-card ws-card--story ws-story" data-stage="review">
+                  <span class="ws-card__thumb" aria-hidden="true"><svg viewBox="0 0 90 40" preserveAspectRatio="xMidYMid slice"><g fill="#fff" opacity=".55"><circle cx="12" cy="8" r=".5"/><circle cx="24" cy="15" r=".35"/><circle cx="70" cy="7" r=".45"/><circle cx="81" cy="18" r=".35"/><circle cx="60" cy="13" r=".3"/></g><path d="M0 34.5h90" stroke="rgb(255 255 255 / .18)" stroke-width=".5"/><path d="M45 30v10" stroke="#20d69b" stroke-width=".8" opacity=".8"/><g fill="none" stroke-width=".75" transform="translate(45 30)"><ellipse rx="3.4" ry="9.5" transform="rotate(-64) translate(0 -9)" stroke="#3a6dff"/><ellipse rx="3.4" ry="9.5" transform="rotate(-32) translate(0 -9)" stroke="#ff7ad9"/><ellipse rx="3.4" ry="9.5" transform="rotate(0) translate(0 -9)" stroke="#fff"/><ellipse rx="3.4" ry="9.5" transform="rotate(32) translate(0 -9)" stroke="#ff7ad9"/><ellipse rx="3.4" ry="9.5" transform="rotate(64) translate(0 -9)" stroke="#3a6dff"/><ellipse rx="2.2" ry="6.5" transform="rotate(-48) translate(0 -6.5)" stroke="#ffd7f2" opacity=".7"/><ellipse rx="2.2" ry="6.5" transform="rotate(-16) translate(0 -6.5)" stroke="#ffd7f2" opacity=".7"/><ellipse rx="2.2" ry="6.5" transform="rotate(16) translate(0 -6.5)" stroke="#ffd7f2" opacity=".7"/><ellipse rx="2.2" ry="6.5" transform="rotate(48) translate(0 -6.5)" stroke="#ffd7f2" opacity=".7"/></g><circle cx="45" cy="30" r="1.4" fill="#fff"/></svg></span>
+                  <span class="ws-card__t">Frame 118</span>
+                  <span class="ws-status"><span class="ws-swap ws-swap--a">With Lena</span><span class="ws-swap ws-swap--b"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Approved</span></span>
+                </div>
+              </div>
+
+              <!-- CALENDAR: two weeks, the milestones on their days, launch day marked -->
+              <div class="ws-view ws-cal" role="tabpanel" id="ws-view-cal" aria-labelledby="ws-tab-cal" tabindex="0" hidden>
+                <div class="ws-cal__head">
+                  <p class="ws-cal__month">December 2026</p>
+                  <p class="ws-cal__range">Mon 1 – Sun 14 Dec</p>
+                  <span class="ws-cal__nav" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24"><path d="m14.5 6-6 6 6 6"/></svg><svg class="icon"><use href="#i-chev-right"/></svg></span>
+                </div>
+                <div class="ws-cal__dows" aria-hidden="true"><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span></div>
+                <div class="ws-week">
+                  <ol class="ws-days" aria-hidden="true"><li>1</li><li>2</li><li>3</li><li>4</li><li>5</li><li class="is-off">6</li><li class="is-off">7</li></ol>
+                  <ul class="ws-ms-list">
+                    <li class="ws-ms" data-stage="make" style="--d:0;--n:3;--s:0">Colour pass</li>
+                    <li class="ws-ms" data-stage="make" style="--d:1;--n:2;--s:1">Render v7</li>
+                    <li class="ws-ms" data-stage="make" style="--d:3;--n:1;--s:0">Score lock</li>
+                    <li class="ws-ms" data-stage="review" style="--d:4;--n:1;--s:0">Reel 2 notes</li>
+                    <li class="ws-ms" data-stage="review" style="--d:3;--n:1;--s:1">Mix review</li>
+                  </ul>
+                </div>
+                <div class="ws-week">
+                  <ol class="ws-days" aria-hidden="true"><li>8</li><li>9</li><li class="is-today"><span>10</span></li><li>11</li><li class="is-launch">12</li><li class="is-off">13</li><li class="is-off">14</li></ol>
+                  <ul class="ws-ms-list">
+                    <li class="ws-ms ws-ms--story ws-story" data-stage="review" style="--d:0;--n:3;--s:0"><span class="ws-swap ws-swap--a">Frame 118 review</span><span class="ws-swap ws-swap--b"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Frame 118 approved</span></li>
+                    <li class="ws-ms" data-stage="launch" style="--d:3;--n:1;--s:0">Fest upload</li>
+                    <li class="ws-ms ws-ms--day" data-stage="launch" style="--d:4;--n:1;--s:0"><svg class="icon" aria-hidden="true"><use href="#i-launch"/></svg>Premiere</li>
+                    <li class="ws-ms" data-stage="launch" style="--d:4;--n:1;--s:1">Press kit out</li>
+                    <li class="ws-ms" data-stage="make" style="--d:0;--n:2;--s:1">Final grade</li>
+                    <li class="ws-ms" data-stage="launch" style="--d:3;--n:1;--s:1">Trailer</li>
+                    <li class="ws-ms" data-stage="afterglow" style="--d:5;--n:1;--s:0">Day 1 recap</li>
+                  </ul>
+                  <p class="ws-cal__flag" data-stage="launch">Launch day</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- the notice: the site's toast, inside the app -->
+            <p class="ws-notice" aria-hidden="true"><span class="ws-av" data-stage="review">LK</span><span><b>Lena</b> approved frame 118</span><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg></p>
+          </div>
+
+          <!-- the activity rail -->
+          <div class="ws-rail" role="group" aria-label="Activity">
+            <p class="ws-rail__head">Activity<span>All lanes</span></p>
+            <ol class="ws-feed">
+              <li class="ws-feed__item ws-feed__item--story"><span class="ws-av" data-stage="review" aria-hidden="true">LK</span><p><b>Lena</b> approved frame 118<span>Night Bloom · just now</span></p></li>
+              <li class="ws-feed__item"><span class="ws-av" data-stage="launch" aria-hidden="true">TL</span><p><b>Theo</b> pushed build 215<span>Tidepool 1.0 · 12 min</span></p></li>
+              <li class="ws-feed__item"><span class="ws-av ws-av--icon" data-stage="launch" aria-hidden="true"><svg class="icon"><use href="#i-launch"/></svg></span><p><b>Countdown:</b> 2 days to launch<span>Night Bloom · 1 h</span></p></li>
+              <li class="ws-feed__item"><span class="ws-av" data-stage="review" aria-hidden="true">IN</span><p><b>Inés</b> added 6 photos to the drop<span>Kiln spring drop · 3 h</span></p></li>
+              <li class="ws-feed__item"><span class="ws-av" data-stage="review" aria-hidden="true">LK</span><p><b>Lena</b> left 3 notes on frame 118<span>Night Bloom · 4 h</span></p></li>
+              <li class="ws-feed__item"><span class="ws-av" data-stage="afterglow" aria-hidden="true">AO</span><p><b>Amara</b> uploaded render_v7.mov<span>Night Bloom · 6 h</span></p></li>
+              <li class="ws-feed__item"><span class="ws-av" data-stage="make" aria-hidden="true">TB</span><p><b>Tunde</b> locked the score<span>Night Bloom · yesterday</span></p></li>
+              <li class="ws-feed__item"><span class="ws-av" data-stage="make" aria-hidden="true">LK</span><p><b>Lena</b> opened Small Hours ep. 49<span>Small Hours · yesterday</span></p></li>
+            </ol>
+            <div class="ws-crew">
+              <p class="ws-rail__head">On this lane</p>
+              <ul>
+                <li><span class="ws-av" data-stage="afterglow" aria-hidden="true">AO</span><span>Amara Okafor</span><small>Owner</small></li>
+                <li><span class="ws-av" data-stage="make" aria-hidden="true">TB</span><span>Tunde Bello</span><small>Maker</small></li>
+                <li><span class="ws-av" data-stage="review" aria-hidden="true">LK</span><span>Lena Kowalski</span><small>Reviewer</small></li>
+                <li><span class="ws-av ws-av--guest" aria-hidden="true">+2</span><span>Two festival guests</span><small>Guest</small></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <figcaption class="ws-caption">
+        <p class="small">Two days before its premiere, Lena signs off frame 118 and it rolls on to Launch.<span class="ws-caption__loop" hidden> A scripted moment, played on a loop.</span></p>
+        <button class="btn btn--sm ws-pause" type="button" hidden>
+          <svg class="icon ws-pause__off" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6.5v11M15 6.5v11"/></svg>
+          <svg class="icon ws-pause__on" aria-hidden="true"><use href="#i-play"/></svg>
+          <span class="ws-pause__label">Pause the story</span>
+        </button>
+      </figcaption>
+    </figure>
+
+    <ul class="ws-features" data-reveal-stagger="0.08">
+      <li class="ws-feature">
+        <span class="icon-box" aria-hidden="true"><svg class="icon icon--lg"><use href="#i-users"/></svg></span>
+        <h3 class="title-4">Crew roles</h3>
+        <p class="body">Owner, Maker, Reviewer and Guest, so everyone sees what they need.</p>
+        <p class="ws-feature__detail" aria-hidden="true"><span>Owner</span><span>Maker</span><span>Reviewer</span><span>Guest</span></p>
+      </li>
+      <li class="ws-feature">
+        <span class="icon-box" aria-hidden="true"><svg class="icon icon--lg"><use href="#i-globe"/></svg></span>
+        <h3 class="title-4">Share Pages</h3>
+        <p class="body">A public launch page on your own domain, live the moment you are.</p>
+        <p class="ws-feature__detail" aria-hidden="true"><span class="ws-feature__url">nightbloom.example</span></p>
+      </li>
+      <li class="ws-feature">
+        <span class="icon-box" aria-hidden="true"><svg class="icon icon--lg" viewBox="0 0 24 24"><rect x="7" y="3.5" width="10" height="17" rx="2.2"/><path d="M10.5 6.2h3M12 17.6h.01"/><path d="M3.5 9.5a5 5 0 0 1 0 5M20.5 9.5a5 5 0 0 1 0 5"/></svg></span>
+        <h3 class="title-4">Works offline on iOS</h3>
+        <p class="body">Capture on the train; it syncs when you surface.</p>
+        <p class="ws-feature__detail" aria-hidden="true"><span class="ws-feature__queue">3 sparks waiting for signal</span></p>
+      </li>
+    </ul>
+  </div>
 </section>

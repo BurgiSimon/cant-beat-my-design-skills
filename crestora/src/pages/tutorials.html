@@ -1,16 +1,514 @@
 <!--page
 title: Tutorials — Crestora
-description: Learn the road.
+description: Short, practical lessons from people who ship: three learning paths, a featured lesson with chapters and a library of twelve, each under fifteen minutes.
+modules: filter page-tutorials
 nav: resources
 -->
 <main id="main">
-  <section class="page-hero">
+  <!-- Tutorials: three learning paths (one per kind of maker) whose six-lane bars fill as lessons are marked done
+       (kept in this browser), a featured lesson on a video-poster mock whose chapters move the playhead, and the
+       library of twelve, filterable by persona, level and stage. The night posters are generated lane lines; edit
+       with care. -->
+  <section class="page-hero tu-hero" aria-labelledby="tu-title">
     <div class="page-hero__lanes" aria-hidden="true"></div>
-    <div class="container page-hero__inner">
-      <p class="eyebrow">Resources</p>
-      <h1 class="title-1">Learn the road.</h1>
-      <p class="lede">This page is being built.</p>
+    <div class="container tu-hero__grid">
+      <div class="tu-hero__intro">
+        <p class="eyebrow" data-reveal="fade">Tutorials</p>
+        <h1 class="title-1" id="tu-title" data-split>Learn the road.</h1>
+        <p class="lede" data-reveal data-delay="0.15">Short, practical lessons from people who ship. Every one ends with something done in your own lane, not a quiz.</p>
+        <div class="btn-row" data-reveal data-delay="0.25">
+          <a class="btn btn--primary" href="#paths" data-roll>Pick a path <svg aria-hidden="true"><use href="#i-arrow-down"/></svg></a>
+          <a class="btn" href="#library" data-roll>Browse all twelve</a>
+        </div>
+      </div>
+      <div class="tu-hero__aside" data-reveal data-delay="0.3">
+        <dl class="tu-stats">
+          <div class="tu-stats__row"><dt>Lessons in the library</dt><dd><span class="tu-stats__n">12</span></dd></div>
+          <div class="tu-stats__row"><dt>Longest lesson</dt><dd><span class="tu-stats__n">12<small>min</small></span></dd></div>
+          <div class="tu-stats__row"><dt>Done in this browser</dt><dd><span class="tu-stats__n"><span data-tu-total>0</span><small>of 12</small></span></dd></div>
+        </dl>
+        <p class="fiction">Crestora is a fictional company; figures are illustrative.</p>
+      </div>
     </div>
   </section>
+
+  <!-- ===== learning paths ===== -->
+  <section class="section tu-paths" id="paths" aria-labelledby="tu-paths-title">
+    <div class="container">
+      <header class="section-head">
+        <div>
+          <p class="eyebrow">Learning paths</p>
+          <h2 class="title-2" id="tu-paths-title" data-split>Pick a road, ride it through.</h2>
+        </div>
+        <div class="section-head__aside">
+          <p class="lede">Three paths, one for each kind of maker. Mark a lesson as done and its lane lights up; your progress stays in this browser, nowhere else.</p>
+        </div>
+      </header>
+
+      <ol class="tu-pathlist" data-reveal-stagger="0.1">
+        <li class="tu-path panel" data-stage="afterglow" data-path="creators" data-lessons="first-lane versions frame-notes review-clients launch-rooms" data-spotlight>
+          <div class="tu-path__head">
+            <p class="tu-path__persona">For creators</p>
+            <span class="tu-path__meta"><b>5</b> lessons · <b>48</b> min</span>
+          </div>
+          <h3 class="title-3 tu-path__title">From storyboard to screening</h3>
+          <p class="tu-path__desc">Take one film from the first storyboard to the festival upload. Amara walks the road she took with Night Bloom, notes and all.</p>
+          <p class="tu-path__guide"><span class="avatar" aria-hidden="true">AO</span><span><b>Amara Okafor</b> Animator, Lagos</span></p>
+          <div class="tu-progress">
+            <div class="tu-lanes" role="progressbar" aria-label="From storyboard to screening: lessons done" aria-valuemin="0" aria-valuemax="5" aria-valuenow="0" aria-valuetext="0 of 5 lessons done" style="--n:5; --p:0"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+            <p class="tu-progress__text" aria-hidden="true"><b data-path-done>0</b> of 5 done</p>
+          </div>
+          <ol class="tu-steps">
+            <li data-stage="spark"><label class="tu-step"><input type="checkbox" data-lesson="first-lane"><span class="tu-step__n">01</span><span class="tu-step__t">Your first lane in 10 minutes</span><span class="tu-step__d">10 min</span></label></li>
+            <li data-stage="make"><label class="tu-step"><input type="checkbox" data-lesson="versions"><span class="tu-step__n">02</span><span class="tu-step__t">Versions and compare</span><span class="tu-step__d">8 min</span></label></li>
+            <li data-stage="review"><label class="tu-step"><input type="checkbox" data-lesson="frame-notes"><span class="tu-step__n">03</span><span class="tu-step__t">Frame-accurate notes on video</span><span class="tu-step__d">6 min</span></label></li>
+            <li data-stage="review"><label class="tu-step"><input type="checkbox" data-lesson="review-clients"><span class="tu-step__n">04</span><span class="tu-step__t">Running a review with clients</span><span class="tu-step__d">12 min</span></label></li>
+            <li data-stage="launch"><label class="tu-step"><input type="checkbox" data-lesson="launch-rooms"><span class="tu-step__n">05</span><span class="tu-step__t">Launch rooms</span><span class="tu-step__d">12 min</span></label></li>
+          </ol>
+          <a class="link-arrow tu-path__next" href="#lesson-first-lane" data-path-next>Start with lesson 01 <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+        </li>
+
+        <li class="tu-path panel" data-stage="launch" data-path="builders" data-lessons="blueprint connect-tools versions approvals checklist afterglow" data-spotlight>
+          <div class="tu-path__head">
+            <p class="tu-path__persona">For builders</p>
+            <span class="tu-path__meta"><b>6</b> lessons · <b>55</b> min</span>
+          </div>
+          <h3 class="title-3 tu-path__title">Spec to store</h3>
+          <p class="tu-path__desc">From a one-page spec to a build in the store, with reviews that end in a yes. Theo’s Friday routine, one lesson at a time.</p>
+          <p class="tu-path__guide"><span class="avatar" aria-hidden="true">TL</span><span><b>Theo Lindqvist</b> Indie developer, Malmö</span></p>
+          <div class="tu-progress">
+            <div class="tu-lanes" role="progressbar" aria-label="Spec to store: lessons done" aria-valuemin="0" aria-valuemax="6" aria-valuenow="0" aria-valuetext="0 of 6 lessons done" style="--n:6; --p:0"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+            <p class="tu-progress__text" aria-hidden="true"><b data-path-done>0</b> of 6 done</p>
+          </div>
+          <ol class="tu-steps">
+            <li data-stage="shape"><label class="tu-step"><input type="checkbox" data-lesson="blueprint"><span class="tu-step__n">01</span><span class="tu-step__t">Write a one-page Blueprint</span><span class="tu-step__d">9 min</span></label></li>
+            <li data-stage="make"><label class="tu-step"><input type="checkbox" data-lesson="connect-tools"><span class="tu-step__n">02</span><span class="tu-step__t">Connect your tools</span><span class="tu-step__d">11 min</span></label></li>
+            <li data-stage="make"><label class="tu-step"><input type="checkbox" data-lesson="versions"><span class="tu-step__n">03</span><span class="tu-step__t">Versions and compare</span><span class="tu-step__d">8 min</span></label></li>
+            <li data-stage="review"><label class="tu-step"><input type="checkbox" data-lesson="approvals"><span class="tu-step__n">04</span><span class="tu-step__t">Approvals that stick</span><span class="tu-step__d">10 min</span></label></li>
+            <li data-stage="launch"><label class="tu-step"><input type="checkbox" data-lesson="checklist"><span class="tu-step__n">05</span><span class="tu-step__t">Plan a launch checklist</span><span class="tu-step__d">9 min</span></label></li>
+            <li data-stage="afterglow"><label class="tu-step"><input type="checkbox" data-lesson="afterglow"><span class="tu-step__n">06</span><span class="tu-step__t">Reading your Afterglow</span><span class="tu-step__d">8 min</span></label></li>
+          </ol>
+          <a class="link-arrow tu-path__next" href="#lesson-blueprint" data-path-next>Start with lesson 01 <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+        </li>
+
+        <li class="tu-path panel" data-stage="review" data-path="dreamers" data-lessons="first-lane sparkboard checklist afterglow" data-spotlight>
+          <div class="tu-path__head">
+            <p class="tu-path__persona">For dreamers</p>
+            <span class="tu-path__meta"><b>4</b> lessons · <b>35</b> min</span>
+          </div>
+          <h3 class="title-3 tu-path__title">Your first launch, start to finish</h3>
+          <p class="tu-path__desc">Never launched anything? Start here. Inés had no plan and no spreadsheet, and her sixty pots sold out before lunch.</p>
+          <p class="tu-path__guide"><span class="avatar" aria-hidden="true">IN</span><span><b>Inés Navarro</b> Potter, Valencia</span></p>
+          <div class="tu-progress">
+            <div class="tu-lanes" role="progressbar" aria-label="Your first launch, start to finish: lessons done" aria-valuemin="0" aria-valuemax="4" aria-valuenow="0" aria-valuetext="0 of 4 lessons done" style="--n:4; --p:0"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+            <p class="tu-progress__text" aria-hidden="true"><b data-path-done>0</b> of 4 done</p>
+          </div>
+          <ol class="tu-steps">
+            <li data-stage="spark"><label class="tu-step"><input type="checkbox" data-lesson="first-lane"><span class="tu-step__n">01</span><span class="tu-step__t">Your first lane in 10 minutes</span><span class="tu-step__d">10 min</span></label></li>
+            <li data-stage="spark"><label class="tu-step"><input type="checkbox" data-lesson="sparkboard"><span class="tu-step__n">02</span><span class="tu-step__t">Capture everything with Sparkboard</span><span class="tu-step__d">8 min</span></label></li>
+            <li data-stage="launch"><label class="tu-step"><input type="checkbox" data-lesson="checklist"><span class="tu-step__n">03</span><span class="tu-step__t">Plan a launch checklist</span><span class="tu-step__d">9 min</span></label></li>
+            <li data-stage="afterglow"><label class="tu-step"><input type="checkbox" data-lesson="afterglow"><span class="tu-step__n">04</span><span class="tu-step__t">Reading your Afterglow</span><span class="tu-step__d">8 min</span></label></li>
+          </ol>
+          <a class="link-arrow tu-path__next" href="#lesson-first-lane" data-path-next>Start with lesson 01 <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ===== the featured lesson ===== -->
+  <section class="section tu-feature" id="featured" aria-labelledby="tu-feature-title">
+    <div class="container">
+      <header class="section-head">
+        <div>
+          <p class="eyebrow">Featured lesson</p>
+          <h2 class="title-2" id="tu-feature-title" data-split>Run a review that lands.</h2>
+        </div>
+        <div class="section-head__aside">
+          <p class="lede">Twelve minutes with Amara Okafor and Hye-jin Park on getting notes from a client that you can actually use. Pick a chapter to move the playhead.</p>
+        </div>
+      </header>
+
+      <div class="tu-feature__grid">
+        <div class="tu-feature__main">
+          <figure class="mock tu-player" data-tu-player data-ch="3" style="--t:0.3056" data-reveal>
+            <div class="mock__bar">
+              <span class="mark" aria-hidden="true"><span class="mark__sheen"></span></span>
+              <span class="tu-player__file">Night Bloom <span aria-hidden="true">/</span> Review Room</span>
+              <span class="lane-chip tu-player__chip" data-stage="review">Review</span>
+            </div>
+            <div class="tu-poster">
+              <svg class="art tu-poster__art" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><path class="st" d="M1147 201.6h0M1523.9 494.5h0M98.7 288.4h0M264.4 147.5h0M899.7 413.1h0M863.5 795.5h0M976.8 519.7h0M1483.3 852.8h0M68.1 422.8h0M21.4 893.9h0M69 161.8h0M288.1 282.7h0M1291.2 67.6h0M369.2 191.7h0M1519.9 4.3h0M600 536.1h0M35.7 348.3h0M1566.9 128.7h0M250.6 708.9h0M39.5 4.2h0M520 893h0M1116 425.5h0M1377 477.8h0M27.1 246.6h0M1044.6 249.5h0M1486 823.6h0M1171 172.4h0M186.7 17.3h0M294.2 26.7h0M1564.1 710.6h0M1548.2 725.1h0M410.3 758.1h0M1147.3 230.6h0M820.6 29.6h0M737.4 450.4h0M969.9 632.4h0M370.9 193.9h0M168.1 835.4h0M31.9 428.4h0M834.1 160.5h0M572.6 463.8h0M1158.1 68.1h0M947.9 121.5h0M1471.9 181.1h0M682.4 784.6h0M659.3 590.1h0M863.1 377.8h0M332.6 584.8h0M1562.9 693h0M736.3 136.6h0M1115.8 576.9h0M1049.2 569.3h0M1063.9 488.7h0M1561.1 98.6h0M469.6 764.4h0M979.4 742.5h0M1133.5 703h0M1035.2 731.1h0M1264.9 679.3h0M1053.5 250.4h0M320.3 391h0M1178.1 431.6h0M230.6 456.4h0M1588.1 606.3h0M558.5 406.8h0M1407.8 849.2h0M610.3 698.8h0M1452.6 508.1h0M1319 410.1h0M806 79.8h0M414.3 250.4h0M1524.7 158.1h0M158.5 524h0M786.8 827.6h0M1114.1 832h0M1107.5 479.1h0M60 373.3h0M1262.4 749.5h0M1588.8 891.8h0M788 204.8h0M1092.8 55.8h0M496 43.7h0M908.6 233.8h0M695.4 380.2h0M312.1 755.9h0M320.9 711.9h0M1561.2 882h0M1204.7 717.8h0M582.8 192.5h0M597.8 209.6h0M1122.6 204.9h0M1397.9 858.9h0M1403.1 729.6h0M618.7 131.8h0M624.5 170.9h0M1311.4 337.2h0M1157.2 601.2h0M753.9 233.5h0M79.2 651.5h0M1595 19.4h0M1512.3 5.4h0M515.8 315.4h0M116.7 35.8h0M947.1 283.6h0M839.6 817.4h0M547.8 307.6h0M1358.5 744.8h0M288.3 570.9h0M1279 30.6h0M1460.2 291.6h0M1218.3 884.4h0M1531.3 20.3h0M1022.8 28.1h0M1173.9 131.3h0M7.9 640.2h0M711.4 676.4h0M1265.1 721.3h0M1193.8 569.6h0"/><path class="st st--b" d="M98.8 308.7h0M1411 139.9h0M97.6 274.8h0M1153.1 228.9h0M1119.4 253.9h0M355.9 28.3h0M153.9 68.1h0M385.3 436.8h0M148.3 618.5h0M1579.4 617.7h0M688.5 9.3h0M826.8 693.7h0M472.2 601.6h0M286.2 108.4h0M1015.3 392.8h0M946 470.8h0M681 866.5h0M543 93.1h0M542.3 751.7h0M106.9 423.3h0M1083.4 129.8h0M104.2 622.7h0M1078.3 574.6h0M885.8 437.3h0M1586.5 144.8h0M594 56.9h0M1428.6 856.8h0M42 552.8h0M10.9 145.4h0M800.1 386.7h0M888.5 77.5h0M91.6 755.3h0"/><ellipse class="pt" stroke="#3a6dff" cx="990" cy="380" rx="170" ry="62" transform="rotate(-82 820 380)"/><ellipse class="pt" stroke="#3a6dff" opacity="0.78" cx="944" cy="380" rx="124" ry="44" transform="rotate(-82 820 380)"/><ellipse class="pt" stroke="#3a6dff" opacity="0.56" cx="900" cy="380" rx="80" ry="28" transform="rotate(-82 820 380)"/><ellipse class="pt" stroke="#23d3ff" cx="990" cy="380" rx="170" ry="62" transform="rotate(-22 820 380)"/><ellipse class="pt" stroke="#23d3ff" opacity="0.78" cx="944" cy="380" rx="124" ry="44" transform="rotate(-22 820 380)"/><ellipse class="pt" stroke="#23d3ff" opacity="0.56" cx="900" cy="380" rx="80" ry="28" transform="rotate(-22 820 380)"/><ellipse class="pt" stroke="#20d69b" cx="990" cy="380" rx="170" ry="62" transform="rotate(38 820 380)"/><ellipse class="pt" stroke="#20d69b" opacity="0.78" cx="944" cy="380" rx="124" ry="44" transform="rotate(38 820 380)"/><ellipse class="pt" stroke="#20d69b" opacity="0.56" cx="900" cy="380" rx="80" ry="28" transform="rotate(38 820 380)"/><ellipse class="pt" stroke="#ffb13d" cx="990" cy="380" rx="170" ry="62" transform="rotate(98 820 380)"/><ellipse class="pt" stroke="#ffb13d" opacity="0.78" cx="944" cy="380" rx="124" ry="44" transform="rotate(98 820 380)"/><ellipse class="pt" stroke="#ffb13d" opacity="0.56" cx="900" cy="380" rx="80" ry="28" transform="rotate(98 820 380)"/><ellipse class="pt" stroke="#ff3b3b" cx="990" cy="380" rx="170" ry="62" transform="rotate(158 820 380)"/><ellipse class="pt" stroke="#ff3b3b" opacity="0.78" cx="944" cy="380" rx="124" ry="44" transform="rotate(158 820 380)"/><ellipse class="pt" stroke="#ff3b3b" opacity="0.56" cx="900" cy="380" rx="80" ry="28" transform="rotate(158 820 380)"/><ellipse class="pt" stroke="#ff7ad9" cx="990" cy="380" rx="170" ry="62" transform="rotate(218 820 380)"/><ellipse class="pt" stroke="#ff7ad9" opacity="0.78" cx="944" cy="380" rx="124" ry="44" transform="rotate(218 820 380)"/><ellipse class="pt" stroke="#ff7ad9" opacity="0.56" cx="900" cy="380" rx="80" ry="28" transform="rotate(218 820 380)"/><circle fill="#fff" cx="820" cy="380" r="4"/><circle class="w2" cx="820" cy="380" r="16"/><path class="pt" stroke="#3a6dff" opacity="0.85" d="M820 380C810 560 750 700 670 910"/><path class="pt" stroke="#23d3ff" opacity="0.85" d="M820 380C813 560 758 700 684 910"/><path class="pt" stroke="#20d69b" opacity="0.85" d="M820 380C816 560 766 700 698 910"/><path class="pt" stroke="#ffb13d" opacity="0.85" d="M820 380C819 560 774 700 712 910"/><path class="pt" stroke="#ff3b3b" opacity="0.85" d="M820 380C822 560 782 700 726 910"/><path class="pt" stroke="#ff7ad9" opacity="0.85" d="M820 380C825 560 790 700 740 910"/><path class="w2" opacity="0.7" d="M-10 760C500 730 1100 790 1610 740"/><path class="w2" opacity="0.6" d="M-10 780C500 750 1100 806 1610 762"/><path class="w2" opacity="0.5" d="M-10 812C500 770 1100 822 1610 784"/><path class="w2" opacity="0.4" d="M-10 856C500 790 1100 838 1610 806"/><path class="w2" opacity="0.3" d="M-10 912C500 810 1100 854 1610 828"/><path class="w2" opacity="0.2" d="M-10 980C500 830 1100 870 1610 850"/></svg>
+              <span class="tu-poster__tag mono" aria-hidden="true">FRAME 118 · <span class="tu-v7">v7</span><span class="tu-v8">v8</span></span>
+              <p class="tu-poster__brief" aria-hidden="true"><span class="avatar" data-stage="afterglow">AO</span><span>Notes on timing only, please. Colour isn’t final.</span></p>
+              <span class="tu-pin tu-pin--1" aria-hidden="true"><b>1</b><span class="tu-pin__note">Ruth: The petals close too early.</span><span class="tu-pin__done">Resolved in v8</span></span>
+              <span class="tu-pin tu-pin--2" aria-hidden="true"><b>2</b></span>
+              <span class="tu-pin tu-pin--3" aria-hidden="true"><b>3</b></span>
+              <span class="tu-poster__ok" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Approved by Ruth A.</span>
+              <button class="tu-poster__play" type="button" data-tu-play aria-label="Preview the lesson" aria-pressed="false">
+                <svg class="icon tu-ico-play" aria-hidden="true"><use href="#i-play"/></svg>
+                <svg class="icon tu-ico-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6v12M15 6v12"/></svg>
+              </button>
+            </div>
+            <figcaption class="tu-player__bar">
+              <span class="tu-player__time"><span data-tu-time>03:40</span><span class="tu-player__of"> / 12:00</span></span>
+              <span class="tu-track" aria-hidden="true">
+                <span class="tu-track__fill"></span>
+                <i style="--at:0"></i><i style="--at:0.1528"></i><i style="--at:0.3056"></i><i style="--at:0.5417"></i><i style="--at:0.7778"></i>
+                <span class="tu-track__head"></span>
+              </span>
+              <span class="tu-player__now" data-tu-now aria-live="polite">Chapter 3: Notes that sit on the frame</span>
+            </figcaption>
+          </figure>
+
+          <div class="tu-transcript" data-reveal>
+            <h3 class="tu-label">Transcript <span>from 03:40</span></h3>
+            <ol class="tu-lines">
+              <li><button type="button" class="tu-lines__t" data-seek="220" aria-label="Jump to 03:40">03:40</button><p><b>Hye-jin</b> So Ruth, your commissioning editor, opens the link. No account, no password. What does she see first?</p></li>
+              <li><button type="button" class="tu-lines__t" data-seek="228" aria-label="Jump to 03:48">03:48</button><p><b>Amara</b> The cut, and one line from me: notes on timing only, colour isn’t final. If you don’t say what you need, you get notes on everything.</p></li>
+              <li><button type="button" class="tu-lines__t" data-seek="246" aria-label="Jump to 04:06">04:06</button><p><b>Amara</b> Then she pauses, presses N and clicks right where it hurts. Frame 118: the petals close too early. It reads like the flower gives up.</p></li>
+              <li><button type="button" class="tu-lines__t" data-seek="265" aria-label="Jump to 04:25">04:25</button><p><b>Hye-jin</b> And when you upload v8, where does that note go?</p></li>
+              <li><button type="button" class="tu-lines__t" data-seek="270" aria-label="Jump to 04:30">04:30</button><p><b>Amara</b> It rides along with the frame. I re-cut, resolve it in v8, and Ruth sees it closed without either of us writing an email.</p></li>
+            </ol>
+          </div>
+        </div>
+
+        <aside class="tu-feature__side panel" aria-labelledby="tu-lesson-title" data-reveal data-delay="0.1">
+          <div class="tu-feature__meta">
+            <span class="lane-chip" data-stage="review">Review</span>
+            <span class="tu-level" data-level="2"><i></i><i></i><i></i>Intermediate</span>
+            <span class="tu-feature__dur"><svg class="icon" aria-hidden="true"><use href="#i-play"/></svg>Video · 12 min</span>
+          </div>
+          <h3 class="tu-feature__title" id="tu-lesson-title">Running a review with clients</h3>
+          <ul class="tu-hosts">
+            <li><span class="avatar" data-stage="afterglow" aria-hidden="true">AO</span><span><b>Amara Okafor</b> Animator, Lagos</span></li>
+            <li><span class="avatar" data-stage="review" aria-hidden="true">HP</span><span><b>Hye-jin Park</b> Design lead, Review Room</span></li>
+          </ul>
+          <h4 class="tu-label" id="tu-ch-label">Chapters</h4>
+          <ol class="tu-chapters" aria-labelledby="tu-ch-label">
+            <li><button type="button" data-chapter="1" data-t="0"><span class="tu-chapters__n">01</span><span class="tu-chapters__t">Before you send the link<small>One cut, one question, the right people.</small></span><span class="tu-chapters__at">00:00</span></button></li>
+            <li><button type="button" data-chapter="2" data-t="110"><span class="tu-chapters__n">02</span><span class="tu-chapters__t">One line of direction<small>Say what kind of notes you need.</small></span><span class="tu-chapters__at">01:50</span></button></li>
+            <li><button type="button" data-chapter="3" data-t="220" aria-current="step"><span class="tu-chapters__n">03</span><span class="tu-chapters__t">Notes that sit on the frame<small>Pins on frame 118, not a PDF of opinions.</small></span><span class="tu-chapters__at">03:40</span></button></li>
+            <li><button type="button" data-chapter="4" data-t="390"><span class="tu-chapters__n">04</span><span class="tu-chapters__t">Replies, re-cuts and v8<small>Notes ride into the next version and close there.</small></span><span class="tu-chapters__at">06:30</span></button></li>
+            <li><button type="button" data-chapter="5" data-t="560"><span class="tu-chapters__n">05</span><span class="tu-chapters__t">Asking for the approval<small>One click, on the record, and the lane moves on.</small></span><span class="tu-chapters__at">09:20</span></button></li>
+          </ol>
+          <div class="tu-feature__foot">
+            <label class="check tu-done"><input type="checkbox" data-lesson="review-clients"> Mark as done</label>
+            <a class="link-arrow" href="#lesson-review-clients">In the library <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== the library ===== -->
+  <section class="section tu-lib" id="library" aria-labelledby="tu-lib-title" data-filter-scope>
+    <div class="container">
+      <header class="section-head">
+        <div>
+          <p class="eyebrow">The library</p>
+          <h2 class="title-2" id="tu-lib-title" data-split>Twelve lessons, one road.</h2>
+        </div>
+        <div class="section-head__aside">
+          <p class="lede">None longer than a coffee. Filter by who you are, how far along you are and the stage you’re stuck in.</p>
+        </div>
+      </header>
+
+      <div class="tu-bar" data-reveal="fade">
+        <div class="tu-bar__group">
+          <span class="tu-bar__label" id="tu-f-persona">For</span>
+          <div class="tu-chips" role="group" aria-labelledby="tu-f-persona" data-filter-group>
+            <button type="button" class="tu-chip" data-filter="all" aria-pressed="true">Everyone</button>
+            <button type="button" class="tu-chip" data-filter="creator" aria-pressed="false">Creators</button>
+            <button type="button" class="tu-chip" data-filter="builder" aria-pressed="false">Builders</button>
+            <button type="button" class="tu-chip" data-filter="dreamer" aria-pressed="false">Dreamers</button>
+          </div>
+        </div>
+        <div class="tu-bar__group">
+          <span class="tu-bar__label" id="tu-f-level">Level</span>
+          <div class="tu-chips" role="group" aria-labelledby="tu-f-level" data-filter-group>
+            <button type="button" class="tu-chip" data-filter="all" aria-pressed="true">Any</button>
+            <button type="button" class="tu-chip" data-filter="beginner" aria-pressed="false">Beginner</button>
+            <button type="button" class="tu-chip" data-filter="intermediate" aria-pressed="false">Intermediate</button>
+            <button type="button" class="tu-chip" data-filter="advanced" aria-pressed="false">Advanced</button>
+          </div>
+        </div>
+        <div class="tu-bar__group tu-bar__group--stage">
+          <span class="tu-bar__label" id="tu-f-stage">Stage</span>
+          <div class="tu-chips" role="group" aria-labelledby="tu-f-stage" data-filter-group>
+            <button type="button" class="tu-chip" data-filter="all" aria-pressed="true">All</button>
+            <button type="button" class="tu-chip" data-filter="spark" data-stage="spark" aria-pressed="false">Spark</button>
+            <button type="button" class="tu-chip" data-filter="shape" data-stage="shape" aria-pressed="false">Shape</button>
+            <button type="button" class="tu-chip" data-filter="make" data-stage="make" aria-pressed="false">Make</button>
+            <button type="button" class="tu-chip" data-filter="review" data-stage="review" aria-pressed="false">Review</button>
+            <button type="button" class="tu-chip" data-filter="launch" data-stage="launch" aria-pressed="false">Launch</button>
+            <button type="button" class="tu-chip" data-filter="afterglow" data-stage="afterglow" aria-pressed="false">Afterglow</button>
+          </div>
+          <p class="tu-count" data-filter-count data-filter-noun="lesson" aria-live="polite">12 lessons</p>
+        </div>
+      </div>
+
+      <ul class="tu-grid" data-filter-list>
+        <li class="tu-grid__item" id="lesson-first-lane" data-stage="spark" data-tags="creator builder dreamer beginner spark">
+          <article class="tu-card panel" aria-labelledby="tu-l-first-lane" data-lesson-card="first-lane" data-spotlight>
+            <div class="tu-card__art">
+              <svg class="art" viewBox="0 0 400 180" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><path class="st" d="M204.6 95.4h0M236.1 153.1h0M32 95.5h0M180.1 86.4h0M168 120.6h0M64.3 32.1h0M158.4 67.9h0M51 107.5h0M167.4 152h0M307.5 57.2h0M100.7 10.1h0M297.4 62.5h0M339.9 147.7h0M10.2 13.8h0M198.9 94.7h0M257.6 8.1h0M253.9 177.2h0M293.4 75.5h0M120.2 99.9h0M147.7 68h0M341.2 113.4h0M367.5 105.7h0M352.3 54.3h0M49.4 14.4h0M223.9 112h0M384.5 107.7h0M260.7 117.1h0M258.8 175h0M370.2 67.8h0M261.5 12.8h0M265.6 88.6h0M90.1 129.3h0M36.8 99.7h0M72.4 147h0M300.2 0.9h0M340.2 102.5h0"/><path class="st st--b" d="M391.1 53.4h0M230.7 152.2h0M200.8 132.2h0M186.5 63.5h0M337 28.8h0M252.1 112.3h0M123.1 92.6h0M217.8 92.5h0M229.3 87.7h0M284.2 24.3h0"/><circle class="a3" cx="112" cy="92" r="30"/><circle class="a4" cx="112" cy="92" r="52" stroke-dasharray="2 5"/><use href="#i-spark" class="a glow" x="90" y="73.7" width="44" height="44"/><path class="a" d="M146 86.5C232 86.5 250 62 410 54"/><path class="a" opacity="0.86" d="M146 88.7C232 88.7 250 77 410 69"/><path class="a" opacity="0.72" d="M146 90.9C232 90.9 250 92 410 84"/><path class="a" opacity="0.58" d="M146 93.1C232 93.1 250 107 410 99"/><path class="a" opacity="0.44" d="M146 95.3C232 95.3 250 122 410 114"/><path class="a" opacity="0.3" d="M146 97.5C232 97.5 250 137 410 129"/><path class="dash" d="M146 90.9C232 90.9 250 92 410 84"/></svg>
+              <span class="tu-card__fmt"><svg class="icon" aria-hidden="true"><use href="#i-play"/></svg>Video</span>
+              <span class="tu-card__dur"><b>10</b> min</span>
+              <span class="tu-card__seal" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Done</span>
+            </div>
+            <div class="tu-card__body">
+              <div class="tu-card__meta"><span class="lane-chip">Spark</span><span class="tu-level" data-level="1"><i></i><i></i><i></i>Beginner</span></div>
+              <h3 class="tu-card__title" id="tu-l-first-lane">Your first lane in 10 minutes</h3>
+              <p class="tu-card__desc">Open a lane, drop in three sparks and invite one reviewer. By minute ten your idea has a road and a date.</p>
+              <div class="tu-card__foot">
+                <span class="tu-card__who"><span class="sr">For </span>Creators · Builders · Dreamers</span>
+                <label class="check tu-done"><input type="checkbox" data-lesson="first-lane"> Mark as done<span class="sr">: Your first lane in 10 minutes</span></label>
+              </div>
+            </div>
+          </article>
+        </li>
+        <li class="tu-grid__item" id="lesson-sparkboard" data-stage="spark" data-tags="creator dreamer beginner spark">
+          <article class="tu-card panel" aria-labelledby="tu-l-sparkboard" data-lesson-card="sparkboard" data-spotlight>
+            <div class="tu-card__art">
+              <svg class="art" viewBox="0 0 400 180" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><path class="st" d="M37.1 12.3h0M122.2 58.3h0M204.8 171.6h0M3.6 127.6h0M34.5 177.4h0M180.9 117.9h0M85.2 152.3h0M286.1 66.8h0M378.4 137.7h0M365.2 116.2h0M283.4 39.1h0M206.9 161.2h0M323.9 116.2h0M362.9 36.7h0M320.9 29h0M232.8 95.4h0M4.4 36.4h0M34.1 103.5h0M292.7 99.3h0M27.9 149.5h0M66.6 119.3h0M87.4 74.7h0M94.6 100h0M9.1 127h0M44.6 173.7h0M272 176h0M313.7 111.8h0M280.8 127h0M237.7 40.2h0M82.4 175h0M35.6 26.1h0M107.6 2.1h0"/><path class="st st--b" d="M188.9 133.4h0M76.3 141h0M358.5 139.6h0M144.8 52.7h0M277.9 33h0M335.7 127.2h0M337.5 34h0M63.1 79.3h0"/><path class="a2" d="M70 58L104 42L128 74L96 96L62 90Z"/><circle class="af" cx="70" cy="58" r="3.4"/><circle class="af" opacity="0.7" cx="104" cy="42" r="2.2"/><circle class="af" opacity="0.7" cx="128" cy="74" r="2.2"/><circle class="af" opacity="0.7" cx="96" cy="96" r="2.2"/><circle class="af" opacity="0.7" cx="62" cy="90" r="2.2"/><path class="a2" d="M208 112L244 92L276 118L252 146L222 140Z"/><circle class="af" cx="208" cy="112" r="3.4"/><circle class="af" opacity="0.7" cx="244" cy="92" r="2.2"/><circle class="af" opacity="0.7" cx="276" cy="118" r="2.2"/><circle class="af" opacity="0.7" cx="252" cy="146" r="2.2"/><circle class="af" opacity="0.7" cx="222" cy="140" r="2.2"/><path class="a2" d="M300 44L334 62L362 40L346 92"/><circle class="af" cx="300" cy="44" r="3.4"/><circle class="af" opacity="0.7" cx="334" cy="62" r="2.2"/><circle class="af" opacity="0.7" cx="362" cy="40" r="2.2"/><circle class="af" opacity="0.7" cx="346" cy="92" r="2.2"/><path class="a3" stroke-dasharray="2 5" d="M128 74C160 84 190 96 208 112M276 118C292 96 300 80 334 62"/><use href="#i-spark" class="a glow" x="92" y="28" width="24" height="24"/><use href="#i-spark" class="a" x="232" y="78" width="22" height="22"/></svg>
+              <span class="tu-card__fmt"><svg class="icon" aria-hidden="true"><use href="#i-play"/></svg>Video</span>
+              <span class="tu-card__dur"><b>8</b> min</span>
+              <span class="tu-card__seal" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Done</span>
+            </div>
+            <div class="tu-card__body">
+              <div class="tu-card__meta"><span class="lane-chip">Spark</span><span class="tu-level" data-level="1"><i></i><i></i><i></i>Beginner</span></div>
+              <h3 class="tu-card__title" id="tu-l-sparkboard">Capture everything with Sparkboard</h3>
+              <p class="tu-card__desc">Voice memos on the bus, screenshots at midnight, links from email. Set up capture once and let constellations do the sorting.</p>
+              <div class="tu-card__foot">
+                <span class="tu-card__who"><span class="sr">For </span>Creators · Dreamers</span>
+                <label class="check tu-done"><input type="checkbox" data-lesson="sparkboard"> Mark as done<span class="sr">: Capture everything with Sparkboard</span></label>
+              </div>
+            </div>
+          </article>
+        </li>
+        <li class="tu-grid__item" id="lesson-blueprint" data-stage="shape" data-tags="builder dreamer beginner shape">
+          <article class="tu-card panel" aria-labelledby="tu-l-blueprint" data-lesson-card="blueprint" data-spotlight>
+            <div class="tu-card__art">
+              <svg class="art" viewBox="0 0 400 180" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><path class="grid" d="M20 0V180M40 0V180M60 0V180M80 0V180M100 0V180M120 0V180M140 0V180M160 0V180M180 0V180M200 0V180M220 0V180M240 0V180M260 0V180M280 0V180M300 0V180M320 0V180M340 0V180M360 0V180M380 0V180M0 20H400M0 40H400M0 60H400M0 80H400M0 100H400M0 120H400M0 140H400M0 160H400"/><path class="st" d="M268.9 150.5h0M19.6 75h0M30.1 167.7h0M265.4 57.7h0M229.1 75.9h0M19 128.5h0M337.8 51h0M333.3 139h0M382.8 117.9h0M281.3 50.2h0M269.5 116.9h0M327.4 150.1h0M132.4 69.1h0M162.5 8.2h0M354.8 175.3h0M326.9 96.9h0"/><path class="st st--b" d="M14 31.1h0M27.3 150.3h0"/><path class="a" d="M150 26h74l26 26v110H150Z"/><path class="a2" d="M224 26v26h26"/><path class="a2" d="M166 66h52M166 80h68M166 94h44M166 116h60M166 130h38"/><path class="w" d="M166 52h34"/><path class="a3" d="M40 154H360"/><path class="af" d="M70 148l6 6-6 6-6-6Z"/><path class="af" opacity="0.75" d="M282 148l6 6-6 6-6-6Z"/><path class="af" opacity="0.5" d="M338 148l6 6-6 6-6-6Z"/><path class="a3" stroke-dasharray="2 4" d="M70 148V110H150M282 148V120H250"/></svg>
+              <span class="tu-card__fmt"><svg class="icon" aria-hidden="true"><use href="#i-doc"/></svg>Written</span>
+              <span class="tu-card__dur"><b>9</b> min</span>
+              <span class="tu-card__seal" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Done</span>
+            </div>
+            <div class="tu-card__body">
+              <div class="tu-card__meta"><span class="lane-chip">Shape</span><span class="tu-level" data-level="1"><i></i><i></i><i></i>Beginner</span></div>
+              <h3 class="tu-card__title" id="tu-l-blueprint">Write a one-page Blueprint</h3>
+              <p class="tu-card__desc">What it is, who’s riding along, what done looks like and when. One page, from a template by someone who has shipped.</p>
+              <div class="tu-card__foot">
+                <span class="tu-card__who"><span class="sr">For </span>Builders · Dreamers</span>
+                <label class="check tu-done"><input type="checkbox" data-lesson="blueprint"> Mark as done<span class="sr">: Write a one-page Blueprint</span></label>
+              </div>
+            </div>
+          </article>
+        </li>
+        <li class="tu-grid__item" id="lesson-crew" data-stage="shape" data-tags="creator builder beginner shape">
+          <article class="tu-card panel" aria-labelledby="tu-l-crew" data-lesson-card="crew" data-spotlight>
+            <div class="tu-card__art">
+              <svg class="art" viewBox="0 0 400 180" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><path class="st" d="M251.8 17.3h0M217.8 90.1h0M142 39.6h0M191.5 143.5h0M282.4 116h0M41.6 99.5h0M312 114.4h0M8.1 144.6h0M89.7 5.8h0M56.7 2h0M238.1 37h0M227.6 119.9h0M41.8 47.7h0M358.3 61.1h0M114.2 58.3h0M12.4 116.2h0M114.2 91.8h0M372.9 78.4h0M13.6 122.3h0M61.6 172h0M93.6 174.4h0M282.4 101.9h0M243 0.6h0M130 54.5h0M83.4 165.2h0M40.2 8.6h0M19.8 70h0M281.9 65.7h0M357.3 24.5h0M60.9 16.2h0M72.3 140h0M24.4 77.9h0M91 122.7h0M102.1 161.6h0"/><path class="st st--b" d="M269.5 107.5h0M225.5 22h0M85.3 7h0M281 138.5h0M64 138.2h0M108.7 9.2h0"/><ellipse class="a3" cx="200" cy="92" rx="118" ry="52" stroke-dasharray="2 5"/><ellipse class="a4" cx="200" cy="92" rx="170" ry="76"/><path class="a2" d="M200 92L82 92"/><path class="a2" d="M200 92L260 47"/><path class="a2" d="M200 92L312 110"/><path class="a2" d="M200 92L160 142"/><circle class="a" cx="82" cy="92" r="15"/><circle class="af" opacity="0.9" cx="82" cy="92" r="3"/><circle class="a" opacity="0.88" cx="260" cy="47" r="13"/><circle class="af" opacity="0.75" cx="260" cy="47" r="3"/><circle class="a" opacity="0.76" cx="312" cy="110" r="15"/><circle class="af" opacity="0.6" cx="312" cy="110" r="3"/><circle class="a" opacity="0.64" cx="160" cy="142" r="12"/><circle class="af" opacity="0.45" cx="160" cy="142" r="3"/><circle class="w" cx="200" cy="92" r="9"/><circle class="a2" cx="200" cy="92" r="20"/></svg>
+              <span class="tu-card__fmt"><svg class="icon" aria-hidden="true"><use href="#i-doc"/></svg>Written</span>
+              <span class="tu-card__dur"><b>6</b> min</span>
+              <span class="tu-card__seal" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Done</span>
+            </div>
+            <div class="tu-card__body">
+              <div class="tu-card__meta"><span class="lane-chip">Shape</span><span class="tu-level" data-level="1"><i></i><i></i><i></i>Beginner</span></div>
+              <h3 class="tu-card__title" id="tu-l-crew">Crew roles explained</h3>
+              <p class="tu-card__desc">Owner, Maker, Reviewer and Guest: who sees what, who can move a lane, and who never needs an account.</p>
+              <div class="tu-card__foot">
+                <span class="tu-card__who"><span class="sr">For </span>Creators · Builders</span>
+                <label class="check tu-done"><input type="checkbox" data-lesson="crew"> Mark as done<span class="sr">: Crew roles explained</span></label>
+              </div>
+            </div>
+          </article>
+        </li>
+        <li class="tu-grid__item" id="lesson-versions" data-stage="make" data-tags="creator builder intermediate make">
+          <article class="tu-card panel" aria-labelledby="tu-l-versions" data-lesson-card="versions" data-spotlight>
+            <div class="tu-card__art">
+              <svg class="art" viewBox="0 0 400 180" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><path class="st" d="M386.3 14.9h0M29.7 139h0M381.5 116.5h0M293.8 149.6h0M231.9 27h0M35.8 94.6h0M378.4 143.7h0M89.7 122.2h0M55.2 12.9h0M70.4 25.1h0M118.5 144.6h0M43.2 171.5h0M192.4 19h0M325.6 98.5h0M313.8 17.4h0M364 153.4h0M130.8 116.1h0M252.7 5.4h0M82.3 83.7h0M60 52.9h0M195.8 4.3h0M76.7 43.7h0M163.5 72.5h0M235.4 179.6h0M74.8 144.5h0M350.2 19h0M20.7 22.8h0M200 54.5h0M92 37.9h0M378.1 103.8h0M140.4 56.2h0M210.9 23.2h0M167.5 98.9h0M172.9 47.8h0"/><path class="st st--b" d="M25.7 147.8h0M102.1 159.8h0M233.3 89.5h0M177.7 158.7h0M196.2 131.7h0M124.1 3.9h0"/><rect class="a2" opacity="0.18" x="92" y="22" width="150" height="84" rx="6"/><rect class="a2" opacity="0.34" x="114" y="34" width="150" height="84" rx="6"/><rect class="a2" opacity="0.5" x="136" y="46" width="150" height="84" rx="6"/><rect class="a2" opacity="0.66" x="158" y="58" width="150" height="84" rx="6"/><rect class="a2" opacity="0.82" x="180" y="70" width="150" height="84" rx="6"/><rect class="a" x="202" y="82" width="150" height="84" rx="6"/><path class="a2" d="M212 148C242 122 266 140 288 120S330 112 342 104"/><circle class="w" cx="320" cy="102" r="7"/><text class="t" x="212" y="100">v7</text><path class="w2" d="M30 166H370"/><path class="dash" d="M30 166H370"/></svg>
+              <span class="tu-card__fmt"><svg class="icon" aria-hidden="true"><use href="#i-play"/></svg>Video</span>
+              <span class="tu-card__dur"><b>8</b> min</span>
+              <span class="tu-card__seal" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Done</span>
+            </div>
+            <div class="tu-card__body">
+              <div class="tu-card__meta"><span class="lane-chip">Make</span><span class="tu-level" data-level="2"><i></i><i></i><i></i>Intermediate</span></div>
+              <h3 class="tu-card__title" id="tu-l-versions">Versions and compare</h3>
+              <p class="tu-card__desc">Drop in v6 and v7, scrub them side by side and see exactly what changed, down to the frame or the line.</p>
+              <div class="tu-card__foot">
+                <span class="tu-card__who"><span class="sr">For </span>Creators · Builders</span>
+                <label class="check tu-done"><input type="checkbox" data-lesson="versions"> Mark as done<span class="sr">: Versions and compare</span></label>
+              </div>
+            </div>
+          </article>
+        </li>
+        <li class="tu-grid__item" id="lesson-connect-tools" data-stage="make" data-tags="builder advanced make">
+          <article class="tu-card panel" aria-labelledby="tu-l-connect-tools" data-lesson-card="connect-tools" data-spotlight>
+            <div class="tu-card__art">
+              <svg class="art" viewBox="0 0 400 180" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><path class="st" d="M219.3 127.5h0M292.6 7.9h0M229.1 75.8h0M207.8 142h0M293.1 71.7h0M168.7 153h0M195.9 152.1h0M246.6 174.1h0M5.1 25.4h0M317.8 120.8h0M288 155.8h0M61.5 149.8h0M246.5 99.8h0M42.2 38.9h0M228.1 10.1h0M102.5 100.8h0M343.2 156.1h0M148.3 46.2h0M361.1 30.2h0M296.2 65.6h0M292.8 168.6h0M1.2 92.8h0M354.9 24.7h0M306.5 99.3h0M83.6 139.4h0M147.4 45h0M329.6 51.1h0M126.3 157.6h0M335.4 39.2h0M317.7 3.8h0M116.4 85h0"/><path class="st st--b" d="M14.2 130h0M291 156.9h0M76.3 140.2h0"/><rect class="w" opacity="0.9" x="74" y="41" width="22" height="22" rx="5"/><rect class="w" opacity="0.78" x="74" y="73" width="22" height="22" rx="5"/><rect class="w" opacity="0.66" x="74" y="105" width="22" height="22" rx="5"/><rect class="w" opacity="0.54" x="74" y="137" width="22" height="22" rx="5"/><path class="a" d="M226 90H410"/><path class="a" opacity="0.87" d="M226 94H410"/><path class="a" opacity="0.74" d="M226 98H410"/><path class="a" opacity="0.61" d="M226 102H410"/><path class="a" opacity="0.48" d="M226 106H410"/><path class="a" opacity="0.35" d="M226 110H410"/><path class="a2" d="M96 52C160 52 176 94 226 94"/><path class="a2" d="M96 84C160 84 176 98 226 98"/><path class="a2" d="M96 116C160 116 176 102 226 102"/><path class="a2" d="M96 148C160 148 176 106 226 106"/><path class="dash" d="M96 84C160 84 176 98 226 98H410"/></svg>
+              <span class="tu-card__fmt"><svg class="icon" aria-hidden="true"><use href="#i-learn"/></svg>Walkthrough</span>
+              <span class="tu-card__dur"><b>11</b> min</span>
+              <span class="tu-card__seal" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Done</span>
+            </div>
+            <div class="tu-card__body">
+              <div class="tu-card__meta"><span class="lane-chip">Make</span><span class="tu-level" data-level="3"><i></i><i></i><i></i>Advanced</span></div>
+              <h3 class="tu-card__title" id="tu-l-connect-tools">Connect your tools</h3>
+              <p class="tu-card__desc">Hook up your editor, your repo and your store, so renders, builds and orders arrive as versions and stats.</p>
+              <div class="tu-card__foot">
+                <span class="tu-card__who"><span class="sr">For </span>Builders</span>
+                <label class="check tu-done"><input type="checkbox" data-lesson="connect-tools"> Mark as done<span class="sr">: Connect your tools</span></label>
+              </div>
+            </div>
+          </article>
+        </li>
+        <li class="tu-grid__item" id="lesson-review-clients" data-stage="review" data-tags="creator intermediate review">
+          <article class="tu-card panel" aria-labelledby="tu-l-review-clients" data-lesson-card="review-clients" data-spotlight>
+            <div class="tu-card__art">
+              <svg class="art" viewBox="0 0 400 180" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><path class="st" d="M305.1 28.7h0M78.3 121.8h0M172.3 169.8h0M216.3 98.1h0M210.6 172h0M267.8 97.5h0M42.8 107.1h0M27.9 1h0M272.1 25.8h0M100.9 77.6h0M219.8 44.9h0M236.5 59.6h0M332.1 67.3h0M190.9 19.3h0M236.6 39.1h0M82.3 74.4h0M345.7 52.6h0M91.7 38.6h0M237.3 33h0M160.4 52.9h0M121.3 154.9h0M222.5 156.1h0M311.3 126.1h0M314.7 85.2h0M155.6 176.3h0M46.6 51.2h0M152.2 1.9h0M43.5 106.7h0M312.9 173.4h0M162.4 30.9h0M361.5 15.1h0M334 168h0"/><path class="st st--b" d="M271.4 88.1h0M17 67.6h0M83.8 100.2h0M313 61.8h0"/><rect class="w2" x="92" y="24" width="216" height="122" rx="6"/><path class="a3" d="M92 124C140 104 170 116 204 96S270 82 308 92"/><circle class="w2" cx="262" cy="56" r="13"/><g><circle class="a" cx="148" cy="74" r="9"/><circle class="af" cx="148" cy="74" r="3"/><path class="a2" d="M157 71h22"/></g><g opacity="0.8"><circle class="a" cx="226" cy="104" r="9"/><circle class="af" cx="226" cy="104" r="3"/><path class="a2" d="M235 101h22"/></g><g opacity="0.6"><circle class="a" cx="272" cy="52" r="9"/><circle class="af" cx="272" cy="52" r="3"/><path class="a2" d="M281 49h22"/></g><path class="a3" d="M92 160h216"/><path class="a" d="M92 160h88"/><circle class="af" cx="180" cy="160" r="3"/></svg>
+              <span class="tu-card__fmt"><svg class="icon" aria-hidden="true"><use href="#i-play"/></svg>Video</span>
+              <span class="tu-card__dur"><b>12</b> min</span>
+              <span class="tu-card__seal" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Done</span>
+            </div>
+            <div class="tu-card__body">
+              <div class="tu-card__meta"><span class="lane-chip">Review</span><span class="tu-level" data-level="2"><i></i><i></i><i></i>Intermediate</span></div>
+              <h3 class="tu-card__title" id="tu-l-review-clients">Running a review with clients</h3>
+              <p class="tu-card__desc">One link, one line of direction, and notes you can act on. Amara Okafor shows the review behind Night Bloom.</p>
+              <div class="tu-card__foot">
+                <span class="tu-card__who"><span class="sr">For </span>Creators</span>
+                <label class="check tu-done"><input type="checkbox" data-lesson="review-clients"> Mark as done<span class="sr">: Running a review with clients</span></label>
+              </div>
+            </div>
+          </article>
+        </li>
+        <li class="tu-grid__item" id="lesson-frame-notes" data-stage="review" data-tags="creator intermediate review">
+          <article class="tu-card panel" aria-labelledby="tu-l-frame-notes" data-lesson-card="frame-notes" data-spotlight>
+            <div class="tu-card__art">
+              <svg class="art" viewBox="0 0 400 180" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><path class="st" d="M282.5 10.3h0M234.6 26.9h0M363.9 20.3h0M315.9 28.2h0M178.8 17.8h0M304.6 33.7h0M380.4 4.4h0M90.4 3h0M25.1 17h0M171 7.2h0M148.1 5.7h0M395.3 7.6h0M172.4 34.8h0M5.9 16.7h0M184.1 11.3h0M191.8 27.8h0M327.7 39.5h0M223.4 28.4h0M132.8 13.6h0M346.2 33.6h0M12.4 30.1h0M201.8 38.9h0M87.6 17.1h0"/><path class="st st--b" d="M83.7 14.2h0M211.3 18.6h0M197.6 33.3h0M80.2 23.2h0M31.4 37.2h0M273.9 13.3h0M74.5 5.9h0"/><path class="st" d="M66.6 87.2h0M186.1 80.8h0M366.9 110.6h0M354.9 44.9h0M67.7 60.2h0M205.3 42h0M339.6 68.3h0"/><path class="st st--b" d="M361.4 49.9h0M3.2 156.9h0M219.2 130.2h0"/><path class="w2" d="M-10 54H410M-10 130H410"/><path class="w2" d="M6 44h8v5h-8ZM6 136h8v5h-8ZM24 44h8v5h-8ZM24 136h8v5h-8ZM42 44h8v5h-8ZM42 136h8v5h-8ZM60 44h8v5h-8ZM60 136h8v5h-8ZM78 44h8v5h-8ZM78 136h8v5h-8ZM96 44h8v5h-8ZM96 136h8v5h-8ZM114 44h8v5h-8ZM114 136h8v5h-8ZM132 44h8v5h-8ZM132 136h8v5h-8ZM150 44h8v5h-8ZM150 136h8v5h-8ZM168 44h8v5h-8ZM168 136h8v5h-8ZM186 44h8v5h-8ZM186 136h8v5h-8ZM204 44h8v5h-8ZM204 136h8v5h-8ZM222 44h8v5h-8ZM222 136h8v5h-8ZM240 44h8v5h-8ZM240 136h8v5h-8ZM258 44h8v5h-8ZM258 136h8v5h-8ZM276 44h8v5h-8ZM276 136h8v5h-8ZM294 44h8v5h-8ZM294 136h8v5h-8ZM312 44h8v5h-8ZM312 136h8v5h-8ZM330 44h8v5h-8ZM330 136h8v5h-8ZM348 44h8v5h-8ZM348 136h8v5h-8ZM366 44h8v5h-8ZM366 136h8v5h-8ZM384 44h8v5h-8ZM384 136h8v5h-8Z"/><rect class="w2" x="14" y="62" width="84" height="60" rx="3"/><rect class="w2" x="106" y="62" width="84" height="60" rx="3"/><rect class="a" x="198" y="62" width="84" height="60" rx="3"/><rect class="w2" x="290" y="62" width="84" height="60" rx="3"/><rect class="w2" x="382" y="62" width="84" height="60" rx="3"/><path class="a3" d="M206 110C222 98 236 106 250 92S268 86 276 80"/><path class="a" d="M240 32V152"/><circle class="af" cx="240" cy="32" r="4"/><path class="a2" d="M246 32h34"/><circle class="a" cx="230" cy="84" r="8"/><circle class="af" cx="230" cy="84" r="2.6"/></svg>
+              <span class="tu-card__fmt"><svg class="icon" aria-hidden="true"><use href="#i-play"/></svg>Video</span>
+              <span class="tu-card__dur"><b>6</b> min</span>
+              <span class="tu-card__seal" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Done</span>
+            </div>
+            <div class="tu-card__body">
+              <div class="tu-card__meta"><span class="lane-chip">Review</span><span class="tu-level" data-level="2"><i></i><i></i><i></i>Intermediate</span></div>
+              <h3 class="tu-card__title" id="tu-l-frame-notes">Frame-accurate notes on video</h3>
+              <p class="tu-card__desc">Pause, press N, click. Notes that live on frame 118 and follow it into every new cut.</p>
+              <div class="tu-card__foot">
+                <span class="tu-card__who"><span class="sr">For </span>Creators</span>
+                <label class="check tu-done"><input type="checkbox" data-lesson="frame-notes"> Mark as done<span class="sr">: Frame-accurate notes on video</span></label>
+              </div>
+            </div>
+          </article>
+        </li>
+        <li class="tu-grid__item" id="lesson-approvals" data-stage="review" data-tags="builder advanced review">
+          <article class="tu-card panel" aria-labelledby="tu-l-approvals" data-lesson-card="approvals" data-spotlight>
+            <div class="tu-card__art">
+              <svg class="art" viewBox="0 0 400 180" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><path class="st" d="M226.2 39.5h0M215.6 58h0M79.1 140.4h0M369 1h0M197.7 131.7h0M255.5 130.6h0M113 122.2h0M179.7 168.2h0M159.7 164.8h0M375.7 23.9h0M62.2 57.1h0M134.4 120h0M35.1 118.6h0M158.8 41.7h0M64.5 126.7h0M279.1 20.2h0M80.8 146.1h0M281.2 145.9h0M123.1 40.5h0M51.7 126.5h0M148.5 174.3h0M41.3 49.7h0M204 139.9h0M129.6 149.3h0M303.9 10.4h0M195.1 165.4h0M136.5 32h0M380 170h0M113.9 50.9h0M132.3 100.7h0M322 27.7h0M128.4 31.2h0M3.5 143.6h0"/><path class="st st--b" d="M129.9 98.7h0M3.1 65.1h0M203.7 173.9h0M346.8 74.9h0M340.9 51.4h0M176.9 87.6h0M131.2 92h0"/><path class="a3" d="M60 92H340"/><circle class="a" opacity="0.55" cx="96" cy="92" r="18"/><path class="a" d="M89 92l5 5 10-11"/><circle class="a" opacity="0.77" cx="200" cy="92" r="18"/><path class="a" d="M193 92l5 5 10-11"/><circle class="a" opacity="0.99" cx="304" cy="92" r="24"/><path class="w" d="M297 92l5 5 10-11"/><circle class="a3" cx="304" cy="92" r="40" stroke-dasharray="2 5"/><path class="a2" d="M70 140h52M174 140h52M278 140h52"/><path class="w2" d="M70 150h30M174 150h38M278 150h24"/></svg>
+              <span class="tu-card__fmt"><svg class="icon" aria-hidden="true"><use href="#i-doc"/></svg>Written</span>
+              <span class="tu-card__dur"><b>10</b> min</span>
+              <span class="tu-card__seal" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Done</span>
+            </div>
+            <div class="tu-card__body">
+              <div class="tu-card__meta"><span class="lane-chip">Review</span><span class="tu-level" data-level="3"><i></i><i></i><i></i>Advanced</span></div>
+              <h3 class="tu-card__title" id="tu-l-approvals">Approvals that stick</h3>
+              <p class="tu-card__desc">Who signs off, on which version, and what moves next. An audit trail, so “I never approved that” never comes up.</p>
+              <div class="tu-card__foot">
+                <span class="tu-card__who"><span class="sr">For </span>Builders</span>
+                <label class="check tu-done"><input type="checkbox" data-lesson="approvals"> Mark as done<span class="sr">: Approvals that stick</span></label>
+              </div>
+            </div>
+          </article>
+        </li>
+        <li class="tu-grid__item" id="lesson-checklist" data-stage="launch" data-tags="builder dreamer beginner launch">
+          <article class="tu-card panel" aria-labelledby="tu-l-checklist" data-lesson-card="checklist" data-spotlight>
+            <div class="tu-card__art">
+              <svg class="art" viewBox="0 0 400 180" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><path class="st" d="M353.4 38.9h0M190.4 3.2h0M89.7 62.6h0M23.2 49.3h0M314.5 71.4h0M250.4 63h0M378.4 5.4h0M107.1 7.8h0M267.5 108.6h0M100.6 21h0M196.9 105.9h0M110.9 49.6h0M103.7 48.1h0M185.8 55.7h0M228.6 56.9h0M49.6 14.6h0M51.4 75.9h0M156.4 75.2h0M189.1 114.4h0M342.3 18.7h0M385.4 9.7h0M37.1 86.1h0M363.8 48.9h0M322.8 117.9h0M97.6 46h0M324.4 66.6h0M203.1 58.2h0"/><path class="st st--b" d="M114.6 113.6h0M59.3 5.6h0M171.8 20.8h0M190.2 58.5h0M302.2 69.7h0M94 22.1h0M199.6 55.3h0M324.9 112.6h0M283 101.4h0"/><rect class="a" x="84" y="47.5" width="13" height="13" rx="3"/><path class="a" d="M87.3 54l2.8 2.8 4.6-5.6"/><path class="a2" d="M108 54h86"/><rect class="a" x="84" y="68.5" width="13" height="13" rx="3"/><path class="a" d="M87.3 75l2.8 2.8 4.6-5.6"/><path class="a2" d="M108 75h64"/><rect class="a" x="84" y="89.5" width="13" height="13" rx="3"/><path class="a" d="M87.3 96l2.8 2.8 4.6-5.6"/><path class="a2" d="M108 96h96"/><rect class="w2" x="84" y="110.5" width="13" height="13" rx="3"/><path class="w2" d="M108 117h74"/><rect class="w2" x="84" y="131.5" width="13" height="13" rx="3"/><path class="w2" d="M108 138h56"/><path class="a2" d="M220 150H380"/><path class="a" d="M300 150V48M282 66l18-18 18 18"/><path class="a3" opacity="0.75" d="M288 150V94M312 150V94"/><path class="a3" opacity="0.5" d="M276 150V108M324 150V108"/><path class="a3" opacity="0.25" d="M264 150V122M336 150V122"/><path class="a3" opacity="0.5" d="M-10 160C120 156 264 159.2 410 157.2"/><path class="a3" opacity="0.36" d="M-10 166.5C120 162.5 264 165.7 410 163.7"/><path class="a3" opacity="0.22" d="M-10 173.9C120 169.9 264 173.1 410 171.1"/></svg>
+              <span class="tu-card__fmt"><svg class="icon" aria-hidden="true"><use href="#i-learn"/></svg>Walkthrough</span>
+              <span class="tu-card__dur"><b>9</b> min</span>
+              <span class="tu-card__seal" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Done</span>
+            </div>
+            <div class="tu-card__body">
+              <div class="tu-card__meta"><span class="lane-chip">Launch</span><span class="tu-level" data-level="1"><i></i><i></i><i></i>Beginner</span></div>
+              <h3 class="tu-card__title" id="tu-l-checklist">Plan a launch checklist</h3>
+              <p class="tu-card__desc">Turn your Blueprint’s milestones into a checklist that fills itself, then schedule every channel for the day you said.</p>
+              <div class="tu-card__foot">
+                <span class="tu-card__who"><span class="sr">For </span>Builders · Dreamers</span>
+                <label class="check tu-done"><input type="checkbox" data-lesson="checklist"> Mark as done<span class="sr">: Plan a launch checklist</span></label>
+              </div>
+            </div>
+          </article>
+        </li>
+        <li class="tu-grid__item" id="lesson-launch-rooms" data-stage="launch" data-tags="creator builder intermediate launch">
+          <article class="tu-card panel" aria-labelledby="tu-l-launch-rooms" data-lesson-card="launch-rooms" data-spotlight>
+            <div class="tu-card__art">
+              <svg class="art" viewBox="0 0 400 180" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><path class="st" d="M372.2 81.6h0M61.1 32.4h0M217.8 10.6h0M99.9 42.8h0M206.8 95h0M90.3 70.8h0M248.6 75.6h0M172.1 20.4h0M302.4 75.9h0M79 27.5h0M18.2 35.6h0M107.1 16.2h0M353.1 59.8h0M319.5 33.8h0M87 27h0M170.5 3h0M0.7 87.1h0M294.5 40.3h0M44.7 83.6h0M199.8 65.3h0M164.7 57h0M278.5 39h0M73.4 5.3h0M114.5 45.4h0M353.9 80.1h0M193.9 26.4h0M138.3 46.1h0M162.8 74.1h0M187.2 41.7h0M350.7 32.6h0M80.7 31.6h0M66.8 90.5h0M114.2 17.2h0M131.5 56h0"/><path class="st st--b" d="M308.8 41.3h0M316.6 93.8h0M281.8 38.8h0M247.4 58.6h0M147.1 78.1h0M190.7 74.9h0M25.1 32.9h0M351.6 75.9h0M345.3 71.4h0M315.5 86.4h0"/><path class="a2" d="M-10 140H410"/><path class="a" opacity="0.18" d="M60 140V104.4"/><circle class="af" opacity="0.2" cx="60" cy="104.4" r="1.8"/><path class="a" opacity="0.29" d="M80 140V94.9"/><circle class="af" opacity="0.3" cx="80" cy="94.9" r="1.8"/><path class="a" opacity="0.4" d="M100 140V85"/><circle class="af" opacity="0.4" cx="100" cy="85" r="1.8"/><path class="a" opacity="0.51" d="M120 140V76.6"/><circle class="af" opacity="0.5" cx="120" cy="76.6" r="1.8"/><path class="a" opacity="0.62" d="M140 140V70.1"/><circle class="af" opacity="0.6" cx="140" cy="70.1" r="1.8"/><path class="a" opacity="0.73" d="M160 140V61"/><circle class="af" opacity="0.7" cx="160" cy="61" r="1.8"/><path class="a" opacity="0.84" d="M180 140V56.4"/><circle class="af" opacity="0.8" cx="180" cy="56.4" r="1.8"/><path class="w" d="M200 140V42.7"/><circle class="af" opacity="0.9" cx="200" cy="42.7" r="3"/><path class="a" opacity="0.84" d="M220 140V49.9"/><circle class="af" opacity="0.8" cx="220" cy="49.9" r="1.8"/><path class="a" opacity="0.73" d="M240 140V65.8"/><circle class="af" opacity="0.7" cx="240" cy="65.8" r="1.8"/><path class="a" opacity="0.62" d="M260 140V74.1"/><circle class="af" opacity="0.6" cx="260" cy="74.1" r="1.8"/><path class="a" opacity="0.51" d="M280 140V82.1"/><circle class="af" opacity="0.5" cx="280" cy="82.1" r="1.8"/><path class="a" opacity="0.4" d="M300 140V90.6"/><circle class="af" opacity="0.4" cx="300" cy="90.6" r="1.8"/><path class="a" opacity="0.29" d="M320 140V100.7"/><circle class="af" opacity="0.3" cx="320" cy="100.7" r="1.8"/><path class="a" opacity="0.18" d="M340 140V109.2"/><circle class="af" opacity="0.2" cx="340" cy="109.2" r="1.8"/><path class="a3" opacity="0.5" d="M-10 150C120 146 264 149.2 410 147.2"/><path class="a3" opacity="0.395" d="M-10 156.5C120 152.5 264 155.7 410 153.7"/><path class="a3" opacity="0.29" d="M-10 163.9C120 159.9 264 163.1 410 161.1"/><path class="a3" opacity="0.185" d="M-10 172.3C120 168.3 264 171.5 410 169.5"/></svg>
+              <span class="tu-card__fmt"><svg class="icon" aria-hidden="true"><use href="#i-play"/></svg>Video</span>
+              <span class="tu-card__dur"><b>12</b> min</span>
+              <span class="tu-card__seal" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Done</span>
+            </div>
+            <div class="tu-card__body">
+              <div class="tu-card__meta"><span class="lane-chip">Launch</span><span class="tu-level" data-level="2"><i></i><i></i><i></i>Intermediate</span></div>
+              <h3 class="tu-card__title" id="tu-l-launch-rooms">Launch rooms</h3>
+              <p class="tu-card__desc">Open the room an hour early, bring the crew, run the countdown and watch the first numbers land together.</p>
+              <div class="tu-card__foot">
+                <span class="tu-card__who"><span class="sr">For </span>Creators · Builders</span>
+                <label class="check tu-done"><input type="checkbox" data-lesson="launch-rooms"> Mark as done<span class="sr">: Launch rooms</span></label>
+              </div>
+            </div>
+          </article>
+        </li>
+        <li class="tu-grid__item" id="lesson-afterglow" data-stage="afterglow" data-tags="creator builder dreamer beginner afterglow">
+          <article class="tu-card panel" aria-labelledby="tu-l-afterglow" data-lesson-card="afterglow" data-spotlight>
+            <div class="tu-card__art">
+              <svg class="art" viewBox="0 0 400 180" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><path class="st" d="M96.7 108.8h0M201.5 87.1h0M278.4 44.4h0M387.1 80.1h0M340.5 66h0M182.7 60.6h0M85.4 83.7h0M307.8 43.8h0M111.2 58.1h0M148.6 94.7h0M230.1 35.1h0M95.9 84.5h0M162.3 72.1h0M56.2 5.9h0M165.6 103.5h0M45.7 64.8h0M222.9 64.9h0M113.4 39.9h0M114.1 80.1h0M381.5 109.4h0M390.1 48.4h0M295.4 10.5h0M197.3 20.9h0M265.1 8.6h0M278 42.4h0M258.6 98.5h0M168.1 14.6h0M292.3 61.5h0M176.1 7h0M118.2 87.8h0M336.9 73.3h0M267.9 73.5h0M174.9 22.7h0M210 70.1h0M0.6 1.1h0"/><path class="st st--b" d="M228.3 89.4h0M368.7 84.5h0M45.1 20h0M122.8 26.2h0M123.8 73h0"/><path class="a" d="M142 132A18 18 0 0 1 178 132"/><path class="a" opacity="0.87" d="M129 132A31 31 0 0 1 191 132"/><path class="a" opacity="0.74" d="M116 132A44 44 0 0 1 204 132"/><path class="a" opacity="0.61" d="M103 132A57 57 0 0 1 217 132"/><path class="a" opacity="0.48" d="M90 132A70 70 0 0 1 230 132"/><path class="a" opacity="0.35" d="M77 132A83 83 0 0 1 243 132"/><path class="a" opacity="0.22" d="M64 132A96 96 0 0 1 256 132"/><path class="w" d="M-10 132H410"/><path class="a2" opacity="0.5" d="M-10 143C120 139 264 142.2 410 140.2"/><path class="a2" opacity="0.395" d="M-10 150.6C120 146.6 264 149.8 410 147.8"/><path class="a2" opacity="0.29" d="M-10 159.2C120 155.2 264 158.4 410 156.4"/><path class="a2" opacity="0.185" d="M-10 169C120 165 264 168.2 410 166.2"/><path class="a" d="M262 96L282 82L300 88L318 62L336 70L354 40L372 48"/><circle class="af" cx="354" cy="40" r="3"/><path class="a3" stroke-dasharray="2 4" d="M262 110H372"/></svg>
+              <span class="tu-card__fmt"><svg class="icon" aria-hidden="true"><use href="#i-play"/></svg>Video</span>
+              <span class="tu-card__dur"><b>8</b> min</span>
+              <span class="tu-card__seal" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Done</span>
+            </div>
+            <div class="tu-card__body">
+              <div class="tu-card__meta"><span class="lane-chip">Afterglow</span><span class="tu-level" data-level="1"><i></i><i></i><i></i>Beginner</span></div>
+              <h3 class="tu-card__title" id="tu-l-afterglow">Reading your Afterglow</h3>
+              <p class="tu-card__desc">Day 1, 7 and 30: which numbers matter, which ones flatter, and how to send the best ideas back to your board.</p>
+              <div class="tu-card__foot">
+                <span class="tu-card__who"><span class="sr">For </span>Creators · Builders · Dreamers</span>
+                <label class="check tu-done"><input type="checkbox" data-lesson="afterglow"> Mark as done<span class="sr">: Reading your Afterglow</span></label>
+              </div>
+            </div>
+          </article>
+        </li>
+      </ul>
+      <div class="tu-empty" data-filter-empty hidden>
+        <p>No lesson matches those filters yet. <button type="button" class="link-arrow" data-tu-clear>Show all twelve <svg aria-hidden="true"><use href="#i-arrow"/></svg></button></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== more ways to learn ===== -->
+  <section class="section section--tight tu-more" id="more" aria-labelledby="tu-more-title">
+    <div class="container">
+      <h2 class="tu-more__title" id="tu-more-title"><span class="eyebrow">Keep going</span></h2>
+      <ul class="tu-more__grid" data-reveal-stagger="0.08">
+        <li><a class="tu-more__card panel" href="{{ROOT}}webinars.html" data-spotlight>
+          <span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-broadcast"/></svg></span>
+          <span class="tu-more__name">Learn it live</span>
+          <span class="tu-more__desc">Monthly sessions with creators and the crew. Next up: Theo ships Tidepool 1.1, live, on 10 December.</span>
+          <span class="link-arrow">Webinars <svg aria-hidden="true"><use href="#i-arrow"/></svg></span>
+        </a></li>
+        <li><a class="tu-more__card panel" href="{{ROOT}}docs.html" data-spotlight>
+          <span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-book"/></svg></span>
+          <span class="tu-more__name">Look it up</span>
+          <span class="tu-more__desc">Every tool and every setting on one long page, with keyboard shortcuts for the impatient.</span>
+          <span class="link-arrow">Documentation <svg aria-hidden="true"><use href="#i-arrow"/></svg></span>
+        </a></li>
+        <li><a class="tu-more__card panel" href="{{ROOT}}careers.html#tutorial-producer" data-spotlight>
+          <span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-learn"/></svg></span>
+          <span class="tu-more__name">Teach the next one</span>
+          <span class="tu-more__desc">We’re hiring a Tutorial Producer in Nairobi, or remote. Bring a good teacher’s patience.</span>
+          <span class="link-arrow">The role <svg aria-hidden="true"><use href="#i-arrow"/></svg></span>
+        </a></li>
+      </ul>
+    </div>
+  </section>
+
   {{> cta}}
 </main>
