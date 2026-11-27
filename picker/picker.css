@@ -37,16 +37,18 @@
   --mist: url("assets/stills/mist-wide.jpg");
   --nelson: url("assets/stills/nelson-wide.jpg");
   --asterpay: url("assets/stills/asterpay-wide.jpg");
+  --unorouter: url("assets/stills/unorouter-wide.jpg");
 }
 @media (orientation: portrait) {
   :root {
     --mist: url("assets/stills/mist-tall.jpg");
     --nelson: url("assets/stills/nelson-tall.jpg");
     --asterpay: url("assets/stills/asterpay-tall.jpg");
+    --unorouter: url("assets/stills/unorouter-tall.jpg");
   }
 }
 /* Mist opens on its bare sky (the peaks and the copy rise into it); Nelson on the white of its preloader; AsterPay on
-   the dark of its preloader, or of its hero before the light rises. */
+   the dark of its preloader, or of its hero before the light rises; UnoRouter on black. */
 [data-id="mist"] {
   --still: var(--mist);
   --arrive: linear-gradient(transparent calc(100% - 72px), #07050d),
@@ -65,6 +67,12 @@
   --still: var(--asterpay);
   --arrive: #0c0b0e;
   --at: 50% 62%;
+}
+/* UnoRouter opens on the black of its boot log (or of its hero, on a repeat visit). */
+[data-id="unorouter"] {
+  --still: var(--unorouter);
+  --arrive: #000;
+  --at: 50% 40%;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
