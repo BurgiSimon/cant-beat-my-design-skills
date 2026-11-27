@@ -1,0 +1,219 @@
+<!-- #features: the flow. The base is a list of six stage blocks (what phones, reduced motion and no scripts get). On a
+     wide screen with motion, home-flow.js pins it into one stage: the ribbon of six bands (js/gl/lanes.js) lights band by
+     band as you scroll, Night Bloom's card rides it through its six states, the stage panel swaps, and the rail above
+     is a tablist that follows along. -->
+<section class="home-flow section" id="features" aria-labelledby="features-title">
+  <div class="home-flow__stage">
+    <div class="home-flow__night" data-lanes-slot aria-hidden="true"></div>
+    <div class="home-flow__inner container">
+
+      <header class="home-flow__head section-head">
+        <div>
+          <p class="eyebrow">How it flows</p>
+          <h2 class="title-2" id="features-title" data-split>Six lanes from first spark to launch night.</h2>
+        </div>
+        <div class="section-head__aside">
+          <p class="lede">Every project in Crestora rides one lane. As it moves, the right tools light up, and nothing gets left at the last stop.</p>
+        </div>
+      </header>
+
+      <div class="home-flow__rail" role="tablist" data-tabs-manual aria-label="The six stages of a lane" style="--rail:0">
+        <button class="home-flow__tab" type="button" role="tab" id="flow-tab-spark" aria-controls="flow-spark" aria-selected="true" data-stage="spark"><i aria-hidden="true"></i><span class="home-flow__tab-n">01</span><span class="home-flow__tab-name">Spark</span></button>
+        <button class="home-flow__tab" type="button" role="tab" id="flow-tab-shape" aria-controls="flow-shape" aria-selected="false" tabindex="-1" data-stage="shape"><i aria-hidden="true"></i><span class="home-flow__tab-n">02</span><span class="home-flow__tab-name">Shape</span></button>
+        <button class="home-flow__tab" type="button" role="tab" id="flow-tab-make" aria-controls="flow-make" aria-selected="false" tabindex="-1" data-stage="make"><i aria-hidden="true"></i><span class="home-flow__tab-n">03</span><span class="home-flow__tab-name">Make</span></button>
+        <button class="home-flow__tab" type="button" role="tab" id="flow-tab-review" aria-controls="flow-review" aria-selected="false" tabindex="-1" data-stage="review"><i aria-hidden="true"></i><span class="home-flow__tab-n">04</span><span class="home-flow__tab-name">Review</span></button>
+        <button class="home-flow__tab" type="button" role="tab" id="flow-tab-launch" aria-controls="flow-launch" aria-selected="false" tabindex="-1" data-stage="launch"><i aria-hidden="true"></i><span class="home-flow__tab-n">05</span><span class="home-flow__tab-name">Launch</span></button>
+        <button class="home-flow__tab" type="button" role="tab" id="flow-tab-afterglow" aria-controls="flow-afterglow" aria-selected="false" tabindex="-1" data-stage="afterglow"><i aria-hidden="true"></i><span class="home-flow__tab-n">06</span><span class="home-flow__tab-name">Afterglow</span></button>
+      </div>
+
+      <!-- the card's glass, riding the ribbon (the pinned stage only; each state below fills it) -->
+      <div class="home-flow__ride" aria-hidden="true"></div>
+
+      <ol class="home-flow__list" data-reveal-stagger="0.06">
+
+        <!-- 01 Spark -->
+        <li class="home-flow__block" id="flow-spark" data-stage="spark" style="--i:0">
+          <div class="home-flow__copy">
+            <div class="home-flow__meta">
+              <span class="icon-box"><svg class="icon icon--lg" aria-hidden="true"><use href="#i-spark"/></svg></span>
+              <p class="home-flow__label"><span class="home-flow__index">01</span><span class="home-flow__name">Spark</span><span class="home-flow__tool">Sparkboard</span></p>
+            </div>
+            <h3 class="title-3 home-flow__headline"><span>Catch it before it fades.</span></h3>
+            <p class="body home-flow__body">Voice memos, screenshots, links and 2 a.m. sketches land on one board. Crestora groups them into constellations, so the good ones find each other.</p>
+            <ul class="home-flow__bullets">
+              <li>Capture from phone, browser or email</li>
+              <li>Auto-grouped constellations</li>
+              <li>Promote any spark to a lane</li>
+            </ul>
+          </div>
+          <figure class="home-flow__card hf-card" aria-label="Night Bloom in Spark: six sparks on Amara’s board">
+            <div class="hf-card__bar"><span class="hf-card__title">Night Bloom</span><span class="lane-chip">Now in: Spark</span></div>
+            <ul class="hf-mood">
+              <li class="hf-mood__tile" style="--i:0"><span class="hf-mood__wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span><span class="hf-mood__cap">Memo · 0:42</span></li>
+              <li class="hf-mood__tile" style="--i:1"><svg class="hf-mood__sketch" viewBox="0 0 80 40" aria-hidden="true"><path d="M40 34V18M40 18c-6-8-15-8-17-3 5 3 11 4 17 3Zm0 0c6-8 15-8 17-3-5 3-11 4-17 3Zm0 0c-3-7-1-13 0-15 1 2 3 8 0 15Z"/><path d="M33 34h14"/></svg><span class="hf-mood__cap">Sketch · 2 a.m.</span></li>
+              <li class="hf-mood__tile hf-mood__tile--bus" style="--i:2"><span class="hf-mood__bus" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span class="hf-mood__cap">Last bus, Lagos</span></li>
+              <li class="hf-mood__tile" style="--i:3"><span class="hf-mood__link"><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg>moonflower timelapse</span><span class="hf-mood__cap">Link</span></li>
+              <li class="hf-mood__tile" style="--i:4"><span class="hf-mood__swatches" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span class="hf-mood__cap">Palette</span></li>
+              <li class="hf-mood__tile hf-mood__tile--note" style="--i:5"><span class="hf-mood__note">“It only opens for the night bus.”</span></li>
+            </ul>
+            <figcaption class="hf-card__foot"><span>6 sparks · 2 constellations</span><span class="stage-rail" data-n="1" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span></figcaption>
+          </figure>
+        </li>
+
+        <!-- 02 Shape -->
+        <li class="home-flow__block" id="flow-shape" data-stage="shape" style="--i:1">
+          <div class="home-flow__copy">
+            <div class="home-flow__meta">
+              <span class="icon-box"><svg class="icon icon--lg" aria-hidden="true"><use href="#i-shape"/></svg></span>
+              <p class="home-flow__label"><span class="home-flow__index">02</span><span class="home-flow__name">Shape</span><span class="home-flow__tool">Blueprints</span></p>
+            </div>
+            <h3 class="title-3 home-flow__headline"><span>Give it a shape you can share.</span></h3>
+            <p class="body home-flow__body">Turn a spark into a one-page plan: what it is, who’s riding along, what done looks like and when the lights go green.</p>
+            <ul class="home-flow__bullets">
+              <li>40 templates by working creators</li>
+              <li>Milestones that know your calendar</li>
+              <li>Share a brief with one link</li>
+            </ul>
+          </div>
+          <figure class="home-flow__card hf-card" aria-label="Night Bloom in Shape: a one-page brief with three milestones">
+            <div class="hf-card__bar"><span class="hf-card__title">Night Bloom</span><span class="lane-chip">Now in: Shape</span></div>
+            <div class="hf-brief">
+              <p class="hf-brief__kicker">Blueprint · one page</p>
+              <p class="hf-brief__what">A seven-minute animated short about a flower that only opens for the night bus.</p>
+              <ol class="hf-brief__ms">
+                <li style="--i:0"><span>Storyboard</span><b>Day 6</b></li>
+                <li style="--i:1"><span>Animatic</span><b>Day 18</b></li>
+                <li style="--i:2"><span>Premiere</span><b>Day 41</b></li>
+              </ol>
+            </div>
+            <figcaption class="hf-card__foot"><span>3 riding along · shared by link</span><span class="stage-rail" data-n="2" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span></figcaption>
+          </figure>
+        </li>
+
+        <!-- 03 Make -->
+        <li class="home-flow__block" id="flow-make" data-stage="make" style="--i:2">
+          <div class="home-flow__copy">
+            <div class="home-flow__meta">
+              <span class="icon-box"><svg class="icon icon--lg" aria-hidden="true"><use href="#i-make"/></svg></span>
+              <p class="home-flow__label"><span class="home-flow__index">03</span><span class="home-flow__name">Make</span><span class="home-flow__tool">Workbench</span></p>
+            </div>
+            <h3 class="title-3 home-flow__headline"><span>Make it without losing the thread.</span></h3>
+            <p class="body home-flow__body">Drop in a render, a build or a mix. Crestora keeps every version on the lane and tells you what changed.</p>
+            <ul class="home-flow__bullets">
+              <li>Unlimited version history</li>
+              <li>Side-by-side compare</li>
+              <li>120+ tools connected</li>
+            </ul>
+          </div>
+          <figure class="home-flow__card hf-card" aria-label="Night Bloom in Make: version 7 rendering, 72 percent done">
+            <div class="hf-card__bar"><span class="hf-card__title">Night Bloom</span><span class="lane-chip">Now in: Make</span></div>
+            <div class="hf-make">
+              <p class="hf-make__file"><span class="mono">render_v7.mov</span><span class="hf-make__pct">72%</span></p>
+              <div class="hf-make__bar" aria-hidden="true"><i></i></div>
+              <p class="hf-make__eta">Rendering on Workbench · about 3 min left</p>
+              <ul class="hf-make__versions">
+                <li style="--i:0"><span class="hf-make__thumb" aria-hidden="true"></span><span>v5</span></li>
+                <li style="--i:1"><span class="hf-make__thumb" aria-hidden="true"></span><span>v6</span></li>
+                <li class="is-new" style="--i:2"><span class="hf-make__thumb" aria-hidden="true"></span><span>v7 · rendering</span></li>
+              </ul>
+            </div>
+            <figcaption class="hf-card__foot"><span>Changed since v6: petals, bus lights</span><span class="stage-rail" data-n="3" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span></figcaption>
+          </figure>
+        </li>
+
+        <!-- 04 Review -->
+        <li class="home-flow__block" id="flow-review" data-stage="review" style="--i:3">
+          <div class="home-flow__copy">
+            <div class="home-flow__meta">
+              <span class="icon-box"><svg class="icon icon--lg" aria-hidden="true"><use href="#i-review"/></svg></span>
+              <p class="home-flow__label"><span class="home-flow__index">04</span><span class="home-flow__name">Review</span><span class="home-flow__tool">Review Room</span></p>
+            </div>
+            <h3 class="title-3 home-flow__headline"><span>Feedback that doesn’t stall the engine.</span></h3>
+            <p class="body home-flow__body">Pin a note to a frame, a pixel, a second of audio or a line of code. Reviewers need a link, not an account.</p>
+            <ul class="home-flow__bullets">
+              <li>Frame- and pixel-accurate notes</li>
+              <li>Review links without sign-up</li>
+              <li>One-click approvals, on the record</li>
+            </ul>
+          </div>
+          <figure class="home-flow__card hf-card" aria-label="Night Bloom in Review: frame 118 with three notes, approved by Lena K.">
+            <div class="hf-card__bar"><span class="hf-card__title">Night Bloom</span><span class="lane-chip">Now in: Review</span></div>
+            <div class="hf-review">
+              <div class="hf-review__frame" aria-hidden="true">
+                <span class="hf-review__moon"></span><span class="hf-review__stem"></span>
+                <span class="hf-review__pin" style="--x:24%;--y:34%;--i:0">1</span>
+                <span class="hf-review__pin" style="--x:58%;--y:58%;--i:1">2</span>
+                <span class="hf-review__pin" style="--x:80%;--y:26%;--i:2">3</span>
+                <span class="hf-review__tc mono">Frame 118</span>
+              </div>
+              <p class="hf-review__ok"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Approved by Lena K.</p>
+            </div>
+            <figcaption class="hf-card__foot"><span>3 notes · closed in 4 hours</span><span class="stage-rail" data-n="4" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span></figcaption>
+          </figure>
+        </li>
+
+        <!-- 05 Launch -->
+        <li class="home-flow__block" id="flow-launch" data-stage="launch" style="--i:4">
+          <div class="home-flow__copy">
+            <div class="home-flow__meta">
+              <span class="icon-box"><svg class="icon icon--lg" aria-hidden="true"><use href="#i-launch"/></svg></span>
+              <p class="home-flow__label"><span class="home-flow__index">05</span><span class="home-flow__name">Launch</span><span class="home-flow__tool">Countdown</span></p>
+            </div>
+            <h3 class="title-3 home-flow__headline"><span>Ship on the day you said.</span></h3>
+            <p class="body home-flow__body">A launch checklist built from your plan, a schedule for every channel and a launch room where the crew watches it go live together.</p>
+            <ul class="home-flow__bullets">
+              <li>Checklists that fill themselves</li>
+              <li>Schedule to 14 channels</li>
+              <li>A live launch room with a countdown</li>
+            </ul>
+          </div>
+          <figure class="home-flow__card hf-card" aria-label="Night Bloom in Launch: the countdown reaches zero and the premiere is live">
+            <div class="hf-card__bar"><span class="hf-card__title">Night Bloom</span><span class="lane-chip">Now in: Launch</span></div>
+            <div class="hf-launch">
+              <p class="hf-launch__what">Premiere · festival upload</p>
+              <div class="hf-launch__row">
+                <p class="hf-launch__count" aria-hidden="true"><span>00:00:0</span><span class="hf-launch__d"><span><span>3</span><span>2</span><span>1</span><span>0</span></span></span></p>
+                <span class="hf-launch__live">Live</span>
+              </div>
+              <ul class="hf-launch__ch">
+                <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Festival portal</li>
+                <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Share Page</li>
+                <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Newsletter</li>
+              </ul>
+            </div>
+            <figcaption class="hf-card__foot"><span>Launch room: 3 crew watching</span><span class="stage-rail" data-n="5" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span></figcaption>
+          </figure>
+        </li>
+
+        <!-- 06 Afterglow -->
+        <li class="home-flow__block" id="flow-afterglow" data-stage="afterglow" style="--i:5">
+          <div class="home-flow__copy">
+            <div class="home-flow__meta">
+              <span class="icon-box"><svg class="icon icon--lg" aria-hidden="true"><use href="#i-afterglow"/></svg></span>
+              <p class="home-flow__label"><span class="home-flow__index">06</span><span class="home-flow__name">Afterglow</span><span class="home-flow__tool">Afterglow</span></p>
+            </div>
+            <h3 class="title-3 home-flow__headline"><span>See how it landed. Start the next one.</span></h3>
+            <p class="body home-flow__body">Views, sales, replies and reviews from every channel in one recap on day 1, 7 and 30. The ideas it sparked go straight back to your board.</p>
+            <ul class="home-flow__bullets">
+              <li>Day 1 / 7 / 30 recaps</li>
+              <li>Every channel in one view</li>
+              <li>Next ideas back to the Sparkboard</li>
+            </ul>
+          </div>
+          <figure class="home-flow__card hf-card" aria-label="Night Bloom in Afterglow: the day 7 recap, 12.4k views and 318 comments">
+            <div class="hf-card__bar"><span class="hf-card__title">Night Bloom</span><span class="lane-chip">Now in: Afterglow</span></div>
+            <div class="hf-glow">
+              <p class="hf-glow__kicker">Day 7 recap</p>
+              <dl class="hf-glow__stats">
+                <div><dt>views</dt><dd>12.4k</dd></div>
+                <div><dt>comments</dt><dd>318</dd></div>
+              </dl>
+              <svg class="hf-glow__line" viewBox="0 0 280 54" preserveAspectRatio="none" aria-hidden="true"><path class="hf-glow__area" d="M0 50 L0 46 C18 45 26 40 40 41 S66 30 80 33 S104 22 120 26 S146 12 160 17 S186 8 200 12 S228 5 240 9 S266 3 280 4 L280 54 L0 54 Z"/><path class="hf-glow__stroke" pathLength="1" d="M0 46 C18 45 26 40 40 41 S66 30 80 33 S104 22 120 26 S146 12 160 17 S186 8 200 12 S228 5 240 9 S266 3 280 4"/></svg>
+            </div>
+            <figcaption class="hf-card__foot"><span>3 new sparks sent to the board</span><span class="stage-rail" data-n="6" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span></figcaption>
+          </figure>
+        </li>
+      </ol>
+    </div>
+  </div>
+</section>

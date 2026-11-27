@@ -1,0 +1,308 @@
+<!--page
+title: Roadmap — Crestora
+description: What Crestora is building now, next and later, shaped by the people who ride with us. Vote for the ideas that matter to you.
+modules: forms page-roadmap
+nav: product
+-->
+<main id="main">
+  <!-- The roadmap: three columns, Now / Next / Later, the road fading from a solid line to dots as it gets further
+       away. Each card has an upvote (aria-pressed; the count rolls; the vote is remembered in this browser). Sort by
+       votes or newest, filter by stage. On phones the columns become a swipeable row with column buttons. Then what
+       shipped from this board (linking to the changelog) and a form to suggest something. -->
+  <section class="page-hero rm-hero" aria-labelledby="rm-title">
+    <div class="page-hero__lanes" aria-hidden="true"></div>
+    <div class="container rm-hero__grid">
+      <div class="rm-hero__intro">
+        <p class="eyebrow" data-reveal="fade">Roadmap</p>
+        <h1 class="title-1 rm-hero__title" id="rm-title" data-split>Where the road goes next.</h1>
+        <p class="lede" data-reveal data-delay="0.15">What we’re building now, next and later, shaped by the people who ride with us. Vote for what matters to you.</p>
+      </div>
+      <dl class="rm-stats" data-reveal data-delay="0.25">
+        <div class="rm-stats__row"><dt>Votes on the board</dt><dd><span class="rm-stats__n" data-rm-total>11,436</span></dd></div>
+        <div class="rm-stats__row"><dt>Ideas on the road</dt><dd><span class="rm-stats__n">9</span></dd></div>
+        <div class="rm-stats__row"><dt>Next roadmap review</dt><dd><span class="rm-stats__n rm-stats__n--date">18 Dec</span></dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="rm-boardwrap" aria-labelledby="rm-board-title">
+    <div class="container">
+      <h2 class="sr" id="rm-board-title">The roadmap</h2>
+
+      <div class="rm-bar" data-reveal="fade">
+        <div class="rm-bar__group">
+          <span class="rm-bar__label" id="rm-sort-label">Sort</span>
+          <div class="segmented rm-sort" role="group" aria-labelledby="rm-sort-label">
+            <span class="segmented__thumb" aria-hidden="true"></span>
+            <button type="button" data-sort="votes" aria-pressed="true">Most votes</button>
+            <button type="button" data-sort="newest" aria-pressed="false">Newest</button>
+          </div>
+        </div>
+        <div class="rm-bar__group rm-bar__group--stages">
+          <span class="rm-bar__label" id="rm-stage-label">Stage</span>
+          <div class="rm-stages" role="group" aria-labelledby="rm-stage-label">
+            <button type="button" class="rm-stage" data-filter-stage="all" aria-pressed="true">All</button>
+            <button type="button" class="rm-stage" data-filter-stage="spark" data-stage="spark" aria-pressed="false">Spark</button>
+            <button type="button" class="rm-stage" data-filter-stage="shape" data-stage="shape" aria-pressed="false">Shape</button>
+            <button type="button" class="rm-stage" data-filter-stage="make" data-stage="make" aria-pressed="false">Make</button>
+            <button type="button" class="rm-stage" data-filter-stage="review" data-stage="review" aria-pressed="false">Review</button>
+            <button type="button" class="rm-stage" data-filter-stage="launch" data-stage="launch" aria-pressed="false">Launch</button>
+            <button type="button" class="rm-stage" data-filter-stage="afterglow" data-stage="afterglow" aria-pressed="false">Afterglow</button>
+          </div>
+        </div>
+        <p class="rm-count" data-rm-count aria-live="polite">9 ideas on the board</p>
+      </div>
+
+      <!-- on phones: jump between the columns -->
+      <div class="segmented rm-jump" role="group" aria-label="Show a column">
+        <span class="segmented__thumb" aria-hidden="true"></span>
+        <button type="button" data-jump="rm-now" aria-controls="rm-now" aria-current="true">Now <span data-col-n="rm-now">3</span></button>
+        <button type="button" data-jump="rm-next" aria-controls="rm-next">Next <span data-col-n="rm-next">3</span></button>
+        <button type="button" data-jump="rm-later" aria-controls="rm-later">Later <span data-col-n="rm-later">3</span></button>
+      </div>
+
+      <div class="rm-board" data-rm-board>
+        <!-- NOW -->
+        <section class="rm-col rm-col--now" id="rm-now" aria-labelledby="rm-now-title" data-reveal>
+          <header class="rm-col__head">
+            <h3 class="rm-col__title" id="rm-now-title">Now</h3>
+            <p class="rm-col__when"><span class="chip chip--live">Building now</span></p>
+            <span class="rm-col__n" data-col-n="rm-now" aria-hidden="true">3</span>
+          </header>
+          <span class="rm-col__road" aria-hidden="true"></span>
+          <ol class="rm-list" data-rm-list>
+            <li class="rm-item" data-id="android" data-votes="2417" data-added="2026-04-20" data-stages="spark shape make review launch afterglow">
+              <article class="rm-card panel rm-card--all" data-spotlight aria-labelledby="rm-c-android">
+                <div class="rm-card__top"><span class="lane-chip rm-chip-all">Every stage</span><span class="rm-card__status">Open beta in December</span></div>
+                <h4 class="rm-card__title" id="rm-c-android">Android app (beta)</h4>
+                <p class="rm-card__why">Capture on the bus, answer a review in the queue, watch your launch go live. Everything the iOS app does, on the phone most of the world actually carries.</p>
+                <div class="rm-card__foot">
+                  <span class="rm-card__added">Added <time datetime="2026-04-20">20 Apr 2026</time></span>
+                  <button class="btn rm-vote" type="button" aria-pressed="false" data-vote><svg class="icon" aria-hidden="true"><use href="#i-vote"/></svg><span class="rm-vote__n" data-vote-n>2,417</span><span class="sr"> votes. Vote for Android app (beta)</span></button>
+                </div>
+              </article>
+            </li>
+            <li class="rm-item" data-id="review-3d" data-votes="1284" data-added="2026-06-12" data-stages="review">
+              <article class="rm-card panel" data-stage="review" data-spotlight aria-labelledby="rm-c-review-3d">
+                <div class="rm-card__top"><span class="lane-chip">Review</span><span class="rm-card__status">Private beta, 40 studios</span></div>
+                <h4 class="rm-card__title" id="rm-c-review-3d">Review Room for 3D files</h4>
+                <p class="rm-card__why">Pin a note to a point on a model, orbit it together with your reviewer, and compare two versions under the same light. For product designers, game artists and anyone whose work has a back side.</p>
+                <div class="rm-card__foot">
+                  <span class="rm-card__added">Added <time datetime="2026-06-12">12 Jun 2026</time></span>
+                  <button class="btn rm-vote" type="button" aria-pressed="false" data-vote><svg class="icon" aria-hidden="true"><use href="#i-vote"/></svg><span class="rm-vote__n" data-vote-n>1,284</span><span class="sr"> votes. Vote for Review Room for 3D files</span></button>
+                </div>
+              </article>
+            </li>
+            <li class="rm-item" data-id="shared-sparkboards" data-votes="962" data-added="2026-08-03" data-stages="spark">
+              <article class="rm-card panel" data-stage="spark" data-spotlight aria-labelledby="rm-c-shared-sparkboards">
+                <div class="rm-card__top"><span class="lane-chip">Spark</span><span class="rm-card__status">Early access on 4 Dec</span></div>
+                <h4 class="rm-card__title" id="rm-c-shared-sparkboards">Shared Sparkboards</h4>
+                <p class="rm-card__why">One board for the whole crew. Everyone’s sparks land in the same constellations, with who caught what and when, so the best idea in the room doesn’t stay on one person’s phone.</p>
+                <div class="rm-card__foot">
+                  <span class="rm-card__added">Added <time datetime="2026-08-03">3 Aug 2026</time></span>
+                  <button class="btn rm-vote" type="button" aria-pressed="false" data-vote><svg class="icon" aria-hidden="true"><use href="#i-vote"/></svg><span class="rm-vote__n" data-vote-n>962</span><span class="sr"> votes. Vote for Shared Sparkboards</span></button>
+                </div>
+              </article>
+            </li>
+          </ol>
+          <p class="rm-col__empty" hidden>Nothing for this stage in Now. It may be further down the road.</p>
+        </section>
+
+        <!-- NEXT -->
+        <section class="rm-col rm-col--next" id="rm-next" aria-labelledby="rm-next-title" data-reveal data-delay="0.08">
+          <header class="rm-col__head">
+            <h3 class="rm-col__title" id="rm-next-title">Next</h3>
+            <p class="rm-col__when"><span class="chip">H1 2027</span></p>
+            <span class="rm-col__n" data-col-n="rm-next" aria-hidden="true">3</span>
+          </header>
+          <span class="rm-col__road" aria-hidden="true"></span>
+          <ol class="rm-list" data-rm-list>
+            <li class="rm-item" data-id="automations" data-votes="1876" data-added="2026-09-15" data-stages="launch">
+              <article class="rm-card panel" data-stage="launch" data-spotlight aria-labelledby="rm-c-automations">
+                <div class="rm-card__top"><span class="lane-chip">Launch</span><span class="rm-card__status">Designing</span></div>
+                <h4 class="rm-card__title" id="rm-c-automations">Lane automations</h4>
+                <p class="rm-card__why">Small rules that keep work moving while you sleep: when a version is approved, move to Launch; when a launch goes live, start the recap; when a review stalls for two days, nudge.</p>
+                <div class="rm-card__foot">
+                  <span class="rm-card__added">Added <time datetime="2026-09-15">15 Sep 2026</time></span>
+                  <button class="btn rm-vote" type="button" aria-pressed="false" data-vote><svg class="icon" aria-hidden="true"><use href="#i-vote"/></svg><span class="rm-vote__n" data-vote-n>1,876</span><span class="sr"> votes. Vote for Lane automations</span></button>
+                </div>
+              </article>
+            </li>
+            <li class="rm-item" data-id="budgets" data-votes="1105" data-added="2026-07-08" data-stages="shape">
+              <article class="rm-card panel" data-stage="shape" data-spotlight aria-labelledby="rm-c-budgets">
+                <div class="rm-card__top"><span class="lane-chip">Shape</span><span class="rm-card__status">Prototyping</span></div>
+                <h4 class="rm-card__title" id="rm-c-budgets">Budgets in Blueprints</h4>
+                <p class="rm-card__why">Put a number next to the plan. Track spend against each milestone, so the money and the deadline ride in the same lane and nobody finds out at the end.</p>
+                <div class="rm-card__foot">
+                  <span class="rm-card__added">Added <time datetime="2026-07-08">8 Jul 2026</time></span>
+                  <button class="btn rm-vote" type="button" aria-pressed="false" data-vote><svg class="icon" aria-hidden="true"><use href="#i-vote"/></svg><span class="rm-vote__n" data-vote-n>1,105</span><span class="sr"> votes. Vote for Budgets in Blueprints</span></button>
+                </div>
+              </article>
+            </li>
+            <li class="rm-item" data-id="share-pages-12" data-votes="734" data-added="2026-10-21" data-stages="launch">
+              <article class="rm-card panel" data-stage="launch" data-spotlight aria-labelledby="rm-c-share-pages-12">
+                <div class="rm-card__top"><span class="lane-chip">Launch</span><span class="rm-card__status">Designing</span></div>
+                <h4 class="rm-card__title" id="rm-c-share-pages-12">Share Pages in 12 languages</h4>
+                <p class="rm-card__why">Write your launch page once and publish it in twelve languages, with every translation reviewable line by line in Review Room before it goes live.</p>
+                <div class="rm-card__foot">
+                  <span class="rm-card__added">Added <time datetime="2026-10-21">21 Oct 2026</time></span>
+                  <button class="btn rm-vote" type="button" aria-pressed="false" data-vote><svg class="icon" aria-hidden="true"><use href="#i-vote"/></svg><span class="rm-vote__n" data-vote-n>734</span><span class="sr"> votes. Vote for Share Pages in 12 languages</span></button>
+                </div>
+              </article>
+            </li>
+          </ol>
+          <p class="rm-col__empty" hidden>Nothing for this stage in Next yet.</p>
+        </section>
+
+        <!-- LATER -->
+        <section class="rm-col rm-col--later" id="rm-later" aria-labelledby="rm-later-title" data-reveal data-delay="0.16">
+          <header class="rm-col__head">
+            <h3 class="rm-col__title" id="rm-later-title">Later</h3>
+            <p class="rm-col__when"><span class="chip">On the horizon</span></p>
+            <span class="rm-col__n" data-col-n="rm-later" aria-hidden="true">3</span>
+          </header>
+          <span class="rm-col__road" aria-hidden="true"></span>
+          <ol class="rm-list" data-rm-list>
+            <li class="rm-item" data-id="byo-storage" data-votes="1392" data-added="2026-05-27" data-stages="make">
+              <article class="rm-card panel" data-stage="make" data-spotlight aria-labelledby="rm-c-byo-storage">
+                <div class="rm-card__top"><span class="lane-chip">Make</span><span class="rm-card__status">Exploring</span></div>
+                <h4 class="rm-card__title" id="rm-c-byo-storage">Bring-your-own storage</h4>
+                <p class="rm-card__why">Keep your files in your own storage, in the EU or the US, while Crestora handles the versions, notes and approvals on top. For studios with rules about where work lives.</p>
+                <div class="rm-card__foot">
+                  <span class="rm-card__added">Added <time datetime="2026-05-27">27 May 2026</time></span>
+                  <button class="btn rm-vote" type="button" aria-pressed="false" data-vote><svg class="icon" aria-hidden="true"><use href="#i-vote"/></svg><span class="rm-vote__n" data-vote-n>1,392</span><span class="sr"> votes. Vote for Bring-your-own storage</span></button>
+                </div>
+              </article>
+            </li>
+            <li class="rm-item" data-id="desktop-offline" data-votes="1018" data-added="2026-09-30" data-stages="make">
+              <article class="rm-card panel" data-stage="make" data-spotlight aria-labelledby="rm-c-desktop-offline">
+                <div class="rm-card__top"><span class="lane-chip">Make</span><span class="rm-card__status">Exploring</span></div>
+                <h4 class="rm-card__title" id="rm-c-desktop-offline">Desktop offline mode</h4>
+                <p class="rm-card__why">Keep working at 30,000 feet. Versions and notes queue up on your laptop and sync when you land, the way Sparkboard already does on iOS.</p>
+                <div class="rm-card__foot">
+                  <span class="rm-card__added">Added <time datetime="2026-09-30">30 Sep 2026</time></span>
+                  <button class="btn rm-vote" type="button" aria-pressed="false" data-vote><svg class="icon" aria-hidden="true"><use href="#i-vote"/></svg><span class="rm-vote__n" data-vote-n>1,018</span><span class="sr"> votes. Vote for Desktop offline mode</span></button>
+                </div>
+              </article>
+            </li>
+            <li class="rm-item" data-id="classrooms" data-votes="648" data-added="2026-11-12" data-stages="shape">
+              <article class="rm-card panel" data-stage="shape" data-spotlight aria-labelledby="rm-c-classrooms">
+                <div class="rm-card__top"><span class="lane-chip">Shape</span><span class="rm-card__status">Talking to teachers</span></div>
+                <h4 class="rm-card__title" id="rm-c-classrooms">Crestora for classrooms</h4>
+                <p class="rm-card__why">Teachers set briefs as Blueprints, every student rides their own lane, and crits happen in Review Room. Built with the three art schools already using Crestora this way.</p>
+                <div class="rm-card__foot">
+                  <span class="rm-card__added">Added <time datetime="2026-11-12">12 Nov 2026</time></span>
+                  <button class="btn rm-vote" type="button" aria-pressed="false" data-vote><svg class="icon" aria-hidden="true"><use href="#i-vote"/></svg><span class="rm-vote__n" data-vote-n>648</span><span class="sr"> votes. Vote for Crestora for classrooms</span></button>
+                </div>
+              </article>
+            </li>
+          </ol>
+          <p class="rm-col__empty" hidden>Nothing for this stage in Later yet.</p>
+        </section>
+      </div>
+
+      <p class="rm-note" data-reveal="fade"><svg class="icon" aria-hidden="true"><use href="#i-info"/></svg>Votes help us decide what to build first; they’re one voice among many, next to support tickets, interviews and what we see people struggle with. Your vote is kept in this browser.</p>
+    </div>
+  </section>
+
+  <!-- what left the board -->
+  <section class="rm-shipped" aria-labelledby="rm-shipped-title">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow" data-reveal="fade">Recently shipped</p>
+          <h2 class="title-2" id="rm-shipped-title" data-split>Off the board, onto the road.</h2>
+        </div>
+        <div class="section-head__aside" data-reveal>
+          <p class="lede">Ideas that started here as votes and now live in Crestora. Each one links to its release notes.</p>
+          <a class="link-arrow" href="{{ROOT}}changelog.html" data-roll>The full changelog <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+        </div>
+      </div>
+      <ul class="rm-ship" data-reveal-stagger>
+        <li data-stage="review">
+          <a class="rm-ship__card" href="{{ROOT}}changelog.html#v4-12" data-spotlight>
+            <span class="rm-ship__top"><span class="rm-ship__ver">v4.12</span><time datetime="2026-11-20">20 Nov 2026</time></span>
+            <strong class="rm-ship__title">Review Room hears you</strong>
+            <span class="rm-ship__meta"><span class="dot" aria-hidden="true"></span>2,140 votes on the board</span>
+            <svg class="icon rm-ship__go" aria-hidden="true"><use href="#i-arrow-up-right"/></svg>
+          </a>
+        </li>
+        <li data-stage="afterglow">
+          <a class="rm-ship__card" href="{{ROOT}}changelog.html#v4-11" data-spotlight>
+            <span class="rm-ship__top"><span class="rm-ship__ver">v4.11</span><time datetime="2026-11-06">6 Nov 2026</time></span>
+            <strong class="rm-ship__title">Afterglow recaps on day 1, 7 and 30</strong>
+            <span class="rm-ship__meta"><span class="dot" aria-hidden="true"></span>1,730 votes on the board</span>
+            <svg class="icon rm-ship__go" aria-hidden="true"><use href="#i-arrow-up-right"/></svg>
+          </a>
+        </li>
+        <li data-stage="make">
+          <a class="rm-ship__card" href="{{ROOT}}changelog.html#v4-10" data-spotlight>
+            <span class="rm-ship__top"><span class="rm-ship__ver">v4.10</span><time datetime="2026-10-23">23 Oct 2026</time></span>
+            <strong class="rm-ship__title">Lanes can merge</strong>
+            <span class="rm-ship__meta"><span class="dot" aria-hidden="true"></span>1,312 votes on the board</span>
+            <svg class="icon rm-ship__go" aria-hidden="true"><use href="#i-arrow-up-right"/></svg>
+          </a>
+        </li>
+        <li data-stage="launch">
+          <a class="rm-ship__card" href="{{ROOT}}changelog.html#v4-9" data-spotlight>
+            <span class="rm-ship__top"><span class="rm-ship__ver">v4.9</span><time datetime="2026-10-09">9 Oct 2026</time></span>
+            <strong class="rm-ship__title">Countdown launch rooms</strong>
+            <span class="rm-ship__meta"><span class="dot" aria-hidden="true"></span>1,905 votes on the board</span>
+            <svg class="icon rm-ship__go" aria-hidden="true"><use href="#i-arrow-up-right"/></svg>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- suggest something -->
+  <section class="rm-suggest" id="suggest" aria-labelledby="rm-suggest-title">
+    <div class="container rm-suggest__grid">
+      <div class="rm-suggest__intro">
+        <p class="eyebrow" data-reveal="fade">Suggest something</p>
+        <h2 class="title-2" id="rm-suggest-title" data-split>What should we build?</h2>
+        <p class="lede" data-reveal>We read every suggestion. Once a month the product crew sorts them with your votes in hand, and the ones that keep coming back find a column.</p>
+        <ol class="rm-steps" data-reveal-stagger>
+          <li><span class="rm-steps__n" aria-hidden="true">01</span><strong>You suggest it</strong><span>A sentence is enough. Tell us what it would change for you, not how to build it.</span></li>
+          <li><span class="rm-steps__n" aria-hidden="true">02</span><strong>Others ride along</strong><span>After the monthly review, the strongest ideas go up on this board for votes.</span></li>
+          <li><span class="rm-steps__n" aria-hidden="true">03</span><strong>It finds a column</strong><span>Later, then Next, then Now. If you left an email, you hear from us the day it ships.</span></li>
+        </ol>
+      </div>
+
+      <form class="rm-form panel panel--raised" action="{{ROOT}}roadmap.html" method="get" data-form data-demo data-success="Thanks. Your idea joins the roadmap review on 18 Dec. (Demo: nothing was sent.)" data-success-key="Sent" data-reveal>
+        <div class="field">
+          <label class="field__label" for="rm-idea">What should Crestora do?</label>
+          <input class="input" id="rm-idea" name="idea" type="text" required minlength="6" maxlength="90" autocomplete="off" placeholder="Let reviewers draw on a frame" data-msg-required="Give it a line, even a rough one." />
+          <p class="field__error"></p>
+        </div>
+        <div class="field">
+          <label class="field__label" for="rm-stage">Which stage does it touch?</label>
+          <select class="input" id="rm-stage" name="stage">
+            <option value="">Not sure</option>
+            <option value="spark">Spark · Sparkboard</option>
+            <option value="shape">Shape · Blueprints</option>
+            <option value="make">Make · Workbench</option>
+            <option value="review">Review · Review Room</option>
+            <option value="launch">Launch · Countdown</option>
+            <option value="afterglow">Afterglow · Afterglow</option>
+          </select>
+        </div>
+        <div class="field">
+          <label class="field__label" for="rm-why">What would it change for you?</label>
+          <textarea class="input" id="rm-why" name="why" required minlength="20" maxlength="800" rows="4" placeholder="My clients send notes as screenshots with red circles. I copy every one into Review Room by hand." data-msg-required="Tell us a little about why, so we can weigh it."></textarea>
+          <p class="field__error"></p>
+        </div>
+        <div class="field">
+          <label class="field__label" for="rm-email">Email <span class="rm-form__opt">(optional)</span></label>
+          <input class="input" id="rm-email" name="email" type="email" maxlength="120" autocomplete="email" inputmode="email" placeholder="you@studio.example" aria-describedby="rm-email-hint" />
+          <p class="field__hint" id="rm-email-hint">Only to tell you when it ships. Nothing else.</p>
+          <p class="field__error"></p>
+        </div>
+        <button class="btn btn--primary btn--lg btn--block" type="submit">Send the idea <svg class="arrow" aria-hidden="true"><use href="#i-arrow"/></svg></button>
+        <p class="rm-form__note"><svg class="icon" aria-hidden="true"><use href="#i-info"/></svg>This is a demo: nothing you type here is stored or sent.</p>
+      </form>
+    </div>
+  </section>
+
+  {{> cta}}
+</main>

@@ -1,0 +1,912 @@
+<!doctype html>
+<!-- Assembled by tools/pages.mjs from src/pages/help.html; edit that, not this. -->
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Help Center — Crestora</title>
+<meta name="description" content="Straight answers about lanes, stages, reviews, launches, billing and integrations, with instant search, and a human when an answer isn’t enough." />
+<meta name="theme-color" content="#000000" />
+<meta name="color-scheme" content="dark" />
+<link rel="canonical" href="{{SITE_URL}}/help.html" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Crestora" />
+<meta property="og:url" content="{{SITE_URL}}/help.html" />
+<meta property="og:title" content="Help Center — Crestora" />
+<meta property="og:description" content="Straight answers about lanes, stages, reviews, launches, billing and integrations, with instant search, and a human when an answer isn’t enough." />
+<meta property="og:image" content="{{SITE_URL}}/assets/img/og.jpg" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
+<link rel="preload" href="assets/fonts/inter-latin-wght.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="assets/fonts/michroma-latin.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="stylesheet" href="vendor/lenis.css" />
+<link rel="stylesheet" href="css/site.css?v={{VERSION}}" />
+<script>
+  // Scripts will run: the page may hide what they are about to bring in. A repeat visit in this tab gets short
+  // intros; reduced motion (or ?reduced) gets none.
+  (function (h) {
+    h.className = h.className.replace("no-js", "js");
+    try { if (sessionStorage.getItem("crestora:seen")) h.classList.add("is-repeat"); } catch (e) {}
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches || /[?&]reduced/.test(location.search)) h.classList.add("is-calm");
+    setTimeout(function () { h.classList.add("is-ready"); }, 6000); // if the scripts never get there, show everything anyway
+  })(document.documentElement);
+</script>
+<script defer src="vendor/gsap.min.js"></script>
+<script defer src="vendor/ScrollTrigger.min.js"></script>
+<script defer src="vendor/SplitText.min.js"></script>
+<script defer src="vendor/lenis.min.js"></script>
+<script type="module" src="js/main.js?v={{VERSION}}"></script>
+</head>
+<body data-page="help" data-modules="copy page-help">
+<!-- The icon sprite: drawn on a 24 px grid in the footer's hand (round caps and joins; stroke set by .icon). Use as
+     <svg class="icon" aria-hidden="true"><use href="#i-spark"/></svg>. -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <!-- the six stages -->
+    <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 3.5c.5 4.3 2.2 6 6.5 6.5-4.3.5-6 2.2-6.5 6.5-.5-4.3-2.2-6-6.5-6.5 4.3-.5 6-2.2 6.5-6.5Z"/><path d="M18.5 16.5v3M17 18h3"/></symbol>
+    <symbol id="i-shape" viewBox="0 0 24 24"><path d="M6 3.5h8.5L19 8v12.5H6Z"/><path d="M14.5 3.5V8H19M9 12.5h7M9 16h5"/></symbol>
+    <symbol id="i-make" viewBox="0 0 24 24"><path d="m14.5 4.5 5 5-8.8 8.8-5.6.6.6-5.6 8.8-8.8Z"/><path d="m12.5 6.5 5 5M5.1 18.9l3.3-3.3"/></symbol>
+    <symbol id="i-review" viewBox="0 0 24 24"><path d="M4.5 6.5a2 2 0 0 1 2-2h11a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-6l-4 3.5v-3.5h-1a2 2 0 0 1-2-2Z"/><circle cx="12" cy="10.5" r="1.6"/></symbol>
+    <symbol id="i-launch" viewBox="0 0 24 24"><path d="M3.5 19.5h17"/><path d="M12 15.5V4.5M7.5 9 12 4.5 16.5 9"/></symbol>
+    <symbol id="i-afterglow" viewBox="0 0 24 24"><path d="M3.5 17.5h17M6.5 17.5a5.5 5.5 0 0 1 11 0"/><path d="M12 6.5v2M5.6 9.6 7 11M18.4 9.6 17 11M3.5 14h1.5M19 14h1.5"/></symbol>
+    <!-- navigation and actions -->
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4.5 12h14.5M13.5 6.5 19 12l-5.5 5.5"/></symbol>
+    <symbol id="i-arrow-up-right" viewBox="0 0 24 24"><path d="M7 17 17 7M8.5 7H17v8.5"/></symbol>
+    <symbol id="i-arrow-down" viewBox="0 0 24 24"><path d="M12 4.5v14.5M6.5 13.5 12 19l5.5-5.5"/></symbol>
+    <symbol id="i-chev-down" viewBox="0 0 24 24"><path d="m6.5 9.5 5.5 5.5 5.5-5.5"/></symbol>
+    <symbol id="i-chev-right" viewBox="0 0 24 24"><path d="m9.5 6 6 6-6 6"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4 4"/></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8.5" y="8.5" width="11" height="11" rx="2"/><path d="M15.5 8.5v-2a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></symbol>
+    <symbol id="i-link" viewBox="0 0 24 24"><path d="M10 14a3.5 3.5 0 0 0 5 0l3.5-3.5a3.5 3.5 0 0 0-5-5L12 7"/><path d="M14 10a3.5 3.5 0 0 0-5 0l-3.5 3.5a3.5 3.5 0 0 0 5 5L12 17"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 4.5v11M7 11l5 5 5-5M5 19.5h14"/></symbol>
+    <symbol id="i-external" viewBox="0 0 24 24"><path d="M13.5 4.5h6v6M19.5 4.5l-8 8M17.5 13.5v5a1 1 0 0 1-1 1h-11a1 1 0 0 1-1-1v-11a1 1 0 0 1 1-1h5"/></symbol>
+    <symbol id="i-filter" viewBox="0 0 24 24"><path d="M4.5 6.5h15M7.5 12h9M10.5 17.5h3"/></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5.8v12.4c0 .6.7 1 1.2.7l9.6-6.2c.5-.3.5-1 0-1.3L9.2 5.1C8.7 4.8 8 5.2 8 5.8Z"/></symbol>
+    <!-- the site's pages -->
+    <symbol id="i-plug" viewBox="0 0 24 24"><path d="M9 3.5v4M15 3.5v4M6.5 7.5h11v3a5.5 5.5 0 0 1-11 0Z"/><path d="M12 16v4.5"/></symbol>
+    <symbol id="i-tag" viewBox="0 0 24 24"><path d="M3.5 12.2V4.5a1 1 0 0 1 1-1h7.7l8.3 8.3a1.5 1.5 0 0 1 0 2.1l-6.6 6.6a1.5 1.5 0 0 1-2.1 0Z"/><circle cx="8" cy="8" r="1.4"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></symbol>
+    <symbol id="i-map" viewBox="0 0 24 24"><path d="m3.5 6.5 5.5-2 6 2 5.5-2v13l-5.5 2-6-2-5.5 2Z"/><path d="M9 4.5v13M15 6.5v13"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 2.8 19.5 5.5v6c0 4.6-3.1 8.4-7.5 9.7-4.4-1.3-7.5-5.1-7.5-9.7v-6L12 2.8Z"/><path d="m8.7 12 2.3 2.3 4.4-4.6"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><rect x="4.5" y="10.5" width="15" height="10" rx="2.5"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/></symbol>
+    <symbol id="i-key" viewBox="0 0 24 24"><circle cx="8" cy="15" r="4"/><path d="m11 12 8.5-8.5M16 7l2.5 2.5M14 9l2 2"/></symbol>
+    <symbol id="i-book" viewBox="0 0 24 24"><path d="M4.5 5.5a2 2 0 0 1 2-2h12v15h-12a2 2 0 0 0-2 2Z"/><path d="M4.5 20.5a2 2 0 0 1 2-2h12v2h-12a2 2 0 0 1-2-2"/></symbol>
+    <symbol id="i-code" viewBox="0 0 24 24"><path d="m8.5 7.5-5 4.5 5 4.5M15.5 7.5l5 4.5-5 4.5M13.5 5l-3 14"/></symbol>
+    <symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M9.6 9.5a2.5 2.5 0 0 1 4.8.9c0 1.6-2.4 2.1-2.4 3.6"/><circle cx="12" cy="17" r=".6"/></symbol>
+    <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8.5" r="3.5"/><path d="M2.5 19.5a6.5 6.5 0 0 1 13 0"/><path d="M15.5 5.2a3.5 3.5 0 0 1 0 6.6M17.5 13.6a6.5 6.5 0 0 1 4 5.9"/></symbol>
+    <symbol id="i-learn" viewBox="0 0 24 24"><path d="m2.5 9 9.5-4.5L21.5 9 12 13.5Z"/><path d="M6.5 11v4.5c0 1.5 2.5 3 5.5 3s5.5-1.5 5.5-3V11M21.5 9v5"/></symbol>
+    <symbol id="i-broadcast" viewBox="0 0 24 24"><circle cx="12" cy="12" r="2"/><path d="M8 8a5.6 5.6 0 0 0 0 8M16 8a5.6 5.6 0 0 1 0 8M5.2 5.2a9.6 9.6 0 0 0 0 13.6M18.8 5.2a9.6 9.6 0 0 1 0 13.6"/></symbol>
+    <symbol id="i-pen" viewBox="0 0 24 24"><path d="M4.5 19.5h4l10-10a2.8 2.8 0 0 0-4-4l-10 10Z"/><path d="m13 7 4 4"/></symbol>
+    <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 11v5.5"/><circle cx="12" cy="7.8" r=".6"/></symbol>
+    <symbol id="i-briefcase" viewBox="0 0 24 24"><rect x="3.5" y="7.5" width="17" height="12" rx="2"/><path d="M8.5 7.5v-2a1 1 0 0 1 1-1h5a1 1 0 0 1 1 1v2M3.5 12.5h17"/></symbol>
+    <symbol id="i-news" viewBox="0 0 24 24"><path d="M4.5 5.5h12v13a2 2 0 0 1-2 2h-8a2 2 0 0 1-2-2Z"/><path d="M16.5 9.5h3v9a2 2 0 0 1-2 2M7.5 9h6M7.5 12.5h6M7.5 16h4"/></symbol>
+    <symbol id="i-handshake" viewBox="0 0 24 24"><path d="m3 10 4-4 5 2 5-2 4 4-7 7.5a1.5 1.5 0 0 1-2.1 0Z"/><path d="m12 8-3 3a1.4 1.4 0 0 0 2 2l2-1.8 3 3"/></symbol>
+    <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3.5" y="5.5" width="17" height="13" rx="2"/><path d="m4 7 8 6 8-6"/></symbol>
+    <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="4" y="5.5" width="16" height="14.5" rx="2"/><path d="M4 10h16M8.5 3.5v4M15.5 3.5v4"/></symbol>
+    <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c2.4 2.3 3.6 5.1 3.6 8.5s-1.2 6.2-3.6 8.5c-2.4-2.3-3.6-5.1-3.6-8.5S9.6 5.8 12 3.5Z"/></symbol>
+    <symbol id="i-star" viewBox="0 0 24 24"><path d="m12 3.5 2.6 5.4 5.9.8-4.3 4.1 1 5.9-5.2-2.8-5.2 2.8 1-5.9-4.3-4.1 5.9-.8Z"/></symbol>
+    <symbol id="i-vote" viewBox="0 0 24 24"><path d="m6.5 11 5.5-5.5 5.5 5.5M12 5.5v13"/></symbol>
+    <symbol id="i-sitemap" viewBox="0 0 24 24"><rect x="9" y="3.5" width="6" height="4.5" rx="1"/><rect x="3.5" y="16" width="6" height="4.5" rx="1"/><rect x="14.5" y="16" width="6" height="4.5" rx="1"/><path d="M12 8v4M6.5 16v-2a2 2 0 0 1 2-2h7a2 2 0 0 1 2 2v2"/></symbol>
+    <symbol id="i-doc" viewBox="0 0 24 24"><path d="M6.5 3.5h8l4 4v13h-12Z"/><path d="M14.5 3.5v4h4M9 12h6M9 15.5h6"/></symbol>
+    <symbol id="i-cookie" viewBox="0 0 24 24"><path d="M20.4 12.6A8.5 8.5 0 1 1 11.4 3.6a3 3 0 0 0 4 3.6 3 3 0 0 0 5 5.4Z"/><circle cx="9" cy="10" r=".8"/><circle cx="14.5" cy="15" r=".8"/><circle cx="9.5" cy="15.5" r=".8"/></symbol>
+    <symbol id="i-scale" viewBox="0 0 24 24"><path d="M12 4v16M7.5 20h9M5 7.5h14M5 7.5l-2.5 6a2.8 2.8 0 0 0 5 0Zm14 0-2.5 6a2.8 2.8 0 0 0 5 0Z"/></symbol>
+    <symbol id="i-server" viewBox="0 0 24 24"><rect x="4" y="4.5" width="16" height="6.5" rx="1.5"/><rect x="4" y="13" width="16" height="6.5" rx="1.5"/><path d="M7.5 7.8h.01M7.5 16.2h.01"/></symbol>
+    <symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13 2.5 4.5 13.5H11l-1 8 8.5-11H12l1-8Z"/></symbol>
+    <symbol id="i-layers" viewBox="0 0 24 24"><path d="m12 3.5 9 4.75-9 4.75-9-4.75 9-4.75ZM3 12.25 12 17l9-4.75M3 16.25 12 21l9-4.75"/></symbol>
+  </defs>
+</svg>
+<a class="skip" href="#main">Skip to content</a>
+<header class="header">
+  <div class="header__inner container">
+    <a class="header__logo" href="./" aria-label="Crestora, home">
+      <span class="mark" aria-hidden="true"><span class="mark__sheen"></span></span>
+      <span class="wordmark" aria-hidden="true">Crestora</span>
+    </a>
+    <nav class="nav" aria-label="Main">
+      <div class="nav__item" data-menu>
+        <button class="nav__trigger" type="button" aria-expanded="false" aria-controls="menu-product">Product<svg aria-hidden="true"><use href="#i-chev-down"/></svg></button>
+        <div class="dropdown" id="menu-product" style="--cols:2">
+          <a href="index.html#features"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-layers"/></svg></span><strong>Features</strong><small>Six lanes from spark to launch</small></a>
+          <a href="integrations.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-plug"/></svg></span><strong>Integrations</strong><small>120+ tools merge into your lane</small></a>
+          <a href="changelog.html#v4-12"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-clock"/></svg></span><strong>Changelog</strong><small>v4.12 · Review Room hears you</small></a>
+          <a href="roadmap.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-map"/></svg></span><strong>Roadmap</strong><small>Vote on what comes next</small></a>
+          <a href="security.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-shield"/></svg></span><strong>Security</strong><small>Your unreleased work, protected</small></a>
+          <a href="pricing.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-tag"/></svg></span><strong>Pricing</strong><small>Free for three lanes</small></a>
+        </div>
+      </div>
+      <a class="nav__link" href="index.html#creators" data-roll>Creators</a>
+      <div class="nav__item" data-menu>
+        <button class="nav__trigger is-current" type="button" aria-expanded="false" aria-controls="menu-resources">Resources<svg aria-hidden="true"><use href="#i-chev-down"/></svg></button>
+        <div class="dropdown" id="menu-resources" style="--cols:2">
+          <a href="blog.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-pen"/></svg></span><strong>Field Notes</strong><small>Launch stories and craft notes</small></a>
+          <a href="docs.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-book"/></svg></span><strong>Documentation</strong><small>Lanes, stages and every tool</small></a>
+          <a href="api.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-code"/></svg></span><strong>API Reference</strong><small>A small REST API for lanes</small></a>
+          <a href="help.html" aria-current="page"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-help"/></svg></span><strong>Help Center</strong><small>Answers, fast</small></a>
+          <a href="community.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-users"/></svg></span><strong>Community</strong><small>Circles, swaps and Launch Night</small></a>
+          <a href="tutorials.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-learn"/></svg></span><strong>Tutorials</strong><small>Short lessons from people who ship</small></a>
+          <a href="webinars.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-broadcast"/></svg></span><strong>Webinars</strong><small>Next: Dec 10, live</small></a>
+        </div>
+      </div>
+      <div class="nav__item" data-menu>
+        <button class="nav__trigger" type="button" aria-expanded="false" aria-controls="menu-company">Company<svg aria-hidden="true"><use href="#i-chev-down"/></svg></button>
+        <div class="dropdown" id="menu-company" style="--cols:1">
+          <a href="about.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-info"/></svg></span><strong>About</strong><small>Why we build roads for makers</small></a>
+          <a href="careers.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-briefcase"/></svg></span><strong>Careers</strong><small>8 open roles, four hubs</small></a>
+          <a href="press.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-news"/></svg></span><strong>Press Kit</strong><small>Words, marks and facts</small></a>
+          <a href="partners.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-handshake"/></svg></span><strong>Partners</strong><small>Studios, toolmakers, teachers</small></a>
+          <a href="contact.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-mail"/></svg></span><strong>Contact</strong><small>Talk to a human</small></a>
+        </div>
+      </div>
+      <a class="nav__link" href="pricing.html" data-roll>Pricing</a>
+    </nav>
+    <div class="header__actions">
+      <a class="header__signin" href="start.html#signin" data-roll>Sign in</a>
+      <a class="btn btn--primary btn--sm" href="start.html" data-roll>Open a lane</a>
+      <button class="header__burger" type="button" aria-expanded="false" aria-controls="menu" aria-label="Open menu"><span></span></button>
+    </div>
+  </div>
+</header>
+<div class="menu" id="menu" role="dialog" aria-modal="true" aria-label="Menu">
+  <div class="menu__groups">
+    <div class="menu__group">
+      <h2>Product</h2>
+      <ul>
+        <li><a href="index.html#features">Features</a></li>
+        <li><a href="integrations.html">Integrations</a></li>
+        <li><a href="changelog.html">Changelog</a></li>
+        <li><a href="roadmap.html">Roadmap</a></li>
+        <li><a href="security.html">Security</a></li>
+        <li><a href="pricing.html">Pricing</a></li>
+      </ul>
+    </div>
+    <div class="menu__group">
+      <h2>Resources</h2>
+      <ul>
+        <li><a href="blog.html">Field Notes</a></li>
+        <li><a href="docs.html">Documentation</a></li>
+        <li><a href="api.html">API Reference</a></li>
+        <li><a href="help.html" aria-current="page">Help Center</a></li>
+        <li><a href="community.html">Community</a></li>
+        <li><a href="tutorials.html">Tutorials</a></li>
+        <li><a href="webinars.html">Webinars</a></li>
+      </ul>
+    </div>
+    <div class="menu__group">
+      <h2>Company</h2>
+      <ul>
+        <li><a href="about.html">About</a></li>
+        <li><a href="careers.html">Careers</a></li>
+        <li><a href="press.html">Press Kit</a></li>
+        <li><a href="partners.html">Partners</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+    <div class="menu__group">
+      <h2>More</h2>
+      <ul>
+        <li><a href="index.html#creators">Creators</a></li>
+        <li><a href="sitemap.html">Sitemap</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="streak" aria-hidden="true"></div>
+  <div class="menu__actions">
+    <a class="btn btn--primary" href="start.html">Open a lane</a>
+    <a class="btn" href="start.html#signin">Sign in</a>
+  </div>
+</div>
+
+<main id="main">
+  <!-- Help Center: a hero with the big search (a combobox over every answer on this page: highlighted matches, a
+       listbox with the arrow keys and Enter, which scrolls to the answer and opens it) and the six popular questions;
+       eight topic cards that jump to their sections; the answers themselves, each a <details> with its own id, beside
+       a sticky topic list with scrollspy; then "Still stuck?" with Support and the community. Without scripts the
+       search is hidden and everything else reads as a page of answers. -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <symbol id="hc-i-fix" viewBox="0 0 24 24"><path d="M15.4 3.9a4.7 4.7 0 0 0-5.2 6.2l-5.9 5.9a2 2 0 0 0 2.8 2.8l5.9-5.9a4.7 4.7 0 0 0 6.2-5.2l-2.8 2.8-2.7-.4-.4-2.7Z"/></symbol>
+  </svg>
+
+  <section class="page-hero hc-hero" aria-labelledby="hc-title">
+    <div class="page-hero__lanes" aria-hidden="true"></div>
+    <div class="container hc-hero__grid">
+      <div class="hc-hero__intro">
+        <p class="eyebrow" data-reveal="fade">Help Center</p>
+        <h1 class="title-1" id="hc-title" data-split>How can we help?</h1>
+        <p class="lede" data-reveal data-delay="0.15">Straight answers from the people who build Crestora. Type what’s in your way, or pick a topic below.</p>
+
+        <form class="hc-search" role="search" action="#answers" data-reveal data-delay="0.25">
+          <label class="sr" for="hc-q">Search the Help Center</label>
+          <div class="hc-search__box">
+            <svg class="icon hc-search__icon" aria-hidden="true"><use href="#i-search"/></svg>
+            <input class="hc-search__input" id="hc-q" name="q" type="search" role="combobox" aria-expanded="false" aria-controls="hc-results" aria-autocomplete="list" aria-describedby="hc-q-hint" autocomplete="off" spellcheck="false" enterkeyhint="go" placeholder="Search 33 answers" />
+            <kbd class="hc-search__kbd" aria-hidden="true">/</kbd>
+            <button class="hc-search__clear" type="button" aria-label="Clear the search" hidden><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg></button>
+          </div>
+          <p class="sr" id="hc-q-hint">Results appear as you type. Use the up and down arrow keys to move through them and Enter to open an answer.</p>
+          <div class="hc-pop" id="hc-pop" hidden>
+            <p class="hc-pop__head" id="hc-pop-head">Popular this week</p>
+            <ul class="hc-pop__list" id="hc-results" role="listbox" aria-labelledby="hc-pop-head"></ul>
+            <div class="hc-pop__empty" hidden>
+              <p class="hc-pop__none">No answer mentions <q data-hc-none></q> yet.</p>
+              <p>Ask the crew on the <a href="community.html#forum">Help forum</a>, or <a href="contact.html?topic=support">write to Support</a> and a person will reply.</p>
+            </div>
+            <p class="hc-pop__keys" aria-hidden="true"><span><kbd>↑</kbd><kbd>↓</kbd> to move</span><span><kbd>Enter</kbd> to open</span><span><kbd>Esc</kbd> to close</span></p>
+          </div>
+          <p class="sr" id="hc-live" aria-live="polite"></p>
+        </form>
+
+        <div class="hc-try" data-reveal data-delay="0.3">
+          <span class="hc-try__label">Try</span>
+          <button class="hc-try__q" type="button" data-q="export">export</button>
+          <button class="hc-try__q" type="button" data-q="review link">review link</button>
+          <button class="hc-try__q" type="button" data-q="cancel">cancel</button>
+          <button class="hc-try__q" type="button" data-q="sign-in">sign-in</button>
+          <button class="hc-try__q" type="button" data-q="merge">merge</button>
+        </div>
+
+        <div class="hc-hero__meta" data-reveal data-delay="0.35">
+          <a class="chip chip--live hc-status" href="security.html#status">All systems normal</a>
+          <a class="hc-ver" href="changelog.html#v4-12">33 answers · updated for v4.12</a>
+        </div>
+      </div>
+
+      <aside class="hc-hero__aside" aria-labelledby="hc-popular-title" data-reveal data-delay="0.3">
+        <h2 class="hc-label" id="hc-popular-title">Popular this week</h2>
+        <ol class="hc-popular" data-hc-popular>
+          <li><a href="#export-everything"><span class="hc-popular__n" aria-hidden="true">01</span><span class="hc-popular__q">How do I export everything?</span><span class="hc-popular__c">Account &amp; billing</span></a></li>
+          <li><a href="#review-links"><span class="hc-popular__n" aria-hidden="true">02</span><span class="hc-popular__q">Do reviewers need an account?</span><span class="hc-popular__c">Review &amp; feedback</span></a></li>
+          <li><a href="#change-plan"><span class="hc-popular__n" aria-hidden="true">03</span><span class="hc-popular__q">How do I change or cancel my plan?</span><span class="hc-popular__c">Account &amp; billing</span></a></li>
+          <li><a href="#sign-in-link"><span class="hc-popular__n" aria-hidden="true">04</span><span class="hc-popular__q">My sign-in link didn’t arrive.</span><span class="hc-popular__c">Troubleshooting</span></a></li>
+          <li><a href="#merge-lanes"><span class="hc-popular__n" aria-hidden="true">05</span><span class="hc-popular__q">How do I merge two lanes?</span><span class="hc-popular__c">Lanes &amp; stages</span></a></li>
+          <li><a href="#active-lane"><span class="hc-popular__n" aria-hidden="true">06</span><span class="hc-popular__q">What counts as an active lane?</span><span class="hc-popular__c">Account &amp; billing</span></a></li>
+        </ol>
+      </aside>
+    </div>
+  </section>
+
+  <!-- eight topics, each jumping to its section -->
+  <section class="hc-topics" id="topics" aria-labelledby="hc-topics-title">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow" data-reveal="fade">Browse by topic</p>
+          <h2 class="title-2" id="hc-topics-title" data-split>Pick a topic.</h2>
+        </div>
+        <div class="section-head__aside" data-reveal>
+          <p class="lede">Eight topics, roughly in the order you’ll need them: from opening your first lane to the day something sticks.</p>
+        </div>
+      </div>
+      <ul class="hc-cats" data-reveal-stagger>
+        <li><a class="hc-cat" href="#getting-started" data-spotlight>
+          <span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-bolt"/></svg></span>
+          <span class="hc-cat__t">Getting started</span>
+          <span class="hc-cat__d">Your first lane, your first crew, and the work you already have.</span>
+          <span class="hc-cat__foot"><span>4 answers</span><svg class="icon" aria-hidden="true"><use href="#i-arrow-down"/></svg></span>
+        </a></li>
+        <li><a class="hc-cat" href="#billing" data-spotlight>
+          <span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-tag"/></svg></span>
+          <span class="hc-cat__t">Account &amp; billing</span>
+          <span class="hc-cat__d">Plans, invoices, lane limits and taking everything with you.</span>
+          <span class="hc-cat__foot"><span>5 answers</span><svg class="icon" aria-hidden="true"><use href="#i-arrow-down"/></svg></span>
+        </a></li>
+        <li><a class="hc-cat hc-cat--flow" href="#lanes" data-spotlight>
+          <span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-layers"/></svg></span>
+          <span class="hc-cat__t">Lanes &amp; stages</span>
+          <span class="hc-cat__d">The six stages, moving back, merging and archiving.</span>
+          <span class="hc-cat__foot"><span>4 answers</span><span class="stage-rail hc-cat__rail" data-n="6" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span><svg class="icon" aria-hidden="true"><use href="#i-arrow-down"/></svg></span>
+        </a></li>
+        <li><a class="hc-cat hc-cat--stage" href="#review" data-stage="review" data-spotlight>
+          <span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-review"/></svg></span>
+          <span class="hc-cat__t">Review &amp; feedback</span>
+          <span class="hc-cat__d">Review links, pinned notes and approvals that stick.</span>
+          <span class="hc-cat__foot"><span>4 answers</span><span class="lane-chip hc-cat__chip">Review</span><svg class="icon" aria-hidden="true"><use href="#i-arrow-down"/></svg></span>
+        </a></li>
+        <li><a class="hc-cat hc-cat--stage" href="#launching" data-stage="launch" data-spotlight>
+          <span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-launch"/></svg></span>
+          <span class="hc-cat__t">Launching</span>
+          <span class="hc-cat__d">Checklists, channels, launch rooms and moving the date.</span>
+          <span class="hc-cat__foot"><span>4 answers</span><span class="lane-chip hc-cat__chip">Launch</span><svg class="icon" aria-hidden="true"><use href="#i-arrow-down"/></svg></span>
+        </a></li>
+        <li><a class="hc-cat" href="#integrations" data-spotlight>
+          <span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-plug"/></svg></span>
+          <span class="hc-cat__t">Integrations</span>
+          <span class="hc-cat__d">Connecting your tools, and what they’re allowed to see.</span>
+          <span class="hc-cat__foot"><span>4 answers</span><svg class="icon" aria-hidden="true"><use href="#i-arrow-down"/></svg></span>
+        </a></li>
+        <li><a class="hc-cat" href="#crews" data-spotlight>
+          <span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-users"/></svg></span>
+          <span class="hc-cat__t">Crews &amp; roles</span>
+          <span class="hc-cat__d">Roles, seats, handing a lane over and portals for clients.</span>
+          <span class="hc-cat__foot"><span>4 answers</span><svg class="icon" aria-hidden="true"><use href="#i-arrow-down"/></svg></span>
+        </a></li>
+        <li><a class="hc-cat" href="#troubleshooting" data-spotlight>
+          <span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#hc-i-fix"/></svg></span>
+          <span class="hc-cat__t">Troubleshooting</span>
+          <span class="hc-cat__d">Sign-in links, stuck uploads, iOS sync and the status page.</span>
+          <span class="hc-cat__foot"><span>4 answers</span><svg class="icon" aria-hidden="true"><use href="#i-arrow-down"/></svg></span>
+        </a></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- the answers -->
+  <section class="hc-answers" id="answers" aria-label="Answers">
+    <div class="container hc-answers__grid">
+      <nav class="toc hc-nav" aria-label="Topics on this page">
+        <p class="toc__title">Topics</p>
+        <a href="#getting-started"><span>Getting started</span><span class="hc-nav__n">4</span></a>
+        <a href="#billing"><span>Account &amp; billing</span><span class="hc-nav__n">5</span></a>
+        <a href="#lanes"><span>Lanes &amp; stages</span><span class="hc-nav__n">4</span></a>
+        <a href="#review"><span>Review &amp; feedback</span><span class="hc-nav__n">4</span></a>
+        <a href="#launching"><span>Launching</span><span class="hc-nav__n">4</span></a>
+        <a href="#integrations"><span>Integrations</span><span class="hc-nav__n">4</span></a>
+        <a href="#crews"><span>Crews &amp; roles</span><span class="hc-nav__n">4</span></a>
+        <a href="#troubleshooting"><span>Troubleshooting</span><span class="hc-nav__n">4</span></a>
+        <a class="hc-nav__stuck" href="#still-stuck">Still stuck?</a>
+      </nav>
+
+      <div class="hc-answers__body">
+        <!-- 1 -->
+        <section class="hc-topic" id="getting-started" aria-labelledby="hc-h-start">
+          <header class="hc-topic__head">
+            <span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-bolt"/></svg></span>
+            <div>
+              <h2 class="hc-topic__title" id="hc-h-start">Getting started</h2>
+              <p class="hc-topic__d">Your first lane, your first crew, and the work you already have.</p>
+            </div>
+            <span class="hc-topic__n">4 answers</span>
+          </header>
+          <div class="accordion hc-acc">
+            <details class="hc-a" id="first-lane" data-keywords="new create open begin start blank template">
+              <summary>How do I open my first lane?</summary>
+              <div class="accordion__body hc-a__body">
+                <p>Press <kbd>N</kbd> anywhere in Crestora, or choose <strong>New lane</strong> at the top of the sidebar. Give it a name, say what you’re making, and pick a Blueprint template or start blank. Every lane starts in Spark, so drop in whatever you have: a voice memo, a screenshot, one good sentence.</p>
+                <p>On Solo you can keep three lanes active at once, free, for as long as you like.</p>
+                <p class="hc-a__foot"><a class="hc-a__more" href="docs.html#getting-started">Your first lane in four steps<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a><button class="hc-a__copy" type="button" data-copy-answer><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg>Copy link</button></p>
+              </div>
+            </details>
+            <details class="hc-a" id="lane-vs-project" data-keywords="project lane difference meaning what is">
+              <summary>What’s the difference between a lane and a project?</summary>
+              <div class="accordion__body hc-a__body">
+                <p>A lane is a project with a road under it. It holds everything for one thing you’ll launch (the brief, the files, the notes and the release) and moves through six stages as the work does.</p>
+                <p>One lane per launch is a good rule of thumb: a short film is a lane, and its trailer can be another.</p>
+                <p class="hc-a__foot"><a class="hc-a__more" href="docs.html#lanes">How lanes work<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a><button class="hc-a__copy" type="button" data-copy-answer><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg>Copy link</button></p>
+              </div>
+            </details>
+            <details class="hc-a" id="invite-crew" data-keywords="invite add people team collaborator share member email">
+              <summary>How do I invite people to a lane?</summary>
+              <div class="accordion__body hc-a__body">
+                <p>Open the lane, choose <strong>Share</strong>, then <strong>Invite</strong>. Add email addresses and pick a role for each person: Maker for the people who make, Reviewer for the people who give notes. They get an email with a sign-in link, with no password to set.</p>
+                <p>Reviewers don’t even need that: send a review link and they can leave notes straight from their browser.</p>
+                <p class="hc-a__foot"><a class="hc-a__more" href="#roles">What each role can do<svg class="icon" aria-hidden="true"><use href="#i-arrow-down"/></svg></a><button class="hc-a__copy" type="button" data-copy-answer><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg>Copy link</button></p>
+              </div>
+            </details>
+            <details class="hc-a" id="bring-work-in" data-keywords="import migrate move folder csv files upload existing">
+              <summary>Can I bring in work from other tools?</summary>
+              <div class="accordion__body hc-a__body">
+                <p>Yes. Drag a folder onto a lane and Crestora keeps its structure, with each file as a first version. Tasks come in from a CSV, and connected apps send new work straight to the right stage, so renders from Framewright land in Make as versions.</p>
+                <p class="hc-a__foot"><a class="hc-a__more" href="docs.html#importing">Importing, in detail<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a><button class="hc-a__copy" type="button" data-copy-answer><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg>Copy link</button></p>
+              </div>
+            </details>
+          </div>
+        </section>
+
+        <!-- 2 -->
+        <section class="hc-topic" id="billing" aria-labelledby="hc-h-billing">
+          <header class="hc-topic__head">
+            <span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-tag"/></svg></span>
+            <div>
+              <h2 class="hc-topic__title" id="hc-h-billing">Account &amp; billing</h2>
+              <p class="hc-topic__d">Plans, invoices, lane limits and taking everything with you.</p>
+            </div>
+            <span class="hc-topic__n">5 answers</span>
+          </header>
+          <div class="accordion hc-acc">
+            <details class="hc-a" id="change-plan" data-keywords="cancel downgrade upgrade plan subscription stop refund switch">
+              <summary>How do I change or cancel my plan?</summary>
+              <div class="accordion__body hc-a__body">
+                <p>Go to <strong>Settings</strong>, then <strong>Plan</strong>. Upgrades start right away, and you pay only the difference for the rest of the period. Downgrades and cancellations take effect at the end of the period you’ve paid for, and nothing is deleted when they do.</p>
+                <p>No call, no form, no retention offer.</p>
+                <p class="hc-a__foot"><a class="hc-a__more" href="pricing.html">Compare every plan<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a><button class="hc-a__copy" type="button" data-copy-answer><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg>Copy link</button></p>
+              </div>
+            </details>
+            <details class="hc-a" id="active-lane" data-keywords="limit three 3 solo free archive slot count">
+              <summary>What counts as an active lane?</summary>
+              <div class="accordion__body hc-a__body">
+                <p>Any lane that isn’t archived, whatever stage it’s in. Solo includes three; Studio and Crew have no limit.</p>
+                <p>When a project has launched and its Afterglow recaps are in, archive it. It stays readable, searchable and exportable, and stops counting toward your three.</p>
+                <p class="hc-a__foot"><a class="hc-a__more" href="#archive-delete">Archiving and deleting<svg class="icon" aria-hidden="true"><use href="#i-arrow-down"/></svg></a><button class="hc-a__copy" type="button" data-copy-answer><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg>Copy link</button></p>
+              </div>
+            </details>
+            <details class="hc-a" id="invoices" data-keywords="invoice receipt vat tax company address billing card bank payment">
+              <summary>Where do I find invoices and change billing details?</summary>
+              <div class="accordion__body hc-a__body">
+                <p>In <strong>Settings</strong>, then <strong>Billing</strong>. Every invoice is there as a PDF, and you can add a VAT or tax ID, a company name and an address; changes apply from the next invoice.</p>
+                <p>Every plan can pay by card. Label can also pay by bank transfer against an annual invoice.</p>
+                <p class="hc-a__foot"><button class="hc-a__copy" type="button" data-copy-answer><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg>Copy link</button></p>
+              </div>
+            </details>
+            <details class="hc-a" id="export-everything" data-keywords="export download backup leave take out zip data portability">
+              <summary>How do I export everything?</summary>
+              <div class="accordion__body hc-a__body">
+                <p>Go to <strong>Settings</strong>, then <strong>Export</strong>. Pick a few lanes or take the whole workspace: files at full quality, every version, notes as JSON and CSV, and recaps as PDFs. We email you a download link when it’s ready, usually within the hour.</p>
+                <p>It’s free, on every plan, as often as you like. Your work is yours.</p>
+                <p class="hc-a__foot"><a class="hc-a__more" href="docs.html#exporting">What an export contains<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a><button class="hc-a__copy" type="button" data-copy-answer><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg>Copy link</button></p>
+              </div>
+            </details>
+            <details class="hc-a" id="creator-grant" data-keywords="student discount educator founder grant free education teacher">
+              <summary>Is there a discount for students or first-time founders?</summary>
+              <div class="accordion__body hc-a__body">
+                <p>Better than a discount: students, educators and first-time founders can have Studio free for a year through a Creator grant. Applying takes about five minutes, and we decide within two weeks.</p>
+                <p class="hc-a__foot"><a class="hc-a__more" href="pricing.html#grants">How Creator grants work<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a><button class="hc-a__copy" type="button" data-copy-answer><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg>Copy link</button></p>
+              </div>
+            </details>
+          </div>
+        </section>
+
+        <!-- 3 -->
+        <section class="hc-topic" id="lanes" aria-labelledby="hc-h-lanes">
+          <header class="hc-topic__head">
+            <span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-layers"/></svg></span>
+            <div>
+              <h2 class="hc-topic__title" id="hc-h-lanes">Lanes &amp; stages</h2>
+              <p class="hc-topic__d">The six stages, moving back, merging and archiving.</p>
+            </div>
+            <span class="hc-topic__n">4 answers</span>
+          </header>
+          <div class="accordion hc-acc">
+            <details class="hc-a" id="six-stages" data-keywords="stages spark shape make review launch afterglow sparkboard blueprints workbench countdown flow">
+              <summary>What are the six stages?</summary>
+              <div class="accordion__body hc-a__body">
+                <p>Every lane moves through the same six, and each one opens its own tool.</p>
+                <ol class="hc-stages">
+                  <li data-stage="spark"><span class="hc-stages__n">01</span><strong>Spark</strong><span>Sparkboard catches the idea before it fades.</span></li>
+                  <li data-stage="shape"><span class="hc-stages__n">02</span><strong>Shape</strong><span>Blueprints turns it into a one-page plan.</span></li>
+                  <li data-stage="make"><span class="hc-stages__n">03</span><strong>Make</strong><span>Workbench keeps every version and what changed.</span></li>
+                  <li data-stage="review"><span class="hc-stages__n">04</span><strong>Review</strong><span>Review Room holds the notes and the approvals.</span></li>
+                  <li data-stage="launch"><span class="hc-stages__n">05</span><strong>Launch</strong><span>Countdown runs the checklist and the schedule.</span></li>
+                  <li data-stage="afterglow"><span class="hc-stages__n">06</span><strong>Afterglow</strong><span>Afterglow recaps how it landed on day 1, 7 and 30.</span></li>
+                </ol>
+                <p class="hc-a__foot"><a class="hc-a__more" href="docs.html#stages">The stages, in depth<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a><button class="hc-a__copy" type="button" data-copy-answer><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg>Copy link</button></p>
+              </div>
+            </details>
+            <details class="hc-a" id="move-lane" data-keywords="move back backwards previous stage undo drag shortcut">
+              <summary>Can a lane move backwards?</summary>
+              <div class="accordion__body hc-a__body">
+                <p>Yes, and often it should. Drag the lane chip to any earlier stage, or press <kbd>⇧</kbd> <kbd>←</kbd>. Versions, notes and approvals travel with it, and the lane’s history records every move.</p>
+                <p>A second round of Review is never a step back. It’s just another stop.</p>
+                <p class="hc-a__foot"><a class="hc-a__more" href="docs.html#moving-a-lane">Moving a lane<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a><button class="hc-a__copy" type="button" data-copy-answer><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg>Copy link</button></p>
+              </div>
+            </details>
+            <details class="hc-a" id="merge-lanes" data-keywords="merge combine join two lanes duplicate">
+              <summary>How do I merge two lanes?</summary>
+              <div class="accordion__body hc-a__body">
+                <p>From the lane menu choose <strong>Merge into</strong>, then pick the lane to keep. Files, versions and notes come across in date order, and anything with the same name becomes a new version rather than a duplicate.</p>
+                <p>Merging arrived in v4.10, and a merge can be undone for seven days.</p>
+                <p class="hc-a__foot"><a class="hc-a__more" href="changelog.html#v4-10">Read the v4.10 notes<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a><button class="hc-a__copy" type="button" data-copy-answer><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg>Copy link</button></p>
+              </div>
+            </details>
+            <details class="hc-a" id="archive-delete" data-keywords="archive delete remove trash restore recover">
+              <summary>What happens when I archive or delete a lane?</summary>
+              <div class="accordion__body hc-a__body">
+                <p>Archiving makes a lane read-only and frees its slot; you can restore it any time. Deleting moves it to Trash for 30 days. After that it leaves our live systems within 24 hours and our backups within 30 days.</p>
+                <p>If in doubt, archive.</p>
+                <p class="hc-a__foot"><a class="hc-a__more" href="security.html#your-work">How we handle your work<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a><button class="hc-a__copy" type="button" data-copy-answer><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg>Copy link</button></p>
+              </div>
+            </details>
+          </div>
+        </section>
+
+        <!-- 4 -->
+        <section class="hc-topic" id="review" data-stage="review" aria-labelledby="hc-h-review">
+          <header class="hc-topic__head">
+            <span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-review"/></svg></span>
+            <div>
+              <h2 class="hc-topic__title" id="hc-h-review">Review &amp; feedback</h2>
+              <p class="hc-topic__d">Review links, pinned notes and approvals that stick.</p>
+            </div>
+            <span class="hc-topic__n">4 answers</span>
+          </header>
+          <div class="accordion hc-acc">
+            <details class="hc-a" id="review-links" data-keywords="reviewer account sign up guest link client password expire free feedback">
+              <summary>Do reviewers need an account?</summary>
+              <div class="accordion__body hc-a__body">
+                <p>No. Share a review link and anyone who has it can watch, read or listen in their browser, type their name and pin notes. You can give a link an expiry date and a password, and revoke it in one click.</p>
+                <p>Reviewers are always free, on every plan.</p>
+                <p class="hc-a__foot"><a class="hc-a__more" href="docs.html#review-links">Review links<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a><button class="hc-a__copy" type="button" data-copy-answer><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg>Copy link</button></p>
+              </div>
+            </details>
+            <details class="hc-a" id="pin-notes" data-keywords="comment note pin frame timecode audio waveform pixel pdf code video">
+              <summary>Can I pin a note to a frame or a second of audio?</summary>
+              <div class="accordion__body hc-a__body">
+                <p>Yes. Notes pin to a frame of video, a pixel of an image, a spot on a PDF page, a line of code and, since v4.12, a moment on an audio waveform. Press <kbd>C</kbd> to comment at the playhead.</p>
+                <p>Every note keeps its timecode, so the editor lands on the exact frame you meant.</p>
+                <p class="hc-a__foot"><a class="hc-a__more" href="docs.html#note-types">Every kind of note<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a><button class="hc-a__copy" type="button" data-copy-answer><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg>Copy link</button></p>
+              </div>
+            </details>
+            <details class="hc-a" id="approvals" data-keywords="approve approval sign off audit trail decision request changes">
+              <summary>How do approvals work?</summary>
+              <div class="accordion__body hc-a__body">
+                <p>Choose <strong>Ask for approval</strong> on a version and pick who signs off. Each approver gets a clear Approve or Request changes, and every decision is recorded with their name, the time and the exact version.</p>
+                <p>On Crew, approvals also go into an audit trail you can export for a client or a contract.</p>
+                <p class="hc-a__foot"><a class="hc-a__more" href="docs.html#approvals">Approvals<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a><button class="hc-a__copy" type="button" data-copy-answer><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg>Copy link</button></p>
+              </div>
+            </details>
+            <details class="hc-a" id="resolved-notes" data-keywords="resolved notes hidden missing carry over new version history">
+              <summary>Where do resolved notes go?</summary>
+              <div class="accordion__body hc-a__body">
+                <p>They fold into the version they were left on, so the conversation stays with the work. Switch on <strong>Show resolved</strong> to see them again.</p>
+                <p>When you upload a new version, Crestora offers to carry the open notes across and leaves the resolved ones behind.</p>
+                <p class="hc-a__foot"><button class="hc-a__copy" type="button" data-copy-answer><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg>Copy link</button></p>
+              </div>
+            </details>
+          </div>
+        </section>
+
+        <!-- 5 -->
+        <section class="hc-topic" id="launching" data-stage="launch" aria-labelledby="hc-h-launch">
+          <header class="hc-topic__head">
+            <span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-launch"/></svg></span>
+            <div>
+              <h2 class="hc-topic__title" id="hc-h-launch">Launching</h2>
+              <p class="hc-topic__d">Checklists, channels, launch rooms and moving the date.</p>
+            </div>
+            <span class="hc-topic__n">4 answers</span>
+          </header>
+          <div class="accordion hc-acc">
+            <details class="hc-a" id="launch-checklist" data-keywords="checklist countdown tasks steps milestones launch plan">
+              <summary>Where does the launch checklist come from?</summary>
+              <div class="accordion__body hc-a__body">
+                <p>Countdown builds it from your Blueprint. Every milestone becomes a step, and each connected channel adds its own: a newsletter to write, a store page to fill, a build to submit.</p>
+                <p>Assign steps, add your own, or tick them off as they happen. It fills itself in; you just check it.</p>
+                <p class="hc-a__foot"><a class="hc-a__more" href="docs.html#checklists">Checklists<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a><button class="hc-a__copy" type="button" data-copy-answer><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg>Copy link</button></p>
+              </div>
+            </details>
+            <details class="hc-a" id="launch-channels" data-keywords="channels publish schedule social newsletter store fourteen 14 post">
+              <summary>Which channels can Countdown publish to?</summary>
+              <div class="accordion__body hc-a__body">
+                <p>Studio and up schedule to 14 channels, from newsletters and online stores to social scheduling, live streams and app-store builds, through apps like Postbox, Shopfront and Clipdeck. Solo includes one channel.</p>
+                <p>Every post sits in one schedule you can read at a glance, and moves if the date does.</p>
+                <p class="hc-a__foot"><a class="hc-a__more" href="docs.html#channels">Launch channels<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a><button class="hc-a__copy" type="button" data-copy-answer><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg>Copy link</button></p>
+              </div>
+            </details>
+            <details class="hc-a" id="launch-room" data-keywords="launch room live day watch together guests countdown">
+              <summary>What is a launch room?</summary>
+              <div class="accordion__body hc-a__body">
+                <p>A live page for launch day. The crew sees the countdown, the checklist, a chat and the first numbers as they come in, all in one place.</p>
+                <p>Guests can join by link, so your sister, your editor or your beta testers can watch it go live with you.</p>
+                <p class="hc-a__foot"><a class="hc-a__more" href="docs.html#launch-rooms">Launch rooms<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a><button class="hc-a__copy" type="button" data-copy-answer><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg>Copy link</button></p>
+              </div>
+            </details>
+            <details class="hc-a" id="move-launch-date" data-keywords="date change reschedule postpone delay move launch day calendar">
+              <summary>I need to move the launch date. What happens?</summary>
+              <div class="accordion__body hc-a__body">
+                <p>Drag the date on the lane’s calendar, or change it in Countdown. Every scheduled post moves with it and keeps its spacing, and the crew gets one note about the change.</p>
+                <p>Anything already published stays published: Countdown never recalls a post.</p>
+                <p class="hc-a__foot"><button class="hc-a__copy" type="button" data-copy-answer><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg>Copy link</button></p>
+              </div>
+            </details>
+          </div>
+        </section>
+
+        <!-- 6 -->
+        <section class="hc-topic" id="integrations" aria-labelledby="hc-h-integrations">
+          <header class="hc-topic__head">
+            <span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-plug"/></svg></span>
+            <div>
+              <h2 class="hc-topic__title" id="hc-h-integrations">Integrations</h2>
+              <p class="hc-topic__d">Connecting your tools, and what they’re allowed to see.</p>
+            </div>
+            <span class="hc-topic__n">4 answers</span>
+          </header>
+          <div class="accordion hc-acc">
+            <details class="hc-a" id="connect-app" data-keywords="connect integration app tool add setup">
+              <summary>How do I connect an app?</summary>
+              <div class="accordion__body hc-a__body">
+                <p>Open a lane, choose <strong>Integrations</strong>, pick the app and sign in to it. Then say what should flow in and to which stage, such as renders to Make or orders to Afterglow.</p>
+                <p>It takes about 30 seconds, and the same app can feed as many lanes as you like.</p>
+                <p class="hc-a__foot"><a class="hc-a__more" href="integrations.html">Browse 120+ integrations<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a><button class="hc-a__copy" type="button" data-copy-answer><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg>Copy link</button></p>
+              </div>
+            </details>
+            <details class="hc-a" id="app-permissions" data-keywords="permissions access privacy scopes revoke data see read">
+              <summary>What can a connected app see?</summary>
+              <div class="accordion__body hc-a__body">
+                <p>Only what you allow. Every app asks for the narrowest access it needs, shown before you connect, and most are read-only.</p>
+                <p>You can see what each one has sent, and revoke it at any time, from <strong>Settings</strong>, then <strong>Integrations</strong>.</p>
+                <p class="hc-a__foot"><a class="hc-a__more" href="docs.html#integration-permissions">Integration permissions<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a><button class="hc-a__copy" type="button" data-copy-answer><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg>Copy link</button></p>
+              </div>
+            </details>
+            <details class="hc-a" id="missing-app" data-keywords="missing request not listed api build own custom">
+              <summary>The app I use isn’t listed. Now what?</summary>
+              <div class="accordion__body hc-a__body">
+                <p>Tell us. Requests go straight to the integrations team, and the most-asked ones ship first.</p>
+                <p>If you can’t wait, the API lets you send versions, notes and stats from anything that can make a web request.</p>
+                <p class="hc-a__foot"><a class="hc-a__more" href="integrations.html#request">Request an integration<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a><a class="hc-a__more" href="api.html">API reference<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a><button class="hc-a__copy" type="button" data-copy-answer><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg>Copy link</button></p>
+              </div>
+            </details>
+            <details class="hc-a" id="sync-delay" data-keywords="render missing sync delay slow not showing arrived reconnect">
+              <summary>Why hasn’t my render shown up yet?</summary>
+              <div class="accordion__body hc-a__body">
+                <p>Most work arrives within a minute. Large files upload in the background and appear when they’re complete, with a progress chip on the lane.</p>
+                <p>If nothing has arrived after ten minutes, open <strong>Integrations</strong>, then <strong>Activity</strong>. An expired sign-in is the usual cause, and reconnecting fixes it.</p>
+                <p class="hc-a__foot"><button class="hc-a__copy" type="button" data-copy-answer><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg>Copy link</button></p>
+              </div>
+            </details>
+          </div>
+        </section>
+
+        <!-- 7 -->
+        <section class="hc-topic" id="crews" aria-labelledby="hc-h-crews">
+          <header class="hc-topic__head">
+            <span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-users"/></svg></span>
+            <div>
+              <h2 class="hc-topic__title" id="hc-h-crews">Crews &amp; roles</h2>
+              <p class="hc-topic__d">Roles, seats, handing a lane over and portals for clients.</p>
+            </div>
+            <span class="hc-topic__n">4 answers</span>
+          </header>
+          <div class="accordion hc-acc">
+            <details class="hc-a" id="roles" data-keywords="roles owner maker reviewer guest permissions access">
+              <summary>What can each role do?</summary>
+              <div class="accordion__body hc-a__body">
+                <dl class="hc-roles">
+                  <div><dt>Owner</dt><dd>Everything, including billing, roles and deleting the lane.</dd></div>
+                  <div><dt>Maker</dt><dd>Adds work, moves stages, runs reviews and launches.</dd></div>
+                  <div><dt>Reviewer</dt><dd>Watches, reads and listens; leaves notes and approves.</dd></div>
+                  <div><dt>Guest</dt><dd>Sees what you share with them, and nothing more.</dd></div>
+                </dl>
+                <p class="hc-a__foot"><a class="hc-a__more" href="docs.html#permissions">The full permissions table<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a><button class="hc-a__copy" type="button" data-copy-answer><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg>Copy link</button></p>
+              </div>
+            </details>
+            <details class="hc-a" id="who-pays" data-keywords="seat seats pay paid price crew cost per person minimum">
+              <summary>Who needs a paid seat?</summary>
+              <div class="accordion__body hc-a__body">
+                <p>On Crew, Owners and Makers have seats. Reviewers and guests are always free, however many you invite.</p>
+                <p>Crew starts at two seats, at $16 a seat a month billed yearly, or $20 billed monthly.</p>
+                <p class="hc-a__foot"><a class="hc-a__more" href="pricing.html#plan-crew">The Crew plan<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a><button class="hc-a__copy" type="button" data-copy-answer><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg>Copy link</button></p>
+              </div>
+            </details>
+            <details class="hc-a" id="transfer-lane" data-keywords="transfer ownership hand over owner leave give">
+              <summary>How do I hand a lane over to someone else?</summary>
+              <div class="accordion__body hc-a__body">
+                <p>Open the lane’s settings and choose <strong>Transfer ownership</strong>. The new owner accepts by email, and the lane moves with its full history.</p>
+                <p>You stay on as a Maker unless you choose to leave.</p>
+                <p class="hc-a__foot"><button class="hc-a__copy" type="button" data-copy-answer><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg>Copy link</button></p>
+              </div>
+            </details>
+            <details class="hc-a" id="client-portals" data-keywords="client portal branded logo agency customer review">
+              <summary>Can a client see our work without seeing everything else?</summary>
+              <div class="accordion__body hc-a__body">
+                <p>Yes, with client review portals on Crew. A client gets a page with your logo and only the versions you send them, where they can leave notes and approve.</p>
+                <p>They never see other lanes, internal notes or who else is on the crew.</p>
+                <p class="hc-a__foot"><button class="hc-a__copy" type="button" data-copy-answer><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg>Copy link</button></p>
+              </div>
+            </details>
+          </div>
+        </section>
+
+        <!-- 8 -->
+        <section class="hc-topic" id="troubleshooting" aria-labelledby="hc-h-fix">
+          <header class="hc-topic__head">
+            <span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#hc-i-fix"/></svg></span>
+            <div>
+              <h2 class="hc-topic__title" id="hc-h-fix">Troubleshooting</h2>
+              <p class="hc-topic__d">Sign-in links, stuck uploads, iOS sync and the status page.</p>
+            </div>
+            <span class="hc-topic__n">4 answers</span>
+          </header>
+          <div class="accordion hc-acc">
+            <details class="hc-a" id="sign-in-link" data-keywords="sign in login log in magic link email password locked out spam">
+              <summary>My sign-in link didn’t arrive.</summary>
+              <div class="accordion__body hc-a__body">
+                <p>Crestora signs you in with an emailed link, never a password. Links can take a minute to arrive, and they expire after 15 minutes. Check spam and any Promotions tab, then ask for a new one.</p>
+                <p>If your company filters mail, add <span class="mono">signin@crestora.example</span> to your safe senders.</p>
+                <p class="hc-a__foot"><a class="hc-a__more" href="start.html#signin">Get a new sign-in link<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a><button class="hc-a__copy" type="button" data-copy-answer><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg>Copy link</button></p>
+              </div>
+            </details>
+            <details class="hc-a" id="upload-stuck" data-keywords="upload stuck slow frozen file size large fail">
+              <summary>My upload is stuck.</summary>
+              <div class="accordion__body hc-a__body">
+                <p>Uploads pick up where they stopped if your connection drops, so a pause usually fixes itself. If one sits at the same percentage for more than five minutes, pause and resume it from the upload tray, or try another browser.</p>
+                <p>Single files can be up to 50 GB on Studio and Crew.</p>
+                <p class="hc-a__foot"><a class="hc-a__more" href="docs.html#supported-files">Supported files<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a><button class="hc-a__copy" type="button" data-copy-answer><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg>Copy link</button></p>
+              </div>
+            </details>
+            <details class="hc-a" id="ios-sync" data-keywords="ios iphone offline sync sparkboard capture phone mobile">
+              <summary>Sparkboard on iOS hasn’t synced my captures.</summary>
+              <div class="accordion__body hc-a__body">
+                <p>Sparkboard works offline on iOS and syncs when you’re back on a connection. Open the app with a signal for a few seconds and the captures go up in the order you made them.</p>
+                <p>Nothing leaves your phone until our servers confirm they have it, so a capture can wait, but it can’t get lost.</p>
+                <p class="hc-a__foot"><a class="hc-a__more" href="changelog.html#v4-8">Offline Sparkboard, in v4.8<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a><button class="hc-a__copy" type="button" data-copy-answer><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg>Copy link</button></p>
+              </div>
+            </details>
+            <details class="hc-a" id="is-it-down" data-keywords="down outage status slow broken not working error incident">
+              <summary>Is Crestora down, or is it me?</summary>
+              <div class="accordion__body hc-a__body">
+                <p>The status page knows, and the on-call crew keeps it current: every tool, the last 90 days, and anything happening right now.</p>
+                <p>If it says all is well and something still isn’t, write to Support with the lane’s name and what you expected to happen.</p>
+                <p class="hc-a__foot"><a class="hc-a__more" href="security.html#status">Check the status page<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a><button class="hc-a__copy" type="button" data-copy-answer><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg>Copy link</button></p>
+              </div>
+            </details>
+          </div>
+        </section>
+      </div>
+    </div>
+  </section>
+
+  <!-- still stuck: a person, or the crew -->
+  <section class="hc-stuck" id="still-stuck" aria-labelledby="hc-stuck-title">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow" data-reveal="fade">People, not tickets</p>
+          <h2 class="title-2" id="hc-stuck-title" data-split>Still stuck?</h2>
+        </div>
+        <div class="section-head__aside" data-reveal>
+          <p class="lede">Some questions need a person who can look at your lane. Others need someone who’s been there. We have both.</p>
+        </div>
+      </div>
+
+      <div class="hc-stuck__grid" data-reveal-stagger>
+        <article class="hc-door hc-door--support panel panel--raised" aria-labelledby="hc-door-support" data-spotlight>
+          <div class="hc-door__top">
+            <span class="icon-box" aria-hidden="true"><svg class="icon icon--lg"><use href="#i-help"/></svg></span>
+            <span class="chip hc-door__chip"><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg>Replies in under 2 hours on weekdays</span>
+          </div>
+          <h3 class="title-3" id="hc-door-support">Write to Support</h3>
+          <p class="hc-door__text">A person on the support crew reads every message, in four time zones. Tell us the lane, what you expected and what happened instead, and you’ll hear back from them by name.</p>
+          <div class="hc-door__crew">
+            <span class="hc-door__faces" aria-hidden="true">
+              <span class="avatar" data-stage="shape">HJ</span>
+              <span class="avatar" data-stage="make">KO</span>
+              <span class="avatar" data-stage="afterglow">MS</span>
+            </span>
+            <span class="small">Hye-jin, Kofi and Marta answer most of them.</span>
+          </div>
+          <div class="hc-door__foot">
+            <a class="btn btn--primary" href="contact.html?topic=support" data-roll>Write to Support<svg class="arrow" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+            <a class="hc-door__mail" href="mailto:support@crestora.example">support@crestora.example</a>
+          </div>
+        </article>
+
+        <article class="hc-door panel" aria-labelledby="hc-door-community" data-spotlight>
+          <div class="hc-door__top">
+            <span class="icon-box" aria-hidden="true"><svg class="icon icon--lg"><use href="#i-users"/></svg></span>
+            <span class="chip hc-door__chip">Help forum · 9.1k threads</span>
+          </div>
+          <h3 class="title-3" id="hc-door-community">Ask the community</h3>
+          <p class="hc-door__text">Thousands of creators have hit your problem before you, and most like being the one who solves it. Questions in the Help forum usually get a first answer within the hour, often with a screenshot.</p>
+          <dl class="hc-door__stats">
+            <div><dt>Answered this month</dt><dd>1,960</dd></div>
+            <div><dt>Median first reply</dt><dd>42 min</dd></div>
+          </dl>
+          <div class="hc-door__foot">
+            <a class="btn" href="community.html" data-roll>Ask the community<svg class="arrow" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+          </div>
+        </article>
+      </div>
+
+      <div class="hc-more" data-reveal>
+        <p class="hc-more__t">Prefer to read?</p>
+        <ul class="hc-more__links">
+          <li><a class="link-arrow" href="docs.html" data-roll>Documentation<svg aria-hidden="true"><use href="#i-arrow"/></svg></a></li>
+          <li><a class="link-arrow" href="tutorials.html" data-roll>Tutorials<svg aria-hidden="true"><use href="#i-arrow"/></svg></a></li>
+          <li><a class="link-arrow" href="webinars.html" data-roll>Webinars<svg aria-hidden="true"><use href="#i-arrow"/></svg></a></li>
+          <li><a class="link-arrow" href="api.html" data-roll>API reference<svg aria-hidden="true"><use href="#i-arrow"/></svg></a></li>
+        </ul>
+        <p class="fiction">Crestora is a fictional company; figures are illustrative.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- The compact call to action that hands every page over to the footer. -->
+<section class="cta" aria-labelledby="cta-title">
+  <div class="cta__glow" aria-hidden="true"></div>
+  <div class="container cta__inner">
+    <p class="eyebrow">Your turn</p>
+    <h2 class="title-1" id="cta-title" data-split>Your lane is <span class="ink-spectrum">open</span>.</h2>
+    <p class="lede">Bring one idea. Crestora brings the road.</p>
+    <div class="btn-row">
+      <a class="btn btn--primary btn--lg" href="start.html" data-roll>Open your first lane</a>
+      <a class="btn btn--lg" href="pricing.html" data-roll>See plans</a>
+    </div>
+    <p class="small">Free for 3 lanes · No card · Export everything, always.</p>
+  </div>
+</section>
+</main>
+
+<footer class="footer" id="footer">
+  <!-- The night the footer sits in: stars, the light, the car and its dust, drawn in WebGL behind the type. -->
+  <canvas class="scene" aria-hidden="true"></canvas>
+  <div class="poster" aria-hidden="true"></div>
+  <div class="stage">
+    <div class="brand">
+      <a class="logo" href="./#top" aria-label="Crestora, home">
+        <span class="mark" aria-hidden="true"><span class="mark__sheen"></span></span>
+        <span class="wordmark" aria-hidden="true">Crestora</span>
+      </a>
+      <p class="tagline"><span class="line">Join thousands of creators, builders and dreamers</span> <span class="line">already using Crestora to simplify their workflow.</span></p>
+      <ul class="social" aria-label="Crestora elsewhere">
+        <li><a href="community.html#elsewhere" data-net="X" aria-label="Crestora on X (fictional)">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path class="o" d="M4.6 4.3h4.1l10.7 15.4h-4.1z"/><path d="M18.9 4.3 13.2 10.8M10.7 13.4 5.1 19.7"/></svg>
+        </a></li>
+        <li><a href="community.html#elsewhere" data-net="Instagram" aria-label="Crestora on Instagram (fictional)">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="4.6"/><circle cx="12" cy="12" r="3.7"/><circle class="f" cx="16.5" cy="7.5" r="1"/></svg>
+        </a></li>
+        <li><a href="community.html#elsewhere" data-net="LinkedIn" aria-label="Crestora on LinkedIn (fictional)">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><g class="f"><rect x="4.4" y="9.4" width="3.3" height="10.3" rx=".3"/><circle cx="6.05" cy="5.9" r="1.95"/><path d="M10.1 9.4h3.15v1.45c.55-1.02 1.83-1.72 3.33-1.72 2.85 0 3.62 1.78 3.62 4.48v6.09h-3.3v-5.4c0-1.33-.33-2.27-1.58-2.27-1.3 0-1.92.95-1.92 2.4v5.27h-3.3z"/></g></svg>
+        </a></li>
+        <li><a href="community.html#elsewhere" data-net="YouTube" aria-label="Crestora on YouTube (fictional)">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path class="f" fill-rule="evenodd" d="M6.2 6.1h11.6a3.6 3.6 0 0 1 3.6 3.6v4.6a3.6 3.6 0 0 1-3.6 3.6H6.2a3.6 3.6 0 0 1-3.6-3.6V9.7a3.6 3.6 0 0 1 3.6-3.6Zm4 3.05v5.7L15 12z"/></svg>
+        </a></li>
+      </ul>
+    </div>
+
+    <div class="cols">
+      <nav class="col" aria-labelledby="col-product">
+        <h2 id="col-product">Product</h2>
+        <ul>
+          <li><a href="index.html#features">Features</a></li>
+          <li><a href="integrations.html">Integrations</a></li>
+          <li><a href="pricing.html">Pricing</a></li>
+          <li><a href="changelog.html">Changelog</a></li>
+          <li><a href="roadmap.html">Roadmap</a></li>
+          <li><a href="security.html">Security</a></li>
+        </ul>
+      </nav>
+      <nav class="col" aria-labelledby="col-company">
+        <h2 id="col-company">Company</h2>
+        <ul>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="careers.html">Careers</a></li>
+          <li><a href="press.html">Press Kit</a></li>
+          <li><a href="partners.html">Partners</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </nav>
+      <nav class="col" aria-labelledby="col-resources">
+        <h2 id="col-resources">Resources</h2>
+        <ul>
+          <li><a href="blog.html">Blogs</a></li>
+          <li><a href="docs.html">Documentation</a></li>
+          <li><a href="api.html">API Reference</a></li>
+          <li><a href="help.html" aria-current="page">Help Center</a></li>
+          <li><a href="community.html">Community</a></li>
+          <li><a href="tutorials.html">Tutorials</a></li>
+          <li><a href="webinars.html">Webinars</a></li>
+        </ul>
+      </nav>
+      <nav class="col" aria-labelledby="col-legal">
+        <h2 id="col-legal">Legal</h2>
+        <ul>
+          <li><a href="privacy.html">Privacy Policy</a></li>
+          <li><a href="terms.html">Terms of Service</a></li>
+          <li><a href="cookies.html">Cookie Policy</a></li>
+          <li><a href="compliance.html">Compliance</a></li>
+          <li><a href="sitemap.html">Sitemap</a></li>
+        </ul>
+      </nav>
+    </div>
+
+    <div class="rule" aria-hidden="true"><span class="rule__glint"></span></div>
+
+    <div class="base">
+      <p class="copy">© <span class="year">2026</span> Crestora. All rights reserved.</p>
+      <p class="love"><button class="heart" type="button" aria-label="Send some love"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19.6S4.4 15.1 4.4 9.6A4.2 4.2 0 0 1 12 7.2a4.2 4.2 0 0 1 7.6 2.4c0 5.5-7.6 10-7.6 10Z"/></svg></button><span>Made with love by Pranav</span></p>
+    </div>
+
+    <!-- the road: where the car is; holding it down puts your foot down -->
+    <div class="road" aria-hidden="true"></div>
+  </div>
+
+  <!-- What the car does when it is held: shown next to the pointer over the road. -->
+  <p class="hint" aria-hidden="true"><span class="hint__key">Hold</span><span class="hint__text">to accelerate</span></p>
+</footer>
+</body>
+</html>

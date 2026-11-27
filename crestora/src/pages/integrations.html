@@ -1,0 +1,1540 @@
+<!--page
+title: Integrations — Crestora
+description: 120+ apps merge into your Crestora lane. Renders, builds, mixes and orders arrive as versions, notes and stats, not one more inbox.
+modules: filter dialog forms page-integrations
+nav: integrations.html
+-->
+<main id="main">
+  <!-- integrations.html: the on-ramps. A hero; the three most-connected apps, each with a mini on-ramp showing what flows
+       into which lane; the directory of 24 (search + lane chips through the generic filter module; each card has the
+       app's slug as its id, so integrations.html#framewright lands on it and lights it; each opens a native <dialog>);
+       how connecting works; build your own; a request form that the directory's empty state fills in.
+       Generated from a data table: keep the 24 apps, their ids and their dialogs in step. -->
+  <section class="page-hero ig-hero" aria-labelledby="ig-title">
+    <div class="page-hero__lanes" aria-hidden="true"></div>
+    <div class="ig-hero__glow" aria-hidden="true"></div>
+    <div class="container ig-hero__grid">
+      <div class="page-hero__inner ig-hero__copy">
+        <p class="eyebrow" data-reveal="fade">Integrations</p>
+        <h1 class="title-1" id="ig-title" data-split>Bring your tools along for the&nbsp;<span class="ink-spectrum">ride</span>.</h1>
+        <p class="lede" data-reveal data-delay="0.15">120+ apps merge into your lane. Their work arrives as versions, notes and stats, not one more inbox.</p>
+        <div class="btn-row" data-reveal data-delay="0.25">
+          <a class="btn btn--primary btn--lg" href="#directory" data-roll>Browse the directory<svg aria-hidden="true"><use href="#i-arrow-down"/></svg></a>
+          <a class="btn btn--lg" href="#request" data-roll>Request an app</a>
+        </div>
+      </div>
+      <div class="ig-hero__facts" data-reveal-stagger="0.08">
+        <p class="ig-fact"><span class="ig-fact__n" data-odometer="120" data-suffix="+">120+</span><span class="ig-fact__l">apps that ride along</span></p>
+        <p class="ig-fact"><span class="ig-fact__n"><span data-odometer="30">30</span><small>s</small></span><span class="ig-fact__l">to connect one</span></p>
+        <p class="ig-fact"><span class="ig-fact__n">0</span><span class="ig-fact__l">new inboxes to check</span></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- the three most connected -->
+  <section class="section section--tight ig-featured" aria-labelledby="ig-featured-title">
+    <div class="container">
+      <header class="ig-head">
+        <p class="eyebrow">Most connected</p>
+        <h2 class="title-2" id="ig-featured-title" data-split>Three <span class="ig-nw">on-ramps,</span> well worn.</h2>
+      </header>
+      <svg class="ig-defs" width="0" height="0" aria-hidden="true" focusable="false"><defs><linearGradient id="ig-glow-spark" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#3a6dff" stop-opacity=".28"/><stop offset=".7" stop-color="#3a6dff" stop-opacity=".08"/><stop offset="1" stop-color="#3a6dff" stop-opacity="0"/></linearGradient><linearGradient id="ig-glow-shape" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#23d3ff" stop-opacity=".28"/><stop offset=".7" stop-color="#23d3ff" stop-opacity=".08"/><stop offset="1" stop-color="#23d3ff" stop-opacity="0"/></linearGradient><linearGradient id="ig-glow-make" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#20d69b" stop-opacity=".28"/><stop offset=".7" stop-color="#20d69b" stop-opacity=".08"/><stop offset="1" stop-color="#20d69b" stop-opacity="0"/></linearGradient><linearGradient id="ig-glow-review" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#ffb13d" stop-opacity=".28"/><stop offset=".7" stop-color="#ffb13d" stop-opacity=".08"/><stop offset="1" stop-color="#ffb13d" stop-opacity="0"/></linearGradient><linearGradient id="ig-glow-launch" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#ff3b3b" stop-opacity=".28"/><stop offset=".7" stop-color="#ff3b3b" stop-opacity=".08"/><stop offset="1" stop-color="#ff3b3b" stop-opacity="0"/></linearGradient><linearGradient id="ig-glow-afterglow" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#ff7ad9" stop-opacity=".28"/><stop offset=".7" stop-color="#ff7ad9" stop-opacity=".08"/><stop offset="1" stop-color="#ff7ad9" stop-opacity="0"/></linearGradient></defs></svg>
+      <ul class="ig-feats" data-reveal-stagger="0.1">
+        <li class="ig-feat panel" data-stage="make" data-spotlight>
+          <div class="ig-ramp" aria-hidden="true"><div class="ig-ramp__in">
+            <svg class="ig-ramp__svg" viewBox="0 0 400 150" focusable="false">
+              <g class="ig-ramp__glows"><rect data-stage="make" x="220" y="57" width="180" height="18" fill="url(#ig-glow-make)"/></g>
+              <g class="ig-ramp__lanes"><path class="ig-ramp__lane" data-stage="spark" d="M220 30H400"/><path class="ig-ramp__lane" data-stage="shape" d="M220 48H400"/><path class="ig-ramp__lane is-on" data-stage="make" d="M220 66H400"/><path class="ig-ramp__lane" data-stage="review" d="M220 84H400"/><path class="ig-ramp__lane" data-stage="launch" d="M220 102H400"/><path class="ig-ramp__lane" data-stage="afterglow" d="M220 120H400"/></g>
+              <g class="ig-ramp__roads"><path class="ig-ramp__road" data-stage="make" d="M46 75H112C166 75 166 66 220 66H400"/></g>
+              <g class="ig-ramp__dashes"><path class="ig-ramp__dash" pathLength="100" d="M46 75H112C166 75 166 66 220 66H400"/></g>
+            </svg>
+            <span class="ig-box ig-box--lit" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M10 17V7.5h5.5M10 12.3h4"/><path d="M4.5 8.5v-4h4M15.5 4.5h4v4M19.5 15.5v4h-4M8.5 19.5h-4v-4"/></svg></span>
+            <span class="ig-ramp__into">Your lane</span>
+            <span class="ig-ramp__tag ig-ramp__tag--up" data-stage="make" style="--ly:66">render_v8.mov</span>
+          </div></div>
+          <div class="ig-feat__body">
+            <p class="ig-feat__kind"><span>Video editing</span><span class="ig-feat__lane">Make lane</span></p>
+            <h3 class="ig-feat__name">Framewright</h3>
+            <p class="ig-feat__flow"><span>renders</span><svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg><span>versions</span></p>
+            <p class="ig-feat__say">The cut you export at midnight is the version your crew reviews at breakfast.</p>
+            <button class="link-arrow ig-feat__open" type="button" data-dialog-open="app-framewright" aria-haspopup="dialog">What flows in from Framewright<svg aria-hidden="true"><use href="#i-arrow"/></svg></button>
+          </div>
+        </li>
+        <li class="ig-feat panel" data-stage="make" data-spotlight>
+          <div class="ig-ramp" aria-hidden="true"><div class="ig-ramp__in">
+            <svg class="ig-ramp__svg" viewBox="0 0 400 150" focusable="false">
+              <g class="ig-ramp__glows"><rect data-stage="make" x="220" y="57" width="180" height="18" fill="url(#ig-glow-make)"/><rect data-stage="review" x="220" y="75" width="180" height="18" fill="url(#ig-glow-review)"/></g>
+              <g class="ig-ramp__lanes"><path class="ig-ramp__lane" data-stage="spark" d="M220 30H400"/><path class="ig-ramp__lane" data-stage="shape" d="M220 48H400"/><path class="ig-ramp__lane is-on" data-stage="make" d="M220 66H400"/><path class="ig-ramp__lane is-on" data-stage="review" d="M220 84H400"/><path class="ig-ramp__lane" data-stage="launch" d="M220 102H400"/><path class="ig-ramp__lane" data-stage="afterglow" d="M220 120H400"/></g>
+              <g class="ig-ramp__roads"><path class="ig-ramp__road" data-stage="make" d="M46 75H112C166 75 166 66 220 66H400"/><path class="ig-ramp__road" data-stage="review" d="M46 75H112C166 75 166 84 220 84H400"/></g>
+              <g class="ig-ramp__dashes"><path class="ig-ramp__dash" pathLength="100" d="M46 75H112C166 75 166 66 220 66H400"/><path class="ig-ramp__dash" pathLength="100" d="M46 75H112C166 75 166 84 220 84H400"/></g>
+            </svg>
+            <span class="ig-box ig-box--lit" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M17.4 7.5A7 7 0 1 0 19 12.5h-4.2"/><circle cx="13.3" cy="12.5" r="1.5"/></svg></span>
+            <span class="ig-ramp__into">Your lane</span>
+            <span class="ig-ramp__tag ig-ramp__tag--up" data-stage="make" style="--ly:66">build 216</span><span class="ig-ramp__tag ig-ramp__tag--down" data-stage="review" style="--ly:84">PR #88</span>
+          </div></div>
+          <div class="ig-feat__body">
+            <p class="ig-feat__kind"><span>Code</span><span class="ig-feat__lane">Make lane</span></p>
+            <h3 class="ig-feat__name">Gitloom</h3>
+            <p class="ig-feat__flow"><span>builds &amp; PRs</span><svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg><span>versions + review</span></p>
+            <p class="ig-feat__say">Every green build becomes a version; every pull request opens a review with the diff attached.</p>
+            <button class="link-arrow ig-feat__open" type="button" data-dialog-open="app-gitloom" aria-haspopup="dialog">What flows in from Gitloom<svg aria-hidden="true"><use href="#i-arrow"/></svg></button>
+          </div>
+        </li>
+        <li class="ig-feat panel" data-stage="launch" data-spotlight>
+          <div class="ig-ramp" aria-hidden="true"><div class="ig-ramp__in">
+            <svg class="ig-ramp__svg" viewBox="0 0 400 150" focusable="false">
+              <g class="ig-ramp__glows"><rect data-stage="afterglow" x="220" y="111" width="180" height="18" fill="url(#ig-glow-afterglow)"/></g>
+              <g class="ig-ramp__lanes"><path class="ig-ramp__lane" data-stage="spark" d="M220 30H400"/><path class="ig-ramp__lane" data-stage="shape" d="M220 48H400"/><path class="ig-ramp__lane" data-stage="make" d="M220 66H400"/><path class="ig-ramp__lane" data-stage="review" d="M220 84H400"/><path class="ig-ramp__lane" data-stage="launch" d="M220 102H400"/><path class="ig-ramp__lane is-on" data-stage="afterglow" d="M220 120H400"/></g>
+              <g class="ig-ramp__roads"><path class="ig-ramp__road" data-stage="afterglow" d="M46 75H112C166 75 166 120 220 120H400"/></g>
+              <g class="ig-ramp__dashes"><path class="ig-ramp__dash" pathLength="100" d="M46 75H112C166 75 166 120 220 120H400"/></g>
+            </svg>
+            <span class="ig-box ig-box--lit" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 8.2 6.3 4.5h11.4L19 8.2Z"/><path d="M14.7 12.3c-.5-.7-1.4-1.1-2.6-1.1-1.5 0-2.5.7-2.5 1.7 0 2.4 5.4 1.3 5.4 3.7 0 1.1-1.1 1.9-2.8 1.9-1.4 0-2.4-.5-2.9-1.2"/></svg></span>
+            <span class="ig-ramp__into">Your lane</span>
+            <span class="ig-ramp__tag ig-ramp__tag--up" data-stage="afterglow" style="--ly:120">312 orders · day 1</span>
+          </div></div>
+          <div class="ig-feat__body">
+            <p class="ig-feat__kind"><span>Online store</span><span class="ig-feat__lane">Launch lane</span></p>
+            <h3 class="ig-feat__name">Shopfront</h3>
+            <p class="ig-feat__flow"><span>orders</span><svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg><span>Afterglow</span></p>
+            <p class="ig-feat__say">The Countdown opens the shop on the minute, then the orders tell you how it landed.</p>
+            <button class="link-arrow ig-feat__open" type="button" data-dialog-open="app-shopfront" aria-haspopup="dialog">What flows in from Shopfront<svg aria-hidden="true"><use href="#i-arrow"/></svg></button>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- the directory -->
+  <section class="section ig-dir" id="directory" aria-labelledby="ig-dir-title" data-filter-scope>
+    <div class="container">
+      <header class="section-head ig-dir__head">
+        <div>
+          <p class="eyebrow">The directory</p>
+          <h2 class="title-2" id="ig-dir-title" data-split>Every <span class="ig-nw">on-ramp,</span> by&nbsp;lane.</h2>
+        </div>
+        <div class="section-head__aside">
+          <p class="lede">The 24 apps creators connect most, sorted by the stage they feed. The other hundred are a search away inside Crestora.</p>
+        </div>
+      </header>
+
+      <div class="ig-tools">
+        <div class="ig-search">
+          <label class="sr" for="ig-q">Search integrations</label>
+          <svg class="icon" aria-hidden="true"><use href="#i-search"/></svg>
+          <input class="input ig-search__input" id="ig-q" type="search" data-filter-search autocomplete="off" spellcheck="false" placeholder="Search apps or what you make" />
+          <kbd class="ig-search__key" aria-hidden="true">/</kbd>
+        </div>
+        <div class="ig-status">
+          <p class="ig-count" data-filter-count data-filter-noun="integration" aria-live="polite">24 integrations</p>
+          <p class="ig-status__note">Open any card to see what flows in and what it asks for.</p>
+        </div>
+      </div>
+      <div class="ig-chips-wrap">
+        <div class="ig-chips" role="group" aria-label="Filter by lane" data-filter-group>
+          <button class="ig-chip" type="button" data-filter="all" aria-pressed="true">All<span class="ig-chip__n" aria-hidden="true">24</span></button>
+          <button class="ig-chip" type="button" data-filter="spark" aria-pressed="false" data-stage="spark"><span class="ig-chip__dot" aria-hidden="true"></span>Spark<span class="ig-chip__n" aria-hidden="true">3</span></button>
+          <button class="ig-chip" type="button" data-filter="shape" aria-pressed="false" data-stage="shape"><span class="ig-chip__dot" aria-hidden="true"></span>Shape<span class="ig-chip__n" aria-hidden="true">3</span></button>
+          <button class="ig-chip" type="button" data-filter="make" aria-pressed="false" data-stage="make"><span class="ig-chip__dot" aria-hidden="true"></span>Make<span class="ig-chip__n" aria-hidden="true">6</span></button>
+          <button class="ig-chip" type="button" data-filter="review" aria-pressed="false" data-stage="review"><span class="ig-chip__dot" aria-hidden="true"></span>Review<span class="ig-chip__n" aria-hidden="true">3</span></button>
+          <button class="ig-chip" type="button" data-filter="launch" aria-pressed="false" data-stage="launch"><span class="ig-chip__dot" aria-hidden="true"></span>Launch<span class="ig-chip__n" aria-hidden="true">5</span></button>
+          <button class="ig-chip" type="button" data-filter="afterglow" aria-pressed="false" data-stage="afterglow"><span class="ig-chip__dot" aria-hidden="true"></span>Afterglow<span class="ig-chip__n" aria-hidden="true">4</span></button>
+          <button class="ig-chip" type="button" data-filter="files" aria-pressed="false">Files &amp; storage<span class="ig-chip__n" aria-hidden="true">4</span></button>
+          <button class="ig-chip" type="button" data-filter="team" aria-pressed="false">Team<span class="ig-chip__n" aria-hidden="true">4</span></button>
+        </div>
+      </div>
+
+      <ul class="ig-grid" data-filter-list data-reveal="fade">
+        <li class="ig-card" id="moodwell" data-stage="spark" data-tags="spark">
+          <span class="ig-card__line" aria-hidden="true"></span>
+          <div class="ig-card__top">
+            <span class="ig-box" data-magnetic="0.3" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 18v-6.2a3.3 3.3 0 0 1 6.6 0V18m0-6.2a3.3 3.3 0 0 1 6.6 0V18"/><circle class="f" cx="18.4" cy="5.6" r="1.2"/></svg></span>
+            
+          </div>
+          <h3 class="ig-card__name">Moodwell</h3>
+          <p class="ig-card__kind">Moodboards</p>
+          <p class="ig-card__line-text">Pin references from anywhere. Boards land on your Sparkboard and group themselves into constellations.</p>
+          <div class="ig-card__foot">
+            <span class="lane-chip">Spark lane</span>
+            <button class="ig-card__open" type="button" data-dialog-open="app-moodwell" aria-haspopup="dialog" aria-label="Moodwell: what flows in and what it asks for">Details<svg aria-hidden="true"><use href="#i-arrow"/></svg></button>
+          </div>
+        </li>
+        <li class="ig-card" id="snapjar" data-stage="spark" data-tags="spark files">
+          <span class="ig-card__line" aria-hidden="true"></span>
+          <div class="ig-card__top">
+            <span class="ig-box" data-magnetic="0.3" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8.5 4.5h7M9.2 4.5v2.1C7.6 7.5 6.8 8.9 6.8 10.6V18a2 2 0 0 0 2 2h6.4a2 2 0 0 0 2-2v-7.4c0-1.7-.8-3.1-2.4-4V4.5"/><path d="M10 12.2v-1.4h1.4M14 16.6v1.4h-1.4"/><circle class="f" cx="12" cy="14.4" r="1.3"/></svg></span>
+            
+          </div>
+          <h3 class="ig-card__name">Snapjar</h3>
+          <p class="ig-card__kind">Screenshots &amp; clips</p>
+          <p class="ig-card__line-text">Every capture you tag “crestora” drops onto the board, with the page it came from.</p>
+          <div class="ig-card__foot">
+            <span class="lane-chip">Spark lane</span>
+            <button class="ig-card__open" type="button" data-dialog-open="app-snapjar" aria-haspopup="dialog" aria-label="Snapjar: what flows in and what it asks for">Details<svg aria-hidden="true"><use href="#i-arrow"/></svg></button>
+          </div>
+        </li>
+        <li class="ig-card" id="murmur" data-stage="spark" data-tags="spark">
+          <span class="ig-card__line" aria-hidden="true"></span>
+          <div class="ig-card__top">
+            <span class="ig-box" data-magnetic="0.3" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4.5 10.5v3M8.25 7v10M12 9.5v5M15.75 5.5v13M19.5 10.5v3"/></svg></span>
+            <span class="ig-badge ig-badge--new">New</span>
+          </div>
+          <h3 class="ig-card__name">Murmur</h3>
+          <p class="ig-card__kind">Voice memos</p>
+          <p class="ig-card__line-text">Talk an idea out on a walk. It arrives transcribed, with the audio kept right beside it.</p>
+          <div class="ig-card__foot">
+            <span class="lane-chip">Spark lane</span>
+            <button class="ig-card__open" type="button" data-dialog-open="app-murmur" aria-haspopup="dialog" aria-label="Murmur: what flows in and what it asks for">Details<svg aria-hidden="true"><use href="#i-arrow"/></svg></button>
+          </div>
+        </li>
+        <li class="ig-card" id="inkwell" data-stage="shape" data-tags="shape">
+          <span class="ig-card__line" aria-hidden="true"></span>
+          <div class="ig-card__top">
+            <span class="ig-box" data-magnetic="0.3" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3.6c1.7 2.1 2.6 3.5 2.6 4.6a2.6 2.6 0 0 1-5.2 0c0-1.1.9-2.5 2.6-4.6Z"/><path d="M12 13.2v6.3M9.2 19.5h5.6"/></svg></span>
+            
+          </div>
+          <h3 class="ig-card__name">Inkwell</h3>
+          <p class="ig-card__kind">Writing</p>
+          <p class="ig-card__line-text">Drafts and outlines become the brief, and every save is a version you can compare.</p>
+          <div class="ig-card__foot">
+            <span class="lane-chip">Shape lane</span>
+            <button class="ig-card__open" type="button" data-dialog-open="app-inkwell" aria-haspopup="dialog" aria-label="Inkwell: what flows in and what it asks for">Details<svg aria-hidden="true"><use href="#i-arrow"/></svg></button>
+          </div>
+        </li>
+        <li class="ig-card" id="dayplan" data-stage="shape" data-tags="shape team">
+          <span class="ig-card__line" aria-hidden="true"></span>
+          <div class="ig-card__top">
+            <span class="ig-box" data-magnetic="0.3" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6.5 5h4.6a7 7 0 0 1 0 14H6.5Z"/><circle class="f" cx="11" cy="12" r="1.6"/></svg></span>
+            
+          </div>
+          <h3 class="ig-card__name">Dayplan</h3>
+          <p class="ig-card__kind">Calendar</p>
+          <p class="ig-card__line-text">Milestones and launch day sit in the calendar you already check. Move one and the other follows.</p>
+          <div class="ig-card__foot">
+            <span class="lane-chip">Shape lane</span>
+            <button class="ig-card__open" type="button" data-dialog-open="app-dayplan" aria-haspopup="dialog" aria-label="Dayplan: what flows in and what it asks for">Details<svg aria-hidden="true"><use href="#i-arrow"/></svg></button>
+          </div>
+        </li>
+        <li class="ig-card" id="ledgerly" data-stage="shape" data-tags="shape team">
+          <span class="ig-card__line" aria-hidden="true"></span>
+          <div class="ig-card__top">
+            <span class="ig-box" data-magnetic="0.3" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 4.5v15h11"/><path d="M10.5 8.5h7M10.5 12h5M10.5 15.5h3"/><circle class="f" cx="17.6" cy="15.5" r="1.2"/></svg></span>
+            
+          </div>
+          <h3 class="ig-card__name">Ledgerly</h3>
+          <p class="ig-card__kind">Budgets &amp; invoices</p>
+          <p class="ig-card__line-text">Keep the budget beside the brief. Invoices go out when a stage is approved.</p>
+          <div class="ig-card__foot">
+            <span class="lane-chip">Shape lane</span>
+            <button class="ig-card__open" type="button" data-dialog-open="app-ledgerly" aria-haspopup="dialog" aria-label="Ledgerly: what flows in and what it asks for">Details<svg aria-hidden="true"><use href="#i-arrow"/></svg></button>
+          </div>
+        </li>
+        <li class="ig-card" id="framewright" data-stage="make" data-tags="make">
+          <span class="ig-card__line" aria-hidden="true"></span>
+          <div class="ig-card__top">
+            <span class="ig-box" data-magnetic="0.3" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M10 17V7.5h5.5M10 12.3h4"/><path d="M4.5 8.5v-4h4M15.5 4.5h4v4M19.5 15.5v4h-4M8.5 19.5h-4v-4"/></svg></span>
+            <span class="ig-badge ig-badge--popular">Popular</span>
+          </div>
+          <h3 class="ig-card__name">Framewright</h3>
+          <p class="ig-card__kind">Video editing</p>
+          <p class="ig-card__line-text">Export from your timeline and the render lands on the lane as the next version, notes and all.</p>
+          <div class="ig-card__foot">
+            <span class="lane-chip">Make lane</span>
+            <button class="ig-card__open" type="button" data-dialog-open="app-framewright" aria-haspopup="dialog" aria-label="Framewright: what flows in and what it asks for">Details<svg aria-hidden="true"><use href="#i-arrow"/></svg></button>
+          </div>
+        </li>
+        <li class="ig-card" id="pixelmill" data-stage="make" data-tags="make files">
+          <span class="ig-card__line" aria-hidden="true"></span>
+          <div class="ig-card__top">
+            <span class="ig-box" data-magnetic="0.3" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 19.5v-15h6.5l3 3v3l-3 3H7"/><rect class="f" x="15.6" y="16.4" width="3.1" height="3.1" rx=".5"/></svg></span>
+            <span class="ig-badge ig-badge--popular">Popular</span>
+          </div>
+          <h3 class="ig-card__name">Pixelmill</h3>
+          <p class="ig-card__kind">Design</p>
+          <p class="ig-card__line-text">Frames you mark ready arrive as versions, side by side with the one before.</p>
+          <div class="ig-card__foot">
+            <span class="lane-chip">Make lane</span>
+            <button class="ig-card__open" type="button" data-dialog-open="app-pixelmill" aria-haspopup="dialog" aria-label="Pixelmill: what flows in and what it asks for">Details<svg aria-hidden="true"><use href="#i-arrow"/></svg></button>
+          </div>
+        </li>
+        <li class="ig-card" id="tapedeck" data-stage="make" data-tags="make">
+          <span class="ig-card__line" aria-hidden="true"></span>
+          <div class="ig-card__top">
+            <span class="ig-box" data-magnetic="0.3" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 5h14M12 5v5"/><circle cx="8.2" cy="15" r="2.7"/><circle cx="15.8" cy="15" r="2.7"/><path d="M8.2 17.7h7.6"/></svg></span>
+            
+          </div>
+          <h3 class="ig-card__name">Tapedeck</h3>
+          <p class="ig-card__kind">Audio</p>
+          <p class="ig-card__line-text">Bounce a mix and it lands as a version with its waveform, ready for notes timed to the second.</p>
+          <div class="ig-card__foot">
+            <span class="lane-chip">Make lane</span>
+            <button class="ig-card__open" type="button" data-dialog-open="app-tapedeck" aria-haspopup="dialog" aria-label="Tapedeck: what flows in and what it asks for">Details<svg aria-hidden="true"><use href="#i-arrow"/></svg></button>
+          </div>
+        </li>
+        <li class="ig-card" id="gitloom" data-stage="make" data-tags="make team">
+          <span class="ig-card__line" aria-hidden="true"></span>
+          <div class="ig-card__top">
+            <span class="ig-box" data-magnetic="0.3" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M17.4 7.5A7 7 0 1 0 19 12.5h-4.2"/><circle cx="13.3" cy="12.5" r="1.5"/></svg></span>
+            <span class="ig-badge ig-badge--popular">Popular</span>
+          </div>
+          <h3 class="ig-card__name">Gitloom</h3>
+          <p class="ig-card__kind">Code</p>
+          <p class="ig-card__line-text">Builds and pull requests land on the lane, and code reviews ride straight into Review Room.</p>
+          <div class="ig-card__foot">
+            <span class="lane-chip">Make lane</span>
+            <button class="ig-card__open" type="button" data-dialog-open="app-gitloom" aria-haspopup="dialog" aria-label="Gitloom: what flows in and what it asks for">Details<svg aria-hidden="true"><use href="#i-arrow"/></svg></button>
+          </div>
+        </li>
+        <li class="ig-card" id="sketchbook" data-stage="make" data-tags="make">
+          <span class="ig-card__line" aria-hidden="true"></span>
+          <div class="ig-card__top">
+            <span class="ig-box" data-magnetic="0.3" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6.5 4.5h10.5a1.5 1.5 0 0 1 1.5 1.5v12a1.5 1.5 0 0 1-1.5 1.5H6.5Z"/><path d="M9.5 4.5v15"/><path d="M12 14.2c.8-2.6 1.8-2.8 2.4-1.3.5 1.3 1.3 1.4 2.1-.4"/></svg></span>
+            
+          </div>
+          <h3 class="ig-card__name">Sketchbook</h3>
+          <p class="ig-card__kind">Drawing</p>
+          <p class="ig-card__line-text">Pages from your drawing app arrive as versions, strokes intact, ready for a pinned note.</p>
+          <div class="ig-card__foot">
+            <span class="lane-chip">Make lane</span>
+            <button class="ig-card__open" type="button" data-dialog-open="app-sketchbook" aria-haspopup="dialog" aria-label="Sketchbook: what flows in and what it asks for">Details<svg aria-hidden="true"><use href="#i-arrow"/></svg></button>
+          </div>
+        </li>
+        <li class="ig-card" id="cloudshelf" data-stage="make" data-tags="make files">
+          <span class="ig-card__line" aria-hidden="true"></span>
+          <div class="ig-card__top">
+            <span class="ig-box" data-magnetic="0.3" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 15.5a3.4 3.4 0 0 1-.2-6.8 4.6 4.6 0 0 1 8.8 1.4 2.7 2.7 0 0 1-.4 5.4Z"/><path d="M4.5 19.5h15"/></svg></span>
+            
+          </div>
+          <h3 class="ig-card__name">Cloudshelf</h3>
+          <p class="ig-card__kind">Storage</p>
+          <p class="ig-card__line-text">Point a lane at a folder. Whatever lands in it becomes a version, with nothing copied twice.</p>
+          <div class="ig-card__foot">
+            <span class="lane-chip">Make lane</span>
+            <button class="ig-card__open" type="button" data-dialog-open="app-cloudshelf" aria-haspopup="dialog" aria-label="Cloudshelf: what flows in and what it asks for">Details<svg aria-hidden="true"><use href="#i-arrow"/></svg></button>
+          </div>
+        </li>
+        <li class="ig-card" id="chatter" data-stage="review" data-tags="review team">
+          <span class="ig-card__line" aria-hidden="true"></span>
+          <div class="ig-card__top">
+            <span class="ig-box" data-magnetic="0.3" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M17.4 7A7 7 0 1 0 17.4 16"/><path d="M7.2 16.6 5.4 20.3l4.2-2.1"/></svg></span>
+            <span class="ig-badge ig-badge--popular">Popular</span>
+          </div>
+          <h3 class="ig-card__name">Chatter</h3>
+          <p class="ig-card__kind">Team chat</p>
+          <p class="ig-card__line-text">Review threads post to the channel you pick, and replies there come back as notes.</p>
+          <div class="ig-card__foot">
+            <span class="lane-chip">Review lane</span>
+            <button class="ig-card__open" type="button" data-dialog-open="app-chatter" aria-haspopup="dialog" aria-label="Chatter: what flows in and what it asks for">Details<svg aria-hidden="true"><use href="#i-arrow"/></svg></button>
+          </div>
+        </li>
+        <li class="ig-card" id="redline" data-stage="review" data-tags="review files">
+          <span class="ig-card__line" aria-hidden="true"></span>
+          <div class="ig-card__top">
+            <span class="ig-box" data-magnetic="0.3" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 19.5v-15h4.8a3.6 3.6 0 0 1 0 7.2H8M12.2 11.7l4.3 7.8"/><path d="M4.5 15.5h4.5M14 15.5h5.5" opacity=".55"/></svg></span>
+            
+          </div>
+          <h3 class="ig-card__name">Redline</h3>
+          <p class="ig-card__kind">PDF proofing</p>
+          <p class="ig-card__line-text">Proof marks on PDFs come in as pinned notes, with the page and position exact.</p>
+          <div class="ig-card__foot">
+            <span class="lane-chip">Review lane</span>
+            <button class="ig-card__open" type="button" data-dialog-open="app-redline" aria-haspopup="dialog" aria-label="Redline: what flows in and what it asks for">Details<svg aria-hidden="true"><use href="#i-arrow"/></svg></button>
+          </div>
+        </li>
+        <li class="ig-card" id="captionist" data-stage="review" data-tags="review">
+          <span class="ig-card__line" aria-hidden="true"></span>
+          <div class="ig-card__top">
+            <span class="ig-box" data-magnetic="0.3" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3.5" y="5.5" width="17" height="13" rx="2.5"/><path d="M10.6 10.3a2.1 2.1 0 1 0 0 3.4M16.1 10.3a2.1 2.1 0 1 0 0 3.4"/></svg></span>
+            <span class="ig-badge ig-badge--new">New</span>
+          </div>
+          <h3 class="ig-card__name">Captionist</h3>
+          <p class="ig-card__kind">Captions</p>
+          <p class="ig-card__line-text">Captions are drafted from your cut and arrive as a track reviewers can correct line by line.</p>
+          <div class="ig-card__foot">
+            <span class="lane-chip">Review lane</span>
+            <button class="ig-card__open" type="button" data-dialog-open="app-captionist" aria-haspopup="dialog" aria-label="Captionist: what flows in and what it asks for">Details<svg aria-hidden="true"><use href="#i-arrow"/></svg></button>
+          </div>
+        </li>
+        <li class="ig-card" id="postbox" data-stage="launch" data-tags="launch">
+          <span class="ig-card__line" aria-hidden="true"></span>
+          <div class="ig-card__top">
+            <span class="ig-box" data-magnetic="0.3" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7.5 20V4.5H13a4.6 4.6 0 0 1 0 9.2H7.5"/><path d="M10.4 9.1h3.2"/></svg></span>
+            <span class="ig-badge ig-badge--popular">Popular</span>
+          </div>
+          <h3 class="ig-card__name">Postbox</h3>
+          <p class="ig-card__kind">Newsletters</p>
+          <p class="ig-card__line-text">Your launch letter is drafted from the brief and goes out the minute the Countdown hits zero.</p>
+          <div class="ig-card__foot">
+            <span class="lane-chip">Launch lane</span>
+            <button class="ig-card__open" type="button" data-dialog-open="app-postbox" aria-haspopup="dialog" aria-label="Postbox: what flows in and what it asks for">Details<svg aria-hidden="true"><use href="#i-arrow"/></svg></button>
+          </div>
+        </li>
+        <li class="ig-card" id="shopfront" data-stage="launch" data-tags="launch">
+          <span class="ig-card__line" aria-hidden="true"></span>
+          <div class="ig-card__top">
+            <span class="ig-box" data-magnetic="0.3" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 8.2 6.3 4.5h11.4L19 8.2Z"/><path d="M14.7 12.3c-.5-.7-1.4-1.1-2.6-1.1-1.5 0-2.5.7-2.5 1.7 0 2.4 5.4 1.3 5.4 3.7 0 1.1-1.1 1.9-2.8 1.9-1.4 0-2.4-.5-2.9-1.2"/></svg></span>
+            <span class="ig-badge ig-badge--popular">Popular</span>
+          </div>
+          <h3 class="ig-card__name">Shopfront</h3>
+          <p class="ig-card__kind">Online store</p>
+          <p class="ig-card__line-text">The drop opens on the minute. Orders and sell-through stream into Afterglow as they happen.</p>
+          <div class="ig-card__foot">
+            <span class="lane-chip">Launch lane</span>
+            <button class="ig-card__open" type="button" data-dialog-open="app-shopfront" aria-haspopup="dialog" aria-label="Shopfront: what flows in and what it asks for">Details<svg aria-hidden="true"><use href="#i-arrow"/></svg></button>
+          </div>
+        </li>
+        <li class="ig-card" id="clipdeck" data-stage="launch" data-tags="launch">
+          <span class="ig-card__line" aria-hidden="true"></span>
+          <div class="ig-card__top">
+            <span class="ig-box" data-magnetic="0.3" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M17.6 7.4A7 7 0 1 0 17.6 16.6"/><path d="M12 8.3V12l2.6 1.6"/></svg></span>
+            
+          </div>
+          <h3 class="ig-card__name">Clipdeck</h3>
+          <p class="ig-card__kind">Social scheduling</p>
+          <p class="ig-card__line-text">One plan, fourteen channels. Posts go out on cue and the replies come back to the lane.</p>
+          <div class="ig-card__foot">
+            <span class="lane-chip">Launch lane</span>
+            <button class="ig-card__open" type="button" data-dialog-open="app-clipdeck" aria-haspopup="dialog" aria-label="Clipdeck: what flows in and what it asks for">Details<svg aria-hidden="true"><use href="#i-arrow"/></svg></button>
+          </div>
+        </li>
+        <li class="ig-card" id="onair" data-stage="launch" data-tags="launch">
+          <span class="ig-card__line" aria-hidden="true"></span>
+          <div class="ig-card__top">
+            <span class="ig-box" data-magnetic="0.3" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.4"/><circle class="f" cx="12" cy="12" r="1.2"/><path d="M6.6 6.6a7.6 7.6 0 0 0 0 10.8M17.4 6.6a7.6 7.6 0 0 1 0 10.8"/></svg></span>
+            <span class="ig-badge ig-badge--new">New</span>
+          </div>
+          <h3 class="ig-card__name">Onair</h3>
+          <p class="ig-card__kind">Live streams</p>
+          <p class="ig-card__line-text">The launch room goes live on your channel, chat and all, with the countdown on screen.</p>
+          <div class="ig-card__foot">
+            <span class="lane-chip">Launch lane</span>
+            <button class="ig-card__open" type="button" data-dialog-open="app-onair" aria-haspopup="dialog" aria-label="Onair: what flows in and what it asks for">Details<svg aria-hidden="true"><use href="#i-arrow"/></svg></button>
+          </div>
+        </li>
+        <li class="ig-card" id="shipyard" data-stage="launch" data-tags="launch">
+          <span class="ig-card__line" aria-hidden="true"></span>
+          <div class="ig-card__top">
+            <span class="ig-box" data-magnetic="0.3" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4.5 15.5h15l-2.2 4H6.7Z"/><path d="M12 15.5V4.5M8.6 7.9 12 4.5l3.4 3.4"/></svg></span>
+            
+          </div>
+          <h3 class="ig-card__name">Shipyard</h3>
+          <p class="ig-card__kind">App-store builds</p>
+          <p class="ig-card__line-text">Approved builds go to beta and the stores, and their review status shows on your Countdown.</p>
+          <div class="ig-card__foot">
+            <span class="lane-chip">Launch lane</span>
+            <button class="ig-card__open" type="button" data-dialog-open="app-shipyard" aria-haspopup="dialog" aria-label="Shipyard: what flows in and what it asks for">Details<svg aria-hidden="true"><use href="#i-arrow"/></svg></button>
+          </div>
+        </li>
+        <li class="ig-card" id="pulse" data-stage="afterglow" data-tags="afterglow">
+          <span class="ig-card__line" aria-hidden="true"></span>
+          <div class="ig-card__top">
+            <span class="ig-box" data-magnetic="0.3" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3.5 12.5h4l2.2-5.5 3.4 10.5 2.2-5h5.2"/></svg></span>
+            
+          </div>
+          <h3 class="ig-card__name">Pulse</h3>
+          <p class="ig-card__kind">Analytics</p>
+          <p class="ig-card__line-text">Views, sources and sign-ups land in your day 1, 7 and 30 recaps, with no dashboard to babysit.</p>
+          <div class="ig-card__foot">
+            <span class="lane-chip">Afterglow lane</span>
+            <button class="ig-card__open" type="button" data-dialog-open="app-pulse" aria-haspopup="dialog" aria-label="Pulse: what flows in and what it asks for">Details<svg aria-hidden="true"><use href="#i-arrow"/></svg></button>
+          </div>
+        </li>
+        <li class="ig-card" id="tipjar" data-stage="afterglow" data-tags="afterglow">
+          <span class="ig-card__line" aria-hidden="true"></span>
+          <div class="ig-card__top">
+            <span class="ig-box" data-magnetic="0.3" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 9.5h10v8.5a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2Z"/><path d="M8 9.5V6.5h8v3M10 13h4M12 13v4"/><circle class="f" cx="12" cy="3.6" r="1.1"/></svg></span>
+            
+          </div>
+          <h3 class="ig-card__name">Tipjar</h3>
+          <p class="ig-card__kind">Supporters</p>
+          <p class="ig-card__line-text">Tips and memberships from launch week show up in the recap, with the notes people left.</p>
+          <div class="ig-card__foot">
+            <span class="lane-chip">Afterglow lane</span>
+            <button class="ig-card__open" type="button" data-dialog-open="app-tipjar" aria-haspopup="dialog" aria-label="Tipjar: what flows in and what it asks for">Details<svg aria-hidden="true"><use href="#i-arrow"/></svg></button>
+          </div>
+        </li>
+        <li class="ig-card" id="starboard" data-stage="afterglow" data-tags="afterglow">
+          <span class="ig-card__line" aria-hidden="true"></span>
+          <div class="ig-card__top">
+            <span class="ig-box" data-magnetic="0.3" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m12 4.2 2.1 4.3 4.7.7-3.4 3.3.8 4.7-4.2-2.2-4.2 2.2.8-4.7-3.4-3.3 4.7-.7Z"/><path d="M6 20h12"/></svg></span>
+            
+          </div>
+          <h3 class="ig-card__name">Starboard</h3>
+          <p class="ig-card__kind">Ratings &amp; reviews</p>
+          <p class="ig-card__line-text">Ratings and reviews from every store gather in one recap, and the good lines go back to the board.</p>
+          <div class="ig-card__foot">
+            <span class="lane-chip">Afterglow lane</span>
+            <button class="ig-card__open" type="button" data-dialog-open="app-starboard" aria-haspopup="dialog" aria-label="Starboard: what flows in and what it asks for">Details<svg aria-hidden="true"><use href="#i-arrow"/></svg></button>
+          </div>
+        </li>
+        <li class="ig-card" id="formfold" data-stage="afterglow" data-tags="afterglow">
+          <span class="ig-card__line" aria-hidden="true"></span>
+          <div class="ig-card__top">
+            <span class="ig-box" data-magnetic="0.3" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6.5 3.5h7l4 4v13h-11Z"/><path d="M13.5 3.5v4h4"/><path d="m9 12.6 1.3 1.3 2.4-2.5M9 16.8h6"/></svg></span>
+            
+          </div>
+          <h3 class="ig-card__name">Formfold</h3>
+          <p class="ig-card__kind">Surveys</p>
+          <p class="ig-card__line-text">Send a short survey on day 7. Answers land in the recap and the ideas go back to the board.</p>
+          <div class="ig-card__foot">
+            <span class="lane-chip">Afterglow lane</span>
+            <button class="ig-card__open" type="button" data-dialog-open="app-formfold" aria-haspopup="dialog" aria-label="Formfold: what flows in and what it asks for">Details<svg aria-hidden="true"><use href="#i-arrow"/></svg></button>
+          </div>
+        </li>
+      </ul>
+
+      <div class="ig-empty panel" data-filter-empty hidden>
+        <span class="ig-empty__box" aria-hidden="true"><svg class="icon icon--lg"><use href="#i-plug"/></svg></span>
+        <div class="ig-empty__text">
+          <p class="ig-empty__title">Nothing <span data-ig-empty-where></span>matches “<span data-ig-empty-q></span>” yet.</p>
+          <p class="body">We’ve put it in the request form below. Tell us what it should send and we’ll take it from there.</p>
+        </div>
+        <div class="btn-row">
+          <a class="btn btn--primary" href="#request" data-roll>Request it</a>
+          <button class="btn" type="button" data-ig-clear>Clear the search</button>
+        </div>
+      </div>
+      <p class="fiction ig-dir__fiction">Crestora and every app on this page are fictional; the names and monograms are invented, and figures are illustrative.</p>
+    </div>
+  </section>
+
+  <!-- how connecting works: three stops on a lane -->
+  <section class="section ig-how" id="how" aria-labelledby="ig-how-title">
+    <div class="container">
+      <header class="section-head">
+        <div>
+          <p class="eyebrow">How connecting works</p>
+          <h2 class="title-2" id="ig-how-title" data-split>Thirty seconds, three&nbsp;stops.</h2>
+        </div>
+        <div class="section-head__aside">
+          <p class="lede">No settings safari. You choose where the work should land, say yes once, and the next export is already on the road.</p>
+        </div>
+      </header>
+      <ol class="ig-steps" data-reveal-stagger="0.12">
+        <li class="ig-step">
+          <p class="ig-step__n"><span>01</span></p>
+          <div class="ig-step__art" aria-hidden="true">
+            <ul class="ig-pick">
+              <li data-stage="spark"><i></i>Spark</li>
+              <li data-stage="shape"><i></i>Shape</li>
+              <li class="is-on" data-stage="make"><i></i>Make<span>Suggested</span></li>
+              <li data-stage="review"><i></i>Review</li>
+            </ul>
+          </div>
+          <h3 class="title-4">Pick a lane</h3>
+          <p class="body">Choose the stage the app feeds. Framewright suggests Make, but you can point any app at any lane.</p>
+        </li>
+        <li class="ig-step">
+          <p class="ig-step__n"><span>02</span></p>
+          <div class="ig-step__art" aria-hidden="true">
+            <div class="ig-allow">
+              <p class="ig-allow__row"><span class="ig-box ig-box--sm"><svg viewBox="0 0 24 24"><path d="M10 17V7.5h5.5M10 12.3h4"/><path d="M4.5 8.5v-4h4M15.5 4.5h4v4M19.5 15.5v4h-4M8.5 19.5h-4v-4"/></svg></span><span class="ig-allow__dots"><i></i><i></i><i></i></span><span class="ig-allow__mark"><span class="mark"><span class="mark__sheen"></span></span></span></p>
+              <p class="ig-allow__q">Allow Crestora to read exports from <b>/Night Bloom/Renders</b>?</p>
+              <p class="ig-allow__ok"><span>Allow</span><span class="ig-allow__time">0:27</span></p>
+            </div>
+          </div>
+          <h3 class="title-4">Connect in 30 seconds</h3>
+          <p class="body">Sign in to the app once and approve exactly what it may read. We ask for the least we need, and say so in plain words.</p>
+        </li>
+        <li class="ig-step">
+          <p class="ig-step__n"><span>03</span></p>
+          <div class="ig-step__art" aria-hidden="true">
+            <ul class="ig-feed">
+              <li class="is-new" data-stage="make"><i></i><span class="mono">render_v8.mov</span><span>just now</span></li>
+              <li data-stage="make"><i></i><span class="mono">render_v7.mov</span><span>Tue</span></li>
+              <li data-stage="review"><i></i><span>3 notes on frame 118</span><span>Mon</span></li>
+            </ul>
+          </div>
+          <h3 class="title-4">Work flows in</h3>
+          <p class="body">Your next export lands on the lane as a version, with its notes. Nothing to forward, nothing to rename, nothing to chase.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- build your own -->
+  <section class="section section--tight ig-build" id="build" aria-labelledby="ig-build-title">
+    <div class="container">
+      <div class="ig-build__band panel panel--raised" data-spotlight>
+        <div class="ig-build__copy">
+          <p class="eyebrow">Build your own</p>
+          <h2 class="title-2" id="ig-build-title">Your tool, your <span class="ig-nw">on-ramp</span>.</h2>
+          <p class="body-l">Every app on this page runs on the same small REST API you can use: post versions to a lane, listen for stage changes, approvals and launches with webhooks, and test it all in a sandbox lane.</p>
+          <div class="btn-row">
+            <a class="btn btn--primary btn--lg" href="{{ROOT}}api.html" data-roll>Read the API reference<svg class="arrow" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+            <a class="btn btn--lg" href="{{ROOT}}partners.html" data-roll>Become an integration partner</a>
+          </div>
+        </div>
+        <figure class="ig-build__code mock" aria-label="An example request: posting a new version to a lane">
+          <div class="mock__bar"><span class="ig-method">POST</span><span class="mono">/v2/lanes/ln_8f2k/versions</span></div>
+<pre class="ig-code"><code><span class="ig-code__p">{</span>
+  <span class="ig-code__k">"source"</span>: <span class="ig-code__s">"your-app"</span>,
+  <span class="ig-code__k">"file"</span>: <span class="ig-code__s">"render_v8.mov"</span>,
+  <span class="ig-code__k">"note"</span>: <span class="ig-code__s">"Grade pass two, warmer skies"</span>,
+  <span class="ig-code__k">"stage"</span>: <span class="ig-code__s">"make"</span>
+<span class="ig-code__p">}</span></code></pre>
+          <figcaption class="ig-build__reply"><span class="ig-build__ok" data-stage="make"></span><span class="mono">201 Created</span><span>lands on the Make lane as v8</span></figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- request an integration -->
+  <section class="section ig-request" id="request" aria-labelledby="ig-request-title">
+    <div class="container ig-request__grid">
+      <div class="ig-request__copy">
+        <p class="eyebrow">Request an integration</p>
+        <h2 class="title-2" id="ig-request-title" data-split>Missing a&nbsp;tool?</h2>
+        <p class="lede">Tell us what you make with and what it should send. We read every request, and the most asked-for ship first.</p>
+        <div class="ig-asked">
+          <p class="ig-asked__h">Most asked for this month</p>
+          <ol>
+            <li style="--share: 100%"><span><b>Loopkit</b> · music sequencing</span><span class="ig-asked__n">412<small>asks</small></span></li>
+            <li style="--share: 72%"><span><b>Quillbase</b> · screenwriting</span><span class="ig-asked__n">298<small>asks</small></span></li>
+            <li style="--share: 45%"><span><b>Tourbook</b> · venues &amp; tour dates</span><span class="ig-asked__n">187<small>asks</small></span></li>
+          </ol>
+        </div>
+        <ul class="ig-request__shipped">
+          <li><span class="dot" style="--c: var(--spark)"></span><span><b>Murmur</b> shipped in October after 1,140 requests</span></li>
+          <li><span class="dot" style="--c: var(--review)"></span><span><b>Captionist</b> shipped in November after 860</span></li>
+        </ul>
+      </div>
+      <form class="ig-form panel" action="{{ROOT}}contact.html" method="get" data-form data-demo data-success="Request received. We read every one. (Demo: nothing was sent.)">
+        <input type="hidden" name="topic" value="partners" />
+        <div class="field">
+          <label class="field__label" for="req-app">App name</label>
+          <input class="input" id="req-app" name="app" type="text" required maxlength="60" autocomplete="off" placeholder="The app you make with" data-msg-required="Which app should ride along?" />
+          <p class="field__error"></p>
+        </div>
+        <div class="field">
+          <label class="field__label" for="req-what">What should it send?</label>
+          <textarea class="input" id="req-what" name="what" required minlength="10" maxlength="600" rows="4" placeholder="Exports as versions on Make, comments as review notes…" aria-describedby="req-what-hint" data-msg-required="A line or two on what should flow in."></textarea>
+          <p class="field__hint" id="req-what-hint">What should land in your lane, and in which stage.</p>
+          <p class="field__error"></p>
+        </div>
+        <div class="field">
+          <label class="field__label" for="req-email">Email</label>
+          <input class="input" id="req-email" name="email" type="email" required maxlength="120" autocomplete="email" inputmode="email" placeholder="you@studio.example" data-msg-required="We need an email to tell you when it ships." />
+          <p class="field__error"></p>
+        </div>
+        <div class="ig-form__go">
+          <button class="btn btn--primary btn--lg" type="submit">Send the request<svg class="arrow" aria-hidden="true"><use href="#i-arrow"/></svg></button>
+          <p class="small">Demo: nothing you type here is stored or sent.</p>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  {{> cta}}
+
+  <dialog class="dialog ig-dlg" id="app-moodwell" data-stage="spark" aria-labelledby="app-moodwell-title">
+    <div class="dialog__head">
+      <div class="ig-dlg__id">
+        <span class="ig-box ig-box--lit" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 18v-6.2a3.3 3.3 0 0 1 6.6 0V18m0-6.2a3.3 3.3 0 0 1 6.6 0V18"/><circle class="f" cx="18.4" cy="5.6" r="1.2"/></svg></span>
+        <div>
+          <h2 class="ig-dlg__name" id="app-moodwell-title">Moodwell</h2>
+          <p class="ig-dlg__kind">Moodboards</p>
+        </div>
+      </div>
+      <button class="dialog__close" type="button" data-dialog-close aria-label="Close"><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg></button>
+    </div>
+    <div class="dialog__body">
+      <div class="ig-dlg__lead">
+        <span class="lane-chip">Rides the Spark lane · Sparkboard</span>
+        <p class="body-l">Pin references from anywhere. Boards land on your Sparkboard and group themselves into constellations.</p>
+      </div>
+      <section class="ig-dlg__part" aria-labelledby="app-moodwell-flows">
+        <h3 class="ig-dlg__h" id="app-moodwell-flows">What flows in</h3>
+        <ul class="ig-flows">
+          <li><span class="ig-flows__from">Boards</span><span class="ig-flows__road" aria-hidden="true"></span><span class="sr"> become </span><span class="ig-flows__to">sparks</span></li>
+          <li><span class="ig-flows__from">Image pins</span><span class="ig-flows__road" aria-hidden="true"></span><span class="sr"> become </span><span class="ig-flows__to">constellations</span></li>
+          <li><span class="ig-flows__from">Board comments</span><span class="ig-flows__road" aria-hidden="true"></span><span class="sr"> become </span><span class="ig-flows__to">spark notes</span></li>
+        </ul>
+      </section>
+      <section class="ig-dlg__part" aria-labelledby="app-moodwell-perms">
+        <h3 class="ig-dlg__h" id="app-moodwell-perms">What it asks for</h3>
+        <ul class="ig-perms">
+          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>See the boards you pick, and only those</li>
+          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Read image titles and where they came from</li>
+          <li class="ig-perms__never"><svg class="icon" aria-hidden="true"><use href="#i-lock"/></svg><span><strong>Never:</strong> change or delete anything in Moodwell</span></li>
+        </ul>
+      </section>
+      <div class="ig-dlg__foot">
+        <button class="btn btn--primary btn--lg" type="button" data-ig-connect="Moodwell">Connect Moodwell<svg class="arrow" aria-hidden="true"><use href="#i-arrow"/></svg></button>
+        <p class="small">About 30 seconds. Disconnect from the lane any time; what already arrived stays yours.</p>
+      </div>
+    </div>
+  </dialog>
+  <dialog class="dialog ig-dlg" id="app-snapjar" data-stage="spark" aria-labelledby="app-snapjar-title">
+    <div class="dialog__head">
+      <div class="ig-dlg__id">
+        <span class="ig-box ig-box--lit" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8.5 4.5h7M9.2 4.5v2.1C7.6 7.5 6.8 8.9 6.8 10.6V18a2 2 0 0 0 2 2h6.4a2 2 0 0 0 2-2v-7.4c0-1.7-.8-3.1-2.4-4V4.5"/><path d="M10 12.2v-1.4h1.4M14 16.6v1.4h-1.4"/><circle class="f" cx="12" cy="14.4" r="1.3"/></svg></span>
+        <div>
+          <h2 class="ig-dlg__name" id="app-snapjar-title">Snapjar</h2>
+          <p class="ig-dlg__kind">Screenshots &amp; clips</p>
+        </div>
+      </div>
+      <button class="dialog__close" type="button" data-dialog-close aria-label="Close"><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg></button>
+    </div>
+    <div class="dialog__body">
+      <div class="ig-dlg__lead">
+        <span class="lane-chip">Rides the Spark lane · Sparkboard</span>
+        <p class="body-l">Every capture you tag “crestora” drops onto the board, with the page it came from.</p>
+      </div>
+      <section class="ig-dlg__part" aria-labelledby="app-snapjar-flows">
+        <h3 class="ig-dlg__h" id="app-snapjar-flows">What flows in</h3>
+        <ul class="ig-flows">
+          <li><span class="ig-flows__from">Screenshots</span><span class="ig-flows__road" aria-hidden="true"></span><span class="sr"> become </span><span class="ig-flows__to">sparks</span></li>
+          <li><span class="ig-flows__from">Screen clips, up to 2 min</span><span class="ig-flows__road" aria-hidden="true"></span><span class="sr"> become </span><span class="ig-flows__to">sparks</span></li>
+          <li><span class="ig-flows__from">Source links</span><span class="ig-flows__road" aria-hidden="true"></span><span class="sr"> become </span><span class="ig-flows__to">spark notes</span></li>
+        </ul>
+      </section>
+      <section class="ig-dlg__part" aria-labelledby="app-snapjar-perms">
+        <h3 class="ig-dlg__h" id="app-snapjar-perms">What it asks for</h3>
+        <ul class="ig-perms">
+          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Read captures you tag “crestora”</li>
+          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Keep a copy in your lane’s storage</li>
+          <li class="ig-perms__never"><svg class="icon" aria-hidden="true"><use href="#i-lock"/></svg><span><strong>Never:</strong> look at untagged captures</span></li>
+        </ul>
+      </section>
+      <div class="ig-dlg__foot">
+        <button class="btn btn--primary btn--lg" type="button" data-ig-connect="Snapjar">Connect Snapjar<svg class="arrow" aria-hidden="true"><use href="#i-arrow"/></svg></button>
+        <p class="small">About 30 seconds. Disconnect from the lane any time; what already arrived stays yours.</p>
+      </div>
+    </div>
+  </dialog>
+  <dialog class="dialog ig-dlg" id="app-murmur" data-stage="spark" aria-labelledby="app-murmur-title">
+    <div class="dialog__head">
+      <div class="ig-dlg__id">
+        <span class="ig-box ig-box--lit" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4.5 10.5v3M8.25 7v10M12 9.5v5M15.75 5.5v13M19.5 10.5v3"/></svg></span>
+        <div>
+          <h2 class="ig-dlg__name" id="app-murmur-title">Murmur</h2>
+          <p class="ig-dlg__kind">Voice memos · New</p>
+        </div>
+      </div>
+      <button class="dialog__close" type="button" data-dialog-close aria-label="Close"><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg></button>
+    </div>
+    <div class="dialog__body">
+      <div class="ig-dlg__lead">
+        <span class="lane-chip">Rides the Spark lane · Sparkboard</span>
+        <p class="body-l">Talk an idea out on a walk. It arrives transcribed, with the audio kept right beside it.</p>
+      </div>
+      <section class="ig-dlg__part" aria-labelledby="app-murmur-flows">
+        <h3 class="ig-dlg__h" id="app-murmur-flows">What flows in</h3>
+        <ul class="ig-flows">
+          <li><span class="ig-flows__from">Memos</span><span class="ig-flows__road" aria-hidden="true"></span><span class="sr"> become </span><span class="ig-flows__to">sparks</span></li>
+          <li><span class="ig-flows__from">Transcripts</span><span class="ig-flows__road" aria-hidden="true"></span><span class="sr"> become </span><span class="ig-flows__to">searchable text</span></li>
+          <li><span class="ig-flows__from">Memo tags</span><span class="ig-flows__road" aria-hidden="true"></span><span class="sr"> become </span><span class="ig-flows__to">constellations</span></li>
+        </ul>
+      </section>
+      <section class="ig-dlg__part" aria-labelledby="app-murmur-perms">
+        <h3 class="ig-dlg__h" id="app-murmur-perms">What it asks for</h3>
+        <ul class="ig-perms">
+          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Read memos in the folder you choose</li>
+          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Transcribe them on our servers in your region</li>
+          <li class="ig-perms__never"><svg class="icon" aria-hidden="true"><use href="#i-lock"/></svg><span><strong>Never:</strong> use your voice to train anything</span></li>
+        </ul>
+      </section>
+      <div class="ig-dlg__foot">
+        <button class="btn btn--primary btn--lg" type="button" data-ig-connect="Murmur">Connect Murmur<svg class="arrow" aria-hidden="true"><use href="#i-arrow"/></svg></button>
+        <p class="small">About 30 seconds. Disconnect from the lane any time; what already arrived stays yours.</p>
+      </div>
+    </div>
+  </dialog>
+  <dialog class="dialog ig-dlg" id="app-inkwell" data-stage="shape" aria-labelledby="app-inkwell-title">
+    <div class="dialog__head">
+      <div class="ig-dlg__id">
+        <span class="ig-box ig-box--lit" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3.6c1.7 2.1 2.6 3.5 2.6 4.6a2.6 2.6 0 0 1-5.2 0c0-1.1.9-2.5 2.6-4.6Z"/><path d="M12 13.2v6.3M9.2 19.5h5.6"/></svg></span>
+        <div>
+          <h2 class="ig-dlg__name" id="app-inkwell-title">Inkwell</h2>
+          <p class="ig-dlg__kind">Writing</p>
+        </div>
+      </div>
+      <button class="dialog__close" type="button" data-dialog-close aria-label="Close"><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg></button>
+    </div>
+    <div class="dialog__body">
+      <div class="ig-dlg__lead">
+        <span class="lane-chip">Rides the Shape lane · Blueprints</span>
+        <p class="body-l">Drafts and outlines become the brief, and every save is a version you can compare.</p>
+      </div>
+      <section class="ig-dlg__part" aria-labelledby="app-inkwell-flows">
+        <h3 class="ig-dlg__h" id="app-inkwell-flows">What flows in</h3>
+        <ul class="ig-flows">
+          <li><span class="ig-flows__from">Docs</span><span class="ig-flows__road" aria-hidden="true"></span><span class="sr"> become </span><span class="ig-flows__to">the brief</span></li>
+          <li><span class="ig-flows__from">Outline headings</span><span class="ig-flows__road" aria-hidden="true"></span><span class="sr"> become </span><span class="ig-flows__to">milestones</span></li>
+          <li><span class="ig-flows__from">Saves</span><span class="ig-flows__road" aria-hidden="true"></span><span class="sr"> become </span><span class="ig-flows__to">brief versions</span></li>
+        </ul>
+      </section>
+      <section class="ig-dlg__part" aria-labelledby="app-inkwell-perms">
+        <h3 class="ig-dlg__h" id="app-inkwell-perms">What it asks for</h3>
+        <ul class="ig-perms">
+          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Read the documents you link to a lane</li>
+          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Add a “Open in Crestora” link to them</li>
+          <li class="ig-perms__never"><svg class="icon" aria-hidden="true"><use href="#i-lock"/></svg><span><strong>Never:</strong> edit your writing</span></li>
+        </ul>
+      </section>
+      <div class="ig-dlg__foot">
+        <button class="btn btn--primary btn--lg" type="button" data-ig-connect="Inkwell">Connect Inkwell<svg class="arrow" aria-hidden="true"><use href="#i-arrow"/></svg></button>
+        <p class="small">About 30 seconds. Disconnect from the lane any time; what already arrived stays yours.</p>
+      </div>
+    </div>
+  </dialog>
+  <dialog class="dialog ig-dlg" id="app-dayplan" data-stage="shape" aria-labelledby="app-dayplan-title">
+    <div class="dialog__head">
+      <div class="ig-dlg__id">
+        <span class="ig-box ig-box--lit" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6.5 5h4.6a7 7 0 0 1 0 14H6.5Z"/><circle class="f" cx="11" cy="12" r="1.6"/></svg></span>
+        <div>
+          <h2 class="ig-dlg__name" id="app-dayplan-title">Dayplan</h2>
+          <p class="ig-dlg__kind">Calendar</p>
+        </div>
+      </div>
+      <button class="dialog__close" type="button" data-dialog-close aria-label="Close"><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg></button>
+    </div>
+    <div class="dialog__body">
+      <div class="ig-dlg__lead">
+        <span class="lane-chip">Rides the Shape lane · Blueprints</span>
+        <p class="body-l">Milestones and launch day sit in the calendar you already check. Move one and the other follows.</p>
+      </div>
+      <section class="ig-dlg__part" aria-labelledby="app-dayplan-flows">
+        <h3 class="ig-dlg__h" id="app-dayplan-flows">What flows in</h3>
+        <ul class="ig-flows">
+          <li><span class="ig-flows__from">Milestones</span><span class="ig-flows__road" aria-hidden="true"></span><span class="sr"> become </span><span class="ig-flows__to">calendar events</span></li>
+          <li><span class="ig-flows__from">Moved events</span><span class="ig-flows__road" aria-hidden="true"></span><span class="sr"> become </span><span class="ig-flows__to">new milestone dates</span></li>
+          <li><span class="ig-flows__from">Launch day</span><span class="ig-flows__road" aria-hidden="true"></span><span class="sr"> become </span><span class="ig-flows__to">a crew reminder</span></li>
+        </ul>
+      </section>
+      <section class="ig-dlg__part" aria-labelledby="app-dayplan-perms">
+        <h3 class="ig-dlg__h" id="app-dayplan-perms">What it asks for</h3>
+        <ul class="ig-perms">
+          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Create and update events in one calendar</li>
+          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Read free and busy times for your crew</li>
+          <li class="ig-perms__never"><svg class="icon" aria-hidden="true"><use href="#i-lock"/></svg><span><strong>Never:</strong> read the rest of your calendar</span></li>
+        </ul>
+      </section>
+      <div class="ig-dlg__foot">
+        <button class="btn btn--primary btn--lg" type="button" data-ig-connect="Dayplan">Connect Dayplan<svg class="arrow" aria-hidden="true"><use href="#i-arrow"/></svg></button>
+        <p class="small">About 30 seconds. Disconnect from the lane any time; what already arrived stays yours.</p>
+      </div>
+    </div>
+  </dialog>
+  <dialog class="dialog ig-dlg" id="app-ledgerly" data-stage="shape" aria-labelledby="app-ledgerly-title">
+    <div class="dialog__head">
+      <div class="ig-dlg__id">
+        <span class="ig-box ig-box--lit" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 4.5v15h11"/><path d="M10.5 8.5h7M10.5 12h5M10.5 15.5h3"/><circle class="f" cx="17.6" cy="15.5" r="1.2"/></svg></span>
+        <div>
+          <h2 class="ig-dlg__name" id="app-ledgerly-title">Ledgerly</h2>
+          <p class="ig-dlg__kind">Budgets &amp; invoices</p>
+        </div>
+      </div>
+      <button class="dialog__close" type="button" data-dialog-close aria-label="Close"><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg></button>
+    </div>
+    <div class="dialog__body">
+      <div class="ig-dlg__lead">
+        <span class="lane-chip">Rides the Shape lane · Blueprints</span>
+        <p class="body-l">Keep the budget beside the brief. Invoices go out when a stage is approved.</p>
+      </div>
+      <section class="ig-dlg__part" aria-labelledby="app-ledgerly-flows">
+        <h3 class="ig-dlg__h" id="app-ledgerly-flows">What flows in</h3>
+        <ul class="ig-flows">
+          <li><span class="ig-flows__from">Budgets</span><span class="ig-flows__road" aria-hidden="true"></span><span class="sr"> become </span><span class="ig-flows__to">the Blueprint</span></li>
+          <li><span class="ig-flows__from">Approved stages</span><span class="ig-flows__road" aria-hidden="true"></span><span class="sr"> become </span><span class="ig-flows__to">draft invoices</span></li>
+          <li><span class="ig-flows__from">Payments received</span><span class="ig-flows__road" aria-hidden="true"></span><span class="sr"> become </span><span class="ig-flows__to">Afterglow</span></li>
+        </ul>
+      </section>
+      <section class="ig-dlg__part" aria-labelledby="app-ledgerly-perms">
+        <h3 class="ig-dlg__h" id="app-ledgerly-perms">What it asks for</h3>
+        <ul class="ig-perms">
+          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Read the budgets you link</li>
+          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Draft invoices for you to send</li>
+          <li class="ig-perms__never"><svg class="icon" aria-hidden="true"><use href="#i-lock"/></svg><span><strong>Never:</strong> send an invoice or move money on its own</span></li>
+        </ul>
+      </section>
+      <div class="ig-dlg__foot">
+        <button class="btn btn--primary btn--lg" type="button" data-ig-connect="Ledgerly">Connect Ledgerly<svg class="arrow" aria-hidden="true"><use href="#i-arrow"/></svg></button>
+        <p class="small">About 30 seconds. Disconnect from the lane any time; what already arrived stays yours.</p>
+      </div>
+    </div>
+  </dialog>
+  <dialog class="dialog ig-dlg" id="app-framewright" data-stage="make" aria-labelledby="app-framewright-title">
+    <div class="dialog__head">
+      <div class="ig-dlg__id">
+        <span class="ig-box ig-box--lit" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M10 17V7.5h5.5M10 12.3h4"/><path d="M4.5 8.5v-4h4M15.5 4.5h4v4M19.5 15.5v4h-4M8.5 19.5h-4v-4"/></svg></span>
+        <div>
+          <h2 class="ig-dlg__name" id="app-framewright-title">Framewright</h2>
+          <p class="ig-dlg__kind">Video editing · Popular</p>
+        </div>
+      </div>
+      <button class="dialog__close" type="button" data-dialog-close aria-label="Close"><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg></button>
+    </div>
+    <div class="dialog__body">
+      <div class="ig-dlg__lead">
+        <span class="lane-chip">Rides the Make lane · Workbench</span>
+        <p class="body-l">Export from your timeline and the render lands on the lane as the next version, notes and all.</p>
+      </div>
+      <section class="ig-dlg__part" aria-labelledby="app-framewright-flows">
+        <h3 class="ig-dlg__h" id="app-framewright-flows">What flows in</h3>
+        <ul class="ig-flows">
+          <li><span class="ig-flows__from">Renders</span><span class="ig-flows__road" aria-hidden="true"></span><span class="sr"> become </span><span class="ig-flows__to">versions</span></li>
+          <li><span class="ig-flows__from">Timeline markers</span><span class="ig-flows__road" aria-hidden="true"></span><span class="sr"> become </span><span class="ig-flows__to">review pins</span></li>
+          <li><span class="ig-flows__from">Export notes</span><span class="ig-flows__road" aria-hidden="true"></span><span class="sr"> become </span><span class="ig-flows__to">version notes</span></li>
+        </ul>
+      </section>
+      <section class="ig-dlg__part" aria-labelledby="app-framewright-perms">
+        <h3 class="ig-dlg__h" id="app-framewright-perms">What it asks for</h3>
+        <ul class="ig-perms">
+          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Read exports from the folders you choose</li>
+          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Add a version link to the Framewright project</li>
+          <li class="ig-perms__never"><svg class="icon" aria-hidden="true"><use href="#i-lock"/></svg><span><strong>Never:</strong> open or change your timelines</span></li>
+        </ul>
+      </section>
+      <div class="ig-dlg__foot">
+        <button class="btn btn--primary btn--lg" type="button" data-ig-connect="Framewright">Connect Framewright<svg class="arrow" aria-hidden="true"><use href="#i-arrow"/></svg></button>
+        <p class="small">About 30 seconds. Disconnect from the lane any time; what already arrived stays yours.</p>
+      </div>
+    </div>
+  </dialog>
+  <dialog class="dialog ig-dlg" id="app-pixelmill" data-stage="make" aria-labelledby="app-pixelmill-title">
+    <div class="dialog__head">
+      <div class="ig-dlg__id">
+        <span class="ig-box ig-box--lit" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 19.5v-15h6.5l3 3v3l-3 3H7"/><rect class="f" x="15.6" y="16.4" width="3.1" height="3.1" rx=".5"/></svg></span>
+        <div>
+          <h2 class="ig-dlg__name" id="app-pixelmill-title">Pixelmill</h2>
+          <p class="ig-dlg__kind">Design · Popular</p>
+        </div>
+      </div>
+      <button class="dialog__close" type="button" data-dialog-close aria-label="Close"><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg></button>
+    </div>
+    <div class="dialog__body">
+      <div class="ig-dlg__lead">
+        <span class="lane-chip">Rides the Make lane · Workbench</span>
+        <p class="body-l">Frames you mark ready arrive as versions, side by side with the one before.</p>
+      </div>
+      <section class="ig-dlg__part" aria-labelledby="app-pixelmill-flows">
+        <h3 class="ig-dlg__h" id="app-pixelmill-flows">What flows in</h3>
+        <ul class="ig-flows">
+          <li><span class="ig-flows__from">Frames marked ready</span><span class="ig-flows__road" aria-hidden="true"></span><span class="sr"> become </span><span class="ig-flows__to">versions</span></li>
+          <li><span class="ig-flows__from">Design comments</span><span class="ig-flows__road" aria-hidden="true"></span><span class="sr"> become </span><span class="ig-flows__to">review notes</span></li>
+          <li><span class="ig-flows__from">Exports</span><span class="ig-flows__road" aria-hidden="true"></span><span class="sr"> become </span><span class="ig-flows__to">Share Page images</span></li>
+        </ul>
+      </section>
+      <section class="ig-dlg__part" aria-labelledby="app-pixelmill-perms">
+        <h3 class="ig-dlg__h" id="app-pixelmill-perms">What it asks for</h3>
+        <ul class="ig-perms">
+          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Read frames you mark ready</li>
+          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Read and post comments on those frames</li>
+          <li class="ig-perms__never"><svg class="icon" aria-hidden="true"><use href="#i-lock"/></svg><span><strong>Never:</strong> see files you haven’t shared</span></li>
+        </ul>
+      </section>
+      <div class="ig-dlg__foot">
+        <button class="btn btn--primary btn--lg" type="button" data-ig-connect="Pixelmill">Connect Pixelmill<svg class="arrow" aria-hidden="true"><use href="#i-arrow"/></svg></button>
+        <p class="small">About 30 seconds. Disconnect from the lane any time; what already arrived stays yours.</p>
+      </div>
+    </div>
+  </dialog>
+  <dialog class="dialog ig-dlg" id="app-tapedeck" data-stage="make" aria-labelledby="app-tapedeck-title">
+    <div class="dialog__head">
+      <div class="ig-dlg__id">
+        <span class="ig-box ig-box--lit" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 5h14M12 5v5"/><circle cx="8.2" cy="15" r="2.7"/><circle cx="15.8" cy="15" r="2.7"/><path d="M8.2 17.7h7.6"/></svg></span>
+        <div>
+          <h2 class="ig-dlg__name" id="app-tapedeck-title">Tapedeck</h2>
+          <p class="ig-dlg__kind">Audio</p>
+        </div>
+      </div>
+      <button class="dialog__close" type="button" data-dialog-close aria-label="Close"><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg></button>
+    </div>
+    <div class="dialog__body">
+      <div class="ig-dlg__lead">
+        <span class="lane-chip">Rides the Make lane · Workbench</span>
+        <p class="body-l">Bounce a mix and it lands as a version with its waveform, ready for notes timed to the second.</p>
+      </div>
+      <section class="ig-dlg__part" aria-labelledby="app-tapedeck-flows">
+        <h3 class="ig-dlg__h" id="app-tapedeck-flows">What flows in</h3>
+        <ul class="ig-flows">
+          <li><span class="ig-flows__from">Mixes</span><span class="ig-flows__road" aria-hidden="true"></span><span class="sr"> become </span><span class="ig-flows__to">versions</span></li>
+          <li><span class="ig-flows__from">Stems</span><span class="ig-flows__road" aria-hidden="true"></span><span class="sr"> become </span><span class="ig-flows__to">version files</span></li>
+          <li><span class="ig-flows__from">Session notes</span><span class="ig-flows__road" aria-hidden="true"></span><span class="sr"> become </span><span class="ig-flows__to">version notes</span></li>
+        </ul>
+      </section>
+      <section class="ig-dlg__part" aria-labelledby="app-tapedeck-perms">
+        <h3 class="ig-dlg__h" id="app-tapedeck-perms">What it asks for</h3>
+        <ul class="ig-perms">
+          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Read bounces from the project you pick</li>
+          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Draw waveforms on our servers</li>
+          <li class="ig-perms__never"><svg class="icon" aria-hidden="true"><use href="#i-lock"/></svg><span><strong>Never:</strong> touch your sessions or plug-ins</span></li>
+        </ul>
+      </section>
+      <div class="ig-dlg__foot">
+        <button class="btn btn--primary btn--lg" type="button" data-ig-connect="Tapedeck">Connect Tapedeck<svg class="arrow" aria-hidden="true"><use href="#i-arrow"/></svg></button>
+        <p class="small">About 30 seconds. Disconnect from the lane any time; what already arrived stays yours.</p>
+      </div>
+    </div>
+  </dialog>
+  <dialog class="dialog ig-dlg" id="app-gitloom" data-stage="make" aria-labelledby="app-gitloom-title">
+    <div class="dialog__head">
+      <div class="ig-dlg__id">
+        <span class="ig-box ig-box--lit" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M17.4 7.5A7 7 0 1 0 19 12.5h-4.2"/><circle cx="13.3" cy="12.5" r="1.5"/></svg></span>
+        <div>
+          <h2 class="ig-dlg__name" id="app-gitloom-title">Gitloom</h2>
+          <p class="ig-dlg__kind">Code · Popular</p>
+        </div>
+      </div>
+      <button class="dialog__close" type="button" data-dialog-close aria-label="Close"><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg></button>
+    </div>
+    <div class="dialog__body">
+      <div class="ig-dlg__lead">
+        <span class="lane-chip">Rides the Make lane · Workbench</span>
+        <p class="body-l">Builds and pull requests land on the lane, and code reviews ride straight into Review Room.</p>
+      </div>
+      <section class="ig-dlg__part" aria-labelledby="app-gitloom-flows">
+        <h3 class="ig-dlg__h" id="app-gitloom-flows">What flows in</h3>
+        <ul class="ig-flows">
+          <li><span class="ig-flows__from">Builds</span><span class="ig-flows__road" aria-hidden="true"></span><span class="sr"> become </span><span class="ig-flows__to">versions</span></li>
+          <li><span class="ig-flows__from">Pull requests</span><span class="ig-flows__road" aria-hidden="true"></span><span class="sr"> become </span><span class="ig-flows__to">Review Room</span></li>
+          <li><span class="ig-flows__from">Release tags</span><span class="ig-flows__road" aria-hidden="true"></span><span class="sr"> become </span><span class="ig-flows__to">Countdown</span></li>
+        </ul>
+      </section>
+      <section class="ig-dlg__part" aria-labelledby="app-gitloom-perms">
+        <h3 class="ig-dlg__h" id="app-gitloom-perms">What it asks for</h3>
+        <ul class="ig-perms">
+          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Read builds, pull requests and tags in chosen repositories</li>
+          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Post review status back to a pull request</li>
+          <li class="ig-perms__never"><svg class="icon" aria-hidden="true"><use href="#i-lock"/></svg><span><strong>Never:</strong> push code or merge anything</span></li>
+        </ul>
+      </section>
+      <div class="ig-dlg__foot">
+        <button class="btn btn--primary btn--lg" type="button" data-ig-connect="Gitloom">Connect Gitloom<svg class="arrow" aria-hidden="true"><use href="#i-arrow"/></svg></button>
+        <p class="small">About 30 seconds. Disconnect from the lane any time; what already arrived stays yours.</p>
+      </div>
+    </div>
+  </dialog>
+  <dialog class="dialog ig-dlg" id="app-sketchbook" data-stage="make" aria-labelledby="app-sketchbook-title">
+    <div class="dialog__head">
+      <div class="ig-dlg__id">
+        <span class="ig-box ig-box--lit" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6.5 4.5h10.5a1.5 1.5 0 0 1 1.5 1.5v12a1.5 1.5 0 0 1-1.5 1.5H6.5Z"/><path d="M9.5 4.5v15"/><path d="M12 14.2c.8-2.6 1.8-2.8 2.4-1.3.5 1.3 1.3 1.4 2.1-.4"/></svg></span>
+        <div>
+          <h2 class="ig-dlg__name" id="app-sketchbook-title">Sketchbook</h2>
+          <p class="ig-dlg__kind">Drawing</p>
+        </div>
+      </div>
+      <button class="dialog__close" type="button" data-dialog-close aria-label="Close"><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg></button>
+    </div>
+    <div class="dialog__body">
+      <div class="ig-dlg__lead">
+        <span class="lane-chip">Rides the Make lane · Workbench</span>
+        <p class="body-l">Pages from your drawing app arrive as versions, strokes intact, ready for a pinned note.</p>
+      </div>
+      <section class="ig-dlg__part" aria-labelledby="app-sketchbook-flows">
+        <h3 class="ig-dlg__h" id="app-sketchbook-flows">What flows in</h3>
+        <ul class="ig-flows">
+          <li><span class="ig-flows__from">Pages</span><span class="ig-flows__road" aria-hidden="true"></span><span class="sr"> become </span><span class="ig-flows__to">versions</span></li>
+          <li><span class="ig-flows__from">Layers</span><span class="ig-flows__road" aria-hidden="true"></span><span class="sr"> become </span><span class="ig-flows__to">version files</span></li>
+          <li><span class="ig-flows__from">Timelapses</span><span class="ig-flows__road" aria-hidden="true"></span><span class="sr"> become </span><span class="ig-flows__to">Share Page clips</span></li>
+        </ul>
+      </section>
+      <section class="ig-dlg__part" aria-labelledby="app-sketchbook-perms">
+        <h3 class="ig-dlg__h" id="app-sketchbook-perms">What it asks for</h3>
+        <ul class="ig-perms">
+          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Read the sketchbooks you pick</li>
+          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Keep full-size copies in your lane</li>
+          <li class="ig-perms__never"><svg class="icon" aria-hidden="true"><use href="#i-lock"/></svg><span><strong>Never:</strong> change a single stroke</span></li>
+        </ul>
+      </section>
+      <div class="ig-dlg__foot">
+        <button class="btn btn--primary btn--lg" type="button" data-ig-connect="Sketchbook">Connect Sketchbook<svg class="arrow" aria-hidden="true"><use href="#i-arrow"/></svg></button>
+        <p class="small">About 30 seconds. Disconnect from the lane any time; what already arrived stays yours.</p>
+      </div>
+    </div>
+  </dialog>
+  <dialog class="dialog ig-dlg" id="app-cloudshelf" data-stage="make" aria-labelledby="app-cloudshelf-title">
+    <div class="dialog__head">
+      <div class="ig-dlg__id">
+        <span class="ig-box ig-box--lit" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 15.5a3.4 3.4 0 0 1-.2-6.8 4.6 4.6 0 0 1 8.8 1.4 2.7 2.7 0 0 1-.4 5.4Z"/><path d="M4.5 19.5h15"/></svg></span>
+        <div>
+          <h2 class="ig-dlg__name" id="app-cloudshelf-title">Cloudshelf</h2>
+          <p class="ig-dlg__kind">Storage</p>
+        </div>
+      </div>
+      <button class="dialog__close" type="button" data-dialog-close aria-label="Close"><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg></button>
+    </div>
+    <div class="dialog__body">
+      <div class="ig-dlg__lead">
+        <span class="lane-chip">Rides the Make lane · Workbench</span>
+        <p class="body-l">Point a lane at a folder. Whatever lands in it becomes a version, with nothing copied twice.</p>
+      </div>
+      <section class="ig-dlg__part" aria-labelledby="app-cloudshelf-flows">
+        <h3 class="ig-dlg__h" id="app-cloudshelf-flows">What flows in</h3>
+        <ul class="ig-flows">
+          <li><span class="ig-flows__from">New files</span><span class="ig-flows__road" aria-hidden="true"></span><span class="sr"> become </span><span class="ig-flows__to">versions</span></li>
+          <li><span class="ig-flows__from">Folder changes</span><span class="ig-flows__road" aria-hidden="true"></span><span class="sr"> become </span><span class="ig-flows__to">lane activity</span></li>
+          <li><span class="ig-flows__from">Archived lanes</span><span class="ig-flows__road" aria-hidden="true"></span><span class="sr"> become </span><span class="ig-flows__to">your shelf</span></li>
+        </ul>
+      </section>
+      <section class="ig-dlg__part" aria-labelledby="app-cloudshelf-perms">
+        <h3 class="ig-dlg__h" id="app-cloudshelf-perms">What it asks for</h3>
+        <ul class="ig-perms">
+          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Read and write in one folder you choose</li>
+          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Watch that folder for changes</li>
+          <li class="ig-perms__never"><svg class="icon" aria-hidden="true"><use href="#i-lock"/></svg><span><strong>Never:</strong> see the rest of your storage</span></li>
+        </ul>
+      </section>
+      <div class="ig-dlg__foot">
+        <button class="btn btn--primary btn--lg" type="button" data-ig-connect="Cloudshelf">Connect Cloudshelf<svg class="arrow" aria-hidden="true"><use href="#i-arrow"/></svg></button>
+        <p class="small">About 30 seconds. Disconnect from the lane any time; what already arrived stays yours.</p>
+      </div>
+    </div>
+  </dialog>
+  <dialog class="dialog ig-dlg" id="app-chatter" data-stage="review" aria-labelledby="app-chatter-title">
+    <div class="dialog__head">
+      <div class="ig-dlg__id">
+        <span class="ig-box ig-box--lit" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M17.4 7A7 7 0 1 0 17.4 16"/><path d="M7.2 16.6 5.4 20.3l4.2-2.1"/></svg></span>
+        <div>
+          <h2 class="ig-dlg__name" id="app-chatter-title">Chatter</h2>
+          <p class="ig-dlg__kind">Team chat · Popular</p>
+        </div>
+      </div>
+      <button class="dialog__close" type="button" data-dialog-close aria-label="Close"><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg></button>
+    </div>
+    <div class="dialog__body">
+      <div class="ig-dlg__lead">
+        <span class="lane-chip">Rides the Review lane · Review Room</span>
+        <p class="body-l">Review threads post to the channel you pick, and replies there come back as notes.</p>
+      </div>
+      <section class="ig-dlg__part" aria-labelledby="app-chatter-flows">
+        <h3 class="ig-dlg__h" id="app-chatter-flows">What flows in</h3>
+        <ul class="ig-flows">
+          <li><span class="ig-flows__from">Channel replies</span><span class="ig-flows__road" aria-hidden="true"></span><span class="sr"> become </span><span class="ig-flows__to">review notes</span></li>
+          <li><span class="ig-flows__from">Approvals</span><span class="ig-flows__road" aria-hidden="true"></span><span class="sr"> become </span><span class="ig-flows__to">channel posts</span></li>
+          <li><span class="ig-flows__from">Mentions</span><span class="ig-flows__road" aria-hidden="true"></span><span class="sr"> become </span><span class="ig-flows__to">notifications</span></li>
+        </ul>
+      </section>
+      <section class="ig-dlg__part" aria-labelledby="app-chatter-perms">
+        <h3 class="ig-dlg__h" id="app-chatter-perms">What it asks for</h3>
+        <ul class="ig-perms">
+          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Post in the channels you choose</li>
+          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Read replies to Crestora’s own posts</li>
+          <li class="ig-perms__never"><svg class="icon" aria-hidden="true"><use href="#i-lock"/></svg><span><strong>Never:</strong> read your other conversations</span></li>
+        </ul>
+      </section>
+      <div class="ig-dlg__foot">
+        <button class="btn btn--primary btn--lg" type="button" data-ig-connect="Chatter">Connect Chatter<svg class="arrow" aria-hidden="true"><use href="#i-arrow"/></svg></button>
+        <p class="small">About 30 seconds. Disconnect from the lane any time; what already arrived stays yours.</p>
+      </div>
+    </div>
+  </dialog>
+  <dialog class="dialog ig-dlg" id="app-redline" data-stage="review" aria-labelledby="app-redline-title">
+    <div class="dialog__head">
+      <div class="ig-dlg__id">
+        <span class="ig-box ig-box--lit" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 19.5v-15h4.8a3.6 3.6 0 0 1 0 7.2H8M12.2 11.7l4.3 7.8"/><path d="M4.5 15.5h4.5M14 15.5h5.5" opacity=".55"/></svg></span>
+        <div>
+          <h2 class="ig-dlg__name" id="app-redline-title">Redline</h2>
+          <p class="ig-dlg__kind">PDF proofing</p>
+        </div>
+      </div>
+      <button class="dialog__close" type="button" data-dialog-close aria-label="Close"><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg></button>
+    </div>
+    <div class="dialog__body">
+      <div class="ig-dlg__lead">
+        <span class="lane-chip">Rides the Review lane · Review Room</span>
+        <p class="body-l">Proof marks on PDFs come in as pinned notes, with the page and position exact.</p>
+      </div>
+      <section class="ig-dlg__part" aria-labelledby="app-redline-flows">
+        <h3 class="ig-dlg__h" id="app-redline-flows">What flows in</h3>
+        <ul class="ig-flows">
+          <li><span class="ig-flows__from">Proof marks</span><span class="ig-flows__road" aria-hidden="true"></span><span class="sr"> become </span><span class="ig-flows__to">pinned notes</span></li>
+          <li><span class="ig-flows__from">Resolved marks</span><span class="ig-flows__road" aria-hidden="true"></span><span class="sr"> become </span><span class="ig-flows__to">closed notes</span></li>
+          <li><span class="ig-flows__from">Signed proofs</span><span class="ig-flows__road" aria-hidden="true"></span><span class="sr"> become </span><span class="ig-flows__to">approvals</span></li>
+        </ul>
+      </section>
+      <section class="ig-dlg__part" aria-labelledby="app-redline-perms">
+        <h3 class="ig-dlg__h" id="app-redline-perms">What it asks for</h3>
+        <ul class="ig-perms">
+          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Read proofs started from a Crestora lane</li>
+          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Mark notes resolved on both sides</li>
+          <li class="ig-perms__never"><svg class="icon" aria-hidden="true"><use href="#i-lock"/></svg><span><strong>Never:</strong> sign anything for you</span></li>
+        </ul>
+      </section>
+      <div class="ig-dlg__foot">
+        <button class="btn btn--primary btn--lg" type="button" data-ig-connect="Redline">Connect Redline<svg class="arrow" aria-hidden="true"><use href="#i-arrow"/></svg></button>
+        <p class="small">About 30 seconds. Disconnect from the lane any time; what already arrived stays yours.</p>
+      </div>
+    </div>
+  </dialog>
+  <dialog class="dialog ig-dlg" id="app-captionist" data-stage="review" aria-labelledby="app-captionist-title">
+    <div class="dialog__head">
+      <div class="ig-dlg__id">
+        <span class="ig-box ig-box--lit" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3.5" y="5.5" width="17" height="13" rx="2.5"/><path d="M10.6 10.3a2.1 2.1 0 1 0 0 3.4M16.1 10.3a2.1 2.1 0 1 0 0 3.4"/></svg></span>
+        <div>
+          <h2 class="ig-dlg__name" id="app-captionist-title">Captionist</h2>
+          <p class="ig-dlg__kind">Captions · New</p>
+        </div>
+      </div>
+      <button class="dialog__close" type="button" data-dialog-close aria-label="Close"><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg></button>
+    </div>
+    <div class="dialog__body">
+      <div class="ig-dlg__lead">
+        <span class="lane-chip">Rides the Review lane · Review Room</span>
+        <p class="body-l">Captions are drafted from your cut and arrive as a track reviewers can correct line by line.</p>
+      </div>
+      <section class="ig-dlg__part" aria-labelledby="app-captionist-flows">
+        <h3 class="ig-dlg__h" id="app-captionist-flows">What flows in</h3>
+        <ul class="ig-flows">
+          <li><span class="ig-flows__from">Caption drafts</span><span class="ig-flows__road" aria-hidden="true"></span><span class="sr"> become </span><span class="ig-flows__to">a text track</span></li>
+          <li><span class="ig-flows__from">Corrections</span><span class="ig-flows__road" aria-hidden="true"></span><span class="sr"> become </span><span class="ig-flows__to">review notes</span></li>
+          <li><span class="ig-flows__from">Final captions</span><span class="ig-flows__road" aria-hidden="true"></span><span class="sr"> become </span><span class="ig-flows__to">launch files</span></li>
+        </ul>
+      </section>
+      <section class="ig-dlg__part" aria-labelledby="app-captionist-perms">
+        <h3 class="ig-dlg__h" id="app-captionist-perms">What it asks for</h3>
+        <ul class="ig-perms">
+          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Read the audio of versions you send it</li>
+          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Write caption tracks back to those versions</li>
+          <li class="ig-perms__never"><svg class="icon" aria-hidden="true"><use href="#i-lock"/></svg><span><strong>Never:</strong> keep your audio after captioning</span></li>
+        </ul>
+      </section>
+      <div class="ig-dlg__foot">
+        <button class="btn btn--primary btn--lg" type="button" data-ig-connect="Captionist">Connect Captionist<svg class="arrow" aria-hidden="true"><use href="#i-arrow"/></svg></button>
+        <p class="small">About 30 seconds. Disconnect from the lane any time; what already arrived stays yours.</p>
+      </div>
+    </div>
+  </dialog>
+  <dialog class="dialog ig-dlg" id="app-postbox" data-stage="launch" aria-labelledby="app-postbox-title">
+    <div class="dialog__head">
+      <div class="ig-dlg__id">
+        <span class="ig-box ig-box--lit" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7.5 20V4.5H13a4.6 4.6 0 0 1 0 9.2H7.5"/><path d="M10.4 9.1h3.2"/></svg></span>
+        <div>
+          <h2 class="ig-dlg__name" id="app-postbox-title">Postbox</h2>
+          <p class="ig-dlg__kind">Newsletters · Popular</p>
+        </div>
+      </div>
+      <button class="dialog__close" type="button" data-dialog-close aria-label="Close"><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg></button>
+    </div>
+    <div class="dialog__body">
+      <div class="ig-dlg__lead">
+        <span class="lane-chip">Rides the Launch lane · Countdown</span>
+        <p class="body-l">Your launch letter is drafted from the brief and goes out the minute the Countdown hits zero.</p>
+      </div>
+      <section class="ig-dlg__part" aria-labelledby="app-postbox-flows">
+        <h3 class="ig-dlg__h" id="app-postbox-flows">What flows in</h3>
+        <ul class="ig-flows">
+          <li><span class="ig-flows__from">Launch day</span><span class="ig-flows__road" aria-hidden="true"></span><span class="sr"> become </span><span class="ig-flows__to">a scheduled letter</span></li>
+          <li><span class="ig-flows__from">Opens &amp; clicks</span><span class="ig-flows__road" aria-hidden="true"></span><span class="sr"> become </span><span class="ig-flows__to">Afterglow</span></li>
+          <li><span class="ig-flows__from">Replies</span><span class="ig-flows__road" aria-hidden="true"></span><span class="sr"> become </span><span class="ig-flows__to">spark notes</span></li>
+        </ul>
+      </section>
+      <section class="ig-dlg__part" aria-labelledby="app-postbox-perms">
+        <h3 class="ig-dlg__h" id="app-postbox-perms">What it asks for</h3>
+        <ul class="ig-perms">
+          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Create and schedule drafts in your account</li>
+          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Read totals for letters it sent</li>
+          <li class="ig-perms__never"><svg class="icon" aria-hidden="true"><use href="#i-lock"/></svg><span><strong>Never:</strong> see or export your subscriber list</span></li>
+        </ul>
+      </section>
+      <div class="ig-dlg__foot">
+        <button class="btn btn--primary btn--lg" type="button" data-ig-connect="Postbox">Connect Postbox<svg class="arrow" aria-hidden="true"><use href="#i-arrow"/></svg></button>
+        <p class="small">About 30 seconds. Disconnect from the lane any time; what already arrived stays yours.</p>
+      </div>
+    </div>
+  </dialog>
+  <dialog class="dialog ig-dlg" id="app-shopfront" data-stage="launch" aria-labelledby="app-shopfront-title">
+    <div class="dialog__head">
+      <div class="ig-dlg__id">
+        <span class="ig-box ig-box--lit" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 8.2 6.3 4.5h11.4L19 8.2Z"/><path d="M14.7 12.3c-.5-.7-1.4-1.1-2.6-1.1-1.5 0-2.5.7-2.5 1.7 0 2.4 5.4 1.3 5.4 3.7 0 1.1-1.1 1.9-2.8 1.9-1.4 0-2.4-.5-2.9-1.2"/></svg></span>
+        <div>
+          <h2 class="ig-dlg__name" id="app-shopfront-title">Shopfront</h2>
+          <p class="ig-dlg__kind">Online store · Popular</p>
+        </div>
+      </div>
+      <button class="dialog__close" type="button" data-dialog-close aria-label="Close"><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg></button>
+    </div>
+    <div class="dialog__body">
+      <div class="ig-dlg__lead">
+        <span class="lane-chip">Rides the Launch lane · Countdown</span>
+        <p class="body-l">The drop opens on the minute. Orders and sell-through stream into Afterglow as they happen.</p>
+      </div>
+      <section class="ig-dlg__part" aria-labelledby="app-shopfront-flows">
+        <h3 class="ig-dlg__h" id="app-shopfront-flows">What flows in</h3>
+        <ul class="ig-flows">
+          <li><span class="ig-flows__from">Countdown</span><span class="ig-flows__road" aria-hidden="true"></span><span class="sr"> become </span><span class="ig-flows__to">store opening</span></li>
+          <li><span class="ig-flows__from">Orders</span><span class="ig-flows__road" aria-hidden="true"></span><span class="sr"> become </span><span class="ig-flows__to">Afterglow</span></li>
+          <li><span class="ig-flows__from">Stock levels</span><span class="ig-flows__road" aria-hidden="true"></span><span class="sr"> become </span><span class="ig-flows__to">launch checklist</span></li>
+        </ul>
+      </section>
+      <section class="ig-dlg__part" aria-labelledby="app-shopfront-perms">
+        <h3 class="ig-dlg__h" id="app-shopfront-perms">What it asks for</h3>
+        <ul class="ig-perms">
+          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Publish and unpublish the products you pick</li>
+          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Read order totals and stock</li>
+          <li class="ig-perms__never"><svg class="icon" aria-hidden="true"><use href="#i-lock"/></svg><span><strong>Never:</strong> see your customers’ details</span></li>
+        </ul>
+      </section>
+      <div class="ig-dlg__foot">
+        <button class="btn btn--primary btn--lg" type="button" data-ig-connect="Shopfront">Connect Shopfront<svg class="arrow" aria-hidden="true"><use href="#i-arrow"/></svg></button>
+        <p class="small">About 30 seconds. Disconnect from the lane any time; what already arrived stays yours.</p>
+      </div>
+    </div>
+  </dialog>
+  <dialog class="dialog ig-dlg" id="app-clipdeck" data-stage="launch" aria-labelledby="app-clipdeck-title">
+    <div class="dialog__head">
+      <div class="ig-dlg__id">
+        <span class="ig-box ig-box--lit" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M17.6 7.4A7 7 0 1 0 17.6 16.6"/><path d="M12 8.3V12l2.6 1.6"/></svg></span>
+        <div>
+          <h2 class="ig-dlg__name" id="app-clipdeck-title">Clipdeck</h2>
+          <p class="ig-dlg__kind">Social scheduling</p>
+        </div>
+      </div>
+      <button class="dialog__close" type="button" data-dialog-close aria-label="Close"><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg></button>
+    </div>
+    <div class="dialog__body">
+      <div class="ig-dlg__lead">
+        <span class="lane-chip">Rides the Launch lane · Countdown</span>
+        <p class="body-l">One plan, fourteen channels. Posts go out on cue and the replies come back to the lane.</p>
+      </div>
+      <section class="ig-dlg__part" aria-labelledby="app-clipdeck-flows">
+        <h3 class="ig-dlg__h" id="app-clipdeck-flows">What flows in</h3>
+        <ul class="ig-flows">
+          <li><span class="ig-flows__from">Launch plan</span><span class="ig-flows__road" aria-hidden="true"></span><span class="sr"> become </span><span class="ig-flows__to">scheduled posts</span></li>
+          <li><span class="ig-flows__from">Clips</span><span class="ig-flows__road" aria-hidden="true"></span><span class="sr"> become </span><span class="ig-flows__to">post drafts</span></li>
+          <li><span class="ig-flows__from">Replies</span><span class="ig-flows__road" aria-hidden="true"></span><span class="sr"> become </span><span class="ig-flows__to">Afterglow</span></li>
+        </ul>
+      </section>
+      <section class="ig-dlg__part" aria-labelledby="app-clipdeck-perms">
+        <h3 class="ig-dlg__h" id="app-clipdeck-perms">What it asks for</h3>
+        <ul class="ig-perms">
+          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Schedule posts to the channels you connect</li>
+          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Read replies and reach on those posts</li>
+          <li class="ig-perms__never"><svg class="icon" aria-hidden="true"><use href="#i-lock"/></svg><span><strong>Never:</strong> post anything you haven’t approved</span></li>
+        </ul>
+      </section>
+      <div class="ig-dlg__foot">
+        <button class="btn btn--primary btn--lg" type="button" data-ig-connect="Clipdeck">Connect Clipdeck<svg class="arrow" aria-hidden="true"><use href="#i-arrow"/></svg></button>
+        <p class="small">About 30 seconds. Disconnect from the lane any time; what already arrived stays yours.</p>
+      </div>
+    </div>
+  </dialog>
+  <dialog class="dialog ig-dlg" id="app-onair" data-stage="launch" aria-labelledby="app-onair-title">
+    <div class="dialog__head">
+      <div class="ig-dlg__id">
+        <span class="ig-box ig-box--lit" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.4"/><circle class="f" cx="12" cy="12" r="1.2"/><path d="M6.6 6.6a7.6 7.6 0 0 0 0 10.8M17.4 6.6a7.6 7.6 0 0 1 0 10.8"/></svg></span>
+        <div>
+          <h2 class="ig-dlg__name" id="app-onair-title">Onair</h2>
+          <p class="ig-dlg__kind">Live streams · New</p>
+        </div>
+      </div>
+      <button class="dialog__close" type="button" data-dialog-close aria-label="Close"><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg></button>
+    </div>
+    <div class="dialog__body">
+      <div class="ig-dlg__lead">
+        <span class="lane-chip">Rides the Launch lane · Countdown</span>
+        <p class="body-l">The launch room goes live on your channel, chat and all, with the countdown on screen.</p>
+      </div>
+      <section class="ig-dlg__part" aria-labelledby="app-onair-flows">
+        <h3 class="ig-dlg__h" id="app-onair-flows">What flows in</h3>
+        <ul class="ig-flows">
+          <li><span class="ig-flows__from">Launch room</span><span class="ig-flows__road" aria-hidden="true"></span><span class="sr"> become </span><span class="ig-flows__to">a live stream</span></li>
+          <li><span class="ig-flows__from">Viewers</span><span class="ig-flows__road" aria-hidden="true"></span><span class="sr"> become </span><span class="ig-flows__to">Afterglow</span></li>
+          <li><span class="ig-flows__from">Chat highlights</span><span class="ig-flows__road" aria-hidden="true"></span><span class="sr"> become </span><span class="ig-flows__to">spark notes</span></li>
+        </ul>
+      </section>
+      <section class="ig-dlg__part" aria-labelledby="app-onair-perms">
+        <h3 class="ig-dlg__h" id="app-onair-perms">What it asks for</h3>
+        <ul class="ig-perms">
+          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Start and end streams you schedule here</li>
+          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Read viewer counts and chat</li>
+          <li class="ig-perms__never"><svg class="icon" aria-hidden="true"><use href="#i-lock"/></svg><span><strong>Never:</strong> go live without you pressing the button</span></li>
+        </ul>
+      </section>
+      <div class="ig-dlg__foot">
+        <button class="btn btn--primary btn--lg" type="button" data-ig-connect="Onair">Connect Onair<svg class="arrow" aria-hidden="true"><use href="#i-arrow"/></svg></button>
+        <p class="small">About 30 seconds. Disconnect from the lane any time; what already arrived stays yours.</p>
+      </div>
+    </div>
+  </dialog>
+  <dialog class="dialog ig-dlg" id="app-shipyard" data-stage="launch" aria-labelledby="app-shipyard-title">
+    <div class="dialog__head">
+      <div class="ig-dlg__id">
+        <span class="ig-box ig-box--lit" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4.5 15.5h15l-2.2 4H6.7Z"/><path d="M12 15.5V4.5M8.6 7.9 12 4.5l3.4 3.4"/></svg></span>
+        <div>
+          <h2 class="ig-dlg__name" id="app-shipyard-title">Shipyard</h2>
+          <p class="ig-dlg__kind">App-store builds</p>
+        </div>
+      </div>
+      <button class="dialog__close" type="button" data-dialog-close aria-label="Close"><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg></button>
+    </div>
+    <div class="dialog__body">
+      <div class="ig-dlg__lead">
+        <span class="lane-chip">Rides the Launch lane · Countdown</span>
+        <p class="body-l">Approved builds go to beta and the stores, and their review status shows on your Countdown.</p>
+      </div>
+      <section class="ig-dlg__part" aria-labelledby="app-shipyard-flows">
+        <h3 class="ig-dlg__h" id="app-shipyard-flows">What flows in</h3>
+        <ul class="ig-flows">
+          <li><span class="ig-flows__from">Approved versions</span><span class="ig-flows__road" aria-hidden="true"></span><span class="sr"> become </span><span class="ig-flows__to">store builds</span></li>
+          <li><span class="ig-flows__from">Store review status</span><span class="ig-flows__road" aria-hidden="true"></span><span class="sr"> become </span><span class="ig-flows__to">Countdown</span></li>
+          <li><span class="ig-flows__from">Ratings</span><span class="ig-flows__road" aria-hidden="true"></span><span class="sr"> become </span><span class="ig-flows__to">Afterglow</span></li>
+        </ul>
+      </section>
+      <section class="ig-dlg__part" aria-labelledby="app-shipyard-perms">
+        <h3 class="ig-dlg__h" id="app-shipyard-perms">What it asks for</h3>
+        <ul class="ig-perms">
+          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Upload builds you approve in Crestora</li>
+          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Read review status and ratings</li>
+          <li class="ig-perms__never"><svg class="icon" aria-hidden="true"><use href="#i-lock"/></svg><span><strong>Never:</strong> submit a build no one approved</span></li>
+        </ul>
+      </section>
+      <div class="ig-dlg__foot">
+        <button class="btn btn--primary btn--lg" type="button" data-ig-connect="Shipyard">Connect Shipyard<svg class="arrow" aria-hidden="true"><use href="#i-arrow"/></svg></button>
+        <p class="small">About 30 seconds. Disconnect from the lane any time; what already arrived stays yours.</p>
+      </div>
+    </div>
+  </dialog>
+  <dialog class="dialog ig-dlg" id="app-pulse" data-stage="afterglow" aria-labelledby="app-pulse-title">
+    <div class="dialog__head">
+      <div class="ig-dlg__id">
+        <span class="ig-box ig-box--lit" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3.5 12.5h4l2.2-5.5 3.4 10.5 2.2-5h5.2"/></svg></span>
+        <div>
+          <h2 class="ig-dlg__name" id="app-pulse-title">Pulse</h2>
+          <p class="ig-dlg__kind">Analytics</p>
+        </div>
+      </div>
+      <button class="dialog__close" type="button" data-dialog-close aria-label="Close"><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg></button>
+    </div>
+    <div class="dialog__body">
+      <div class="ig-dlg__lead">
+        <span class="lane-chip">Rides the Afterglow lane · Afterglow</span>
+        <p class="body-l">Views, sources and sign-ups land in your day 1, 7 and 30 recaps, with no dashboard to babysit.</p>
+      </div>
+      <section class="ig-dlg__part" aria-labelledby="app-pulse-flows">
+        <h3 class="ig-dlg__h" id="app-pulse-flows">What flows in</h3>
+        <ul class="ig-flows">
+          <li><span class="ig-flows__from">Traffic</span><span class="ig-flows__road" aria-hidden="true"></span><span class="sr"> become </span><span class="ig-flows__to">recaps</span></li>
+          <li><span class="ig-flows__from">Sign-ups</span><span class="ig-flows__road" aria-hidden="true"></span><span class="sr"> become </span><span class="ig-flows__to">Afterglow</span></li>
+          <li><span class="ig-flows__from">Top sources</span><span class="ig-flows__road" aria-hidden="true"></span><span class="sr"> become </span><span class="ig-flows__to">next sparks</span></li>
+        </ul>
+      </section>
+      <section class="ig-dlg__part" aria-labelledby="app-pulse-perms">
+        <h3 class="ig-dlg__h" id="app-pulse-perms">What it asks for</h3>
+        <ul class="ig-perms">
+          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Read totals for the sites you pick</li>
+          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Read them daily for 30 days after a launch</li>
+          <li class="ig-perms__never"><svg class="icon" aria-hidden="true"><use href="#i-lock"/></svg><span><strong>Never:</strong> see anything about a single visitor</span></li>
+        </ul>
+      </section>
+      <div class="ig-dlg__foot">
+        <button class="btn btn--primary btn--lg" type="button" data-ig-connect="Pulse">Connect Pulse<svg class="arrow" aria-hidden="true"><use href="#i-arrow"/></svg></button>
+        <p class="small">About 30 seconds. Disconnect from the lane any time; what already arrived stays yours.</p>
+      </div>
+    </div>
+  </dialog>
+  <dialog class="dialog ig-dlg" id="app-tipjar" data-stage="afterglow" aria-labelledby="app-tipjar-title">
+    <div class="dialog__head">
+      <div class="ig-dlg__id">
+        <span class="ig-box ig-box--lit" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 9.5h10v8.5a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2Z"/><path d="M8 9.5V6.5h8v3M10 13h4M12 13v4"/><circle class="f" cx="12" cy="3.6" r="1.1"/></svg></span>
+        <div>
+          <h2 class="ig-dlg__name" id="app-tipjar-title">Tipjar</h2>
+          <p class="ig-dlg__kind">Supporters</p>
+        </div>
+      </div>
+      <button class="dialog__close" type="button" data-dialog-close aria-label="Close"><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg></button>
+    </div>
+    <div class="dialog__body">
+      <div class="ig-dlg__lead">
+        <span class="lane-chip">Rides the Afterglow lane · Afterglow</span>
+        <p class="body-l">Tips and memberships from launch week show up in the recap, with the notes people left.</p>
+      </div>
+      <section class="ig-dlg__part" aria-labelledby="app-tipjar-flows">
+        <h3 class="ig-dlg__h" id="app-tipjar-flows">What flows in</h3>
+        <ul class="ig-flows">
+          <li><span class="ig-flows__from">Tips &amp; memberships</span><span class="ig-flows__road" aria-hidden="true"></span><span class="sr"> become </span><span class="ig-flows__to">Afterglow</span></li>
+          <li><span class="ig-flows__from">Supporter notes</span><span class="ig-flows__road" aria-hidden="true"></span><span class="sr"> become </span><span class="ig-flows__to">spark notes</span></li>
+        </ul>
+      </section>
+      <section class="ig-dlg__part" aria-labelledby="app-tipjar-perms">
+        <h3 class="ig-dlg__h" id="app-tipjar-perms">What it asks for</h3>
+        <ul class="ig-perms">
+          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Read totals and notes from launch week</li>
+          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Read supporter first names, if they share them</li>
+          <li class="ig-perms__never"><svg class="icon" aria-hidden="true"><use href="#i-lock"/></svg><span><strong>Never:</strong> move or hold any money</span></li>
+        </ul>
+      </section>
+      <div class="ig-dlg__foot">
+        <button class="btn btn--primary btn--lg" type="button" data-ig-connect="Tipjar">Connect Tipjar<svg class="arrow" aria-hidden="true"><use href="#i-arrow"/></svg></button>
+        <p class="small">About 30 seconds. Disconnect from the lane any time; what already arrived stays yours.</p>
+      </div>
+    </div>
+  </dialog>
+  <dialog class="dialog ig-dlg" id="app-starboard" data-stage="afterglow" aria-labelledby="app-starboard-title">
+    <div class="dialog__head">
+      <div class="ig-dlg__id">
+        <span class="ig-box ig-box--lit" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m12 4.2 2.1 4.3 4.7.7-3.4 3.3.8 4.7-4.2-2.2-4.2 2.2.8-4.7-3.4-3.3 4.7-.7Z"/><path d="M6 20h12"/></svg></span>
+        <div>
+          <h2 class="ig-dlg__name" id="app-starboard-title">Starboard</h2>
+          <p class="ig-dlg__kind">Ratings &amp; reviews</p>
+        </div>
+      </div>
+      <button class="dialog__close" type="button" data-dialog-close aria-label="Close"><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg></button>
+    </div>
+    <div class="dialog__body">
+      <div class="ig-dlg__lead">
+        <span class="lane-chip">Rides the Afterglow lane · Afterglow</span>
+        <p class="body-l">Ratings and reviews from every store gather in one recap, and the good lines go back to the board.</p>
+      </div>
+      <section class="ig-dlg__part" aria-labelledby="app-starboard-flows">
+        <h3 class="ig-dlg__h" id="app-starboard-flows">What flows in</h3>
+        <ul class="ig-flows">
+          <li><span class="ig-flows__from">Ratings</span><span class="ig-flows__road" aria-hidden="true"></span><span class="sr"> become </span><span class="ig-flows__to">recaps</span></li>
+          <li><span class="ig-flows__from">Reviews</span><span class="ig-flows__road" aria-hidden="true"></span><span class="sr"> become </span><span class="ig-flows__to">sparks</span></li>
+          <li><span class="ig-flows__from">Your replies</span><span class="ig-flows__road" aria-hidden="true"></span><span class="sr"> become </span><span class="ig-flows__to">the store</span></li>
+        </ul>
+      </section>
+      <section class="ig-dlg__part" aria-labelledby="app-starboard-perms">
+        <h3 class="ig-dlg__h" id="app-starboard-perms">What it asks for</h3>
+        <ul class="ig-perms">
+          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Read ratings and reviews for your listings</li>
+          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Post replies you write in Crestora</li>
+          <li class="ig-perms__never"><svg class="icon" aria-hidden="true"><use href="#i-lock"/></svg><span><strong>Never:</strong> reply to anyone on its own</span></li>
+        </ul>
+      </section>
+      <div class="ig-dlg__foot">
+        <button class="btn btn--primary btn--lg" type="button" data-ig-connect="Starboard">Connect Starboard<svg class="arrow" aria-hidden="true"><use href="#i-arrow"/></svg></button>
+        <p class="small">About 30 seconds. Disconnect from the lane any time; what already arrived stays yours.</p>
+      </div>
+    </div>
+  </dialog>
+  <dialog class="dialog ig-dlg" id="app-formfold" data-stage="afterglow" aria-labelledby="app-formfold-title">
+    <div class="dialog__head">
+      <div class="ig-dlg__id">
+        <span class="ig-box ig-box--lit" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6.5 3.5h7l4 4v13h-11Z"/><path d="M13.5 3.5v4h4"/><path d="m9 12.6 1.3 1.3 2.4-2.5M9 16.8h6"/></svg></span>
+        <div>
+          <h2 class="ig-dlg__name" id="app-formfold-title">Formfold</h2>
+          <p class="ig-dlg__kind">Surveys</p>
+        </div>
+      </div>
+      <button class="dialog__close" type="button" data-dialog-close aria-label="Close"><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg></button>
+    </div>
+    <div class="dialog__body">
+      <div class="ig-dlg__lead">
+        <span class="lane-chip">Rides the Afterglow lane · Afterglow</span>
+        <p class="body-l">Send a short survey on day 7. Answers land in the recap and the ideas go back to the board.</p>
+      </div>
+      <section class="ig-dlg__part" aria-labelledby="app-formfold-flows">
+        <h3 class="ig-dlg__h" id="app-formfold-flows">What flows in</h3>
+        <ul class="ig-flows">
+          <li><span class="ig-flows__from">Answers</span><span class="ig-flows__road" aria-hidden="true"></span><span class="sr"> become </span><span class="ig-flows__to">recaps</span></li>
+          <li><span class="ig-flows__from">Open answers</span><span class="ig-flows__road" aria-hidden="true"></span><span class="sr"> become </span><span class="ig-flows__to">sparks</span></li>
+          <li><span class="ig-flows__from">Launch list</span><span class="ig-flows__road" aria-hidden="true"></span><span class="sr"> become </span><span class="ig-flows__to">a survey invite</span></li>
+        </ul>
+      </section>
+      <section class="ig-dlg__part" aria-labelledby="app-formfold-perms">
+        <h3 class="ig-dlg__h" id="app-formfold-perms">What it asks for</h3>
+        <ul class="ig-perms">
+          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Create surveys from a recap</li>
+          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Read answers to those surveys</li>
+          <li class="ig-perms__never"><svg class="icon" aria-hidden="true"><use href="#i-lock"/></svg><span><strong>Never:</strong> email anyone you haven’t chosen</span></li>
+        </ul>
+      </section>
+      <div class="ig-dlg__foot">
+        <button class="btn btn--primary btn--lg" type="button" data-ig-connect="Formfold">Connect Formfold<svg class="arrow" aria-hidden="true"><use href="#i-arrow"/></svg></button>
+        <p class="small">About 30 seconds. Disconnect from the lane any time; what already arrived stays yours.</p>
+      </div>
+    </div>
+  </dialog>
+</main>

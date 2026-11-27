@@ -1,0 +1,906 @@
+<!doctype html>
+<!-- Assembled by tools/pages.mjs from src/pages/docs.html; edit that, not this. -->
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Documentation — Crestora</title>
+<meta name="description" content="Everything about lanes, stages and the tools inside them: Sparkboard, Blueprints, Workbench, Review Room, Countdown and Afterglow, plus roles, integrations, shortcuts and export." />
+<meta name="theme-color" content="#000000" />
+<meta name="color-scheme" content="dark" />
+<link rel="canonical" href="{{SITE_URL}}/docs.html" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Crestora" />
+<meta property="og:url" content="{{SITE_URL}}/docs.html" />
+<meta property="og:title" content="Documentation — Crestora" />
+<meta property="og:description" content="Everything about lanes, stages and the tools inside them: Sparkboard, Blueprints, Workbench, Review Room, Countdown and Afterglow, plus roles, integrations, shortcuts and export." />
+<meta property="og:image" content="{{SITE_URL}}/assets/img/og.jpg" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
+<link rel="preload" href="assets/fonts/inter-latin-wght.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="assets/fonts/michroma-latin.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="stylesheet" href="vendor/lenis.css" />
+<link rel="stylesheet" href="css/site.css?v={{VERSION}}" />
+<script>
+  // Scripts will run: the page may hide what they are about to bring in. A repeat visit in this tab gets short
+  // intros; reduced motion (or ?reduced) gets none.
+  (function (h) {
+    h.className = h.className.replace("no-js", "js");
+    try { if (sessionStorage.getItem("crestora:seen")) h.classList.add("is-repeat"); } catch (e) {}
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches || /[?&]reduced/.test(location.search)) h.classList.add("is-calm");
+    setTimeout(function () { h.classList.add("is-ready"); }, 6000); // if the scripts never get there, show everything anyway
+  })(document.documentElement);
+</script>
+<script defer src="vendor/gsap.min.js"></script>
+<script defer src="vendor/ScrollTrigger.min.js"></script>
+<script defer src="vendor/SplitText.min.js"></script>
+<script defer src="vendor/lenis.min.js"></script>
+<script type="module" src="js/main.js?v={{VERSION}}"></script>
+</head>
+<body data-page="docs" data-modules="toc copy page-docs">
+<!-- The icon sprite: drawn on a 24 px grid in the footer's hand (round caps and joins; stroke set by .icon). Use as
+     <svg class="icon" aria-hidden="true"><use href="#i-spark"/></svg>. -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <!-- the six stages -->
+    <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 3.5c.5 4.3 2.2 6 6.5 6.5-4.3.5-6 2.2-6.5 6.5-.5-4.3-2.2-6-6.5-6.5 4.3-.5 6-2.2 6.5-6.5Z"/><path d="M18.5 16.5v3M17 18h3"/></symbol>
+    <symbol id="i-shape" viewBox="0 0 24 24"><path d="M6 3.5h8.5L19 8v12.5H6Z"/><path d="M14.5 3.5V8H19M9 12.5h7M9 16h5"/></symbol>
+    <symbol id="i-make" viewBox="0 0 24 24"><path d="m14.5 4.5 5 5-8.8 8.8-5.6.6.6-5.6 8.8-8.8Z"/><path d="m12.5 6.5 5 5M5.1 18.9l3.3-3.3"/></symbol>
+    <symbol id="i-review" viewBox="0 0 24 24"><path d="M4.5 6.5a2 2 0 0 1 2-2h11a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-6l-4 3.5v-3.5h-1a2 2 0 0 1-2-2Z"/><circle cx="12" cy="10.5" r="1.6"/></symbol>
+    <symbol id="i-launch" viewBox="0 0 24 24"><path d="M3.5 19.5h17"/><path d="M12 15.5V4.5M7.5 9 12 4.5 16.5 9"/></symbol>
+    <symbol id="i-afterglow" viewBox="0 0 24 24"><path d="M3.5 17.5h17M6.5 17.5a5.5 5.5 0 0 1 11 0"/><path d="M12 6.5v2M5.6 9.6 7 11M18.4 9.6 17 11M3.5 14h1.5M19 14h1.5"/></symbol>
+    <!-- navigation and actions -->
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4.5 12h14.5M13.5 6.5 19 12l-5.5 5.5"/></symbol>
+    <symbol id="i-arrow-up-right" viewBox="0 0 24 24"><path d="M7 17 17 7M8.5 7H17v8.5"/></symbol>
+    <symbol id="i-arrow-down" viewBox="0 0 24 24"><path d="M12 4.5v14.5M6.5 13.5 12 19l5.5-5.5"/></symbol>
+    <symbol id="i-chev-down" viewBox="0 0 24 24"><path d="m6.5 9.5 5.5 5.5 5.5-5.5"/></symbol>
+    <symbol id="i-chev-right" viewBox="0 0 24 24"><path d="m9.5 6 6 6-6 6"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4 4"/></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8.5" y="8.5" width="11" height="11" rx="2"/><path d="M15.5 8.5v-2a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></symbol>
+    <symbol id="i-link" viewBox="0 0 24 24"><path d="M10 14a3.5 3.5 0 0 0 5 0l3.5-3.5a3.5 3.5 0 0 0-5-5L12 7"/><path d="M14 10a3.5 3.5 0 0 0-5 0l-3.5 3.5a3.5 3.5 0 0 0 5 5L12 17"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 4.5v11M7 11l5 5 5-5M5 19.5h14"/></symbol>
+    <symbol id="i-external" viewBox="0 0 24 24"><path d="M13.5 4.5h6v6M19.5 4.5l-8 8M17.5 13.5v5a1 1 0 0 1-1 1h-11a1 1 0 0 1-1-1v-11a1 1 0 0 1 1-1h5"/></symbol>
+    <symbol id="i-filter" viewBox="0 0 24 24"><path d="M4.5 6.5h15M7.5 12h9M10.5 17.5h3"/></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5.8v12.4c0 .6.7 1 1.2.7l9.6-6.2c.5-.3.5-1 0-1.3L9.2 5.1C8.7 4.8 8 5.2 8 5.8Z"/></symbol>
+    <!-- the site's pages -->
+    <symbol id="i-plug" viewBox="0 0 24 24"><path d="M9 3.5v4M15 3.5v4M6.5 7.5h11v3a5.5 5.5 0 0 1-11 0Z"/><path d="M12 16v4.5"/></symbol>
+    <symbol id="i-tag" viewBox="0 0 24 24"><path d="M3.5 12.2V4.5a1 1 0 0 1 1-1h7.7l8.3 8.3a1.5 1.5 0 0 1 0 2.1l-6.6 6.6a1.5 1.5 0 0 1-2.1 0Z"/><circle cx="8" cy="8" r="1.4"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></symbol>
+    <symbol id="i-map" viewBox="0 0 24 24"><path d="m3.5 6.5 5.5-2 6 2 5.5-2v13l-5.5 2-6-2-5.5 2Z"/><path d="M9 4.5v13M15 6.5v13"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 2.8 19.5 5.5v6c0 4.6-3.1 8.4-7.5 9.7-4.4-1.3-7.5-5.1-7.5-9.7v-6L12 2.8Z"/><path d="m8.7 12 2.3 2.3 4.4-4.6"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><rect x="4.5" y="10.5" width="15" height="10" rx="2.5"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/></symbol>
+    <symbol id="i-key" viewBox="0 0 24 24"><circle cx="8" cy="15" r="4"/><path d="m11 12 8.5-8.5M16 7l2.5 2.5M14 9l2 2"/></symbol>
+    <symbol id="i-book" viewBox="0 0 24 24"><path d="M4.5 5.5a2 2 0 0 1 2-2h12v15h-12a2 2 0 0 0-2 2Z"/><path d="M4.5 20.5a2 2 0 0 1 2-2h12v2h-12a2 2 0 0 1-2-2"/></symbol>
+    <symbol id="i-code" viewBox="0 0 24 24"><path d="m8.5 7.5-5 4.5 5 4.5M15.5 7.5l5 4.5-5 4.5M13.5 5l-3 14"/></symbol>
+    <symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M9.6 9.5a2.5 2.5 0 0 1 4.8.9c0 1.6-2.4 2.1-2.4 3.6"/><circle cx="12" cy="17" r=".6"/></symbol>
+    <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8.5" r="3.5"/><path d="M2.5 19.5a6.5 6.5 0 0 1 13 0"/><path d="M15.5 5.2a3.5 3.5 0 0 1 0 6.6M17.5 13.6a6.5 6.5 0 0 1 4 5.9"/></symbol>
+    <symbol id="i-learn" viewBox="0 0 24 24"><path d="m2.5 9 9.5-4.5L21.5 9 12 13.5Z"/><path d="M6.5 11v4.5c0 1.5 2.5 3 5.5 3s5.5-1.5 5.5-3V11M21.5 9v5"/></symbol>
+    <symbol id="i-broadcast" viewBox="0 0 24 24"><circle cx="12" cy="12" r="2"/><path d="M8 8a5.6 5.6 0 0 0 0 8M16 8a5.6 5.6 0 0 1 0 8M5.2 5.2a9.6 9.6 0 0 0 0 13.6M18.8 5.2a9.6 9.6 0 0 1 0 13.6"/></symbol>
+    <symbol id="i-pen" viewBox="0 0 24 24"><path d="M4.5 19.5h4l10-10a2.8 2.8 0 0 0-4-4l-10 10Z"/><path d="m13 7 4 4"/></symbol>
+    <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 11v5.5"/><circle cx="12" cy="7.8" r=".6"/></symbol>
+    <symbol id="i-briefcase" viewBox="0 0 24 24"><rect x="3.5" y="7.5" width="17" height="12" rx="2"/><path d="M8.5 7.5v-2a1 1 0 0 1 1-1h5a1 1 0 0 1 1 1v2M3.5 12.5h17"/></symbol>
+    <symbol id="i-news" viewBox="0 0 24 24"><path d="M4.5 5.5h12v13a2 2 0 0 1-2 2h-8a2 2 0 0 1-2-2Z"/><path d="M16.5 9.5h3v9a2 2 0 0 1-2 2M7.5 9h6M7.5 12.5h6M7.5 16h4"/></symbol>
+    <symbol id="i-handshake" viewBox="0 0 24 24"><path d="m3 10 4-4 5 2 5-2 4 4-7 7.5a1.5 1.5 0 0 1-2.1 0Z"/><path d="m12 8-3 3a1.4 1.4 0 0 0 2 2l2-1.8 3 3"/></symbol>
+    <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3.5" y="5.5" width="17" height="13" rx="2"/><path d="m4 7 8 6 8-6"/></symbol>
+    <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="4" y="5.5" width="16" height="14.5" rx="2"/><path d="M4 10h16M8.5 3.5v4M15.5 3.5v4"/></symbol>
+    <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c2.4 2.3 3.6 5.1 3.6 8.5s-1.2 6.2-3.6 8.5c-2.4-2.3-3.6-5.1-3.6-8.5S9.6 5.8 12 3.5Z"/></symbol>
+    <symbol id="i-star" viewBox="0 0 24 24"><path d="m12 3.5 2.6 5.4 5.9.8-4.3 4.1 1 5.9-5.2-2.8-5.2 2.8 1-5.9-4.3-4.1 5.9-.8Z"/></symbol>
+    <symbol id="i-vote" viewBox="0 0 24 24"><path d="m6.5 11 5.5-5.5 5.5 5.5M12 5.5v13"/></symbol>
+    <symbol id="i-sitemap" viewBox="0 0 24 24"><rect x="9" y="3.5" width="6" height="4.5" rx="1"/><rect x="3.5" y="16" width="6" height="4.5" rx="1"/><rect x="14.5" y="16" width="6" height="4.5" rx="1"/><path d="M12 8v4M6.5 16v-2a2 2 0 0 1 2-2h7a2 2 0 0 1 2 2v2"/></symbol>
+    <symbol id="i-doc" viewBox="0 0 24 24"><path d="M6.5 3.5h8l4 4v13h-12Z"/><path d="M14.5 3.5v4h4M9 12h6M9 15.5h6"/></symbol>
+    <symbol id="i-cookie" viewBox="0 0 24 24"><path d="M20.4 12.6A8.5 8.5 0 1 1 11.4 3.6a3 3 0 0 0 4 3.6 3 3 0 0 0 5 5.4Z"/><circle cx="9" cy="10" r=".8"/><circle cx="14.5" cy="15" r=".8"/><circle cx="9.5" cy="15.5" r=".8"/></symbol>
+    <symbol id="i-scale" viewBox="0 0 24 24"><path d="M12 4v16M7.5 20h9M5 7.5h14M5 7.5l-2.5 6a2.8 2.8 0 0 0 5 0Zm14 0-2.5 6a2.8 2.8 0 0 0 5 0Z"/></symbol>
+    <symbol id="i-server" viewBox="0 0 24 24"><rect x="4" y="4.5" width="16" height="6.5" rx="1.5"/><rect x="4" y="13" width="16" height="6.5" rx="1.5"/><path d="M7.5 7.8h.01M7.5 16.2h.01"/></symbol>
+    <symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13 2.5 4.5 13.5H11l-1 8 8.5-11H12l1-8Z"/></symbol>
+    <symbol id="i-layers" viewBox="0 0 24 24"><path d="m12 3.5 9 4.75-9 4.75-9-4.75 9-4.75ZM3 12.25 12 17l9-4.75M3 16.25 12 21l9-4.75"/></symbol>
+  </defs>
+</svg>
+<a class="skip" href="#main">Skip to content</a>
+<header class="header">
+  <div class="header__inner container">
+    <a class="header__logo" href="./" aria-label="Crestora, home">
+      <span class="mark" aria-hidden="true"><span class="mark__sheen"></span></span>
+      <span class="wordmark" aria-hidden="true">Crestora</span>
+    </a>
+    <nav class="nav" aria-label="Main">
+      <div class="nav__item" data-menu>
+        <button class="nav__trigger" type="button" aria-expanded="false" aria-controls="menu-product">Product<svg aria-hidden="true"><use href="#i-chev-down"/></svg></button>
+        <div class="dropdown" id="menu-product" style="--cols:2">
+          <a href="index.html#features"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-layers"/></svg></span><strong>Features</strong><small>Six lanes from spark to launch</small></a>
+          <a href="integrations.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-plug"/></svg></span><strong>Integrations</strong><small>120+ tools merge into your lane</small></a>
+          <a href="changelog.html#v4-12"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-clock"/></svg></span><strong>Changelog</strong><small>v4.12 · Review Room hears you</small></a>
+          <a href="roadmap.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-map"/></svg></span><strong>Roadmap</strong><small>Vote on what comes next</small></a>
+          <a href="security.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-shield"/></svg></span><strong>Security</strong><small>Your unreleased work, protected</small></a>
+          <a href="pricing.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-tag"/></svg></span><strong>Pricing</strong><small>Free for three lanes</small></a>
+        </div>
+      </div>
+      <a class="nav__link" href="index.html#creators" data-roll>Creators</a>
+      <div class="nav__item" data-menu>
+        <button class="nav__trigger is-current" type="button" aria-expanded="false" aria-controls="menu-resources">Resources<svg aria-hidden="true"><use href="#i-chev-down"/></svg></button>
+        <div class="dropdown" id="menu-resources" style="--cols:2">
+          <a href="blog.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-pen"/></svg></span><strong>Field Notes</strong><small>Launch stories and craft notes</small></a>
+          <a href="docs.html" aria-current="page"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-book"/></svg></span><strong>Documentation</strong><small>Lanes, stages and every tool</small></a>
+          <a href="api.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-code"/></svg></span><strong>API Reference</strong><small>A small REST API for lanes</small></a>
+          <a href="help.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-help"/></svg></span><strong>Help Center</strong><small>Answers, fast</small></a>
+          <a href="community.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-users"/></svg></span><strong>Community</strong><small>Circles, swaps and Launch Night</small></a>
+          <a href="tutorials.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-learn"/></svg></span><strong>Tutorials</strong><small>Short lessons from people who ship</small></a>
+          <a href="webinars.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-broadcast"/></svg></span><strong>Webinars</strong><small>Next: Dec 10, live</small></a>
+        </div>
+      </div>
+      <div class="nav__item" data-menu>
+        <button class="nav__trigger" type="button" aria-expanded="false" aria-controls="menu-company">Company<svg aria-hidden="true"><use href="#i-chev-down"/></svg></button>
+        <div class="dropdown" id="menu-company" style="--cols:1">
+          <a href="about.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-info"/></svg></span><strong>About</strong><small>Why we build roads for makers</small></a>
+          <a href="careers.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-briefcase"/></svg></span><strong>Careers</strong><small>8 open roles, four hubs</small></a>
+          <a href="press.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-news"/></svg></span><strong>Press Kit</strong><small>Words, marks and facts</small></a>
+          <a href="partners.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-handshake"/></svg></span><strong>Partners</strong><small>Studios, toolmakers, teachers</small></a>
+          <a href="contact.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-mail"/></svg></span><strong>Contact</strong><small>Talk to a human</small></a>
+        </div>
+      </div>
+      <a class="nav__link" href="pricing.html" data-roll>Pricing</a>
+    </nav>
+    <div class="header__actions">
+      <a class="header__signin" href="start.html#signin" data-roll>Sign in</a>
+      <a class="btn btn--primary btn--sm" href="start.html" data-roll>Open a lane</a>
+      <button class="header__burger" type="button" aria-expanded="false" aria-controls="menu" aria-label="Open menu"><span></span></button>
+    </div>
+  </div>
+</header>
+<div class="menu" id="menu" role="dialog" aria-modal="true" aria-label="Menu">
+  <div class="menu__groups">
+    <div class="menu__group">
+      <h2>Product</h2>
+      <ul>
+        <li><a href="index.html#features">Features</a></li>
+        <li><a href="integrations.html">Integrations</a></li>
+        <li><a href="changelog.html">Changelog</a></li>
+        <li><a href="roadmap.html">Roadmap</a></li>
+        <li><a href="security.html">Security</a></li>
+        <li><a href="pricing.html">Pricing</a></li>
+      </ul>
+    </div>
+    <div class="menu__group">
+      <h2>Resources</h2>
+      <ul>
+        <li><a href="blog.html">Field Notes</a></li>
+        <li><a href="docs.html" aria-current="page">Documentation</a></li>
+        <li><a href="api.html">API Reference</a></li>
+        <li><a href="help.html">Help Center</a></li>
+        <li><a href="community.html">Community</a></li>
+        <li><a href="tutorials.html">Tutorials</a></li>
+        <li><a href="webinars.html">Webinars</a></li>
+      </ul>
+    </div>
+    <div class="menu__group">
+      <h2>Company</h2>
+      <ul>
+        <li><a href="about.html">About</a></li>
+        <li><a href="careers.html">Careers</a></li>
+        <li><a href="press.html">Press Kit</a></li>
+        <li><a href="partners.html">Partners</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+    <div class="menu__group">
+      <h2>More</h2>
+      <ul>
+        <li><a href="index.html#creators">Creators</a></li>
+        <li><a href="sitemap.html">Sitemap</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="streak" aria-hidden="true"></div>
+  <div class="menu__actions">
+    <a class="btn btn--primary" href="start.html">Open a lane</a>
+    <a class="btn" href="start.html#signin">Sign in</a>
+  </div>
+</div>
+
+<main id="main">
+  <!-- Documentation: one long page in three parts. On the left a sidebar of every heading with a live search (it folds
+       into a <details> "Browse docs" on narrow screens); in the middle the .prose read, every section an anchored
+       heading with a copy-link button (the generic toc module) and a "Was this helpful?" row; on the right the
+       "On this page" list with scrollspy (the generic toc module). Colour only where it means a stage. -->
+  <section class="page-hero docs-hero" aria-labelledby="docs-title">
+    <div class="page-hero__lanes" aria-hidden="true"></div>
+    <div class="container page-hero__inner">
+      <p class="eyebrow" data-reveal="fade">Documentation</p>
+      <h1 class="title-1" id="docs-title" data-split>Documentation.</h1>
+      <p class="lede" data-reveal data-delay="0.15">Everything about lanes, stages and the tools inside them.</p>
+      <div class="docs-hero__meta" data-reveal data-delay="0.25">
+        <a class="chip docs-hero__ver" href="changelog.html#v4-12"><span class="docs-hero__vdot" aria-hidden="true"></span>Updated for v4.12 · 20 Nov 2026</a>
+        <span class="docs-hero__read">12 sections on one page · about a 14-minute read</span>
+      </div>
+    </div>
+    <div class="container">
+      <ul class="docs-starts" aria-label="Good places to start" data-reveal-stagger>
+        <li>
+          <a class="docs-start" href="#getting-started" data-spotlight>
+            <span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-bolt"/></svg></span>
+            <span class="docs-start__t">Your first lane</span>
+            <span class="docs-start__d">Open one, fill it and invite your crew in four steps.</span>
+            <svg class="docs-start__go" aria-hidden="true"><use href="#i-arrow-down"/></svg>
+          </a>
+        </li>
+        <li>
+          <a class="docs-start" href="#stages" data-spotlight>
+            <span class="docs-start__rail" aria-hidden="true"><span class="stage-rail" data-n="6"><i></i><i></i><i></i><i></i><i></i><i></i></span></span>
+            <span class="docs-start__t">The six stages</span>
+            <span class="docs-start__d">From Spark to Afterglow, and the tool that opens at each.</span>
+            <svg class="docs-start__go" aria-hidden="true"><use href="#i-arrow-down"/></svg>
+          </a>
+        </li>
+        <li>
+          <a class="docs-start" href="#keyboard-shortcuts" data-spotlight>
+            <span class="icon-box docs-start__key" aria-hidden="true">⌘</span>
+            <span class="docs-start__t">Keyboard shortcuts</span>
+            <span class="docs-start__d">Capture, move, compare and approve without the mouse.</span>
+            <svg class="docs-start__go" aria-hidden="true"><use href="#i-arrow-down"/></svg>
+          </a>
+        </li>
+        <li>
+          <a class="docs-start" href="api.html" data-spotlight>
+            <span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-code"/></svg></span>
+            <span class="docs-start__t">API reference</span>
+            <span class="docs-start__d">Lanes, versions, reviews and launches over REST.</span>
+            <svg class="docs-start__go" aria-hidden="true"><use href="#i-arrow"/></svg>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="docs" aria-label="The documentation">
+    <div class="container docs__grid">
+
+      <!-- the sidebar: every heading, searchable; a <details> so it can fold away on narrow screens -->
+      <details class="docs-side" open data-docs-side>
+        <summary class="docs-side__sum">
+          <span class="docs-side__label"><svg class="icon" aria-hidden="true"><use href="#i-book"/></svg>Browse docs</span>
+          <span class="docs-side__now" data-docs-now aria-hidden="true">Getting started</span>
+          <svg class="docs-side__chev" aria-hidden="true"><use href="#i-chev-down"/></svg>
+        </summary>
+        <div class="docs-side__body" data-lenis-prevent>
+          <div class="docs-search" role="search">
+            <label class="sr" for="docs-q">Search the documentation’s headings</label>
+            <svg class="icon docs-search__icon" aria-hidden="true"><use href="#i-search"/></svg>
+            <input class="docs-search__input" id="docs-q" type="search" placeholder="Search headings" autocomplete="off" spellcheck="false" aria-controls="docs-nav" aria-describedby="docs-q-hint" />
+            <kbd class="docs-search__kbd" aria-hidden="true">/</kbd>
+            <span class="sr" id="docs-q-hint">Filters the list below as you type. Press Enter to go to the first match.</span>
+          </div>
+          <p class="docs-search__count" data-docs-count aria-live="polite"></p>
+          <p class="docs-search__empty" data-docs-empty hidden>Nothing here matches that. Try the <a href="help.html">Help Center</a>, which answers the questions people ask most.</p>
+
+          <nav class="docs-nav" id="docs-nav" aria-label="Documentation">
+            <div class="docs-nav__group">
+              <p class="docs-nav__label">Start here</p>
+              <ul>
+                <li class="docs-nav__item"><a class="docs-nav__link" href="#getting-started" data-k="first lane steps begin new account setup onboarding">Getting started</a></li>
+                <li class="docs-nav__item">
+                  <a class="docs-nav__link" href="#lanes" data-k="project lane">Lanes</a>
+                  <div class="docs-nav__subwrap"><ul class="docs-nav__sub">
+                    <li><a href="#stages" data-k="spark shape make review launch afterglow colours colors">Stages</a></li>
+                    <li><a href="#moving-a-lane" data-k="move forward back drag history">Moving a lane</a></li>
+                    <li><a href="#merging-lanes" data-k="merge combine join undo">Merging lanes</a></li>
+                  </ul></div>
+                </li>
+              </ul>
+            </div>
+            <div class="docs-nav__group">
+              <p class="docs-nav__label">The six tools</p>
+              <ul>
+                <li class="docs-nav__item" data-stage="spark">
+                  <a class="docs-nav__link" href="#sparkboard" data-k="ideas capture board spark">Sparkboard</a>
+                  <div class="docs-nav__subwrap"><ul class="docs-nav__sub">
+                    <li><a href="#capture-shortcuts" data-k="quick capture email phone browser voice memo offline ios">Capture shortcuts</a></li>
+                    <li><a href="#constellations" data-k="group cluster promote">Constellations</a></li>
+                  </ul></div>
+                </li>
+                <li class="docs-nav__item" data-stage="shape">
+                  <a class="docs-nav__link" href="#blueprints" data-k="plan brief shape one-page">Blueprints</a>
+                  <div class="docs-nav__subwrap"><ul class="docs-nav__sub">
+                    <li><a href="#templates" data-k="template film app music writing objects events">Templates</a></li>
+                    <li><a href="#milestones" data-k="dates calendar deadline schedule share link">Milestones</a></li>
+                  </ul></div>
+                </li>
+                <li class="docs-nav__item" data-stage="make">
+                  <a class="docs-nav__link" href="#workbench" data-k="files make upload">Workbench</a>
+                  <div class="docs-nav__subwrap"><ul class="docs-nav__sub">
+                    <li><a href="#versions" data-k="history upload pin label">Versions</a></li>
+                    <li><a href="#compare" data-k="diff side by side swipe waveform onion">Compare</a></li>
+                    <li><a href="#supported-files" data-k="formats video audio image pdf code 3d size limit">Supported files</a></li>
+                  </ul></div>
+                </li>
+                <li class="docs-nav__item" data-stage="review">
+                  <a class="docs-nav__link" href="#review-room" data-k="feedback notes review">Review Room</a>
+                  <div class="docs-nav__subwrap"><ul class="docs-nav__sub">
+                    <li><a href="#note-types" data-k="frame pixel pin waveform audio line comment">Note types</a></li>
+                    <li><a href="#review-links" data-k="share guest client password expire watermark portal">Review links</a></li>
+                    <li><a href="#approvals" data-k="approve sign-off audit trail">Approvals</a></li>
+                  </ul></div>
+                </li>
+                <li class="docs-nav__item" data-stage="launch">
+                  <a class="docs-nav__link" href="#countdown" data-k="launch release ship">Countdown</a>
+                  <div class="docs-nav__subwrap"><ul class="docs-nav__sub">
+                    <li><a href="#checklists" data-k="checklist tasks">Checklists</a></li>
+                    <li><a href="#channels" data-k="channel newsletter store social schedule publish">Channels</a></li>
+                    <li><a href="#launch-rooms" data-k="room live countdown chat">Launch rooms</a></li>
+                  </ul></div>
+                </li>
+                <li class="docs-nav__item" data-stage="afterglow">
+                  <a class="docs-nav__link" href="#afterglow" data-k="results analytics stats numbers">Afterglow</a>
+                  <div class="docs-nav__subwrap"><ul class="docs-nav__sub">
+                    <li><a href="#recaps" data-k="recap day 1 7 30 report email">Recaps</a></li>
+                    <li><a href="#metric-definitions" data-k="metrics reach views engagement sales listen-through">Metric definitions</a></li>
+                  </ul></div>
+                </li>
+              </ul>
+            </div>
+            <div class="docs-nav__group">
+              <p class="docs-nav__label">Working together</p>
+              <ul>
+                <li class="docs-nav__item">
+                  <a class="docs-nav__link" href="#crew-and-roles" data-k="team crew members invite">Crew &amp; roles</a>
+                  <div class="docs-nav__subwrap"><ul class="docs-nav__sub">
+                    <li><a href="#permissions" data-k="owner maker reviewer guest access role">Permissions</a></li>
+                  </ul></div>
+                </li>
+                <li class="docs-nav__item">
+                  <a class="docs-nav__link" href="#integrations" data-k="apps tools connect">Integrations</a>
+                  <div class="docs-nav__subwrap"><ul class="docs-nav__sub">
+                    <li><a href="#connecting" data-k="connect setup install">Connecting a tool</a></li>
+                    <li><a href="#integration-permissions" data-k="permissions scopes access disconnect privacy">What a tool can see</a></li>
+                  </ul></div>
+                </li>
+              </ul>
+            </div>
+            <div class="docs-nav__group">
+              <p class="docs-nav__label">Reference</p>
+              <ul>
+                <li class="docs-nav__item"><a class="docs-nav__link" href="#keyboard-shortcuts" data-k="keys hotkeys kbd keyboard">Keyboard shortcuts</a></li>
+                <li class="docs-nav__item">
+                  <a class="docs-nav__link" href="#import-and-export" data-k="migrate move data backup">Import &amp; export</a>
+                  <div class="docs-nav__subwrap"><ul class="docs-nav__sub">
+                    <li><a href="#importing" data-k="import csv folder migrate">Importing</a></li>
+                    <li><a href="#exporting" data-k="export download zip delete backup">Exporting</a></li>
+                  </ul></div>
+                </li>
+              </ul>
+            </div>
+          </nav>
+        </div>
+      </details>
+
+      <!-- the read -->
+      <article class="prose docs-body" aria-labelledby="docs-title">
+
+        <section class="docs-sec" aria-labelledby="getting-started">
+          <p class="docs-kicker"><span class="docs-kicker__mark" aria-hidden="true"></span>Start here</p>
+          <h2 id="getting-started" data-copy-link>Getting started</h2>
+          <p class="docs-lead">A lane is one project, from the first idea to the day it goes out. Opening your first one takes about two minutes, and the Solo plan gives you three active lanes for free.</p>
+          <ol class="docs-steps">
+            <li><span class="docs-steps__n" aria-hidden="true">01</span><p><strong>Open a lane.</strong> Choose Open a lane, give it a working title and say what you’re making: a film, an app, a drop, a podcast. The title can change later; the lane keeps its history either way.</p></li>
+            <li><span class="docs-steps__n" aria-hidden="true">02</span><p><strong>Drop in your sparks.</strong> Paste links, drag in sketches or forward an email to the board’s own address. Everything lands on the lane’s Sparkboard, at stage 01.</p></li>
+            <li><span class="docs-steps__n" aria-hidden="true">03</span><p><strong>Shape a one-page plan.</strong> Pick a Blueprint template, say what done looks like and set a launch day. Milestones fill in backwards from that date.</p></li>
+            <li><span class="docs-steps__n" aria-hidden="true">04</span><p><strong>Invite your crew.</strong> Add the people making it with you, and send a review link to anyone who only needs to leave notes. People with a review link never need an account.</p></li>
+          </ol>
+          <div class="docs-note" role="note">
+            <svg class="icon" aria-hidden="true"><use href="#i-info"/></svg>
+            <p><strong>Moving in from somewhere else?</strong> Bring folders, spreadsheets and past work with you. See <a href="#importing">Importing</a>.</p>
+          </div>
+          <div class="docs-helpful" data-helpful="getting-started" data-title="Getting started">
+            <span class="docs-helpful__q" id="hq-getting-started">Was this section helpful?<span class="sr"> Getting started</span></span>
+            <span class="docs-helpful__btns" role="group" aria-labelledby="hq-getting-started">
+              <button class="docs-helpful__btn" type="button" data-vote="yes" aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Yes</button>
+              <button class="docs-helpful__btn" type="button" data-vote="no" aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg>No</button>
+            </span>
+            <span class="docs-helpful__date">Updated <time datetime="2026-11-20">20 Nov 2026</time></span>
+          </div>
+        </section>
+
+        <section class="docs-sec" aria-labelledby="lanes">
+          <p class="docs-kicker"><span class="docs-kicker__mark" aria-hidden="true"></span>Start here</p>
+          <h2 id="lanes" data-copy-link>Lanes</h2>
+          <p class="docs-lead">Every project in Crestora rides one lane, and every lane moves through the same six stages. The stage decides which tool opens first and where the lane sits on your board, but nothing is locked away: files, notes and plans stay on the lane wherever it is.</p>
+
+          <h3 id="stages" data-copy-link>Stages</h3>
+          <ol class="docs-stages">
+            <li data-stage="spark"><span class="docs-stages__n">01</span><strong>Spark</strong><span>Sparkboard</span></li>
+            <li data-stage="shape"><span class="docs-stages__n">02</span><strong>Shape</strong><span>Blueprints</span></li>
+            <li data-stage="make"><span class="docs-stages__n">03</span><strong>Make</strong><span>Workbench</span></li>
+            <li data-stage="review"><span class="docs-stages__n">04</span><strong>Review</strong><span>Review Room</span></li>
+            <li data-stage="launch"><span class="docs-stages__n">05</span><strong>Launch</strong><span>Countdown</span></li>
+            <li data-stage="afterglow"><span class="docs-stages__n">06</span><strong>Afterglow</strong><span>Afterglow</span></li>
+          </ol>
+          <p>A colour always means its stage, here and in the app: a blue dot is still a spark, an amber one is waiting on feedback, a pink one has launched and is gathering its numbers. The full spectrum only ever means the whole flow.</p>
+
+          <h3 id="moving-a-lane" data-copy-link>Moving a lane</h3>
+          <p>Drag the lane’s marker along its track, or press <kbd>]</kbd> and <kbd>[</kbd> to step it forward and back. Moving is never blocked but for one rule: a lane can’t enter Launch while one of its versions is still waiting for approval, unless an Owner overrides it.</p>
+          <p>Every move goes into the lane’s history with who moved it and when, and your crew gets one quiet notification, not one per file.</p>
+
+          <h3 id="merging-lanes" data-copy-link>Merging lanes</h3>
+          <p>Two lanes that turn out to be one project can merge. Choose <strong>Merge into…</strong> from the lane menu and pick the lane that stays. Versions, notes and sparks move across with their original dates, and the merged lane keeps the later stage of the two.</p>
+          <div class="docs-note" role="note">
+            <svg class="icon" aria-hidden="true"><use href="#i-info"/></svg>
+            <p>A merge can be undone from the lane’s history for 30 days. Merging arrived in <a href="changelog.html#v4-10">v4.10</a>.</p>
+          </div>
+          <div class="docs-helpful" data-helpful="lanes" data-title="Lanes">
+            <span class="docs-helpful__q" id="hq-lanes">Was this section helpful?<span class="sr"> Lanes</span></span>
+            <span class="docs-helpful__btns" role="group" aria-labelledby="hq-lanes">
+              <button class="docs-helpful__btn" type="button" data-vote="yes" aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Yes</button>
+              <button class="docs-helpful__btn" type="button" data-vote="no" aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg>No</button>
+            </span>
+            <span class="docs-helpful__date">Updated <time datetime="2026-10-23">23 Oct 2026</time></span>
+          </div>
+        </section>
+
+        <section class="docs-sec" data-stage="spark" aria-labelledby="sparkboard">
+          <p class="docs-kicker"><span class="docs-kicker__dot" aria-hidden="true"></span>Stage 01 · Spark</p>
+          <h2 id="sparkboard" data-copy-link>Sparkboard</h2>
+          <p class="docs-lead">Sparkboard is where ideas land before they’re ready to be anything. Voice memos, screenshots, links and 2 a.m. sketches arrive on one board, and Crestora groups them so the good ones find each other.</p>
+
+          <h3 id="capture-shortcuts" data-copy-link>Capture shortcuts</h3>
+          <p>The fastest spark is the one you don’t have to open an app for. Capture works from wherever the idea finds you:</p>
+          <div class="docs-table" role="region" aria-label="Ways to capture a spark" tabindex="0">
+            <table>
+              <thead><tr><th scope="col">Where you are</th><th scope="col">How to capture</th></tr></thead>
+              <tbody>
+                <tr><th scope="row">At your desk</th><td><kbd>⌘</kbd> <kbd>⇧</kbd> <kbd>Space</kbd> opens Quick capture over any app (<kbd>Ctrl</kbd> <kbd>Shift</kbd> <kbd>Space</kbd> on Windows and Linux).</td></tr>
+                <tr><th scope="row">In a browser</th><td>The Crestora button in your browser’s toolbar, or right-click anything and choose Send to Sparkboard.</td></tr>
+                <tr><th scope="row">On your phone</th><td>Share to Crestora from any app, or press and hold the app icon to record a voice memo. Capture works offline on iOS and syncs when you’re back.</td></tr>
+                <tr><th scope="row">In your inbox</th><td>Forward anything to the board’s address, shown under Board settings, such as <code>nightbloom.k7@spark.crestora.example</code>.</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3 id="constellations" data-copy-link>Constellations</h3>
+          <p>Crestora reads what each spark is about and links it to sparks that share a subject, a palette or a reference. Linked sparks form a <strong>constellation</strong>, which you can name, pin or pull apart. Constellations are only ever suggestions: nothing is moved or deleted without you.</p>
+          <p>When one is ready, choose <strong>Promote to lane</strong>. Its sparks become the new lane’s starting board, and the lane opens at Shape.</p>
+          <div class="docs-note" role="note">
+            <svg class="icon" aria-hidden="true"><use href="#i-shield"/></svg>
+            <p>Grouping runs on Crestora’s own servers, and your sparks are never used to train models. More in <a href="security.html#your-work">Security</a>.</p>
+          </div>
+          <div class="docs-helpful" data-helpful="sparkboard" data-title="Sparkboard">
+            <span class="docs-helpful__q" id="hq-sparkboard">Was this section helpful?<span class="sr"> Sparkboard</span></span>
+            <span class="docs-helpful__btns" role="group" aria-labelledby="hq-sparkboard">
+              <button class="docs-helpful__btn" type="button" data-vote="yes" aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Yes</button>
+              <button class="docs-helpful__btn" type="button" data-vote="no" aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg>No</button>
+            </span>
+            <span class="docs-helpful__date">Updated <time datetime="2026-09-25">25 Sep 2026</time></span>
+          </div>
+        </section>
+
+        <section class="docs-sec" data-stage="shape" aria-labelledby="blueprints">
+          <p class="docs-kicker"><span class="docs-kicker__dot" aria-hidden="true"></span>Stage 02 · Shape</p>
+          <h2 id="blueprints" data-copy-link>Blueprints</h2>
+          <p class="docs-lead">A Blueprint is a one-page plan: what it is, who’s riding along, what done looks like and when the lights go green. It’s the page you send when someone asks what you’re working on.</p>
+
+          <h3 id="templates" data-copy-link>Templates</h3>
+          <p>Start from a blank page or from one of 40 templates written by working creators. Each template is a set of sections and a milestone pattern, so a short film starts with a shot list and a festival deadline, and an app starts with its scope and a beta date.</p>
+          <ul class="docs-counts" aria-label="Templates by kind of work">
+            <li><span class="docs-counts__n">9</span>Film &amp; animation</li>
+            <li><span class="docs-counts__n">8</span>Apps &amp; games</li>
+            <li><span class="docs-counts__n">7</span>Music &amp; audio</li>
+            <li><span class="docs-counts__n">6</span>Writing &amp; publishing</li>
+            <li><span class="docs-counts__n">6</span>Objects &amp; drops</li>
+            <li><span class="docs-counts__n">4</span>Events &amp; suppers</li>
+          </ul>
+
+          <h3 id="milestones" data-copy-link>Milestones</h3>
+          <p>Set a launch day and Blueprints works backwards: milestones land on your calendar with sensible gaps between them, skipping weekends if you ask it to. Drag one and the ones after it move along. Milestones sync both ways with calendars you’ve connected, such as <a href="integrations.html#dayplan">Dayplan</a>.</p>
+          <p>Share a Blueprint with one link. Anyone with the link can read it and comment; only your crew can edit it.</p>
+          <div class="docs-helpful" data-helpful="blueprints" data-title="Blueprints">
+            <span class="docs-helpful__q" id="hq-blueprints">Was this section helpful?<span class="sr"> Blueprints</span></span>
+            <span class="docs-helpful__btns" role="group" aria-labelledby="hq-blueprints">
+              <button class="docs-helpful__btn" type="button" data-vote="yes" aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Yes</button>
+              <button class="docs-helpful__btn" type="button" data-vote="no" aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg>No</button>
+            </span>
+            <span class="docs-helpful__date">Updated <time datetime="2026-09-11">11 Sep 2026</time></span>
+          </div>
+        </section>
+
+        <section class="docs-sec" data-stage="make" aria-labelledby="workbench">
+          <p class="docs-kicker"><span class="docs-kicker__dot" aria-hidden="true"></span>Stage 03 · Make</p>
+          <h2 id="workbench" data-copy-link>Workbench</h2>
+          <p class="docs-lead">Workbench is where the work itself lives. Drop in a render, a build or a mix and Crestora keeps every version on the lane, and tells you what changed and who changed it.</p>
+
+          <h3 id="versions" data-copy-link>Versions</h3>
+          <p>Each upload to the same file becomes its next version: v1, v2, v3 and on. Version history is unlimited on every plan and older versions are never thinned out; they simply count toward your storage. Give a version a name, such as “festival cut”, to pin it, and pinned versions show first in Review Room.</p>
+
+          <h3 id="compare" data-copy-link>Compare</h3>
+          <p>Pick any two versions and press <kbd>C</kbd>. Video and images open side by side with a swipe handle, audio lays both waveforms over each other, and documents and code show a line-by-line diff. A short summary at the top says what changed, such as “14 frames re-timed, grade adjusted”.</p>
+
+          <h3 id="supported-files" data-copy-link>Supported files</h3>
+          <div class="docs-table" role="region" aria-label="Supported file types" tabindex="0">
+            <table>
+              <thead><tr><th scope="col">Kind</th><th scope="col">Formats</th><th scope="col">Compared as</th></tr></thead>
+              <tbody>
+                <tr><th scope="row">Video</th><td><code>.mov</code> <code>.mp4</code> <code>.mxf</code> <code>.webm</code>, up to 8K</td><td>Side by side, swipe, frame diff</td></tr>
+                <tr><th scope="row">Audio</th><td><code>.wav</code> <code>.aiff</code> <code>.flac</code> <code>.mp3</code></td><td>Overlaid waveforms, A/B playback</td></tr>
+                <tr><th scope="row">Images &amp; design</th><td><code>.png</code> <code>.jpg</code> <code>.tiff</code> <code>.psd</code> <code>.svg</code></td><td>Swipe, onion skin, pixel diff</td></tr>
+                <tr><th scope="row">Documents</th><td><code>.pdf</code> <code>.docx</code> <code>.md</code> <code>.txt</code></td><td>Line-by-line redline</td></tr>
+                <tr><th scope="row">Code</th><td>Repositories, through <a href="integrations.html#gitloom">Gitloom</a></td><td>Commits and line diff</td></tr>
+                <tr><th scope="row">3D</th><td><code>.glb</code> <code>.usdz</code> <code>.obj</code></td><td>Viewer only, for now</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="docs-fine">Single files can be up to 50 GB on Studio and Crew, and 2 GB on Solo. Review for 3D files is <a href="roadmap.html#rm-c-review-3d">on the roadmap, under Now</a>.</p>
+          <div class="docs-helpful" data-helpful="workbench" data-title="Workbench">
+            <span class="docs-helpful__q" id="hq-workbench">Was this section helpful?<span class="sr"> Workbench</span></span>
+            <span class="docs-helpful__btns" role="group" aria-labelledby="hq-workbench">
+              <button class="docs-helpful__btn" type="button" data-vote="yes" aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Yes</button>
+              <button class="docs-helpful__btn" type="button" data-vote="no" aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg>No</button>
+            </span>
+            <span class="docs-helpful__date">Updated <time datetime="2026-08-28">28 Aug 2026</time></span>
+          </div>
+        </section>
+
+        <section class="docs-sec" data-stage="review" aria-labelledby="review-room">
+          <p class="docs-kicker"><span class="docs-kicker__dot" aria-hidden="true"></span>Stage 04 · Review</p>
+          <h2 id="review-room" data-copy-link>Review Room</h2>
+          <p class="docs-lead">Review Room is where feedback happens without stalling the work. Pin a note to a frame, a pixel, a second of audio or a line of code, and the person who needs to act on it sees exactly where.</p>
+
+          <h3 id="note-types" data-copy-link>Note types</h3>
+          <dl class="docs-defs">
+            <div><dt>Frame notes</dt><dd>On one frame or a range of frames in a video, with the timecode attached.</dd></div>
+            <div><dt>Pixel pins</dt><dd>A point or a drawn box on an image, a single frame or a PDF page.</dd></div>
+            <div><dt>Waveform notes</dt><dd>A moment or a stretch of audio, marked right on the waveform. New in <a href="changelog.html#v4-12">v4.12</a>.</dd></div>
+            <div><dt>Line notes</dt><dd>On a line, or a range of lines, in a document or a code diff.</dd></div>
+          </dl>
+          <p>Any note can be resolved, reopened or handed to someone as a task. Resolved notes fold away but stay on the version for good. Notes on video and audio come with Studio and Crew; images, documents and code can be reviewed on every plan.</p>
+
+          <h3 id="review-links" data-copy-link>Review links</h3>
+          <p>Send anyone a review link: they open it in a browser and leave notes with just their name, with no account and no seat to pay for. A link can expire on a date, ask for a password and stamp the reviewer’s name on what they see. Revoke any link in one click from the lane’s Share menu.</p>
+          <p>On Crew, client review portals gather all of one client’s links on a single page, with your logo on it.</p>
+
+          <h3 id="approvals" data-copy-link>Approvals</h3>
+          <p>When a version is right, the reviewer chooses <strong>Approve</strong>. The approval is written onto that exact version with the name and the time, so nobody has to dig through email later. On Crew, approvals keep a full audit trail and can ask for more than one person, say the director and the client.</p>
+          <p>Approved versions are what Countdown publishes, which is why a lane can’t move into Launch while a version is still waiting. Moving a lane on by itself after an approval is <a href="roadmap.html#rm-c-automations">on the roadmap, under Next</a>.</p>
+          <div class="docs-helpful" data-helpful="review-room" data-title="Review Room">
+            <span class="docs-helpful__q" id="hq-review-room">Was this section helpful?<span class="sr"> Review Room</span></span>
+            <span class="docs-helpful__btns" role="group" aria-labelledby="hq-review-room">
+              <button class="docs-helpful__btn" type="button" data-vote="yes" aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Yes</button>
+              <button class="docs-helpful__btn" type="button" data-vote="no" aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg>No</button>
+            </span>
+            <span class="docs-helpful__date">Updated <time datetime="2026-11-20">20 Nov 2026</time></span>
+          </div>
+        </section>
+
+        <section class="docs-sec" data-stage="launch" aria-labelledby="countdown">
+          <p class="docs-kicker"><span class="docs-kicker__dot" aria-hidden="true"></span>Stage 05 · Launch</p>
+          <h2 id="countdown" data-copy-link>Countdown</h2>
+          <p class="docs-lead">Countdown gets you from approved to out in the world on the day you said. It builds the launch checklist from your Blueprint, schedules every channel and opens a room where your crew watches it go live together.</p>
+
+          <h3 id="checklists" data-copy-link>Checklists</h3>
+          <p>The checklist fills itself from the lane: the approved versions to publish, the milestones still open, the channels you picked and the copy for your Share Page. Items tick themselves off as the work gets done. Add your own, give them to someone and give them a time, like “Post the trailer, 09:00”.</p>
+
+          <h3 id="channels" data-copy-link>Channels</h3>
+          <p>A channel is anywhere the work goes out: your Share Page, a newsletter, an online store, a social scheduler, a live stream, an app-store build, a podcast feed. Channels come from the tools you’ve connected, such as <a href="integrations.html#postbox">Postbox</a>, <a href="integrations.html#shopfront">Shopfront</a> and <a href="integrations.html#clipdeck">Clipdeck</a>. Each gets its own time and its own copy, and the whole schedule sits on one line, so you can see what goes out when.</p>
+          <p>Studio and Crew launch to up to 14 channels at once; Solo launches to one.</p>
+
+          <h3 id="launch-rooms" data-copy-link>Launch rooms</h3>
+          <p>A launch room opens an hour before the first channel goes out. It holds the countdown, the checklist, a live feed from every channel and a chat for the crew. When the last channel is live, the room closes and its numbers become the lane’s first Afterglow recap.</p>
+          <div class="docs-helpful" data-helpful="countdown" data-title="Countdown">
+            <span class="docs-helpful__q" id="hq-countdown">Was this section helpful?<span class="sr"> Countdown</span></span>
+            <span class="docs-helpful__btns" role="group" aria-labelledby="hq-countdown">
+              <button class="docs-helpful__btn" type="button" data-vote="yes" aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Yes</button>
+              <button class="docs-helpful__btn" type="button" data-vote="no" aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg>No</button>
+            </span>
+            <span class="docs-helpful__date">Updated <time datetime="2026-10-09">9 Oct 2026</time></span>
+          </div>
+        </section>
+
+        <section class="docs-sec" data-stage="afterglow" aria-labelledby="afterglow">
+          <p class="docs-kicker"><span class="docs-kicker__dot" aria-hidden="true"></span>Stage 06 · Afterglow</p>
+          <h2 id="afterglow" data-copy-link>Afterglow</h2>
+          <p class="docs-lead">Afterglow shows how it landed. Views, sales, replies and reviews from every channel come together in one recap, and the ideas the launch sparked go straight back to your Sparkboard.</p>
+
+          <h3 id="recaps" data-copy-link>Recaps</h3>
+          <p>Recaps arrive on day 1, day 7 and day 30 after launch, in the app and by email if you’d like them there too. Each one compares the lane with your own past launches, never with anyone else’s. Afterglow recaps come with Studio and Crew.</p>
+
+          <h3 id="metric-definitions" data-copy-link>Metric definitions</h3>
+          <dl class="docs-defs">
+            <div><dt>Reach</dt><dd>People who saw the work at least once, across every channel, counted once each where a channel can tell.</dd></div>
+            <div><dt>Views</dt><dd>Total plays, reads or page views, counted the way each channel counts them.</dd></div>
+            <div><dt>Engagement</dt><dd>Replies, comments, shares and saves, divided by reach.</dd></div>
+            <div><dt>Sales</dt><dd>Orders and revenue from connected stores, net of refunds, in the lane’s currency.</dd></div>
+            <div><dt>Listen-through</dt><dd>For audio and video: the share of plays that reached 90 % of the running time.</dd></div>
+            <div><dt>Sparks returned</dt><dd>New sparks that came out of the launch, from replies you saved or ideas noted in the room.</dd></div>
+          </dl>
+          <p class="docs-fine">Channels report at different speeds, so a recap’s numbers can still move for up to 48 hours.</p>
+          <div class="docs-helpful" data-helpful="afterglow" data-title="Afterglow">
+            <span class="docs-helpful__q" id="hq-afterglow">Was this section helpful?<span class="sr"> Afterglow</span></span>
+            <span class="docs-helpful__btns" role="group" aria-labelledby="hq-afterglow">
+              <button class="docs-helpful__btn" type="button" data-vote="yes" aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Yes</button>
+              <button class="docs-helpful__btn" type="button" data-vote="no" aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg>No</button>
+            </span>
+            <span class="docs-helpful__date">Updated <time datetime="2026-11-06">6 Nov 2026</time></span>
+          </div>
+        </section>
+
+        <section class="docs-sec" aria-labelledby="crew-and-roles">
+          <p class="docs-kicker"><span class="docs-kicker__mark" aria-hidden="true"></span>Working together</p>
+          <h2 id="crew-and-roles" data-copy-link>Crew &amp; roles</h2>
+          <p class="docs-lead">A crew is how lanes are shared on the Crew plan. Everyone on a lane has one of four roles, and each role sees what it needs and nothing more. Reviewers and guests are always free.</p>
+
+          <h3 id="permissions" data-copy-link>Permissions</h3>
+          <div class="docs-table docs-table--perms" role="region" aria-label="What each role can do" tabindex="0">
+            <table role="table">
+              <thead role="rowgroup"><tr role="row"><th scope="col" role="columnheader">What they can do</th><th scope="col" role="columnheader">Owner</th><th scope="col" role="columnheader">Maker</th><th scope="col" role="columnheader">Reviewer</th><th scope="col" role="columnheader">Guest</th></tr></thead>
+              <tbody role="rowgroup">
+                <tr role="row"><th scope="row" role="rowheader">See the lane, its files and its plan</th><td role="cell" data-label="Owner"><svg class="icon docs-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Yes</span></td><td role="cell" data-label="Maker"><svg class="icon docs-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Yes</span></td><td role="cell" data-label="Reviewer"><svg class="icon docs-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Yes</span></td><td role="cell" data-label="Guest"><span class="docs-part">Shared only</span></td></tr>
+                <tr role="row"><th scope="row" role="rowheader">Leave notes and pins</th><td role="cell" data-label="Owner"><svg class="icon docs-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Yes</span></td><td role="cell" data-label="Maker"><svg class="icon docs-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Yes</span></td><td role="cell" data-label="Reviewer"><svg class="icon docs-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Yes</span></td><td role="cell" data-label="Guest"><svg class="icon docs-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Yes</span></td></tr>
+                <tr role="row"><th scope="row" role="rowheader">Approve a version</th><td role="cell" data-label="Owner"><svg class="icon docs-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Yes</span></td><td role="cell" data-label="Maker"><svg class="icon docs-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Yes</span></td><td role="cell" data-label="Reviewer"><svg class="icon docs-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Yes</span></td><td role="cell" data-label="Guest"><span class="docs-no" aria-hidden="true"></span><span class="sr">No</span></td></tr>
+                <tr role="row"><th scope="row" role="rowheader">Upload versions, edit the Blueprint</th><td role="cell" data-label="Owner"><svg class="icon docs-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Yes</span></td><td role="cell" data-label="Maker"><svg class="icon docs-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Yes</span></td><td role="cell" data-label="Reviewer"><span class="docs-no" aria-hidden="true"></span><span class="sr">No</span></td><td role="cell" data-label="Guest"><span class="docs-no" aria-hidden="true"></span><span class="sr">No</span></td></tr>
+                <tr role="row"><th scope="row" role="rowheader">Move the lane between stages</th><td role="cell" data-label="Owner"><svg class="icon docs-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Yes</span></td><td role="cell" data-label="Maker"><svg class="icon docs-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Yes</span></td><td role="cell" data-label="Reviewer"><span class="docs-no" aria-hidden="true"></span><span class="sr">No</span></td><td role="cell" data-label="Guest"><span class="docs-no" aria-hidden="true"></span><span class="sr">No</span></td></tr>
+                <tr role="row"><th scope="row" role="rowheader">Schedule a launch, run the launch room</th><td role="cell" data-label="Owner"><svg class="icon docs-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Yes</span></td><td role="cell" data-label="Maker"><svg class="icon docs-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Yes</span></td><td role="cell" data-label="Reviewer"><span class="docs-no" aria-hidden="true"></span><span class="sr">No</span></td><td role="cell" data-label="Guest"><span class="docs-no" aria-hidden="true"></span><span class="sr">No</span></td></tr>
+                <tr role="row"><th scope="row" role="rowheader">Invite people and change roles</th><td role="cell" data-label="Owner"><svg class="icon docs-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Yes</span></td><td role="cell" data-label="Maker"><span class="docs-no" aria-hidden="true"></span><span class="sr">No</span></td><td role="cell" data-label="Reviewer"><span class="docs-no" aria-hidden="true"></span><span class="sr">No</span></td><td role="cell" data-label="Guest"><span class="docs-no" aria-hidden="true"></span><span class="sr">No</span></td></tr>
+                <tr role="row"><th scope="row" role="rowheader">Billing, export, deleting the lane</th><td role="cell" data-label="Owner"><svg class="icon docs-yes" aria-hidden="true"><use href="#i-check"/></svg><span class="sr">Yes</span></td><td role="cell" data-label="Maker"><span class="docs-no" aria-hidden="true"></span><span class="sr">No</span></td><td role="cell" data-label="Reviewer"><span class="docs-no" aria-hidden="true"></span><span class="sr">No</span></td><td role="cell" data-label="Guest"><span class="docs-no" aria-hidden="true"></span><span class="sr">No</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p><strong>Reviewers</strong> are crew members with an account who see the whole lane. <strong>Guests</strong> arrive through a review link and see only what’s been shared with them. Only an Owner can override the approval rule to move a lane into Launch.</p>
+          <div class="docs-helpful" data-helpful="crew-and-roles" data-title="Crew &amp; roles">
+            <span class="docs-helpful__q" id="hq-crew-and-roles">Was this section helpful?<span class="sr"> Crew &amp; roles</span></span>
+            <span class="docs-helpful__btns" role="group" aria-labelledby="hq-crew-and-roles">
+              <button class="docs-helpful__btn" type="button" data-vote="yes" aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Yes</button>
+              <button class="docs-helpful__btn" type="button" data-vote="no" aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg>No</button>
+            </span>
+            <span class="docs-helpful__date">Updated <time datetime="2026-10-02">2 Oct 2026</time></span>
+          </div>
+        </section>
+
+        <section class="docs-sec" aria-labelledby="integrations">
+          <p class="docs-kicker"><span class="docs-kicker__mark" aria-hidden="true"></span>Working together</p>
+          <h2 id="integrations" data-copy-link>Integrations</h2>
+          <p class="docs-lead">More than 120 tools connect to Crestora. Their work merges into your lane: renders, builds, mixes and orders arrive as versions and stats, not as another inbox. Browse them all in the <a href="integrations.html">integrations directory</a>.</p>
+
+          <h3 id="connecting" data-copy-link>Connecting a tool</h3>
+          <ol class="docs-steps docs-steps--compact">
+            <li><span class="docs-steps__n" aria-hidden="true">01</span><p>Open the lane, or go to Settings → Integrations to connect it for every lane.</p></li>
+            <li><span class="docs-steps__n" aria-hidden="true">02</span><p>Choose the tool and the stage its work should land in.</p></li>
+            <li><span class="docs-steps__n" aria-hidden="true">03</span><p>Sign in to the tool and approve what it asks for. It takes about 30 seconds.</p></li>
+          </ol>
+          <p>From then on, new work arrives on its own: an export from <a href="integrations.html#framewright">Framewright</a> becomes a new version in Workbench, and an order in Shopfront shows up in Afterglow.</p>
+
+          <h3 id="integration-permissions" data-copy-link>What a tool can see</h3>
+          <p>Each integration asks only for what it needs, and shows you the list before you connect: read access to one folder, say, or permission to post to one channel. A tool connected to one lane can’t see your others. Disconnect it any time from Settings → Integrations; the versions it already brought in stay on the lane.</p>
+          <p>Building something of your own? The <a href="api.html">API reference</a> covers lanes, versions, comments, launches and webhooks.</p>
+          <div class="docs-helpful" data-helpful="integrations" data-title="Integrations">
+            <span class="docs-helpful__q" id="hq-integrations">Was this section helpful?<span class="sr"> Integrations</span></span>
+            <span class="docs-helpful__btns" role="group" aria-labelledby="hq-integrations">
+              <button class="docs-helpful__btn" type="button" data-vote="yes" aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Yes</button>
+              <button class="docs-helpful__btn" type="button" data-vote="no" aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg>No</button>
+            </span>
+            <span class="docs-helpful__date">Updated <time datetime="2026-11-13">13 Nov 2026</time></span>
+          </div>
+        </section>
+
+        <section class="docs-sec" aria-labelledby="keyboard-shortcuts">
+          <p class="docs-kicker"><span class="docs-kicker__mark" aria-hidden="true"></span>Reference</p>
+          <h2 id="keyboard-shortcuts" data-copy-link>Keyboard shortcuts</h2>
+          <p class="docs-lead">Press <kbd>?</kbd> anywhere in Crestora to see these in the app. On Windows and Linux, use <kbd>Ctrl</kbd> wherever you see <kbd>⌘</kbd>.</p>
+          <div class="docs-table docs-table--keys" role="region" aria-label="Keyboard shortcuts" tabindex="0">
+            <table>
+              <thead><tr><th scope="col">Action</th><th scope="col">Mac</th><th scope="col">Windows &amp; Linux</th></tr></thead>
+              <tbody>
+                <tr class="docs-keys__group"><th scope="colgroup" colspan="3">Anywhere</th></tr>
+                <tr><th scope="row">Search everything</th><td><kbd>⌘</kbd> <kbd>K</kbd></td><td><kbd>Ctrl</kbd> <kbd>K</kbd></td></tr>
+                <tr><th scope="row">Quick capture a spark</th><td><kbd>⌘</kbd> <kbd>⇧</kbd> <kbd>Space</kbd></td><td><kbd>Ctrl</kbd> <kbd>Shift</kbd> <kbd>Space</kbd></td></tr>
+                <tr><th scope="row">Show every shortcut</th><td><kbd>?</kbd></td><td><kbd>?</kbd></td></tr>
+                <tr><th scope="row">Search these docs <span class="docs-try">Try it here</span></th><td><kbd>/</kbd></td><td><kbd>/</kbd></td></tr>
+                <tr class="docs-keys__group"><th scope="colgroup" colspan="3">On a lane</th></tr>
+                <tr><th scope="row">Move the lane a stage forward</th><td><kbd>]</kbd></td><td><kbd>]</kbd></td></tr>
+                <tr><th scope="row">Move the lane a stage back</th><td><kbd>[</kbd></td><td><kbd>[</kbd></td></tr>
+                <tr><th scope="row">Lane, Board or Calendar view</th><td><kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd></td><td><kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd></td></tr>
+                <tr><th scope="row">Upload a new version</th><td><kbd>⌘</kbd> <kbd>U</kbd></td><td><kbd>Ctrl</kbd> <kbd>U</kbd></td></tr>
+                <tr><th scope="row">Compare two versions</th><td><kbd>C</kbd></td><td><kbd>C</kbd></td></tr>
+                <tr class="docs-keys__group"><th scope="colgroup" colspan="3">In Review Room</th></tr>
+                <tr><th scope="row">Play or pause</th><td><kbd>Space</kbd></td><td><kbd>Space</kbd></td></tr>
+                <tr><th scope="row">Step one frame</th><td><kbd>←</kbd> <kbd>→</kbd></td><td><kbd>←</kbd> <kbd>→</kbd></td></tr>
+                <tr><th scope="row">Leave a note at the playhead</th><td><kbd>N</kbd></td><td><kbd>N</kbd></td></tr>
+                <tr><th scope="row">Resolve the selected note</th><td><kbd>E</kbd></td><td><kbd>E</kbd></td></tr>
+                <tr><th scope="row">Approve this version</th><td><kbd>⌘</kbd> <kbd>↩</kbd></td><td><kbd>Ctrl</kbd> <kbd>Enter</kbd></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="docs-helpful" data-helpful="keyboard-shortcuts" data-title="Keyboard shortcuts">
+            <span class="docs-helpful__q" id="hq-keyboard-shortcuts">Was this section helpful?<span class="sr"> Keyboard shortcuts</span></span>
+            <span class="docs-helpful__btns" role="group" aria-labelledby="hq-keyboard-shortcuts">
+              <button class="docs-helpful__btn" type="button" data-vote="yes" aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Yes</button>
+              <button class="docs-helpful__btn" type="button" data-vote="no" aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg>No</button>
+            </span>
+            <span class="docs-helpful__date">Updated <time datetime="2026-11-20">20 Nov 2026</time></span>
+          </div>
+        </section>
+
+        <section class="docs-sec" aria-labelledby="import-and-export">
+          <p class="docs-kicker"><span class="docs-kicker__mark" aria-hidden="true"></span>Reference</p>
+          <h2 id="import-and-export" data-copy-link>Import &amp; export</h2>
+          <p class="docs-lead">Your work is yours, so it comes in easily and leaves completely, on every plan.</p>
+
+          <h3 id="importing" data-copy-link>Importing</h3>
+          <p>Drop a folder on your lane list and each folder inside it becomes a lane, with its files as first versions. A CSV with one row per project brings in titles, stages, launch days and owners. Connected tools can bring their history too: Gitloom brings commits, Framewright brings past exports.</p>
+          <div class="docs-code" data-copy-scope>
+            <div class="docs-code__bar"><span class="docs-code__name">lanes.csv</span><button class="docs-code__copy" type="button" data-copy data-copy-toast="Sample CSV copied" aria-label="Copy the sample CSV"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg></button></div>
+            <pre tabindex="0" data-lenis-prevent><code data-copy-source>title,stage,launch_on,owner
+Night Bloom,afterglow,2026-10-31,amara@nightbloom.example
+Tidepool 1.1,review,2026-12-10,theo@tidepool.example
+Small Hours ep. 49,make,2026-12-04,lena@smallhours.example</code></pre>
+          </div>
+          <p>Stages are written in lower case: <code>spark</code>, <code>shape</code>, <code>make</code>, <code>review</code>, <code>launch</code> or <code>afterglow</code>.</p>
+
+          <h3 id="exporting" data-copy-link>Exporting</h3>
+          <p>Export one lane or everything from Settings → Export, at any time, with no ticket and no fee. You get a .zip in open formats: every file and version as you uploaded it, notes as JSON and CSV, Blueprints as Markdown and recaps as CSV.</p>
+          <div class="docs-code">
+            <div class="docs-code__bar"><span class="docs-code__name">Inside the .zip</span></div>
+            <pre tabindex="0" data-lenis-prevent><code>tidepool-1-1-export.zip
+├── lane.json          <span class="docs-code__c">title, stages, dates, crew</span>
+├── blueprint.md
+├── versions/
+│   ├── tidepool-ios-v12.ipa
+│   └── release-notes-v4.md
+├── notes.csv          <span class="docs-code__c">every note, pin and approval</span>
+└── recaps/
+    └── day-30.csv</code></pre>
+          </div>
+          <p>Deleting a lane takes it out of our live systems within 24 hours and out of our backups within 30 days, so export first if you might want it back.</p>
+          <div class="docs-helpful" data-helpful="import-and-export" data-title="Import &amp; export">
+            <span class="docs-helpful__q" id="hq-import-and-export">Was this section helpful?<span class="sr"> Import &amp; export</span></span>
+            <span class="docs-helpful__btns" role="group" aria-labelledby="hq-import-and-export">
+              <button class="docs-helpful__btn" type="button" data-vote="yes" aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Yes</button>
+              <button class="docs-helpful__btn" type="button" data-vote="no" aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg>No</button>
+            </span>
+            <span class="docs-helpful__date">Updated <time datetime="2026-07-30">30 Jul 2026</time></span>
+          </div>
+        </section>
+
+        <div class="docs-end" data-spotlight>
+          <span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-help"/></svg></span>
+          <div class="docs-end__text">
+            <p class="docs-end__t">Didn’t find it here?</p>
+            <p>The Help Center answers the questions people ask most, and a human replies to everything else within a working day.</p>
+          </div>
+          <div class="btn-row docs-end__btns">
+            <a class="btn" href="help.html" data-roll>Help Center</a>
+            <a class="btn btn--primary" href="contact.html?topic=support" data-roll>Write to support</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- on this page: the generic toc gives it scrollspy -->
+      <div class="docs-rail">
+        <nav class="toc docs-toc" aria-label="On this page">
+          <p class="toc__title">On this page</p>
+          <a href="#getting-started">Getting started</a>
+          <a href="#lanes">Lanes</a>
+          <a href="#sparkboard">Sparkboard</a>
+          <a href="#blueprints">Blueprints</a>
+          <a href="#workbench">Workbench</a>
+          <a href="#review-room">Review Room</a>
+          <a href="#countdown">Countdown</a>
+          <a href="#afterglow">Afterglow</a>
+          <a href="#crew-and-roles">Crew &amp; roles</a>
+          <a href="#integrations">Integrations</a>
+          <a href="#keyboard-shortcuts">Keyboard shortcuts</a>
+          <a href="#import-and-export">Import &amp; export</a>
+        </nav>
+        <div class="docs-rail__more">
+          <a class="link-arrow" href="api.html" data-roll>API reference <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+          <a class="link-arrow docs-rail__up" href="#main" data-roll>Back to top <svg aria-hidden="true"><use href="#i-arrow-down"/></svg></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- The compact call to action that hands every page over to the footer. -->
+<section class="cta" aria-labelledby="cta-title">
+  <div class="cta__glow" aria-hidden="true"></div>
+  <div class="container cta__inner">
+    <p class="eyebrow">Your turn</p>
+    <h2 class="title-1" id="cta-title" data-split>Your lane is <span class="ink-spectrum">open</span>.</h2>
+    <p class="lede">Bring one idea. Crestora brings the road.</p>
+    <div class="btn-row">
+      <a class="btn btn--primary btn--lg" href="start.html" data-roll>Open your first lane</a>
+      <a class="btn btn--lg" href="pricing.html" data-roll>See plans</a>
+    </div>
+    <p class="small">Free for 3 lanes · No card · Export everything, always.</p>
+  </div>
+</section>
+</main>
+
+<footer class="footer" id="footer">
+  <!-- The night the footer sits in: stars, the light, the car and its dust, drawn in WebGL behind the type. -->
+  <canvas class="scene" aria-hidden="true"></canvas>
+  <div class="poster" aria-hidden="true"></div>
+  <div class="stage">
+    <div class="brand">
+      <a class="logo" href="./#top" aria-label="Crestora, home">
+        <span class="mark" aria-hidden="true"><span class="mark__sheen"></span></span>
+        <span class="wordmark" aria-hidden="true">Crestora</span>
+      </a>
+      <p class="tagline"><span class="line">Join thousands of creators, builders and dreamers</span> <span class="line">already using Crestora to simplify their workflow.</span></p>
+      <ul class="social" aria-label="Crestora elsewhere">
+        <li><a href="community.html#elsewhere" data-net="X" aria-label="Crestora on X (fictional)">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path class="o" d="M4.6 4.3h4.1l10.7 15.4h-4.1z"/><path d="M18.9 4.3 13.2 10.8M10.7 13.4 5.1 19.7"/></svg>
+        </a></li>
+        <li><a href="community.html#elsewhere" data-net="Instagram" aria-label="Crestora on Instagram (fictional)">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="4.6"/><circle cx="12" cy="12" r="3.7"/><circle class="f" cx="16.5" cy="7.5" r="1"/></svg>
+        </a></li>
+        <li><a href="community.html#elsewhere" data-net="LinkedIn" aria-label="Crestora on LinkedIn (fictional)">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><g class="f"><rect x="4.4" y="9.4" width="3.3" height="10.3" rx=".3"/><circle cx="6.05" cy="5.9" r="1.95"/><path d="M10.1 9.4h3.15v1.45c.55-1.02 1.83-1.72 3.33-1.72 2.85 0 3.62 1.78 3.62 4.48v6.09h-3.3v-5.4c0-1.33-.33-2.27-1.58-2.27-1.3 0-1.92.95-1.92 2.4v5.27h-3.3z"/></g></svg>
+        </a></li>
+        <li><a href="community.html#elsewhere" data-net="YouTube" aria-label="Crestora on YouTube (fictional)">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path class="f" fill-rule="evenodd" d="M6.2 6.1h11.6a3.6 3.6 0 0 1 3.6 3.6v4.6a3.6 3.6 0 0 1-3.6 3.6H6.2a3.6 3.6 0 0 1-3.6-3.6V9.7a3.6 3.6 0 0 1 3.6-3.6Zm4 3.05v5.7L15 12z"/></svg>
+        </a></li>
+      </ul>
+    </div>
+
+    <div class="cols">
+      <nav class="col" aria-labelledby="col-product">
+        <h2 id="col-product">Product</h2>
+        <ul>
+          <li><a href="index.html#features">Features</a></li>
+          <li><a href="integrations.html">Integrations</a></li>
+          <li><a href="pricing.html">Pricing</a></li>
+          <li><a href="changelog.html">Changelog</a></li>
+          <li><a href="roadmap.html">Roadmap</a></li>
+          <li><a href="security.html">Security</a></li>
+        </ul>
+      </nav>
+      <nav class="col" aria-labelledby="col-company">
+        <h2 id="col-company">Company</h2>
+        <ul>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="careers.html">Careers</a></li>
+          <li><a href="press.html">Press Kit</a></li>
+          <li><a href="partners.html">Partners</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </nav>
+      <nav class="col" aria-labelledby="col-resources">
+        <h2 id="col-resources">Resources</h2>
+        <ul>
+          <li><a href="blog.html">Blogs</a></li>
+          <li><a href="docs.html" aria-current="page">Documentation</a></li>
+          <li><a href="api.html">API Reference</a></li>
+          <li><a href="help.html">Help Center</a></li>
+          <li><a href="community.html">Community</a></li>
+          <li><a href="tutorials.html">Tutorials</a></li>
+          <li><a href="webinars.html">Webinars</a></li>
+        </ul>
+      </nav>
+      <nav class="col" aria-labelledby="col-legal">
+        <h2 id="col-legal">Legal</h2>
+        <ul>
+          <li><a href="privacy.html">Privacy Policy</a></li>
+          <li><a href="terms.html">Terms of Service</a></li>
+          <li><a href="cookies.html">Cookie Policy</a></li>
+          <li><a href="compliance.html">Compliance</a></li>
+          <li><a href="sitemap.html">Sitemap</a></li>
+        </ul>
+      </nav>
+    </div>
+
+    <div class="rule" aria-hidden="true"><span class="rule__glint"></span></div>
+
+    <div class="base">
+      <p class="copy">© <span class="year">2026</span> Crestora. All rights reserved.</p>
+      <p class="love"><button class="heart" type="button" aria-label="Send some love"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19.6S4.4 15.1 4.4 9.6A4.2 4.2 0 0 1 12 7.2a4.2 4.2 0 0 1 7.6 2.4c0 5.5-7.6 10-7.6 10Z"/></svg></button><span>Made with love by Pranav</span></p>
+    </div>
+
+    <!-- the road: where the car is; holding it down puts your foot down -->
+    <div class="road" aria-hidden="true"></div>
+  </div>
+
+  <!-- What the car does when it is held: shown next to the pointer over the road. -->
+  <p class="hint" aria-hidden="true"><span class="hint__key">Hold</span><span class="hint__text">to accelerate</span></p>
+</footer>
+</body>
+</html>

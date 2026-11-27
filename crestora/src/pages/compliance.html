@@ -1,0 +1,274 @@
+<!--page
+title: Compliance — Crestora
+description: The frameworks Crestora follows and the paperwork your legal team will ask for: GDPR, CCPA, SOC 2 Type II, ISO/IEC 27001, the DPA, subprocessors and data residency.
+modules: toc copy forms
+nav: legal
+-->
+<main id="main">
+  <!-- Compliance: the legal template (67-legal.css). A status table of frameworks, the DPA at a glance, the
+       subprocessors (#subprocessors, named by role), data residency for Label, the paperwork we send on request, the
+       subprocessor list's own changelog with a subscribe form (generic forms: validates, toasts, sends nothing), and
+       the accessibility statement. Tables stack into cards on a phone. Sample text for a fictional company. -->
+  <section class="page-hero legal-hero" aria-labelledby="legal-title">
+    <div class="page-hero__lanes" aria-hidden="true"></div>
+    <div class="container page-hero__inner">
+      <p class="eyebrow" data-reveal="fade">Legal</p>
+      <h1 class="title-1" id="legal-title" data-split>Compliance.</h1>
+      <p class="lede" data-reveal data-delay="0.12">The frameworks we follow and the paperwork your legal team will ask for.</p>
+      <ul class="legal-hero__meta" data-reveal="fade" data-delay="0.2">
+        <li>Last updated&nbsp;<time datetime="2026-11-01">1 November 2026</time></li>
+        <li><strong>6</strong>&nbsp;frameworks</li>
+        <li><strong>6</strong>&nbsp;subprocessors</li>
+        <li><a class="link-arrow" href="#notify" data-roll>Get notified of changes</a></li>
+      </ul>
+      <p class="fiction" data-reveal="fade" data-delay="0.25">Crestora is a fictional company; figures are illustrative. This page is sample text.</p>
+    </div>
+    <div class="container">
+      <nav class="legal-nav" aria-label="Legal documents">
+        <ul class="legal-nav__list">
+          <li><a href="{{ROOT}}privacy.html"><svg class="icon" aria-hidden="true"><use href="#i-lock"/></svg>Privacy policy</a></li>
+          <li><a href="{{ROOT}}terms.html"><svg class="icon" aria-hidden="true"><use href="#i-scale"/></svg>Terms of service</a></li>
+          <li><a href="{{ROOT}}cookies.html"><svg class="icon" aria-hidden="true"><use href="#i-cookie"/></svg>Cookie policy</a></li>
+          <li><a href="{{ROOT}}compliance.html" aria-current="page"><svg class="icon" aria-hidden="true"><use href="#i-shield"/></svg>Compliance</a></li>
+          <li><a href="{{ROOT}}sitemap.html"><svg class="icon" aria-hidden="true"><use href="#i-sitemap"/></svg>Sitemap</a></li>
+        </ul>
+      </nav>
+    </div>
+  </section>
+
+  <section class="legal-body" aria-label="Compliance">
+    <div class="container with-toc legal-layout">
+      <nav class="toc legal-toc" aria-label="On this page">
+        <p class="toc__title">On this page</p>
+        <a href="#short-version">The short version</a>
+        <a href="#frameworks" data-n="01">Frameworks</a>
+        <a href="#dpa" data-n="02">Data Processing Agreement</a>
+        <a href="#subprocessors" data-n="03">Subprocessors</a>
+        <a href="#residency" data-n="04">Data residency</a>
+        <a href="#documents" data-n="05">Paperwork on request</a>
+        <a href="#changes" data-n="06">Subprocessor changes</a>
+        <a href="#accessibility" data-n="07">Accessibility</a>
+        <a href="#contact" data-n="08">Contact</a>
+        <div class="legal-toc__help">
+          <strong>Legal team asking?</strong>
+          <span class="legal-mail"><a href="mailto:legal@crestora.example">legal@crestora.example</a><button class="legal-copy" type="button" data-copy="legal@crestora.example" data-copy-toast="legal@crestora.example copied" aria-label="Copy legal@crestora.example"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg></button></span>
+          <span>Documents within two working days, usually sooner.</span>
+        </div>
+      </nav>
+
+      <div class="legal-doc">
+        <details class="legal-jump">
+          <summary>On this page <span>8 sections</span><svg class="icon" aria-hidden="true"><use href="#i-chev-down"/></svg></summary>
+          <nav class="toc" aria-label="On this page">
+            <a href="#short-version">The short version</a>
+            <a href="#frameworks" data-n="01">Frameworks</a>
+            <a href="#dpa" data-n="02">Data Processing Agreement</a>
+            <a href="#subprocessors" data-n="03">Subprocessors</a>
+            <a href="#residency" data-n="04">Data residency</a>
+            <a href="#documents" data-n="05">Paperwork on request</a>
+            <a href="#changes" data-n="06">Subprocessor changes</a>
+            <a href="#accessibility" data-n="07">Accessibility</a>
+            <a href="#contact" data-n="08">Contact</a>
+          </nav>
+        </details>
+
+        <section class="legal-short" aria-labelledby="short-version" data-reveal>
+          <div class="legal-short__head">
+            <h2 class="legal-short__title" id="short-version">The short version</h2>
+            <p>What a security review usually wants to know, in six lines.</p>
+          </div>
+          <ul class="legal-short__list">
+            <li><span class="lane-chip" data-stage="spark">In place</span><p><strong>GDPR, UK GDPR and CCPA/CPRA,</strong> with a Data Processing Agreement already built into every plan.</p></li>
+            <li><span class="lane-chip" data-stage="shape">Audited</span><p><strong>A SOC 2 Type II report</strong> covering a full year of controls, shared under NDA in two working days.</p></li>
+            <li><span class="lane-chip" data-stage="make">Certified</span><p><strong>ISO/IEC 27001:2022</strong> for the whole company: people, offices and code, not just a data centre.</p></li>
+            <li><span class="lane-chip" data-stage="review">Listed</span><p><strong>Six subprocessors,</strong> named below, with 30 days’ notice and a right to object before anything changes.</p></li>
+            <li><span class="lane-chip" data-stage="launch">Your region</span><p><strong>Label workspaces stay in the EU or the US,</strong> backups and support access included.</p></li>
+            <li><span class="lane-chip" data-stage="afterglow">Accessible</span><p><strong>WCAG 2.2 AA is our bar</strong> for the product and this site, and we publish where we still fall short.</p></li>
+          </ul>
+        </section>
+
+        <section class="legal-sec" aria-labelledby="frameworks">
+          <h2 class="legal-sec__title" id="frameworks" data-copy-link>Frameworks</h2>
+          <p class="legal-gist"><span class="legal-gist__label">In short</span>Five frameworks in place and audited, and one accessibility standard we hold ourselves to.</p>
+          <div class="prose legal-sec__body">
+            <p>Where each framework stands today, and what we can show you to prove it.</p>
+            <div class="legal-table legal-wide">
+              <table>
+                <thead><tr><th scope="col">Framework</th><th scope="col">Covers</th><th scope="col">Status</th><th scope="col">Evidence</th></tr></thead>
+                <tbody>
+                  <tr><td>GDPR</td><td data-label="Covers">Personal data of people in the EU and EEA</td><td data-label="Status"><span class="legal-state"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>In place</span></td><td data-label="Evidence"><a href="#dpa">DPA</a> with Standard Contractual Clauses</td></tr>
+                  <tr><td>UK GDPR</td><td data-label="Covers">People in the United Kingdom</td><td data-label="Status"><span class="legal-state"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>In place</span></td><td data-label="Evidence">UK Addendum to the DPA</td></tr>
+                  <tr><td>CCPA / CPRA</td><td data-label="Covers">California residents</td><td data-label="Status"><span class="legal-state"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>In place</span></td><td data-label="Evidence">Service-provider terms in the DPA. We don’t sell or share personal information.</td></tr>
+                  <tr><td>SOC 2 Type II</td><td data-label="Covers">Security, availability and confidentiality</td><td data-label="Status"><span class="legal-state"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Attested</span><small>1 Jul 2025 – 30 Jun 2026</small></td><td data-label="Evidence">Report <a href="#documents">under NDA</a></td></tr>
+                  <tr><td>ISO/IEC 27001</td><td data-label="Covers">Our information security management system, company-wide</td><td data-label="Status"><span class="legal-state"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Certified</span><small>2022 edition, renewed Mar 2026</small></td><td data-label="Evidence">Certificate <a href="#documents">on request</a></td></tr>
+                  <tr><td>WCAG 2.2 AA</td><td data-label="Covers">The Crestora apps and this website</td><td data-label="Status"><span class="legal-state legal-state--target">Product target</span></td><td data-label="Evidence"><a href="#accessibility">Accessibility statement</a></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <section class="legal-sec" aria-labelledby="dpa">
+          <h2 class="legal-sec__title" id="dpa" data-copy-link>Data Processing Agreement</h2>
+          <p class="legal-gist"><span class="legal-gist__label">In short</span>It already applies to every plan. Ask for a countersigned copy and you’ll have one in two working days.</p>
+          <div class="prose legal-sec__body">
+            <p>Our Data Processing Agreement (DPA) is part of the <a href="{{ROOT}}terms.html">Terms of service</a>, so it covers you from the moment you open a lane, on every plan, free included. You don’t need to sign anything for it to apply. If your legal team wants a countersigned copy for its files, request one and we’ll send it for e-signature.</p>
+            <dl class="legal-terms">
+              <div><dt>Roles</dt><dd><strong>We’re your processor</strong>You control the personal data in your lanes; we process it only on your documented instructions.</dd></div>
+              <div><dt>Transfers</dt><dd><strong>SCCs + UK Addendum</strong>Modules 2 and 3 of the EU Standard Contractual Clauses, with the UK Addendum attached.</dd></div>
+              <div><dt>Breach notice</dt><dd><strong>Within 48 hours</strong>Of confirming a personal data breach that affects your workspace, with what we know and what we’re doing.</dd></div>
+              <div><dt>Subprocessors</dt><dd><strong>30 days’ notice</strong>Before a new one starts, with a right to object. If we can’t resolve it, you can leave with a pro rata refund.</dd></div>
+              <div><dt>Audits</dt><dd><strong>Once a year</strong>Our SOC 2 report answers most questions. On Crew and Label you can audit us yearly, with 30 days’ notice.</dd></div>
+              <div><dt>Deletion</dt><dd><strong>Within 30 days</strong>Of your contract ending, from live systems and backups, with a deletion certificate if you ask.</dd></div>
+            </dl>
+            <div class="legal-actions">
+              <a class="btn btn--primary" href="{{ROOT}}contact.html?topic=legal" data-roll>Request the DPA</a>
+              <p class="small">Countersigned copies within two working days.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="legal-sec" aria-labelledby="subprocessors">
+          <h2 class="legal-sec__title" id="subprocessors" data-copy-link>Subprocessors</h2>
+          <p class="legal-gist"><span class="legal-gist__label">In short</span>Six companies help us run Crestora. Each is bound by terms at least as strict as ours, and none of them can sell or mine your data.</p>
+          <div class="prose legal-sec__body">
+            <p>These are the companies that process personal data on our behalf. We name them by role on this page; their legal names and addresses are in Annex III of the DPA, sent with every countersigned copy.</p>
+            <div class="legal-table legal-wide">
+              <table>
+                <thead><tr><th scope="col">Subprocessor</th><th scope="col">Purpose</th><th scope="col">Personal data</th><th scope="col">Region</th></tr></thead>
+                <tbody>
+                  <tr><td>Cloud infrastructure, EU</td><td data-label="Purpose">Hosting, storage and backups for EU workspaces</td><td data-label="Personal data">Everything in an EU workspace</td><td data-label="Region">Ireland, Germany</td></tr>
+                  <tr><td>Cloud infrastructure, US</td><td data-label="Purpose">Hosting, storage and backups for US workspaces</td><td data-label="Personal data">Everything in a US workspace</td><td data-label="Region">Oregon, Virginia</td></tr>
+                  <tr><td>Email delivery</td><td data-label="Purpose">Sign-in links, review invitations and service emails</td><td data-label="Personal data">Name, email address, email content</td><td data-label="Region">EU and US, matching the workspace</td></tr>
+                  <tr><td>Payments</td><td data-label="Purpose">Card payments, invoices and sales tax</td><td data-label="Personal data">Billing details. Full card numbers never reach us.</td><td data-label="Region">EU and US</td></tr>
+                  <tr><td>Error monitoring</td><td data-label="Purpose">Crash and error reports, so we can fix bugs fast</td><td data-label="Personal data">Device data, IP address, account ID</td><td data-label="Region">EU</td></tr>
+                  <tr><td>Support tooling</td><td data-label="Purpose">Our help desk and the chat inside the app</td><td data-label="Personal data">Name, email, conversation history</td><td data-label="Region">EU</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <section class="legal-sec" aria-labelledby="residency">
+          <h2 class="legal-sec__title" id="residency" data-copy-link>Data residency</h2>
+          <p class="legal-gist"><span class="legal-gist__label">In short</span>Every workspace lives in one region. On Label, you pin it there, and everything stays.</p>
+          <div class="prose legal-sec__body">
+            <p>Each workspace is created in one region and stays there. On the Label plan you can pin a workspace to the EU or the US, and then everything it holds stays in that region: files and versions, notes and approvals, search indexes, logs and backups.</p>
+            <div class="legal-regions">
+              <div class="legal-region">
+                <span class="legal-region__lanes" aria-hidden="true"></span>
+                <span class="legal-region__code">EU</span>
+                <p><strong>Ireland and Germany</strong>Primary storage in Ireland, encrypted backups in Germany. The default for Europe, Africa and the Middle East.</p>
+              </div>
+              <div class="legal-region">
+                <span class="legal-region__lanes" aria-hidden="true"></span>
+                <span class="legal-region__code">US</span>
+                <p><strong>Oregon and Virginia</strong>Primary storage in Oregon, encrypted backups in Virginia. The default for the Americas and Asia-Pacific.</p>
+              </div>
+            </div>
+            <p>Support access to a pinned workspace is limited to named staff, needs your approval for each session, and is logged action by action. Changing region later is a guided migration, which takes about a day for each terabyte.</p>
+          </div>
+        </section>
+
+        <section class="legal-sec" aria-labelledby="documents">
+          <h2 class="legal-sec__title" id="documents" data-copy-link>Paperwork on request</h2>
+          <p class="legal-gist"><span class="legal-gist__label">In short</span>Everything a vendor review asks for, sent by a person, usually the same day.</p>
+          <div class="prose legal-sec__body">
+            <p>Ask for any of these and a person on our legal team sends it, with an NDA first where one is noted.</p>
+            <ul class="legal-docs">
+              <li><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-shield"/></svg></span><strong>SOC 2 Type II report</strong><span>1 Jul 2025 – 30 Jun 2026, by an independent auditor</span><em>Under NDA</em></li>
+              <li><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-doc"/></svg></span><strong>ISO/IEC 27001 certificate</strong><span>With our statement of applicability</span><em>Same day</em></li>
+              <li><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-key"/></svg></span><strong>Penetration test summary</strong><span>Independent and annual; the latest finished in October 2026</span><em>Under NDA</em></li>
+              <li><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-scale"/></svg></span><strong>Countersigned DPA</strong><span>With the SCCs, the UK Addendum and the subprocessor annex</span><em>2 working days</em></li>
+              <li><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-check"/></svg></span><strong>Security questionnaire</strong><span>Yours, or a standard one we keep filled in</span><em>5 working days</em></li>
+              <li><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-users"/></svg></span><strong>Accessibility conformance report</strong><span>For the web app, against WCAG 2.2 AA</span><em>Same day</em></li>
+            </ul>
+            <div class="legal-actions">
+              <a class="btn btn--primary" href="{{ROOT}}contact.html?topic=legal" data-roll>Request documents</a>
+              <a class="btn" href="{{ROOT}}security.html" data-roll>Read about security</a>
+            </div>
+          </div>
+        </section>
+
+        <section class="legal-sec" aria-labelledby="changes">
+          <h2 class="legal-sec__title" id="changes" data-copy-link>Subprocessor changes</h2>
+          <p class="legal-gist"><span class="legal-gist__label">In short</span>Every change to the list, newest first. Subscribe and you’ll hear 30 days before the next one.</p>
+          <div class="prose legal-sec__body">
+            <ul class="legal-log">
+              <li><time datetime="2026-11-01">1 Nov 2026</time><p><strong>New support tooling, in the EU.</strong> Conversations with our crew now stay in the EU. Notice given today; it takes effect on 1 December 2026, when the old help desk is retired.</p></li>
+              <li><time datetime="2026-06-12">12 Jun 2026</time><p><strong>Error monitoring moved to the EU.</strong> Crash reports from every workspace are now processed in the EU only.</p></li>
+              <li><time datetime="2026-02-03">3 Feb 2026</time><p><strong>Payments added a US entity,</strong> so customers in the Americas are invoiced locally.</p></li>
+              <li><time datetime="2025-10-09">9 Oct 2025</time><p><strong>A second email delivery route</strong> in the EU, as a fallback so sign-in links always arrive.</p></li>
+            </ul>
+            <div class="legal-sub" id="notify">
+              <div class="legal-sub__head">
+                <span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-mail"/></svg></span>
+                <h3>Subscribe to subprocessor changes</h3>
+                <p>One email, 30 days before any change to this list. Nothing else.</p>
+              </div>
+              <form action="{{ROOT}}contact.html" method="get" data-form data-demo data-success="Subscribed. You’ll hear 30 days before any change. (Demo: nothing was sent.)" data-success-key="Subscribed">
+                <input type="hidden" name="topic" value="legal" />
+                <div class="field">
+                  <label class="field__label" for="sub-email">Work email</label>
+                  <div class="legal-sub__row">
+                    <input class="input" id="sub-email" name="email" type="email" required maxlength="120" autocomplete="email" inputmode="email" placeholder="legal@yourstudio.example" data-msg-required="Add an email and we’ll send the next notice there." />
+                    <button class="btn btn--primary" type="submit">Subscribe</button>
+                  </div>
+                  <p class="field__error"></p>
+                </div>
+                <label class="check"><input type="checkbox" name="also" value="dpa" checked /> Also tell me about changes to the DPA and the Privacy policy</label>
+              </form>
+            </div>
+          </div>
+        </section>
+
+        <section class="legal-sec" aria-labelledby="accessibility">
+          <h2 class="legal-sec__title" id="accessibility" data-copy-link>Accessibility statement</h2>
+          <p class="legal-gist"><span class="legal-gist__label">In short</span>We aim for WCAG 2.2 AA everywhere, we test with disabled creators, and we list what isn’t there yet.</p>
+          <div class="prose legal-sec__body">
+            <p>Crestora should work for everyone who makes things, however they see, hear, move or think. Our target for the apps and for this website is WCAG 2.2 level AA. We were last tested in October 2026, by an independent auditor and by three disabled creators who are paid for their time.</p>
+            <ul>
+              <li>Everything works from a keyboard, with a visible focus, and with VoiceOver, NVDA and TalkBack.</li>
+              <li>Review Room shows captions on video and transcribes audio notes.</li>
+              <li>Ask your system for reduced motion and Crestora, this site included, comes to rest: no intros, no reveals, nothing moving on its own.</li>
+            </ul>
+            <h3>Where we fall short</h3>
+            <ul>
+              <li>Waveform notes on audio (new in v4.12) can’t yet be fully reviewed with a screen reader. A text timeline for them ships in v4.13.</li>
+              <li>Nine of the 40 Blueprint templates still show status by colour alone. We’re fixing them one by one.</li>
+            </ul>
+            <p>If something stands in your way, write to <a href="mailto:access@crestora.example">access@crestora.example</a>. We reply within two working days, and we’ll find a way to get your work through while we fix it.</p>
+          </div>
+        </section>
+
+        <section class="legal-sec" aria-labelledby="contact">
+          <h2 class="legal-sec__title" id="contact" data-copy-link>Contact</h2>
+          <p class="legal-gist"><span class="legal-gist__label">In short</span>The legal team for paperwork, the DPO for personal data, the security crew for anything urgent.</p>
+          <div class="prose legal-sec__body">
+            <ul class="legal-contacts">
+              <li>
+                <span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-scale"/></svg></span>
+                <strong>Legal team</strong>
+                <p><span class="legal-mail"><a href="mailto:legal@crestora.example">legal@crestora.example</a><button class="legal-copy" type="button" data-copy="legal@crestora.example" data-copy-toast="legal@crestora.example copied" aria-label="Copy legal@crestora.example"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg></button></span> · DPAs, reports and questionnaires</p>
+              </li>
+              <li>
+                <span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-lock"/></svg></span>
+                <strong>Data Protection Officer: Teresa Lobo</strong>
+                <p><span class="legal-mail"><a href="mailto:dpo@crestora.example">dpo@crestora.example</a><button class="legal-copy" type="button" data-copy="dpo@crestora.example" data-copy-toast="dpo@crestora.example copied" aria-label="Copy dpo@crestora.example"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg></button></span> · anything about personal data</p>
+              </li>
+              <li>
+                <span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-shield"/></svg></span>
+                <strong>Security crew</strong>
+                <p><span class="legal-mail"><a href="mailto:security@crestora.example">security@crestora.example</a><button class="legal-copy" type="button" data-copy="security@crestora.example" data-copy-toast="security@crestora.example copied" aria-label="Copy security@crestora.example"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg></button></span> · on call 24/7</p>
+              </li>
+            </ul>
+          </div>
+        </section>
+
+        <p class="legal-fiction"><svg class="icon" aria-hidden="true"><use href="#i-info"/></svg><span><strong>Crestora is a fictional company; figures are illustrative.</strong> The frameworks, reports and subprocessors on this page are sample text for a demonstration website. No audit took place, no certificate exists, and nothing here binds anyone.</span></p>
+      </div>
+    </div>
+  </section>
+
+  {{> cta}}
+</main>

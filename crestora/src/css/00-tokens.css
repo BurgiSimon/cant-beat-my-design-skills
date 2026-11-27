@@ -1,0 +1,74 @@
+/* Crestora: the design system. Everything is cut from the footer's frame: a black night, a spectrum of light
+   (blue, cyan, green, amber, red, pink), white type, hairline rules and boxes. */
+
+@font-face {
+  font-family: "Inter Variable";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url(../assets/fonts/inter-latin-wght.woff2) format("woff2-variations");
+}
+@font-face {
+  font-family: "Michroma";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url(../assets/fonts/michroma-latin.woff2) format("woff2");
+}
+@property --spin { syntax: "<angle>"; inherits: true; initial-value: 0deg; }
+
+:root {
+  /* ink */
+  --ink: #fff;
+  --ink-soft: rgb(220 228 237);                 /* the footer's links, measured off the shot */
+  --ink-copy: rgb(240 246 251);
+  --ink-love: rgb(226 236 246);
+  --ink-muted: rgb(220 228 237 / 0.62);
+  --ink-faint: rgb(220 228 237 / 0.4);          /* decorative only */
+  /* night */
+  --bg: #000;
+  --bg-raised: #07080c;
+  --surface: rgb(255 255 255 / 0.035);
+  --surface-2: rgb(255 255 255 / 0.06);
+  --surface-3: rgb(255 255 255 / 0.09);
+  --line: rgb(255 255 255 / 0.47);              /* the footer's rule */
+  --line-soft: rgb(255 255 255 / 0.12);
+  --line-faint: rgb(255 255 255 / 0.07);
+  --box: rgb(255 255 255 / 0.6);                /* the footer's icon boxes */
+  /* the spectrum of the road */
+  --blue: #3a6dff;
+  --cyan: #23d3ff;
+  --green: #20d69b;
+  --amber: #ffb13d;
+  --red: #ff3b3b;
+  --pink: #ff7ad9;
+  --rainbow: linear-gradient(90deg, #3a6dff, #23d3ff 22%, #20d69b 40%, #ffb13d 58%, #ff3b3b 76%, #ff7ad9 100%);
+  --spectrum: #3a6dff, #23d3ff, #20d69b, #ffb13d, #ff3b3b, #ff7ad9;
+  /* the six stages of a lane: the same six colours, in the footer ribbon's own order (a colour always means its stage) */
+  --spark: #3a6dff;
+  --shape: #23d3ff;
+  --make: #20d69b;
+  --review: #ffb13d;
+  --launch: #ff3b3b;
+  --afterglow: #ff7ad9;
+  --stage: var(--spark);
+  /* type */
+  --font: "Inter Variable", "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-brand: "Michroma", "Eurostile", "Microgramma", system-ui, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+  /* layout */
+  --container: 1440px;
+  --gutter: clamp(20px, 5.13vw, 82px);         /* 82 px at 1597, as the footer's margin */
+  --section-y: clamp(96px, 12vw, 180px);
+  --radius: 9px;                                /* the footer's boxes */
+  --radius-lg: 16px;
+  --header-h: 72px;
+  /* motion */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --dur-fast: 0.18s;
+  --dur: 0.35s;
+  --dur-slow: 0.9s;
+  color-scheme: dark;
+}

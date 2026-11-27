@@ -16,6 +16,7 @@
  *   unorouter/   →  /unorouter/   the UnoRouter project, the same way
  *   offform/     →  /offform/     the OFFFORM project, the same way (its CREDITS stay behind too)
  *   oquro/       →  /oquro/       the OQURO project, the same way
+ *   crestora/    →  /crestora/    the Crestora footer, the same way
  * Mist used to live at the root, so each of its old page URLs gets a small redirect into /mist/.
  *
  * Mist pages live in src/pages/*.html and may include partials from src/partials with
@@ -26,7 +27,7 @@
  * Tokens replaced in pages and static text files:
  *   {{SITE_URL}}  absolute URL of the page's own site, without trailing slash (env SITE_URL, + /mist for Mist,
  *                 + /asterpay for AsterPay, + /vizen for Vizen, + /unorouter for UnoRouter, + /offform for OFFFORM,
- *                 + /oquro for OQURO)
+ *                 + /oquro for OQURO, + /crestora for Crestora)
  *   {{BASE}}      URL path that site is served under, with trailing slash (env BASE_PATH, + mist/ for Mist)
  *   {{VERSION}}   content hash of that site's CSS + JS, for cache-busting
  *   {{YEAR}}      current year
@@ -54,6 +55,8 @@ const OFFFORM = path.join(ROOT, "offform");
 const OFFFORM_PRIVATE = new Set(["README.md", "CREDITS.md", "tools"]); // kept in the repo, not published
 const OQURO = path.join(ROOT, "oquro");
 const OQURO_PRIVATE = new Set(["README.md", "tools"]); // kept in the repo, not published
+const CRESTORA = path.join(ROOT, "crestora");
+const CRESTORA_PRIVATE = new Set(["README.md", "tools", "src"]); // kept in the repo, not published (src is what tools/pages.mjs assembles)
 // Sites with no build step, published as written under /<name>/ (their README and tools stay behind).
 const PLAIN_SITES = [
   { dir: ASTERPAY, name: "asterpay", private: ASTERPAY_PRIVATE },
@@ -61,6 +64,7 @@ const PLAIN_SITES = [
   { dir: UNOROUTER, name: "unorouter", private: UNOROUTER_PRIVATE },
   { dir: OFFFORM, name: "offform", private: OFFFORM_PRIVATE },
   { dir: OQURO, name: "oquro", private: OQURO_PRIVATE },
+  { dir: CRESTORA, name: "crestora", private: CRESTORA_PRIVATE },
 ];
 
 const argv = process.argv.slice(2);
@@ -248,7 +252,7 @@ async function build() {
     }
   }
 
-  // ── AsterPay, Vizen, UnoRouter, OFFFORM and OQURO, under /asterpay/, /vizen/, /unorouter/, /offform/ and /oquro/ ──
+  // ── AsterPay, Vizen, UnoRouter, OFFFORM, OQURO and Crestora, each under /<name>/ ──
   // Plain files, published as they are; their pages get the tokens, with a version hash of their own CSS and JS.
   for (const site of PLAIN_SITES) {
     const files = (await listFiles(site.dir)).filter((f) => !site.private.has(path.relative(site.dir, f).split(path.sep)[0]));
@@ -267,6 +271,10 @@ async function build() {
 
   // Sitemap + robots
   const today = new Date().toISOString().slice(0, 10);
+  const crestoraPages = (await listFiles(CRESTORA))
+    .map((f) => path.relative(CRESTORA, f).split(path.sep).join("/"))
+    .filter((r) => r.endsWith(".html") && r !== "index.html" && !CRESTORA_PRIVATE.has(r.split("/")[0]))
+    .sort();
   const urls = [
     `${SITE_URL}/`,
     ...pages
@@ -280,6 +288,8 @@ async function build() {
     `${SITE_URL}/unorouter/`,
     `${SITE_URL}/offform/`,
     `${SITE_URL}/oquro/`,
+    `${SITE_URL}/crestora/`,
+    ...crestoraPages.map((r) => `${SITE_URL}/crestora/${r}`),
   ];
   const sitemap =
     `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
@@ -290,7 +300,7 @@ async function build() {
   await fs.writeFile(path.join(OUT, ".nojekyll"), "");
 
   for (const w of warnings) console.warn(`  ⚠ ${w}`);
-  console.log(`✓ built the picker, ${pages.length} Mist pages, Nelson, AsterPay, Vizen, UnoRouter, OFFFORM and OQURO → ${path.relative(ROOT, OUT) || OUT} in ${Date.now() - started}ms`);
+  console.log(`✓ built the picker, ${pages.length} Mist pages, Nelson, AsterPay, Vizen, UnoRouter, OFFFORM, OQURO and Crestora → ${path.relative(ROOT, OUT) || OUT} in ${Date.now() - started}ms`);
 }
 
 const MIME = {

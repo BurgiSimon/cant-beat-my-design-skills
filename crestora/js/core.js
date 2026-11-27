@@ -1,0 +1,404 @@
+// The shared runtime: GSAP and its plugins, Lenis smooth scrolling (where there is a wheel), the header, and the small
+// motion primitives every page uses, driven by data attributes so sections stay declarative:
+//
+//   data-reveal[="up|fade|scale|left|right"]   rises/fades in once when it enters the screen
+//   data-reveal-stagger                          its children reveal one after another
+//   data-split                                   a heading whose lines rise out of a mask
+//   data-count="1234" [data-decimals data-prefix data-suffix]   a number that counts up when seen
+//   data-odometer="1234" [same]                  Michroma digits that roll up, digit by digit, when seen
+//   data-marquee[="speed"]                       an endless horizontal strip (duplicate the content once in the markup)
+//   data-magnetic                                leans toward the pointer
+//   data-tilt                                    tilts toward the pointer in 3D
+//   data-spotlight                               a soft light follows the pointer across it (sets --mx/--my)
+//   data-roll                                    its text rolls up into a white copy on hover (icons are kept)
+//
+// Helpers for modules: toast(text, key?), odometer(el, value, opts), store.get/set, countTo, whenVisible, …
+//
+// Everything resolves to the resting design under reduced motion (.is-calm) and without scripts.
+
+export const root = document.documentElement;
+export const calm = root.classList.contains('is-calm');
+export const fine = matchMedia('(hover: hover) and (pointer: fine)').matches;
+export const gsap = window.gsap || null;
+export const ScrollTrigger = window.ScrollTrigger || null;
+export const SplitText = window.SplitText || null;
+export let lenis = null;
+
+export const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+export const lerp = (a, b, t) => a + (b - a) * t;
+export const damp = (a, b, k, dt) => lerp(a, b, 1 - Math.exp(-k * dt));
+export const $ = (s, el = document) => el.querySelector(s);
+export const $$ = (s, el = document) => [...el.querySelectorAll(s)];
+
+/** Run fn(true/false) as el comes near / leaves the screen. Returns a stop function. */
+export function whenVisible(el, fn, rootMargin = '120px') {
+  if (!el) return () => {};
+  const io = new IntersectionObserver(([e]) => fn(e.isIntersecting), { rootMargin });
+  io.observe(el);
+  return () => io.disconnect();
+}
+
+/** Scroll to an element or y, smoothly where Lenis runs. */
+export function scrollToTarget(target, { offset = -84, immediate = false } = {}) {
+  const el = typeof target === 'string' ? document.querySelector(target) : target;
+  if (lenis) { lenis.scrollTo(el ?? 0, { offset, duration: 1.4, easing: (t) => 1 - Math.pow(1 - t, 4), immediate }); return; }
+  const y = el ? el.getBoundingClientRect().top + scrollY + offset : 0;
+  scrollTo({ top: y, behavior: calm || immediate ? 'auto' : 'smooth' });
+}
+
+// ---- the one toast: the footer's hint pill at the foot of the screen ----
+let toastEl = null, toastT = 0;
+export function toast(text, key = 'Demo') {
+  if (!toastEl) {
+    toastEl = document.createElement('div');
+    toastEl.className = 'toast';
+    toastEl.setAttribute('role', 'status');
+    toastEl.setAttribute('aria-live', 'polite');
+  }
+  // a modal dialog sits in the top layer, above everything else: while one is open the toast rides inside it
+  const host = document.querySelector('dialog[open]') || document.body;
+  if (toastEl.parentElement !== host) host.append(toastEl);
+  toastEl.innerHTML = `${key ? `<span class="toast__key">${key}</span>` : ''}<span></span>`;
+  toastEl.lastChild.textContent = text;
+  requestAnimationFrame(() => toastEl.classList.add('is-on'));
+  clearTimeout(toastT);
+  toastT = setTimeout(() => toastEl.classList.remove('is-on'), 3600);
+}
+
+// ---- storage that never throws (private windows, blocked storage); keys are prefixed crestora: ----
+// The cookie page's Preferences switch (crestora:cookies → { preferences: false }) is honoured here, once for every
+// module: with it off, nothing but that choice itself is remembered.
+export const remembers = () => {
+  try { return JSON.parse(localStorage.getItem('crestora:cookies'))?.preferences !== false; } catch { return true; }
+};
+export const store = {
+  get(key, fallback = null) {
+    try { const v = localStorage.getItem(`crestora:${key}`); return v === null ? fallback : JSON.parse(v); } catch { return fallback; }
+  },
+  set(key, value) {
+    if (key !== 'cookies' && !remembers()) return;
+    try { localStorage.setItem(`crestora:${key}`, JSON.stringify(value)); } catch {}
+  },
+  clear(key) { try { localStorage.removeItem(`crestora:${key}`); } catch {} },
+};
+
+// ---- odometer: Michroma digits in fixed cells, each a column of 0–9 that rolls to its value ----
+export const formatNumber = (v, { decimals = 0, prefix = '', suffix = '', grouping = true } = {}) =>
+  `${prefix}${Number(v).toLocaleString('en-US', { minimumFractionDigits: decimals, maximumFractionDigits: decimals, useGrouping: grouping })}${suffix}`;
+// data-decimals, data-prefix, data-suffix and data-grouping="false" (a year: 2021, not 2,021)
+const numberOpts = (el) => ({ decimals: parseInt(el.dataset.decimals || 0, 10), prefix: el.dataset.prefix || '', suffix: el.dataset.suffix || '', grouping: el.dataset.grouping !== 'false' });
+const isDigit = (ch) => ch >= '0' && ch <= '9';
+export function odometer(el, value, opts = {}) {
+  const text = formatNumber(value, opts);
+  el.setAttribute('aria-label', text);
+  el.classList.add('odo');
+  if ((el._odo || '').length !== text.length) {
+    // build one column per digit (and a plain span for commas, points, signs), starting at 0
+    el.textContent = '';
+    for (const ch of text) {
+      const cell = document.createElement('span');
+      cell.setAttribute('aria-hidden', 'true');
+      if (isDigit(ch)) {
+        cell.className = 'odo__d';
+        const col = document.createElement('span');
+        for (let i = 0; i <= 9; i++) { const n = document.createElement('span'); n.textContent = String(i); col.append(n); }
+        cell.append(col);
+      } else {
+        // Michroma draws % as "o/o": units are set in Inter
+        cell.className = ch === '%' ? 'odo__s odo__u' : 'odo__s';
+        cell.textContent = ch;
+      }
+      el.append(cell);
+    }
+    el.getBoundingClientRect(); // lay out at 0 so the columns roll from there
+  }
+  el._odo = text;
+  if (opts.hold) return;                 // built, held at 0 until the next call rolls it
+  const cells = [...el.children];
+  [...text].forEach((ch, i) => {
+    const cell = cells[i];
+    if (!cell || !cell.classList.contains('odo__d')) return;
+    const col = cell.firstChild;
+    col.style.transition = calm ? 'none' : '';
+    col.style.transitionDelay = `${(cells.length - i) * 0.025}s`;
+    col.style.transform = `translateY(${-Number(ch) * 1.15}em)`;
+  });
+  el._odo = text;
+}
+
+let locks = 0;
+export function lockScroll() { if (locks++ === 0) { lenis?.stop(); root.style.overflow = 'hidden'; } }
+export function unlockScroll() { if (locks > 0 && --locks === 0) { lenis?.start(); root.style.overflow = ''; } }
+
+export function boot() {
+  if (gsap) {
+    gsap.registerPlugin(...[ScrollTrigger, SplitText].filter(Boolean));
+    gsap.defaults({ ease: 'power3.out', duration: 0.9 });
+  }
+  if (!calm && fine && gsap && window.Lenis) {
+    lenis = new window.Lenis({ lerp: 0.1, smoothWheel: true, syncTouch: false, autoRaf: false, anchors: false });
+    if (ScrollTrigger) lenis.on('scroll', ScrollTrigger.update);
+    gsap.ticker.add((t) => lenis.raf(t * 1000));
+    gsap.ticker.lagSmoothing(0);
+  }
+  header();
+  anchors();
+  rolls();
+  if (calm || !gsap) { root.classList.add('is-ready'); return; }
+  reveals();
+  splits();
+  counters();
+  odometers();
+  marquees();
+  if (fine) { magnetic(); tilt(); spotlight(); }
+  // deep links land where they point once the layout (fonts, images) has settled. The browser has already jumped to
+  // the #id natively, before Lenis knew; so the target is measured absolutely and Lenis is told where the page is.
+  if (location.hash.length > 1) addEventListener('load', () => land(decodeURIComponent(location.hash.slice(1))), { once: true });
+  addEventListener('load', () => ScrollTrigger?.refresh());
+  document.fonts?.ready.then(() => ScrollTrigger?.refresh());
+}
+
+function land(id) {
+  const t = document.getElementById(id);
+  if (!t) return;
+  ScrollTrigger?.refresh();
+  const y = Math.max(0, t.getBoundingClientRect().top + scrollY - 84);
+  if (lenis) lenis.scrollTo(y, { immediate: true, force: true });
+  else scrollTo(0, y);
+}
+
+// ---- the header: frosted once the page moves, out of the way while reading down, a progress line, a menu ----
+function header() {
+  const bar = $('.header');
+  if (!bar) return;
+  let last = scrollY;
+  const onScroll = () => {
+    const y = lenis ? lenis.scroll : scrollY;
+    bar.classList.toggle('is-scrolled', y > 16);
+    const down = y > last + 2, up = y < last - 2;
+    if (!bar.contains(document.activeElement) && !bar.classList.contains('is-open')) {
+      if (down && y > 480) bar.classList.add('is-hidden');
+      else if (up || y < 480) bar.classList.remove('is-hidden');
+    }
+    last = y;
+    const max = document.documentElement.scrollHeight - innerHeight;
+    bar.style.setProperty('--progress', max > 0 ? (y / max).toFixed(4) : 0);
+  };
+  if (lenis) lenis.on('scroll', onScroll); else addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+  bar.addEventListener('focusin', () => bar.classList.remove('is-hidden', 'is-away'));
+
+  // the night at the foot of every page (and the home finale) is a full screen of its own: the bar steps out of it
+  const scenes = $$('#start, .footer');
+  if (scenes.length) {
+    const inView = new Set();
+    const io = new IntersectionObserver((entries) => {
+      for (const e of entries) e.isIntersecting ? inView.add(e.target) : inView.delete(e.target);
+      const away = inView.size > 0 && !bar.contains(document.activeElement) && !bar.classList.contains('is-open');
+      bar.classList.toggle('is-away', away);
+    }, { rootMargin: '0px 0px -55% 0px' });   // once the scene reaches the top 45% of the screen
+    scenes.forEach((s) => io.observe(s));
+  }
+
+  // dropdowns: open on hover (with a short grace) and on click/Enter; Escape closes and returns focus
+  for (const item of $$('.nav__item[data-menu]', bar)) {
+    const btn = $('.nav__trigger', item);
+    let t = 0;
+    const open = (v) => { item.classList.toggle('is-open', v); btn.setAttribute('aria-expanded', String(v)); };
+    btn.addEventListener('click', () => open(!item.classList.contains('is-open')));
+    if (fine) {
+      item.addEventListener('pointerenter', () => { clearTimeout(t); open(true); });
+      item.addEventListener('pointerleave', () => { t = setTimeout(() => open(false), 160); });
+    }
+    item.addEventListener('keydown', (e) => { if (e.key === 'Escape') { open(false); btn.focus(); } });
+    item.addEventListener('focusout', (e) => { if (!item.contains(e.relatedTarget)) open(false); });
+  }
+
+  // the menu on small screens: a real dialog (focus kept inside, Escape, scroll locked)
+  const toggle = $('.header__burger', bar);
+  const panel = $('.menu', bar.parentElement) || $('.menu');
+  if (!toggle || !panel) return;
+  const focusables = () => $$('a, button', panel).filter((el) => !el.closest('[hidden]'));
+  const set = (v) => {
+    bar.classList.toggle('is-open', v);
+    panel.classList.toggle('is-open', v);
+    toggle.setAttribute('aria-expanded', String(v));
+    toggle.setAttribute('aria-label', v ? 'Close menu' : 'Open menu');
+    panel.inert = !v;
+    if (v) { lockScroll(); setTimeout(() => focusables()[0]?.focus(), 60); } else unlockScroll();
+  };
+  panel.inert = true;
+  toggle.addEventListener('click', () => set(!panel.classList.contains('is-open')));
+  panel.addEventListener('click', (e) => { if (e.target.closest('a')) set(false); });
+  addEventListener('keydown', (e) => {
+    if (!panel.classList.contains('is-open')) return;
+    if (e.key === 'Escape') { set(false); toggle.focus(); }
+    if (e.key === 'Tab') {
+      const f = [toggle, ...focusables()]; const i = f.indexOf(document.activeElement);
+      if (e.shiftKey && i <= 0) { e.preventDefault(); f[f.length - 1].focus(); }
+      else if (!e.shiftKey && i === f.length - 1) { e.preventDefault(); f[0].focus(); }
+    }
+  });
+  matchMedia('(min-width: 1024px)').addEventListener('change', (m) => { if (m.matches && panel.classList.contains('is-open')) set(false); });
+}
+
+// ---- in-page anchors glide (and move focus to where they land) ----
+function anchors() {
+  document.addEventListener('click', (e) => {
+    const a = e.target.closest('a[href*="#"]');
+    if (!a || e.defaultPrevented || e.metaKey || e.ctrlKey || e.shiftKey || e.button) return;
+    const url = new URL(a.href, location.href);
+    if (url.pathname !== location.pathname || !url.hash || url.hash === '#') return;
+    const t = document.getElementById(decodeURIComponent(url.hash.slice(1)));
+    if (!t) return;
+    e.preventDefault();
+    scrollToTarget(t);
+    history.pushState(null, '', url.hash);
+    if (!t.hasAttribute('tabindex')) t.setAttribute('tabindex', '-1');
+    t.focus({ preventScroll: true });
+  });
+}
+
+function rolls() {
+  for (const a of $$('[data-roll]')) {
+    if (a.querySelector('.roll')) continue;
+    // wrap the label (its text nodes) and keep any icon beside it
+    const text = [...a.childNodes].filter((n) => n.nodeType === 3 && n.textContent.trim());
+    if (!text.length) continue;
+    const roll = document.createElement('span');
+    roll.className = 'roll';
+    const inner = document.createElement('span');
+    inner.textContent = text.map((n) => n.textContent.trim()).join(' ');
+    roll.append(inner);
+    text[0].replaceWith(roll);
+    for (const n of text.slice(1)) n.textContent = '';
+  }
+}
+
+// ---- reveals ----
+const FROM = {
+  up: { y: 28, opacity: 0 },
+  fade: { opacity: 0 },
+  scale: { scale: 0.94, opacity: 0 },
+  left: { x: -28, opacity: 0 },
+  right: { x: 28, opacity: 0 },
+};
+function reveals() {
+  const items = $$('[data-reveal]');
+  const groups = $$('[data-reveal-stagger]');
+  for (const el of items) {
+    const from = FROM[el.dataset.reveal] || FROM.up;
+    gsap.set(el, from);
+    ScrollTrigger.create({
+      trigger: el, start: 'top 88%', once: true,
+      onEnter: () => gsap.to(el, { x: 0, y: 0, scale: 1, opacity: 1, duration: 1.1, ease: 'expo.out', delay: parseFloat(el.dataset.delay || 0), clearProps: 'transform,opacity', onComplete: () => el.classList.add('is-in') }),
+    });
+  }
+  for (const g of groups) {
+    const kids = [...g.children];
+    gsap.set(kids, { y: 24, opacity: 0 });
+    ScrollTrigger.create({
+      trigger: g, start: 'top 86%', once: true,
+      onEnter: () => gsap.to(kids, { y: 0, opacity: 1, duration: 1, ease: 'expo.out', stagger: parseFloat(g.dataset.revealStagger || 0.07), clearProps: 'transform,opacity' }),
+    });
+  }
+  root.classList.add('is-ready');
+}
+
+// Lines are measured in the real font: split once the fonts are in (they're preloaded, so this is a frame or two).
+// Until then the heading is held hidden, so it never shows unsplit and then jumps.
+function splits() {
+  if (!SplitText) return;
+  const els = $$('[data-split]');
+  if (!els.length) return;
+  gsap.set(els, { autoAlpha: 0 });
+  const go = () => { gsap.set(els, { autoAlpha: 1 }); els.forEach(split); };
+  let done = false;
+  const once = () => { if (!done) { done = true; go(); } };
+  (document.fonts?.ready || Promise.resolve()).then(once);
+  setTimeout(once, 1500);   // a font that never arrives doesn't hold a heading back for long
+}
+function split(el) {
+  const s = new SplitText(el, { type: 'lines', mask: 'lines', linesClass: 'split-line' });
+  gsap.set(s.lines, { yPercent: 110 });
+  ScrollTrigger.create({
+    trigger: el, start: 'top 88%', once: true,
+    onEnter: () => gsap.to(s.lines, { yPercent: 0, duration: 1.25, ease: 'expo.out', stagger: 0.08, delay: parseFloat(el.dataset.delay || 0), onComplete: () => s.revert() }),
+  });
+}
+
+export function countTo(el, to, { decimals = 0, prefix = '', suffix = '', grouping = true, duration = 1.8 } = {}) {
+  const n = { v: 0 };
+  const fmt = (v) => formatNumber(v, { decimals, prefix, suffix, grouping });
+  el.setAttribute('aria-label', fmt(to));
+  gsap.to(n, { v: to, duration, ease: 'power3.out', onUpdate: () => { el.textContent = fmt(n.v); } });
+}
+function counters() {
+  for (const el of $$('[data-count]')) {
+    const to = parseFloat(el.dataset.count);
+    const opts = numberOpts(el);
+    ScrollTrigger.create({ trigger: el, start: 'top 90%', once: true, onEnter: () => countTo(el, to, opts) });
+  }
+}
+
+// ---- odometers: built at zero, rolled to their value when seen ----
+function odometers() {
+  for (const el of $$('[data-odometer]')) {
+    const to = parseFloat(el.dataset.odometer);
+    const opts = numberOpts(el);
+    // built now, every column at 0 (the number's own shape), and rolled up when seen
+    odometer(el, to, { ...opts, hold: true });
+    ScrollTrigger.create({ trigger: el, start: 'top 90%', once: true, onEnter: () => odometer(el, to, opts) });
+  }
+}
+
+// ---- marquees: an endless strip, faster (and with you) while the page scrolls ----
+function marquees() {
+  for (const m of $$('[data-marquee]')) {
+    const track = m.firstElementChild;
+    if (!track) continue;
+    const speed = parseFloat(m.dataset.marquee) || 40;   // px a second
+    let x = 0, v = 0, on = false;
+    whenVisible(m, (vis) => { on = vis; });
+    gsap.ticker.add((t, dt) => {
+      if (!on) return;
+      const half = track.scrollWidth / 2;
+      const kick = lenis ? lenis.velocity : 0;
+      v = damp(v, kick * 0.6, 4, dt / 1000);
+      x -= (speed + Math.abs(v) * 14) * (dt / 1000) * (m.matches(':hover') ? 0.25 : 1);
+      if (-x >= half) x += half;
+      track.style.transform = `translate3d(${x.toFixed(2)}px,0,0)`;
+    });
+  }
+}
+
+function magnetic() {
+  for (const el of $$('[data-magnetic]')) {
+    const x = gsap.quickTo(el, 'x', { duration: 0.5, ease: 'power3.out' });
+    const y = gsap.quickTo(el, 'y', { duration: 0.5, ease: 'power3.out' });
+    const k = parseFloat(el.dataset.magnetic) || 0.3;
+    el.addEventListener('pointermove', (e) => { const r = el.getBoundingClientRect(); x((e.clientX - r.left - r.width / 2) * k); y((e.clientY - r.top - r.height / 2) * k); });
+    el.addEventListener('pointerleave', () => gsap.to(el, { x: 0, y: 0, duration: 0.9, ease: 'elastic.out(1, 0.4)' }));
+  }
+}
+
+function tilt() {
+  for (const el of $$('[data-tilt]')) {
+    const max = parseFloat(el.dataset.tilt) || 6;
+    gsap.set(el, { transformPerspective: 900 });
+    const rx = gsap.quickTo(el, 'rotationX', { duration: 0.6, ease: 'power3.out' });
+    const ry = gsap.quickTo(el, 'rotationY', { duration: 0.6, ease: 'power3.out' });
+    el.addEventListener('pointermove', (e) => { const r = el.getBoundingClientRect(); ry(((e.clientX - r.left) / r.width - 0.5) * max * 2); rx(-((e.clientY - r.top) / r.height - 0.5) * max * 2); });
+    el.addEventListener('pointerleave', () => { rx(0); ry(0); });
+  }
+}
+
+function spotlight() {
+  for (const el of $$('[data-spotlight]')) {
+    el.addEventListener('pointermove', (e) => {
+      const r = el.getBoundingClientRect();
+      el.style.setProperty('--mx', `${e.clientX - r.left}px`);
+      el.style.setProperty('--my', `${e.clientY - r.top}px`);
+    });
+  }
+}
