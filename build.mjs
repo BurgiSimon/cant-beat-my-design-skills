@@ -56,7 +56,7 @@ const OFFFORM_PRIVATE = new Set(["README.md", "CREDITS.md", "tools"]); // kept i
 const OQURO = path.join(ROOT, "oquro");
 const OQURO_PRIVATE = new Set(["README.md", "tools"]); // kept in the repo, not published
 const CRESTORA = path.join(ROOT, "crestora");
-const CRESTORA_PRIVATE = new Set(["README.md", "tools"]); // kept in the repo, not published
+const CRESTORA_PRIVATE = new Set(["README.md", "tools", "src"]); // kept in the repo, not published (src is what tools/pages.mjs assembles)
 // Sites with no build step, published as written under /<name>/ (their README and tools stay behind).
 const PLAIN_SITES = [
   { dir: ASTERPAY, name: "asterpay", private: ASTERPAY_PRIVATE },

@@ -1,0 +1,73 @@
+/* The header: the footer's logo and type, set in a bar. Clear over the hero, frosted once the page moves, out of the
+   way while reading down; a hairline of the road's spectrum shows how far down the page you are. */
+
+.header { position: fixed; z-index: 50; inset: 0 0 auto; height: var(--header-h); transition: translate 0.5s var(--ease-out), background-color 0.4s var(--ease-out), box-shadow 0.4s var(--ease-out); }
+.header::before { content: ""; position: absolute; inset: 0; z-index: -1; opacity: 0; background: rgb(0 0 0 / 0.6); -webkit-backdrop-filter: blur(16px) saturate(1.4); backdrop-filter: blur(16px) saturate(1.4); box-shadow: inset 0 -1px 0 var(--line-faint); transition: opacity 0.4s var(--ease-out); }
+.header.is-scrolled::before, .header.is-open::before { opacity: 1; }
+.header.is-hidden { translate: 0 -100%; }
+.header::after { content: ""; position: absolute; left: 0; bottom: -1px; height: 1px; width: 100%; transform-origin: 0 50%; transform: scaleX(var(--progress, 0)); background: var(--rainbow); opacity: 0.85; pointer-events: none; }
+.header__inner { height: 100%; display: flex; align-items: center; gap: 24px; }
+
+.header__logo { display: inline-flex; align-items: center; gap: 12px; margin-right: 8px; flex: none; }
+.header__logo .mark { width: 30px; height: 30px; transition: rotate 0.9s var(--ease-out); }
+.header__logo .wordmark { font-size: 18px; }
+@media (hover: hover) { .header__logo:hover .mark { rotate: 360deg; } }
+
+.nav { display: flex; align-items: center; gap: 4px; margin-right: auto; }
+.nav__item { position: relative; }
+.nav__link, .nav__trigger { display: inline-flex; align-items: center; gap: 6px; height: 40px; padding: 0 12px; border-radius: 8px; font: 500 14.5px/1 var(--font); color: var(--ink-soft); transition: color var(--dur) var(--ease-out), background-color var(--dur) var(--ease-out); }
+.nav__trigger svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; transition: rotate var(--dur) var(--ease-out); }
+.nav__link:hover, .nav__trigger:hover, .nav__item.is-open .nav__trigger { color: #fff; background: rgb(255 255 255 / 0.05); }
+.nav__link[aria-current="page"], .nav__trigger.is-current { color: #fff; }
+.nav__item.is-open .nav__trigger svg { rotate: 180deg; }
+
+/* a dropdown: a glass panel of links, each with its icon box and a line of what it is */
+.dropdown {
+  position: absolute; top: calc(100% + 10px); left: -12px; width: max-content; min-width: 340px; max-width: 560px; padding: 10px;
+  display: grid; grid-template-columns: repeat(var(--cols, 1), minmax(240px, 1fr)); gap: 2px;
+  border-radius: 16px; background: rgb(10 11 16 / 0.86); box-shadow: inset 0 0 0 1px var(--line-soft), 0 40px 80px -30px #000;
+  -webkit-backdrop-filter: blur(20px) saturate(1.4); backdrop-filter: blur(20px) saturate(1.4);
+  opacity: 0; visibility: hidden; translate: 0 -6px; transition: opacity 0.25s var(--ease-out), translate 0.35s var(--ease-out), visibility 0s linear 0.35s;
+}
+.dropdown::before { content: ""; position: absolute; inset: -12px 0 auto; height: 12px; } /* a bridge for the pointer */
+.nav__item.is-open .dropdown { opacity: 1; visibility: visible; translate: 0 0; transition: opacity 0.25s var(--ease-out), translate 0.35s var(--ease-out), visibility 0s; }
+.dropdown a { display: grid; grid-template-columns: 40px 1fr; gap: 2px 14px; align-items: center; padding: 10px; border-radius: 10px; transition: background-color var(--dur) var(--ease-out); }
+.dropdown a:hover, .dropdown a:focus-visible { background: rgb(255 255 255 / 0.06); }
+.dropdown .icon-box { grid-row: span 2; width: 40px; height: 40px; transition: box-shadow var(--dur) var(--ease-out); }
+.dropdown a:hover .icon-box { box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.4); }
+.dropdown strong { font: 500 14.5px/1.3 var(--font); color: #fff; }
+.dropdown small { font-size: 13px; line-height: 1.35; color: var(--ink-muted); }
+.dropdown a[aria-current="page"] strong { color: #fff; }
+.dropdown a[aria-current="page"] .icon-box { box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.5); }
+
+.header__actions { display: flex; align-items: center; gap: 8px; }
+.header__signin { display: inline-flex; align-items: center; height: 40px; padding: 0 12px; font: 500 14.5px/1 var(--font); color: var(--ink-soft); border-radius: 8px; transition: color var(--dur); }
+.header__signin:hover { color: #fff; }
+.header__actions .btn { height: 40px; }
+
+.header__burger { display: none; width: 44px; height: 44px; border-radius: var(--radius); box-shadow: inset 0 0 0 1px var(--line-soft); place-items: center; }
+.header__burger span { position: relative; display: block; width: 18px; height: 1.5px; background: #fff; transition: background-color var(--dur); }
+.header__burger span::before, .header__burger span::after { content: ""; position: absolute; left: 0; width: 18px; height: 1.5px; background: #fff; transition: translate var(--dur) var(--ease-out), rotate var(--dur) var(--ease-out); }
+.header__burger span::before { translate: 0 -6px; }
+.header__burger span::after { translate: 0 6px; }
+.header.is-open .header__burger span { background: transparent; }
+.header.is-open .header__burger span::before { translate: 0 0; rotate: 45deg; }
+.header.is-open .header__burger span::after { translate: 0 0; rotate: -45deg; }
+
+/* the menu on small screens: the whole screen, its groups as the footer's columns */
+.menu { position: fixed; z-index: 49; inset: 0; padding: calc(var(--header-h) + 24px) var(--gutter) 40px; overflow-y: auto; background: rgb(0 0 0 / 0.94); -webkit-backdrop-filter: blur(20px); backdrop-filter: blur(20px); opacity: 0; visibility: hidden; transition: opacity 0.35s var(--ease-out), visibility 0s linear 0.35s; }
+.menu.is-open { opacity: 1; visibility: visible; transition: opacity 0.35s var(--ease-out), visibility 0s; }
+.menu__groups { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 36px 20px; }
+.menu__group h2 { font: 500 13px/1 var(--font); color: var(--ink-muted); margin-bottom: 14px; }
+.menu__group a { display: flex; align-items: center; min-height: 40px; font-size: 18px; color: #fff; }
+.menu__actions { display: grid; gap: 10px; margin-top: 40px; }
+.menu__actions .btn { height: 52px; }
+.menu .streak { margin: 32px 0; }
+@media (min-width: 600px) { .menu__groups { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+
+@media (max-width: 1023.98px) {
+  .nav, .header__signin, .header__actions .btn { display: none; }
+  .header__burger { display: grid; }
+  .header__inner { justify-content: space-between; }
+}
+@media (min-width: 1024px) { .menu { display: none; } }

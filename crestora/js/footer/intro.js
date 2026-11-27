@@ -1,7 +1,7 @@
-// The way in. The night comes up first, then the road lights from under the car outward at warp speed and slows to a
-// cruise as the car rolls in from behind and settles, shedding its dust. The type assembles over it: the mark turns
-// in, the name rises letter by letter, the columns come in one after the other and the rule draws itself across.
-// A repeat visit in the same tab gets a shorter version.
+// The footer's way in, played when it first comes into view. The night comes up first, then the road lights from under
+// the car outward at warp speed and slows to a cruise as the car rolls in from behind and settles, shedding its dust.
+// The type assembles over it: the mark turns in, the name rises letter by letter, the columns come in one after the
+// other and the rule draws itself across. A repeat visit in the same tab gets a shorter version.
 
 const root = document.documentElement;
 
@@ -20,10 +20,10 @@ function split(el) {
 
 const settle = (p, ms) => Promise.race([p, new Promise((r) => setTimeout(r, ms))]);
 
-export async function intro(scene) {
+export async function intro(scene, foot) {
   const gsap = window.gsap;
   const done = () => {
-    root.classList.add('is-ready');
+    foot.classList.add('is-armed');
     try { sessionStorage.setItem('crestora:seen', '1'); } catch (e) {}
   };
   if (!gsap) {
@@ -32,14 +32,14 @@ export async function intro(scene) {
     return;
   }
 
-  const q = (s) => [...document.querySelectorAll(s)];
-  const letters = split(document.querySelector('.wordmark'));
-  const mark = document.querySelector('.mark');
+  const q = (s) => [...foot.querySelectorAll(s)];
+  const letters = split(foot.querySelector('.wordmark'));
+  const mark = foot.querySelector('.mark');
   const lines = q('.tagline .line');
   const socials = q('.social li');
   const heads = q('.col h2');
   const cols = q('.col');
-  const rule = document.querySelector('.rule');
+  const rule = foot.querySelector('.rule');
   const base = q('.base > *');
 
   // the type waits where it will start from
@@ -51,8 +51,13 @@ export async function intro(scene) {
   gsap.set(q('.col li'), { y: 12, opacity: 0 });
   gsap.set(rule, { scaleX: 0, transformOrigin: '0% 50%' });
   gsap.set(base, { y: 10, opacity: 0 });
-  root.classList.add('is-ready');
+  foot.classList.add('is-armed');
 
+  // wait for the footer to come into view (most of it), then for the car's picture and the fonts
+  await new Promise((go) => {
+    const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) { io.disconnect(); go(); } }, { threshold: 0.35 });
+    io.observe(foot);
+  });
   await settle(Promise.all([document.fonts?.ready, scene?.ready].filter(Boolean)), 3000);
 
   const repeat = root.classList.contains('is-repeat');
