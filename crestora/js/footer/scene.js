@@ -363,7 +363,7 @@ export function createScene(canvas, { frame, calm = false }) {
       resolve(true);
     };
     img.onerror = () => resolve(false);
-    img.src = new URL(`../${CAR.src}`, import.meta.url).href;
+    img.src = new URL(`../../${CAR.src}`, import.meta.url).href;
   });
   let carLoaded = false;
   carReady.then((ok) => { carLoaded = ok; draw(); });
@@ -543,9 +543,11 @@ export function createScene(canvas, { frame, calm = false }) {
     raf = requestAnimationFrame(tick);
   }
   function start() { if (calm) { draw(); return; } running = true; if (!raf) { last = performance.now(); raf = requestAnimationFrame(tick); } }
+  // the page pauses it while the footer is off screen
   function stop() { running = false; cancelAnimationFrame(raf); raf = 0; }
   document.addEventListener('visibilitychange', () => { visible = !document.hidden; if (visible && running && !raf) { last = performance.now(); raf = requestAnimationFrame(tick); } });
-  addEventListener('resize', () => { if (!running) draw(); });
+  addEventListener('resize', () => { if (!running && onScreen) draw(); });
+  let onScreen = true;
 
   canvas.addEventListener('webglcontextlost', (e) => { e.preventDefault(); stop(); }, false);
   canvas.addEventListener('webglcontextrestored', () => location.reload(), false);
@@ -557,6 +559,8 @@ export function createScene(canvas, { frame, calm = false }) {
     state,
     ready: carReady,
     start, stop, draw, warm,
+    get running() { return running; },
+    set onScreen(v) { onScreen = v; },
     /** design px of a point on the page (css px, viewport) */
     toDesign(x, y) { const f = frame(); const r = canvas.getBoundingClientRect(); return { x: (x - r.left - f.x) / f.s, y: (y - r.top - f.y) / f.s }; },
     pointer(x, y, on) { if (on) { const p = this.toDesign(x, y); input.ptr.x = p.x; input.ptr.y = p.y; } input.ptr.want = on ? 1 : 0; },

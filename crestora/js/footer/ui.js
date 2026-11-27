@@ -2,15 +2,16 @@
 // a ring of the road's colours; the mark turns its chrome to the pointer and spins when the logo is touched; a glint of
 // light rides the rule and waits under the pointer when it comes near; the heart beats, and a click sends a few hearts
 // up. Over the road the pointer is a lamp (the lines brighten under it, the dust parts round it) and holding it down
-// floors the throttle: the road streams, the stars streak, the car squats and shakes, the dust pours (Space too).
+// floors the throttle: the road streams, the stars streak, the car squats and shakes, the dust pours (Space too, once
+// the footer is the screen).
 
-export function details(scene, { calm, wide }) {
+export function details(scene, { calm, wide, foot }) {
   const gsap = window.gsap;
   const fine = matchMedia('(hover: hover) and (pointer: fine)').matches;
   const root = document.documentElement;
 
   // ---- links: the text in a box that rolls ----
-  for (const a of document.querySelectorAll('.col a')) {
+  for (const a of foot.querySelectorAll('.col a')) {
     const t = a.textContent;
     a.innerHTML = `<span class="roll"><span>${t}</span></span>`;
   }
@@ -18,8 +19,8 @@ export function details(scene, { calm, wide }) {
   if (calm) return;
 
   // ---- the mark: its chrome turns to the pointer; the logo spins it ----
-  const logo = document.querySelector('.logo');
-  const mark = document.querySelector('.mark');
+  const logo = foot.querySelector('.logo');
+  const mark = foot.querySelector('.mark');
   if (fine && mark) {
     let ang = 0, want = 0;
     addEventListener('pointermove', (e) => {
@@ -48,7 +49,7 @@ export function details(scene, { calm, wide }) {
 
   // ---- social boxes: magnetic ----
   if (fine && gsap) {
-    for (const a of document.querySelectorAll('.social a')) {
+    for (const a of foot.querySelectorAll('.social a')) {
       const x = gsap.quickTo(a, 'x', { duration: 0.5, ease: 'power3.out' });
       const y = gsap.quickTo(a, 'y', { duration: 0.5, ease: 'power3.out' });
       a.addEventListener('pointermove', (e) => {
@@ -61,7 +62,7 @@ export function details(scene, { calm, wide }) {
   }
 
   // ---- the rule: a glint that sweeps along it now and then, and waits under the pointer when it is near ----
-  const rule = document.querySelector('.rule');
+  const rule = foot.querySelector('.rule');
   if (rule && gsap) {
     const g = { x: -200, o: 0 };
     const apply = () => { rule.style.setProperty('--gx', `${g.x}px`); rule.style.setProperty('--go', g.o); };
@@ -91,7 +92,7 @@ export function details(scene, { calm, wide }) {
   }
 
   // ---- the heart: a click sends a few hearts up, in the road's colours ----
-  const heart = document.querySelector('.heart');
+  const heart = foot.querySelector('.heart');
   if (heart && gsap) {
     const COLORS = ['#ff3b5c', '#ff7ad9', '#ffb13d', '#23d3ff', '#3a6dff', '#20d69b'];
     heart.addEventListener('click', () => {
@@ -119,8 +120,8 @@ export function details(scene, { calm, wide }) {
   if (!scene) return;
 
   // ---- the road: a lamp under the pointer, the throttle under a held button ----
-  const road = document.querySelector('.road');
-  const hint = document.querySelector('.hint');
+  const road = foot.querySelector('.road');
+  const hint = foot.querySelector('.hint');
   const hintText = hint.querySelector('.hint__text');
   let over = false, held = false;
   if (!fine) {
@@ -146,7 +147,7 @@ export function details(scene, { calm, wide }) {
     if (fine) {
       if (!placed && gsap) { gsap.set(hint, { x: e.clientX + 18, y: e.clientY + 18 }); placed = true; }
       hx(e.clientX + 18); hy(e.clientY + 18);
-      hint.classList.toggle('is-on', over && root.classList.contains('is-ready'));
+      hint.classList.toggle('is-on', over && foot.classList.contains('is-armed'));
     }
   }, { passive: true });
   document.documentElement.addEventListener('pointerleave', () => { scene.pointer(0, 0, false); hint.classList.remove('is-on'); scene.parallax(0, 0); });
@@ -166,7 +167,8 @@ export function details(scene, { calm, wide }) {
   road.addEventListener('contextmenu', (e) => e.preventDefault());
   // Space is the throttle too, on the picture layout (where it has no page to scroll)
   addEventListener('keydown', (e) => {
-    if (e.code !== 'Space' || !wide.matches || e.target.closest?.('a, button, input, textarea')) return;
+    if (e.code !== 'Space' || !wide.matches || e.target.closest?.('a, button, input, textarea, select, [contenteditable]')) return;
+    if (foot.getBoundingClientRect().bottom > innerHeight + 4 || foot.getBoundingClientRect().top > innerHeight * 0.2) return;   // only once the footer is the screen
     e.preventDefault(); press(true);
   });
   addEventListener('keyup', (e) => { if (e.code === 'Space') press(false); });

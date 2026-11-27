@@ -1,0 +1,83 @@
+/* Home #top: the hero. Type on the left; behind it the night (stars and six loose threads of light, one per stage,
+   drawn by js/gl/lanes.js on the home page's one canvas) waves across the right. One piece of work rides its thread.
+   Without WebGL or scripts the threads are an SVG poster of the same curves. */
+
+/* the home page's canvas: it moves between the hero and the #features stage, filling whichever holds it */
+[data-page="index"] .lanes-gl { position: absolute; inset: 0; z-index: 0; display: block; width: 100%; height: 100%; opacity: 0; transition: opacity 0.5s var(--ease-out); }
+[data-page="index"] .is-lit .lanes-gl { opacity: 1; }
+
+.home-hero {
+  --hh-h: max(100svh, 720px);
+  /* one design px of the threads' field (1000 × 900, the right 62 % of the hero, scaled to cover it) */
+  --hs: max(calc(62vw / 1000), calc(var(--hh-h) / 900));
+  /* on a short screen the threads sit a little lower, under the type's last line */
+  --hh-drop: clamp(0px, calc((900px - 100svh) * 0.45), 90px);
+  position: relative; display: grid; align-items: center; min-height: var(--hh-h);
+  padding: calc(var(--header-h) + clamp(24px, 4vh, 56px)) 0 clamp(96px, 13vh, 132px);
+  overflow: clip;
+}
+.home-hero__night { position: absolute; inset: 0; z-index: 0; pointer-events: none; background: var(--bg); }
+.home-hero__field { position: absolute; top: var(--hh-drop); right: 0; bottom: calc(-1 * var(--hh-drop)); width: 62%; }
+.home-hero__poster { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; opacity: 1; transition: opacity 0.8s var(--ease-out); }
+.home-hero__poster use { stroke-width: 1; }
+/* with scripts the canvas draws the threads, so the poster waits; it shows if WebGL can't (no-gl) */
+.js .home-hero__poster { opacity: 0; }
+.js .home-hero.no-gl .home-hero__poster { opacity: 1; }
+.js .home-hero.is-lit .home-hero__poster { opacity: 0; }
+
+/* ---- the type ---- */
+.home-hero__inner { position: relative; z-index: 2; }
+.home-hero__copy { display: grid; justify-items: start; max-width: 1040px; }
+.home-hero__copy .eyebrow { margin-bottom: clamp(22px, 3vh, 30px); }
+.home-hero__title { margin-left: -0.04em; }
+.home-hero__title .split-line { padding-right: 0.06em; }
+.home-hero__lede { max-width: 34em; margin-top: clamp(24px, 3.4vh, 34px); }
+.home-hero__actions { margin-top: clamp(30px, 4.4vh, 44px); }
+.home-hero__actions .btn:not(.btn--primary) { background: rgb(0 0 0 / 0.35); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+.home-hero__fine { margin-top: 18px; color: var(--ink-muted); }
+.home-hero__fine span { margin: 0 0.35em; opacity: 0.6; }
+
+/* ---- the chip riding the Spark thread (placed on the poster's thread by default; lanes.js rides it on the live one) ---- */
+.home-hero__chip {
+  position: absolute; z-index: 1; left: 0; top: 0; pointer-events: none;
+  translate: min(calc(38vw + 640 * var(--hs) - 50%), calc(100vw - var(--gutter) - 100%)) calc(var(--hh-h) / 2 + var(--hh-drop) + (316 - 450) * var(--hs) - 50%);
+}
+.home-hero__chip.is-riding { translate: none; }
+.home-hero__chip-card {
+  display: grid; grid-template-columns: auto 1fr; align-items: center; gap: 6px 10px; padding: 12px 16px 12px 14px;
+  border-radius: 14px; white-space: nowrap; font: 400 13.5px/1.3 var(--font); color: var(--ink-soft);
+  background: linear-gradient(180deg, rgb(255 255 255 / 0.08), rgb(255 255 255 / 0.025)), rgb(6 8 14 / 0.5);
+  box-shadow: inset 0 0 0 1px var(--line-soft), inset 0 1px 0 rgb(255 255 255 / 0.08), 0 24px 60px -24px #000;
+  -webkit-backdrop-filter: blur(14px) saturate(1.4); backdrop-filter: blur(14px) saturate(1.4);
+}
+.home-hero__chip-card strong { font-weight: 600; color: #fff; }
+.home-hero__chip-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--stage); box-shadow: 0 0 0 3px color-mix(in srgb, var(--stage) 22%, transparent), 0 0 12px var(--stage); }
+.home-hero__chip-foot { grid-column: 2; display: flex; align-items: center; gap: 10px; font: 400 9.5px/1 var(--font-brand); letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-muted); }
+.home-hero__chip-foot .stage-rail { width: 92px; }
+/* it waits for the intro to put it on its thread */
+.js:not(.is-calm) .home-hero:not(.no-gl) .home-hero__chip:not(.is-on) { visibility: hidden; }
+
+/* ---- the scroll cue: a hairline with a dash running down it ---- */
+.home-hero__cue { position: absolute; z-index: 2; left: 0; right: 0; bottom: clamp(24px, 4vh, 40px); display: flex; align-items: center; gap: 14px; pointer-events: none; }
+.home-hero__cue-line { position: relative; width: 1px; height: 46px; background: var(--line-soft); overflow: hidden; }
+.home-hero__cue-line i { position: absolute; left: 0; top: 0; width: 1px; height: 16px; background: linear-gradient(transparent, #fff); translate: 0 -16px; animation: home-hero-cue 2.4s var(--ease-in-out) 1.6s 4; }
+@keyframes home-hero-cue { 0% { translate: 0 -16px; } 70%, 100% { translate: 0 46px; } }
+.home-hero__cue-label { font: 400 10px/1 var(--font-brand); letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-muted); }
+.is-calm .home-hero__cue-line i { animation: none; translate: 0 15px; }
+
+/* ---- phones and upright tablets: the type on top, the threads crossing the lower part of the screen ---- */
+@media (max-width: 900px), (max-aspect-ratio: 4/5) {
+  /* the threads get their own band under the type (design y 80…800 of the field), the cue under them */
+  .home-hero { --hs: calc(100vw / 1000); --hh-foot: clamp(56px, 8vh, 96px); align-items: start; padding: calc(var(--header-h) + clamp(32px, 6vh, 72px)) 0 calc(var(--hh-foot) + 720 * var(--hs) + 28px); }
+  .home-hero__field { top: auto; left: 0; width: 100%; height: calc(900 * var(--hs)); bottom: calc(var(--hh-foot) - 100 * var(--hs)); }
+  .home-hero__chip { translate: calc(640 * var(--hs) - 50%) calc(-1 * (var(--hh-foot) - 100 * var(--hs)) - (900 - 316) * var(--hs) - 50%); top: 100%; }
+}
+@media (max-width: 700px) {
+  .home-hero__title { font-size: clamp(30px, 9.4vw, 48px); }
+  .home-hero__copy .eyebrow { align-items: flex-start; gap: 10px; font-size: 9.5px; line-height: 1.5; letter-spacing: 0.07em; }
+  .home-hero__copy .eyebrow::before { flex: none; width: 16px; margin-top: 0.72em; }
+  .home-hero__cue { display: none; }
+  .home-hero__actions { display: grid; width: 100%; max-width: 420px; }
+  .home-hero__actions .btn { width: 100%; }
+  .home-hero__chip { display: none; }
+}

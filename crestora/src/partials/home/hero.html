@@ -1,0 +1,58 @@
+<!-- #top: the hero. The headline paints first; the night behind it (stars and six loose threads of light, one per
+     stage, drawn by js/gl/lanes.js) comes up after. Without WebGL or scripts the threads are an SVG poster. -->
+<section class="home-hero" id="top" aria-labelledby="top-title">
+  <div class="home-hero__night" data-lanes-slot aria-hidden="true">
+    <canvas class="lanes-gl" data-lanes></canvas>
+    <div class="home-hero__field">
+  <svg class="home-hero__poster" viewBox="0 0 1000 900" preserveAspectRatio="xMinYMid slice" fill="none" stroke-linecap="round" aria-hidden="true" focusable="false">
+    <defs>
+      <linearGradient id="hh-fade-g" gradientUnits="userSpaceOnUse" x1="-360" x2="170" y1="0" y2="0"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#fff"/></linearGradient>
+      <mask id="hh-fade" maskUnits="userSpaceOnUse" x="-900" y="-200" width="2300" height="1300"><rect x="-900" y="-200" width="2300" height="1300" fill="url(#hh-fade-g)"/></mask>
+      <radialGradient id="hh-spark"><stop offset="0" stop-color="#fff"/><stop offset=".18" stop-color="#fff" stop-opacity=".7"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
+      <path id="hh-t0" d="M-520 942C-507 936 -467 920 -440 908C-413 897 -387 886 -360 874C-333 863 -307 851 -280 838C-253 825 -227 812 -200 798C-173 785 -147 770 -120 755C-93 740 -67 724 -40 708C-13 692 13 676 40 660C67 644 93 628 120 612C147 596 173 579 200 562C227 546 253 528 280 512C307 496 333 480 360 465C387 451 413 439 440 426C467 414 493 404 520 390C547 376 573 362 600 345C627 327 653 305 680 283C707 261 733 235 760 213C787 191 813 168 840 151C867 133 893 119 920 107C947 96 973 89 1000 83C1027 76 1053 73 1080 67C1107 61 1133 54 1160 47C1187 39 1227 26 1240 22"/>
+      <path id="hh-t1" d="M-520 947C-507 941 -467 925 -440 913C-413 902 -387 891 -360 879C-333 868 -307 856 -280 844C-253 831 -227 819 -200 806C-173 793 -147 780 -120 766C-93 753 -67 739 -40 725C-13 712 13 698 40 684C67 670 93 655 120 642C147 628 173 614 200 602C227 589 253 578 280 566C307 554 333 544 360 530C387 517 413 504 440 487C467 470 493 450 520 430C547 409 573 385 600 364C627 343 653 322 680 305C707 289 733 276 760 265C787 255 813 249 840 241C867 234 893 229 920 222C947 216 973 208 1000 200C1027 193 1053 183 1080 176C1107 169 1133 162 1160 157C1187 152 1227 150 1240 148"/>
+      <path id="hh-t2" d="M-520 952C-507 946 -467 930 -440 918C-413 907 -387 896 -360 884C-333 873 -307 861 -280 849C-253 838 -227 826 -200 814C-173 802 -147 789 -120 777C-93 765 -67 753 -40 741C-13 729 13 717 40 706C67 694 93 684 120 673C147 662 173 652 200 641C227 629 253 617 280 603C307 588 333 572 360 555C387 537 413 517 440 500C467 483 493 465 520 451C547 437 573 426 600 417C627 408 653 404 680 398C707 392 733 388 760 381C787 375 813 367 840 359C867 351 893 341 920 334C947 327 973 319 1000 315C1027 311 1053 309 1080 307C1107 306 1133 307 1160 305C1187 303 1227 298 1240 296"/>
+      <path id="hh-t3" d="M-520 957C-507 951 -467 935 -440 923C-413 912 -387 901 -360 889C-333 878 -307 866 -280 855C-253 844 -227 832 -200 821C-173 810 -147 799 -120 788C-93 777 -67 767 -40 756C-13 746 13 737 40 727C67 716 93 707 120 695C147 683 173 671 200 658C227 644 253 629 280 616C307 603 333 589 360 578C387 568 413 560 440 553C467 546 493 543 520 538C547 533 573 530 600 525C627 520 653 514 680 507C707 500 733 492 760 486C787 480 813 474 840 470C867 467 893 466 920 464C947 462 973 462 1000 459C1027 456 1053 452 1080 443C1107 435 1133 423 1160 410C1187 396 1227 369 1240 361"/>
+      <path id="hh-t4" d="M-520 962C-507 956 -467 940 -440 928C-413 917 -387 906 -360 894C-333 883 -307 872 -280 861C-253 850 -227 839 -200 829C-173 818 -147 808 -120 799C-93 789 -67 780 -40 770C-13 761 13 751 40 741C67 731 93 720 120 710C147 700 173 690 200 682C227 674 253 667 280 662C307 657 333 654 360 651C387 647 413 645 440 642C467 638 493 634 520 629C547 625 573 619 600 615C627 611 653 608 680 607C707 605 733 606 760 605C787 604 813 605 840 601C867 598 893 593 920 584C947 575 973 561 1000 546C1027 532 1053 512 1080 496C1107 479 1133 461 1160 447C1187 433 1227 418 1240 412"/>
+      <path id="hh-t5" d="M-520 967C-507 961 -467 945 -440 933C-413 922 -387 911 -360 899C-333 888 -307 877 -280 867C-253 856 -227 846 -200 836C-173 827 -147 818 -120 809C-93 801 -67 792 -40 784C-13 775 13 767 40 760C67 753 93 747 120 742C147 738 173 735 200 732C227 729 253 727 280 725C307 723 333 720 360 718C387 715 413 712 440 711C467 709 493 709 520 709C547 710 573 713 600 714C627 715 653 718 680 716C707 714 733 710 760 702C787 694 813 681 840 668C867 655 893 638 920 624C947 610 973 595 1000 583C1027 572 1053 562 1080 555C1107 547 1133 544 1160 539C1187 534 1227 529 1240 526"/>
+    </defs>
+    <g mask="url(#hh-fade)">
+      <g stroke="#3a6dff"><use href="#hh-t0" stroke-width="18" opacity=".06"/><use href="#hh-t0" stroke-width="7" opacity=".14"/><use href="#hh-t0" y="-6" opacity=".4"/><use href="#hh-t0" y="-2" opacity=".85"/><use href="#hh-t0" y="2.5" opacity=".7"/><use href="#hh-t0" y="6.5" opacity=".35"/><use href="#hh-t0" stroke="#fff" stroke-dasharray="3 36" stroke-dashoffset="0" opacity=".75"/></g>
+      <g stroke="#23d3ff"><use href="#hh-t1" stroke-width="18" opacity=".06"/><use href="#hh-t1" stroke-width="7" opacity=".14"/><use href="#hh-t1" y="-6" opacity=".4"/><use href="#hh-t1" y="-2" opacity=".85"/><use href="#hh-t1" y="2.5" opacity=".7"/><use href="#hh-t1" y="6.5" opacity=".35"/><use href="#hh-t1" stroke="#fff" stroke-dasharray="3 36" stroke-dashoffset="13" opacity=".75"/></g>
+      <g stroke="#20d69b"><use href="#hh-t2" stroke-width="18" opacity=".06"/><use href="#hh-t2" stroke-width="7" opacity=".14"/><use href="#hh-t2" y="-6" opacity=".4"/><use href="#hh-t2" y="-2" opacity=".85"/><use href="#hh-t2" y="2.5" opacity=".7"/><use href="#hh-t2" y="6.5" opacity=".35"/><use href="#hh-t2" stroke="#fff" stroke-dasharray="3 36" stroke-dashoffset="26" opacity=".75"/></g>
+      <g stroke="#ffb13d"><use href="#hh-t3" stroke-width="18" opacity=".06"/><use href="#hh-t3" stroke-width="7" opacity=".14"/><use href="#hh-t3" y="-6" opacity=".4"/><use href="#hh-t3" y="-2" opacity=".85"/><use href="#hh-t3" y="2.5" opacity=".7"/><use href="#hh-t3" y="6.5" opacity=".35"/><use href="#hh-t3" stroke="#fff" stroke-dasharray="3 36" stroke-dashoffset="39" opacity=".75"/></g>
+      <g stroke="#ff3b3b"><use href="#hh-t4" stroke-width="18" opacity=".06"/><use href="#hh-t4" stroke-width="7" opacity=".14"/><use href="#hh-t4" y="-6" opacity=".4"/><use href="#hh-t4" y="-2" opacity=".85"/><use href="#hh-t4" y="2.5" opacity=".7"/><use href="#hh-t4" y="6.5" opacity=".35"/><use href="#hh-t4" stroke="#fff" stroke-dasharray="3 36" stroke-dashoffset="52" opacity=".75"/></g>
+      <g stroke="#ff7ad9"><use href="#hh-t5" stroke-width="18" opacity=".06"/><use href="#hh-t5" stroke-width="7" opacity=".14"/><use href="#hh-t5" y="-6" opacity=".4"/><use href="#hh-t5" y="-2" opacity=".85"/><use href="#hh-t5" y="2.5" opacity=".7"/><use href="#hh-t5" y="6.5" opacity=".35"/><use href="#hh-t5" stroke="#fff" stroke-dasharray="3 36" stroke-dashoffset="65" opacity=".75"/></g>
+      <g><circle cx="760" cy="213" r="10" fill="url(#hh-spark)"/><circle cx="560" cy="397" r="10" fill="url(#hh-spark)"/><circle cx="900" cy="340" r="10" fill="url(#hh-spark)"/><circle cx="640" cy="517" r="10" fill="url(#hh-spark)"/><circle cx="820" cy="603" r="10" fill="url(#hh-spark)"/><circle cx="470" cy="709" r="10" fill="url(#hh-spark)"/></g>
+    </g>
+  </svg>
+    </div>
+  </div>
+
+  <div class="home-hero__inner container">
+    <div class="home-hero__copy">
+      <p class="eyebrow" data-reveal="fade">For creators, builders &amp; dreamers</p>
+      <h1 class="display home-hero__title" id="top-title" data-split data-delay="0.15">Every idea<br> gets a <span class="ink-spectrum">lane</span>.</h1>
+      <p class="lede home-hero__lede" data-reveal data-delay="0.4">Crestora carries your work from first spark to launch day: the brief, the files, the feedback and the release, flowing in one place instead of fifteen tabs.</p>
+      <div class="btn-row home-hero__actions" data-reveal data-delay="0.52">
+        <a class="btn btn--primary btn--lg" href="{{ROOT}}start.html" data-magnetic="0.18">Open your first lane<svg class="arrow" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+        <a class="btn btn--lg" href="#features">Watch a launch, start to finish<svg aria-hidden="true"><use href="#i-arrow-down"/></svg></a>
+      </div>
+      <p class="small home-hero__fine" data-reveal="fade" data-delay="0.7">Free for 3 lanes <span aria-hidden="true">·</span> No card <span aria-hidden="true">·</span> Export everything, always.</p>
+    </div>
+  </div>
+
+  <!-- one piece of work riding its lane: Night Bloom, on the Spark thread -->
+  <div class="home-hero__chip" aria-hidden="true">
+    <div class="home-hero__chip-card" data-stage="spark">
+      <span class="home-hero__chip-dot"></span>
+      <span class="home-hero__chip-text"><strong>Night Bloom</strong><span> · storyboard v3</span></span>
+      <span class="home-hero__chip-foot"><span class="stage-rail" data-n="1"><i></i><i></i><i></i><i></i><i></i><i></i></span><span>01 Spark</span></span>
+    </div>
+  </div>
+
+  <div class="home-hero__cue container" aria-hidden="true">
+    <span class="home-hero__cue-line"><i></i></span>
+    <span class="home-hero__cue-label">Follow the flow</span>
+  </div>
+</section>

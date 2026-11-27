@@ -1,0 +1,114 @@
+<!-- home #plans: the pricing teaser. Three plans with the shared Monthly/Yearly switch (the generic billing module: the
+     choice rolls the price digits and is remembered for pricing.html). A stage rail on each card says which stages the
+     plan opens; Studio is raised in the spectrum ring. Without scripts the yearly prices show and the switch hides. -->
+<section class="section home-plans" id="plans" aria-labelledby="plans-title">
+  <div class="home-plans__glow" aria-hidden="true"></div>
+  <div class="container">
+    <header class="section-head home-plans__head">
+      <div>
+        <p class="eyebrow">Pricing</p>
+        <h2 class="title-2" id="plans-title" data-split>Free until it isn’t. Fair after&nbsp;that.</h2>
+      </div>
+      <div class="section-head__aside">
+        <p class="lede">Start with three lanes for free. Pay when your work outgrows them, and never for the people who only leave feedback.</p>
+        <div class="home-plans__period">
+          <div class="segmented" data-billing role="group" aria-label="Billing period">
+            <span class="segmented__thumb" aria-hidden="true"></span>
+            <button type="button" data-period="monthly" aria-pressed="false">Monthly</button>
+            <button type="button" data-period="yearly" aria-pressed="true">Yearly</button>
+          </div>
+          <p class="home-plans__save"><span class="home-plans__save-dot" aria-hidden="true"></span>Yearly: 2 months free</p>
+        </div>
+      </div>
+    </header>
+
+    <div class="home-plans__grid" data-reveal-stagger="0.09">
+      <!-- SOLO -->
+      <article class="home-plans__card panel" data-plan="solo" data-spotlight aria-labelledby="plan-solo">
+        <div class="home-plans__rail">
+          <span class="stage-rail" data-n="2" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span>
+          <span class="home-plans__rail-label">Spark &amp; Shape</span>
+        </div>
+        <div class="home-plans__top">
+          <h3 class="title-3 home-plans__name" id="plan-solo">Solo</h3>
+          <p class="home-plans__for">For one person and the first few ideas.</p>
+        </div>
+        <div class="home-plans__cost">
+          <p class="home-plans__price"><span class="home-plans__free">Free</span></p>
+          <p class="home-plans__billed">For good. No card, ever.</p>
+        </div>
+        <ul class="home-plans__list">
+          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>3 active lanes</li>
+          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>5 GB of storage</li>
+          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Sparkboard &amp; Blueprints</li>
+          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Unlimited reviewers by link</li>
+        </ul>
+        <a class="btn btn--lg btn--block home-plans__cta" href="{{ROOT}}start.html?plan=solo" data-roll>Open a free lane</a>
+      </article>
+
+      <!-- STUDIO -->
+      <article class="home-plans__card home-plans__card--studio panel panel--raised" data-plan="studio" data-spotlight aria-labelledby="plan-studio">
+        <div class="home-plans__rail">
+          <span class="stage-rail" data-n="6" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span>
+          <span class="home-plans__rail-label">All six stages</span>
+        </div>
+        <div class="home-plans__top">
+          <div class="home-plans__name-row">
+            <h3 class="title-3 home-plans__name" id="plan-studio">Studio</h3>
+            <p class="home-plans__badge"><span aria-hidden="true"></span>Most creators ride here</p>
+          </div>
+          <p class="home-plans__for">For creators who ship all year round.</p>
+        </div>
+        <div class="home-plans__cost">
+          <p class="home-plans__price">
+            <span class="home-plans__fig" aria-hidden="true"><span class="home-plans__cur">$</span><span class="home-plans__amount" data-price-monthly="12" data-price-yearly="10">10</span></span><span class="home-plans__per" aria-hidden="true">a month</span>
+            <span class="sr" data-plan-say data-monthly="$12 a month" data-yearly="$10 a month">$10 a month</span>
+          </p>
+          <p class="home-plans__billed"><span data-billing-show="yearly">Billed yearly, $120 a year.</span><span data-billing-show="monthly" hidden>Billed monthly. Cancel any time.</span></p>
+        </div>
+        <ul class="home-plans__list">
+          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Unlimited lanes</li>
+          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>200 GB of storage</li>
+          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Review Room for video &amp; audio</li>
+          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Countdown &amp; Afterglow</li>
+        </ul>
+        <a class="btn btn--primary btn--lg btn--block home-plans__cta" href="{{ROOT}}start.html?plan=studio" data-roll>Ride with Studio</a>
+      </article>
+
+      <!-- CREW -->
+      <article class="home-plans__card home-plans__card--crew panel" data-plan="crew" data-spotlight aria-labelledby="plan-crew">
+        <div class="home-plans__rail home-plans__rail--double">
+          <span class="home-plans__twin" aria-hidden="true"><span class="stage-rail" data-n="6"><i></i><i></i><i></i><i></i><i></i><i></i></span></span>
+          <span class="home-plans__rail-label">All six, shared</span>
+        </div>
+        <div class="home-plans__top">
+          <h3 class="title-3 home-plans__name" id="plan-crew">Crew</h3>
+          <p class="home-plans__for">For studios and small teams, from two seats.</p>
+        </div>
+        <div class="home-plans__cost">
+          <p class="home-plans__price">
+            <span class="home-plans__fig" aria-hidden="true"><span class="home-plans__cur">$</span><span class="home-plans__amount" data-price-monthly="20" data-price-yearly="16">16</span></span><span class="home-plans__per" aria-hidden="true">a seat, a month</span>
+            <span class="sr" data-plan-say data-monthly="$20 a seat, a month" data-yearly="$16 a seat, a month">$16 a seat, a month</span>
+          </p>
+          <p class="home-plans__billed"><span data-billing-show="yearly">Billed yearly. 2-seat minimum.</span><span data-billing-show="monthly" hidden>Billed monthly. 2-seat minimum.</span></p>
+        </div>
+        <ul class="home-plans__list">
+          <li class="home-plans__lead">Everything in Studio, plus</li>
+          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Shared lanes &amp; Crew roles</li>
+          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Client review portals</li>
+          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>1 TB of pooled storage</li>
+          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Priority support</li>
+        </ul>
+        <a class="btn btn--lg btn--block home-plans__cta" href="{{ROOT}}start.html?plan=crew" data-roll>Bring your crew</a>
+      </article>
+    </div>
+
+    <div class="home-plans__foot" data-reveal="fade">
+      <p class="home-plans__guests"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-users"/></svg></span>Reviewers and guests are always free.</p>
+      <div class="home-plans__links">
+        <a class="link-arrow" href="{{ROOT}}pricing.html">Compare every plan<svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+        <a class="link-arrow" href="{{ROOT}}pricing.html#grants">Students and first-time founders: Studio free for a year<svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+      </div>
+    </div>
+  </div>
+</section>

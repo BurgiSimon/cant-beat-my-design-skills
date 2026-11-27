@@ -56,7 +56,7 @@ const OFFFORM_PRIVATE = new Set(["README.md", "CREDITS.md", "tools"]); // kept i
 const OQURO = path.join(ROOT, "oquro");
 const OQURO_PRIVATE = new Set(["README.md", "tools"]); // kept in the repo, not published
 const CRESTORA = path.join(ROOT, "crestora");
-const CRESTORA_PRIVATE = new Set(["README.md", "tools"]); // kept in the repo, not published
+const CRESTORA_PRIVATE = new Set(["README.md", "tools", "src"]); // kept in the repo, not published (src is what tools/pages.mjs assembles)
 // Sites with no build step, published as written under /<name>/ (their README and tools stay behind).
 const PLAIN_SITES = [
   { dir: ASTERPAY, name: "asterpay", private: ASTERPAY_PRIVATE },
@@ -271,6 +271,10 @@ async function build() {
 
   // Sitemap + robots
   const today = new Date().toISOString().slice(0, 10);
+  const crestoraPages = (await listFiles(CRESTORA))
+    .map((f) => path.relative(CRESTORA, f).split(path.sep).join("/"))
+    .filter((r) => r.endsWith(".html") && r !== "index.html" && !CRESTORA_PRIVATE.has(r.split("/")[0]))
+    .sort();
   const urls = [
     `${SITE_URL}/`,
     ...pages
@@ -285,6 +289,7 @@ async function build() {
     `${SITE_URL}/offform/`,
     `${SITE_URL}/oquro/`,
     `${SITE_URL}/crestora/`,
+    ...crestoraPages.map((r) => `${SITE_URL}/crestora/${r}`),
   ];
   const sitemap =
     `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +

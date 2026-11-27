@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>{{SITE_URL}}/</loc></url>
+  <url><loc>{{SITE_URL}}/about.html</loc></url>
+  <url><loc>{{SITE_URL}}/api.html</loc></url>
+  <url><loc>{{SITE_URL}}/blog.html</loc></url>
+  <url><loc>{{SITE_URL}}/blog/designing-review-room.html</loc></url>
+  <url><loc>{{SITE_URL}}/blog/forty-one-days-to-night-bloom.html</loc></url>
+  <url><loc>{{SITE_URL}}/blog/leave-the-light-on.html</loc></url>
+  <url><loc>{{SITE_URL}}/blog/sixty-pots-in-three-hours.html</loc></url>
+  <url><loc>{{SITE_URL}}/blog/the-case-for-a-smaller-launch.html</loc></url>
+  <url><loc>{{SITE_URL}}/blog/why-theo-ships-on-fridays.html</loc></url>
+  <url><loc>{{SITE_URL}}/careers.html</loc></url>
+  <url><loc>{{SITE_URL}}/changelog.html</loc></url>
+  <url><loc>{{SITE_URL}}/community.html</loc></url>
+  <url><loc>{{SITE_URL}}/compliance.html</loc></url>
+  <url><loc>{{SITE_URL}}/contact.html</loc></url>
+  <url><loc>{{SITE_URL}}/cookies.html</loc></url>
+  <url><loc>{{SITE_URL}}/docs.html</loc></url>
+  <url><loc>{{SITE_URL}}/help.html</loc></url>
+  <url><loc>{{SITE_URL}}/integrations.html</loc></url>
+  <url><loc>{{SITE_URL}}/partners.html</loc></url>
+  <url><loc>{{SITE_URL}}/press.html</loc></url>
+  <url><loc>{{SITE_URL}}/pricing.html</loc></url>
+  <url><loc>{{SITE_URL}}/privacy.html</loc></url>
+  <url><loc>{{SITE_URL}}/roadmap.html</loc></url>
+  <url><loc>{{SITE_URL}}/security.html</loc></url>
+  <url><loc>{{SITE_URL}}/sitemap.html</loc></url>
+  <url><loc>{{SITE_URL}}/start.html</loc></url>
+  <url><loc>{{SITE_URL}}/terms.html</loc></url>
+  <url><loc>{{SITE_URL}}/tutorials.html</loc></url>
+  <url><loc>{{SITE_URL}}/webinars.html</loc></url>
+</urlset>

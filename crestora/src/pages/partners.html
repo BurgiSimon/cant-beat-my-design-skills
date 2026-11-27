@@ -1,0 +1,523 @@
+<!--page
+title: Partners — Crestora
+description: Studios, toolmakers and teachers who help creators get further with Crestora: three programs, three tiers, a directory of partners and a way to apply.
+modules: filter forms page-partners
+nav: company
+-->
+<main id="main">
+  <!-- Partners: the hero with three numbers; the three programs; the tier ladder drawn as a lane that climbs and widens
+       (Registered → Certified → Premier: hover or focus a tier and its stretch of road lights and its benefits show);
+       a directory of eight partners filtered by program and region (generic filter); and the application form
+       (generic forms). Without scripts every tier's benefits show one after another and every partner is listed. -->
+  <section class="page-hero pt-hero" aria-labelledby="pt-title">
+    <div class="page-hero__lanes" aria-hidden="true"></div>
+    <div class="container pt-hero__grid">
+      <div class="pt-hero__intro">
+        <p class="eyebrow" data-reveal="fade">Partners</p>
+        <h1 class="title-1 pt-hero__title" id="pt-title" data-split>Partners who ride along.</h1>
+        <p class="lede" data-reveal data-delay="0.15">Studios, toolmakers and teachers who help creators get further.</p>
+        <div class="btn-row" data-reveal data-delay="0.25">
+          <a class="btn btn--primary btn--lg" href="#apply" data-roll>Become a partner</a>
+          <a class="btn btn--lg" href="#directory" data-roll>Find a partner</a>
+        </div>
+      </div>
+      <div class="pt-hero__aside" data-reveal data-delay="0.3">
+        <dl class="pt-stats">
+          <div class="pt-stats__row"><dt>Partners on the road</dt><dd><span class="pt-stats__n" data-odometer="140">140</span></dd></div>
+          <div class="pt-stats__row"><dt>Teams set up by partners</dt><dd><span class="pt-stats__n" data-odometer="2300">2,300</span></dd></div>
+          <div class="pt-stats__row"><dt>Countries they work from</dt><dd><span class="pt-stats__n" data-odometer="27">27</span></dd></div>
+        </dl>
+        <p class="fiction">Crestora is a fictional company; figures are illustrative.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- the three programs -->
+  <section class="pt-programs" id="programs" aria-labelledby="pt-programs-title">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow" data-reveal="fade">Three programs</p>
+          <h2 class="title-2" id="pt-programs-title" data-split>Three ways to ride along.</h2>
+        </div>
+        <div class="section-head__aside" data-reveal>
+          <p class="lede">Build a tool, set up a studio or teach a class. Each program comes with a sandbox, a listing and a person at Crestora who knows your name.</p>
+        </div>
+      </div>
+
+      <ul class="pt-progs" data-reveal-stagger>
+        <li>
+          <article class="pt-prog panel" data-spotlight aria-labelledby="pt-prog-integration">
+            <div class="pt-prog__top">
+              <span class="icon-box" aria-hidden="true"><svg class="icon icon--lg"><use href="#i-plug"/></svg></span>
+              <p class="pt-prog__for">For toolmakers</p>
+            </div>
+            <h3 class="title-3" id="pt-prog-integration">Integration partners</h3>
+            <p class="pt-prog__text">You make an app creators already love. Connect it to the lane, so its renders, builds, orders or numbers land where the work is.</p>
+            <ul class="pt-checks">
+              <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>An API sandbox with test lanes and webhooks</li>
+              <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>A listing in the integrations directory</li>
+              <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Co-marketing: a launch post and a Launch Night slot</li>
+              <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>A shared channel with our API engineers</li>
+            </ul>
+            <div class="pt-prog__foot">
+              <p class="pt-prog__n"><span class="pt-prog__num">38</span> integration partners</p>
+              <div class="pt-prog__links">
+                <a class="link-arrow" href="{{ROOT}}api.html" data-roll>API reference <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+                <a class="btn btn--sm" href="{{ROOT}}partners.html?program=integration#apply" data-apply-program="integration" data-roll>Apply</a>
+              </div>
+            </div>
+          </article>
+        </li>
+        <li>
+          <article class="pt-prog panel" data-spotlight aria-labelledby="pt-prog-studio">
+            <div class="pt-prog__top">
+              <span class="icon-box" aria-hidden="true"><svg class="icon icon--lg"><use href="#i-users"/></svg></span>
+              <p class="pt-prog__for">For studios</p>
+            </div>
+            <h3 class="title-3" id="pt-prog-studio">Studio partners</h3>
+            <p class="pt-prog__text">Certified agencies that set Crestora up for teams. We send you studios, labels and crews who would rather have it done well than do it twice.</p>
+            <ul class="pt-checks">
+              <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Certification for your crew, free</li>
+              <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>20% referral share for each team’s first year</li>
+              <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Introductions to teams who ask us for help</li>
+              <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>A Crew workspace for your own studio</li>
+            </ul>
+            <div class="pt-prog__foot">
+              <p class="pt-prog__n"><span class="pt-prog__num">84</span> studio partners</p>
+              <div class="pt-prog__links">
+                <a class="link-arrow" href="#tiers" data-roll>See the tiers <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+                <a class="btn btn--sm" href="{{ROOT}}partners.html?program=studio#apply" data-apply-program="studio" data-roll>Apply</a>
+              </div>
+            </div>
+          </article>
+        </li>
+        <li>
+          <article class="pt-prog panel" data-spotlight aria-labelledby="pt-prog-education">
+            <div class="pt-prog__top">
+              <span class="icon-box" aria-hidden="true"><svg class="icon icon--lg"><use href="#i-learn"/></svg></span>
+              <p class="pt-prog__for">For teachers</p>
+            </div>
+            <h3 class="title-3" id="pt-prog-education">Education partners</h3>
+            <p class="pt-prog__text">You teach people to make things. Give every student their own lane, set briefs as Blueprints and run crits in Review Room.</p>
+            <ul class="pt-checks">
+              <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Studio free for every class you teach</li>
+              <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>A curriculum kit: 8 lessons, briefs and rubrics</li>
+              <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>A setup call with our education lead</li>
+              <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Student work featured in Field Notes</li>
+            </ul>
+            <div class="pt-prog__foot">
+              <p class="pt-prog__n"><span class="pt-prog__num">18</span> schools and courses</p>
+              <div class="pt-prog__links">
+                <a class="link-arrow" href="{{ROOT}}tutorials.html" data-roll>Tutorials <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+                <a class="btn btn--sm" href="{{ROOT}}partners.html?program=education#apply" data-apply-program="education" data-roll>Apply</a>
+              </div>
+            </div>
+          </article>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- the tier ladder: one road, climbing and widening from one lane to six as a partner moves up -->
+  <section class="pt-tiers" id="tiers" aria-labelledby="pt-tiers-title">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow" data-reveal="fade">Partner tiers</p>
+          <h2 class="title-2" id="pt-tiers-title" data-split>The road widens as you climb.</h2>
+        </div>
+        <div class="section-head__aside" data-reveal>
+          <p class="lede">Every partner starts as Registered. Certification and the work you do with creators move you up, and each tier keeps everything from the one before.</p>
+        </div>
+      </div>
+
+      <div class="pt-ladder" data-ladder data-reveal>
+        <div class="pt-ladder__tabs" role="tablist" aria-label="Partner tiers">
+          <button class="pt-tab" type="button" role="tab" id="pt-tab-registered" aria-controls="tier-registered" aria-selected="true" data-tier="0">
+            <span class="pt-tab__n">01</span>
+            <span class="pt-tab__name">Registered</span>
+            <span class="pt-tab__req">Open to anyone who applies</span>
+          </button>
+          <button class="pt-tab" type="button" role="tab" id="pt-tab-certified" aria-controls="tier-certified" aria-selected="false" tabindex="-1" data-tier="1">
+            <span class="pt-tab__n">02</span>
+            <span class="pt-tab__name">Certified</span>
+            <span class="pt-tab__req">Proven with five live teams</span>
+          </button>
+          <button class="pt-tab" type="button" role="tab" id="pt-tab-premier" aria-controls="tier-premier" aria-selected="false" tabindex="-1" data-tier="2">
+            <span class="pt-tab__n">03</span>
+            <span class="pt-tab__name">Premier</span>
+            <span class="pt-tab__req">By invitation, 25+ teams</span>
+          </button>
+        </div>
+
+        <div class="pt-road" aria-hidden="true">
+          <svg class="pt-road__svg" viewBox="0 0 1200 158" preserveAspectRatio="xMidYMid meet" focusable="false">
+            <g class="pt-road__seg" data-seg="0">
+              <path class="pt-road__base" d="M0 147.3L20 146.6L40 145.6L60 144.4L80 143L100 141.6L120 140.1L140 138.5L160 136.8L180 135L200 133.2L220 131.4L240 129.4L260 127.5L280 125.4L300 123.4L320 121.2L340 119.1L360 116.9L380 114.7L400 112.4"/>
+              <path class="pt-road__base" d="M0 148.3L20 147.7L40 146.8L60 145.8L80 144.6L100 143.3L120 142L140 140.5L160 139L180 137.5L200 135.9L220 134.2L240 132.5L260 130.8L280 129L300 127.2L320 125.3L340 123.4L360 121.4L380 119.5L400 117.5"/>
+              <path class="pt-road__base" d="M0 149.4L20 148.9L40 148.1L60 147.2L80 146.1L100 145L120 143.8L140 142.6L160 141.3L180 139.9L200 138.5L220 137.1L240 135.6L260 134.1L280 132.5L300 130.9L320 129.3L340 127.7L360 126L380 124.3L400 122.5"/>
+              <path class="pt-road__base" d="M0 150.6L20 150.1L40 149.4L60 148.6L80 147.7L100 146.7L120 145.7L140 144.7L160 143.6L180 142.4L200 141.2L220 140L240 138.7L260 137.4L280 136.1L300 134.7L320 133.4L340 132L360 130.5L380 129.1L400 127.6"/>
+              <path class="pt-road__base" d="M0 151.7L20 151.2L40 150.7L60 150L80 149.3L100 148.5L120 147.6L140 146.7L160 145.8L180 144.8L200 143.9L220 142.8L240 141.8L260 140.7L280 139.6L300 138.5L320 137.4L340 136.2L360 135.1L380 133.9L400 132.7"/>
+              <path class="pt-road__base" d="M0 152.8L20 152.4L40 151.9L60 151.4L80 150.8L100 150.2L120 149.5L140 148.8L160 148.1L180 147.3L200 146.5L220 145.7L240 144.9L260 144.1L280 143.2L300 142.3L320 141.4L340 140.5L360 139.6L380 138.7L400 137.7"/>
+              <path class="pt-road__lit" pathLength="1" d="M0 147.3L20 146.6L40 145.6L60 144.4L80 143L100 141.6L120 140.1L140 138.5L160 136.8L180 135L200 133.2L220 131.4L240 129.4L260 127.5L280 125.4L300 123.4L320 121.2L340 119.1L360 116.9L380 114.7L400 112.4"/>
+              <path class="pt-road__lit" pathLength="1" d="M0 148.3L20 147.7L40 146.8L60 145.8L80 144.6L100 143.3L120 142L140 140.5L160 139L180 137.5L200 135.9L220 134.2L240 132.5L260 130.8L280 129L300 127.2L320 125.3L340 123.4L360 121.4L380 119.5L400 117.5"/>
+              <path class="pt-road__lit" pathLength="1" d="M0 149.4L20 148.9L40 148.1L60 147.2L80 146.1L100 145L120 143.8L140 142.6L160 141.3L180 139.9L200 138.5L220 137.1L240 135.6L260 134.1L280 132.5L300 130.9L320 129.3L340 127.7L360 126L380 124.3L400 122.5"/>
+              <path class="pt-road__lit" pathLength="1" d="M0 150.6L20 150.1L40 149.4L60 148.6L80 147.7L100 146.7L120 145.7L140 144.7L160 143.6L180 142.4L200 141.2L220 140L240 138.7L260 137.4L280 136.1L300 134.7L320 133.4L340 132L360 130.5L380 129.1L400 127.6"/>
+              <path class="pt-road__lit" pathLength="1" d="M0 151.7L20 151.2L40 150.7L60 150L80 149.3L100 148.5L120 147.6L140 146.7L160 145.8L180 144.8L200 143.9L220 142.8L240 141.8L260 140.7L280 139.6L300 138.5L320 137.4L340 136.2L360 135.1L380 133.9L400 132.7"/>
+              <path class="pt-road__lit" pathLength="1" d="M0 152.8L20 152.4L40 151.9L60 151.4L80 150.8L100 150.2L120 149.5L140 148.8L160 148.1L180 147.3L200 146.5L220 145.7L240 144.9L260 144.1L280 143.2L300 142.3L320 141.4L340 140.5L360 139.6L380 138.7L400 137.7"/>
+            </g>
+            <g class="pt-road__seg" data-seg="1">
+              <path class="pt-road__base" d="M400 112.4L420 110.1L440 107.7L460 105.4L480 102.9L500 100.5L520 98L540 95.5L560 93L580 90.4L600 87.9L620 85.2L640 82.6L660 79.9L680 77.2L700 74.5L720 71.8L740 69L760 66.2L780 63.4L800 60.5"/>
+              <path class="pt-road__base" d="M400 117.5L420 115.4L440 113.4L460 111.3L480 109.1L500 107L520 104.8L540 102.6L560 100.4L580 98.1L600 95.8L620 93.5L640 91.2L660 88.8L680 86.5L700 84.1L720 81.6L740 79.2L760 76.7L780 74.3L800 71.8"/>
+              <path class="pt-road__base" d="M400 122.5L420 120.8L440 119L460 117.2L480 115.3L500 113.4L520 111.6L540 109.6L560 107.7L580 105.8L600 103.8L620 101.8L640 99.8L660 97.7L680 95.7L700 93.6L720 91.5L740 89.4L760 87.3L780 85.2L800 83"/>
+              <path class="pt-road__base" d="M400 127.6L420 126.1L440 124.6L460 123L480 121.5L500 119.9L520 118.3L540 116.7L560 115.1L580 113.4L600 111.7L620 110.1L640 108.4L660 106.6L680 104.9L700 103.2L720 101.4L740 99.6L760 97.8L780 96L800 94.2"/>
+              <path class="pt-road__base" d="M400 132.7L420 131.4L440 130.2L460 128.9L480 127.7L500 126.4L520 125.1L540 123.8L560 122.4L580 121.1L600 119.7L620 118.3L640 117L660 115.6L680 114.1L700 112.7L720 111.3L740 109.8L760 108.4L780 106.9L800 105.4"/>
+              <path class="pt-road__base" d="M400 137.7L420 136.8L440 135.8L460 134.8L480 133.8L500 132.8L520 131.8L540 130.8L560 129.8L580 128.7L600 127.7L620 126.6L640 125.5L660 124.5L680 123.4L700 122.3L720 121.2L740 120.1L760 118.9L780 117.8L800 116.7"/>
+              <path class="pt-road__lit" pathLength="1" d="M400 112.4L420 110.1L440 107.7L460 105.4L480 102.9L500 100.5L520 98L540 95.5L560 93L580 90.4L600 87.9L620 85.2L640 82.6L660 79.9L680 77.2L700 74.5L720 71.8L740 69L760 66.2L780 63.4L800 60.5"/>
+              <path class="pt-road__lit" pathLength="1" d="M400 117.5L420 115.4L440 113.4L460 111.3L480 109.1L500 107L520 104.8L540 102.6L560 100.4L580 98.1L600 95.8L620 93.5L640 91.2L660 88.8L680 86.5L700 84.1L720 81.6L740 79.2L760 76.7L780 74.3L800 71.8"/>
+              <path class="pt-road__lit" pathLength="1" d="M400 122.5L420 120.8L440 119L460 117.2L480 115.3L500 113.4L520 111.6L540 109.6L560 107.7L580 105.8L600 103.8L620 101.8L640 99.8L660 97.7L680 95.7L700 93.6L720 91.5L740 89.4L760 87.3L780 85.2L800 83"/>
+              <path class="pt-road__lit" pathLength="1" d="M400 127.6L420 126.1L440 124.6L460 123L480 121.5L500 119.9L520 118.3L540 116.7L560 115.1L580 113.4L600 111.7L620 110.1L640 108.4L660 106.6L680 104.9L700 103.2L720 101.4L740 99.6L760 97.8L780 96L800 94.2"/>
+              <path class="pt-road__lit" pathLength="1" d="M400 132.7L420 131.4L440 130.2L460 128.9L480 127.7L500 126.4L520 125.1L540 123.8L560 122.4L580 121.1L600 119.7L620 118.3L640 117L660 115.6L680 114.1L700 112.7L720 111.3L740 109.8L760 108.4L780 106.9L800 105.4"/>
+              <path class="pt-road__lit" pathLength="1" d="M400 137.7L420 136.8L440 135.8L460 134.8L480 133.8L500 132.8L520 131.8L540 130.8L560 129.8L580 128.7L600 127.7L620 126.6L640 125.5L660 124.5L680 123.4L700 122.3L720 121.2L740 120.1L760 118.9L780 117.8L800 116.7"/>
+            </g>
+            <g class="pt-road__seg" data-seg="2">
+              <path class="pt-road__base" d="M800 60.5L820 57.7L840 54.8L860 51.9L880 49L900 46L920 43.1L940 40.1L960 37.1L980 34L1000 31L1020 27.9L1040 24.8L1060 21.7L1080 18.6L1100 15.5L1120 12.3L1140 9.1L1160 5.9L1180 2.7L1200 -0.5"/>
+              <path class="pt-road__base" d="M800 71.8L820 69.3L840 66.7L860 64.2L880 61.6L900 59L920 56.4L940 53.8L960 51.1L980 48.5L1000 45.8L1020 43.1L1040 40.4L1060 37.6L1080 34.9L1100 32.1L1120 29.4L1140 26.6L1160 23.8L1180 20.9L1200 18.1"/>
+              <path class="pt-road__base" d="M800 83L820 80.8L840 78.6L860 76.4L880 74.2L900 72L920 69.7L940 67.4L960 65.2L980 62.9L1000 60.6L1020 58.2L1040 55.9L1060 53.5L1080 51.2L1100 48.8L1120 46.4L1140 44L1160 41.6L1180 39.1L1200 36.7"/>
+              <path class="pt-road__base" d="M800 94.2L820 92.4L840 90.5L860 88.7L880 86.8L900 84.9L920 83L940 81.1L960 79.2L980 77.3L1000 75.3L1020 73.4L1040 71.4L1060 69.4L1080 67.5L1100 65.5L1120 63.4L1140 61.4L1160 59.4L1180 57.4L1200 55.3"/>
+              <path class="pt-road__base" d="M800 105.4L820 104L840 102.5L860 100.9L880 99.4L900 97.9L920 96.4L940 94.8L960 93.3L980 91.7L1000 90.1L1020 88.5L1040 86.9L1060 85.3L1080 83.7L1100 82.1L1120 80.5L1140 78.9L1160 77.2L1180 75.6L1200 73.9"/>
+              <path class="pt-road__base" d="M800 116.7L820 115.5L840 114.4L860 113.2L880 112L900 110.9L920 109.7L940 108.5L960 107.3L980 106.1L1000 104.9L1020 103.7L1040 102.5L1060 101.2L1080 100L1100 98.8L1120 97.5L1140 96.3L1160 95L1180 93.8L1200 92.5"/>
+              <path class="pt-road__lit" pathLength="1" d="M800 60.5L820 57.7L840 54.8L860 51.9L880 49L900 46L920 43.1L940 40.1L960 37.1L980 34L1000 31L1020 27.9L1040 24.8L1060 21.7L1080 18.6L1100 15.5L1120 12.3L1140 9.1L1160 5.9L1180 2.7L1200 -0.5"/>
+              <path class="pt-road__lit" pathLength="1" d="M800 71.8L820 69.3L840 66.7L860 64.2L880 61.6L900 59L920 56.4L940 53.8L960 51.1L980 48.5L1000 45.8L1020 43.1L1040 40.4L1060 37.6L1080 34.9L1100 32.1L1120 29.4L1140 26.6L1160 23.8L1180 20.9L1200 18.1"/>
+              <path class="pt-road__lit" pathLength="1" d="M800 83L820 80.8L840 78.6L860 76.4L880 74.2L900 72L920 69.7L940 67.4L960 65.2L980 62.9L1000 60.6L1020 58.2L1040 55.9L1060 53.5L1080 51.2L1100 48.8L1120 46.4L1140 44L1160 41.6L1180 39.1L1200 36.7"/>
+              <path class="pt-road__lit" pathLength="1" d="M800 94.2L820 92.4L840 90.5L860 88.7L880 86.8L900 84.9L920 83L940 81.1L960 79.2L980 77.3L1000 75.3L1020 73.4L1040 71.4L1060 69.4L1080 67.5L1100 65.5L1120 63.4L1140 61.4L1160 59.4L1180 57.4L1200 55.3"/>
+              <path class="pt-road__lit" pathLength="1" d="M800 105.4L820 104L840 102.5L860 100.9L880 99.4L900 97.9L920 96.4L940 94.8L960 93.3L980 91.7L1000 90.1L1020 88.5L1040 86.9L1060 85.3L1080 83.7L1100 82.1L1120 80.5L1140 78.9L1160 77.2L1180 75.6L1200 73.9"/>
+              <path class="pt-road__lit" pathLength="1" d="M800 116.7L820 115.5L840 114.4L860 113.2L880 112L900 110.9L920 109.7L940 108.5L960 107.3L980 106.1L1000 104.9L1020 103.7L1040 102.5L1060 101.2L1080 100L1100 98.8L1120 97.5L1140 96.3L1160 95L1180 93.8L1200 92.5"/>
+            </g>
+            <circle class="pt-road__node" data-node="0" cx="6" cy="149.9" r="4.5"/>
+            <circle class="pt-road__node" data-node="1" cx="400" cy="125.1" r="4.5"/>
+            <circle class="pt-road__node" data-node="2" cx="800" cy="88.6" r="4.5"/>
+          </svg>
+        </div>
+
+        <div class="pt-ladder__panels">
+          <section class="pt-tier is-on" id="tier-registered" role="tabpanel" aria-labelledby="pt-tab-registered" tabindex="0">
+            <header class="pt-tier__head">
+              <p class="pt-tier__kicker">Tier 01</p>
+              <h3 class="title-3">Registered</h3>
+              <p class="pt-tier__lede">Your first stretch of road. Apply, agree to the partner terms and you are in, usually within the week.</p>
+              <p class="pt-tier__count"><span class="pt-tier__num">92</span> partners at this tier</p>
+            </header>
+            <div class="pt-tier__col">
+              <h4 class="pt-tier__label">How to get here</h4>
+              <ol class="pt-steps">
+                <li>Apply below and tell us what you build, run or teach.</li>
+                <li>Agree to the partner terms. They fit on two pages.</li>
+                <li>Join a 30-minute welcome call with the partner team.</li>
+              </ol>
+            </div>
+            <div class="pt-tier__col">
+              <h4 class="pt-tier__label">What you get</h4>
+              <ul class="pt-checks pt-checks--two">
+                <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>The partner portal, with sandbox lanes and test webhooks</li>
+                <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>A Crew workspace for your own team, free for a year</li>
+                <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Referral links that track every team you bring</li>
+                <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>A listing in the partner directory</li>
+                <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>The partner newsletter and early looks at what ships next</li>
+              </ul>
+            </div>
+          </section>
+
+          <section class="pt-tier" id="tier-certified" role="tabpanel" aria-labelledby="pt-tab-certified" tabindex="0">
+            <header class="pt-tier__head">
+              <p class="pt-tier__kicker">Tier 02</p>
+              <h3 class="title-3">Certified</h3>
+              <p class="pt-tier__lede">Proven with real teams. This is where most studio partners settle in, and where the referral share starts.</p>
+              <p class="pt-tier__count"><span class="pt-tier__num">36</span> partners at this tier</p>
+            </header>
+            <div class="pt-tier__col">
+              <h4 class="pt-tier__label">How to get here</h4>
+              <ol class="pt-steps">
+                <li>Two people on your crew pass the Crestora certification (about six hours, free).</li>
+                <li>Five teams are live on Crestora with your help.</li>
+                <li>One short case study we can share, written with the client.</li>
+              </ol>
+            </div>
+            <div class="pt-tier__col">
+              <h4 class="pt-tier__label">What you get</h4>
+              <p class="pt-tier__plus">Everything in Registered, plus</p>
+              <ul class="pt-checks pt-checks--two">
+                <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>The Certified badge and a higher place in the directory</li>
+                <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>20% referral share for each team’s first year</li>
+                <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Introductions to teams who ask us for a partner</li>
+                <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>A named partner manager</li>
+                <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>A Field Notes feature and a Launch Night slot</li>
+              </ul>
+            </div>
+          </section>
+
+          <section class="pt-tier" id="tier-premier" role="tabpanel" aria-labelledby="pt-tab-premier" tabindex="0">
+            <header class="pt-tier__head">
+              <p class="pt-tier__kicker">Tier 03</p>
+              <h3 class="title-3">Premier</h3>
+              <p class="pt-tier__lede">The whole road. A small group we build with closely, from the roadmap review to joint pitches for Label teams.</p>
+              <p class="pt-tier__count"><span class="pt-tier__num">12</span> partners at this tier</p>
+            </header>
+            <div class="pt-tier__col">
+              <h4 class="pt-tier__label">How to get here</h4>
+              <ol class="pt-steps">
+                <li>Twenty-five or more teams live on Crestora with your help.</li>
+                <li>A client satisfaction score above 4.6 out of 5.</li>
+                <li>An invitation after a joint review with your partner manager.</li>
+              </ol>
+            </div>
+            <div class="pt-tier__col">
+              <h4 class="pt-tier__label">What you get</h4>
+              <p class="pt-tier__plus">Everything in Certified, plus</p>
+              <ul class="pt-checks pt-checks--two">
+                <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>After the first year, 10% for as long as the team stays</li>
+                <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Joint pitches for Label accounts</li>
+                <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Early access and a seat at the roadmap review</li>
+                <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>The Partner Council, twice a year in Lisbon</li>
+                <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>A Premier listing on the integrations and partner pages</li>
+              </ul>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- the directory: eight partners, filtered by program and region -->
+  <section class="pt-dir" id="directory" aria-labelledby="pt-dir-title">
+    <div class="container" data-filter-scope>
+      <div class="section-head">
+        <div>
+          <p class="eyebrow" data-reveal="fade">Partner directory</p>
+          <h2 class="title-2" id="pt-dir-title" data-split>Find someone to ride with.</h2>
+        </div>
+        <div class="section-head__aside" data-reveal>
+          <p class="lede">Eight of our partners, from film post in Toronto to picture books in Lisbon. Filter by what they do and where they work.</p>
+        </div>
+      </div>
+
+      <div class="pt-bar" data-reveal="fade">
+        <div class="pt-bar__group">
+          <span class="pt-bar__label" id="pt-f-program">Program</span>
+          <div class="pt-chips" role="group" aria-labelledby="pt-f-program" data-filter-group>
+            <button type="button" class="pt-chip" data-filter="all" aria-pressed="true">All</button>
+            <button type="button" class="pt-chip" data-filter="integration" aria-pressed="false">Integration</button>
+            <button type="button" class="pt-chip" data-filter="studio" aria-pressed="false">Studio</button>
+            <button type="button" class="pt-chip" data-filter="education" aria-pressed="false">Education</button>
+          </div>
+        </div>
+        <div class="pt-bar__group">
+          <span class="pt-bar__label" id="pt-f-region">Region</span>
+          <div class="pt-chips" role="group" aria-labelledby="pt-f-region" data-filter-group>
+            <button type="button" class="pt-chip" data-filter="all" aria-pressed="true">All</button>
+            <button type="button" class="pt-chip" data-filter="europe" aria-pressed="false">Europe</button>
+            <button type="button" class="pt-chip" data-filter="americas" aria-pressed="false">Americas</button>
+            <button type="button" class="pt-chip" data-filter="africa" aria-pressed="false">Africa</button>
+            <button type="button" class="pt-chip" data-filter="apac" aria-pressed="false">Asia-Pacific</button>
+          </div>
+        </div>
+        <p class="pt-count" data-filter-count data-filter-noun="partner" aria-live="polite">8 partners</p>
+      </div>
+
+      <ul class="pt-list" data-filter-list data-reveal>
+        <li class="pt-card" data-tags="studio americas premier" data-stage="review">
+          <article class="pt-card__in" data-spotlight aria-labelledby="pt-p-northlight">
+            <div class="pt-card__top">
+              <span class="pt-box" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6.5 18.5v-13l11 13v-13"/><path d="M20.5 3.5v2.4M19.3 4.7h2.4"/></svg></span>
+              <span class="pt-tierbadge pt-tierbadge--premier">Premier</span>
+            </div>
+            <h3 class="pt-card__name" id="pt-p-northlight">Northlight Studio</h3>
+            <p class="pt-card__where"><svg class="icon" aria-hidden="true"><use href="#i-map"/></svg>Toronto, Canada · Film post</p>
+            <p class="pt-card__text">Colour, sound and delivery for indie features and docs. They set up Review Room so festival notes land on the exact frame.</p>
+            <div class="pt-card__foot">
+              <span class="lane-chip">Strongest in Review</span>
+              <span class="pt-card__meta">Studio · <b>48</b> teams</span>
+            </div>
+          </article>
+        </li>
+        <li class="pt-card" data-tags="studio education europe certified" data-stage="shape">
+          <article class="pt-card__in" data-spotlight aria-labelledby="pt-p-papermoon">
+            <div class="pt-card__top">
+              <span class="pt-box" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M15.5 4.2a8 8 0 1 0 4.3 13.6 6.5 6.5 0 0 1-4.3-13.6Z"/><path d="M5.5 4.5v2M4.5 5.5h2"/></svg></span>
+              <span class="pt-tierbadge">Certified</span>
+            </div>
+            <h3 class="pt-card__name" id="pt-p-papermoon">Paper Moon Collective</h3>
+            <p class="pt-card__where"><svg class="icon" aria-hidden="true"><use href="#i-map"/></svg>Lisbon, Portugal · Illustration</p>
+            <p class="pt-card__text">Seven illustrators who run picture-book and editorial lanes for publishers, and teach an evening course from sketch to print.</p>
+            <div class="pt-card__foot">
+              <span class="lane-chip">Strongest in Shape</span>
+              <span class="pt-card__meta">Studio, Education · <b>31</b> teams</span>
+            </div>
+          </article>
+        </li>
+        <li class="pt-card" data-tags="integration africa premier" data-stage="make">
+          <article class="pt-card__in" data-spotlight aria-labelledby="pt-p-fieldwork">
+            <div class="pt-card__top">
+              <span class="pt-box" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4.5 19.5 10 4.5M12 19.5v-15M19.5 19.5 14 4.5M3.5 19.5h17"/></svg></span>
+              <span class="pt-tierbadge pt-tierbadge--premier">Premier</span>
+            </div>
+            <h3 class="pt-card__name" id="pt-p-fieldwork">Fieldwork Digital</h3>
+            <p class="pt-card__where"><svg class="icon" aria-hidden="true"><use href="#i-map"/></svg>Nairobi, Kenya · Apps</p>
+            <p class="pt-card__text">Builds and maintains integrations on the Crestora API for app studios across East Africa, from build pipelines to store releases.</p>
+            <div class="pt-card__foot">
+              <span class="lane-chip">Strongest in Make</span>
+              <span class="pt-card__meta">Integration · <b>6</b> integrations</span>
+            </div>
+          </article>
+        </li>
+        <li class="pt-card" data-tags="studio apac registered" data-stage="afterglow">
+          <article class="pt-card__in" data-spotlight aria-labelledby="pt-p-quiethours">
+            <div class="pt-card__top">
+              <span class="pt-box" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="11.5" cy="11.5" r="7"/><path d="m16.6 16.6 3.4 3.4M9 10.2v2.6M11.5 8.5v6M14 10.2v2.6"/></svg></span>
+              <span class="pt-tierbadge pt-tierbadge--registered">Registered</span>
+            </div>
+            <h3 class="pt-card__name" id="pt-p-quiethours">Quiet Hours Audio</h3>
+            <p class="pt-card__where"><svg class="icon" aria-hidden="true"><use href="#i-map"/></svg>Seoul, South Korea · Podcasts</p>
+            <p class="pt-card__text">Recording, edit and release for independent shows, with listener numbers flowing back into Afterglow after every episode.</p>
+            <div class="pt-card__foot">
+              <span class="lane-chip">Strongest in Afterglow</span>
+              <span class="pt-card__meta">Studio · <b>9</b> teams</span>
+            </div>
+          </article>
+        </li>
+        <li class="pt-card" data-tags="integration europe certified" data-stage="make">
+          <article class="pt-card__in" data-spotlight aria-labelledby="pt-p-lanternfish">
+            <div class="pt-card__top">
+              <span class="pt-box" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3.5 13c3-4.3 9-4.8 13 0-4 4.8-10 4.3-13 0Z"/><path d="m16.5 13 4-3.2v6.4ZM8 9.6C7.6 6.2 10 4.6 12.6 5"/><circle class="f" cx="13.6" cy="5.2" r="1.1"/></svg></span>
+              <span class="pt-tierbadge">Certified</span>
+            </div>
+            <h3 class="pt-card__name" id="pt-p-lanternfish">Lanternfish</h3>
+            <p class="pt-card__where"><svg class="icon" aria-hidden="true"><use href="#i-map"/></svg>Berlin, Germany · Games</p>
+            <p class="pt-card__text">A small games studio that keeps the open build-to-review bridge running, so playtest builds land on the lane with crash notes attached.</p>
+            <div class="pt-card__foot">
+              <span class="lane-chip">Strongest in Make</span>
+              <span class="pt-card__meta">Integration · <b>3</b> integrations</span>
+            </div>
+          </article>
+        </li>
+        <li class="pt-card" data-tags="studio americas certified" data-stage="launch">
+          <article class="pt-card__in" data-spotlight aria-labelledby="pt-p-commonthread">
+            <div class="pt-card__top">
+              <span class="pt-box" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5.5 4.5h11M5.5 19.5h11M7.5 4.5v15M14.5 4.5v15"/><path d="m7.5 8.5 7 2.2M7.5 12.4l7 2.2"/><path d="M14.5 16.6c2.8 0 4.6 1 4.6 2.6 0 1.1-1 1.6-2.2 1.3"/></svg></span>
+              <span class="pt-tierbadge">Certified</span>
+            </div>
+            <h3 class="pt-card__name" id="pt-p-commonthread">Common Thread</h3>
+            <p class="pt-card__where"><svg class="icon" aria-hidden="true"><use href="#i-map"/></svg>Mexico City, Mexico · Merch</p>
+            <p class="pt-card__text">Merch drops for musicians and makers, planned in Blueprints, launched with Countdown, and with every order counted after.</p>
+            <div class="pt-card__foot">
+              <span class="lane-chip">Strongest in Launch</span>
+              <span class="pt-card__meta">Studio · <b>22</b> teams</span>
+            </div>
+          </article>
+        </li>
+        <li class="pt-card" data-tags="education africa certified" data-stage="review">
+          <article class="pt-card__in" data-spotlight aria-labelledby="pt-p-brightwater">
+            <div class="pt-card__top">
+              <span class="pt-box" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="8.5" r="3.5"/><path d="M3.5 15.5c2.1 0 2.1-1.5 4.2-1.5s2.1 1.5 4.3 1.5 2.1-1.5 4.3-1.5 2.1 1.5 4.2 1.5M3.5 19.5c2.1 0 2.1-1.5 4.2-1.5s2.1 1.5 4.3 1.5 2.1-1.5 4.3-1.5 2.1 1.5 4.2 1.5"/></svg></span>
+              <span class="pt-tierbadge">Certified</span>
+            </div>
+            <h3 class="pt-card__name" id="pt-p-brightwater">Brightwater School of Design</h3>
+            <p class="pt-card__where"><svg class="icon" aria-hidden="true"><use href="#i-map"/></svg>Cape Town, South Africa · Education</p>
+            <p class="pt-card__text">A two-year design diploma where every brief is a Blueprint and every crit runs in Review Room, notes pinned to the pixel.</p>
+            <div class="pt-card__foot">
+              <span class="lane-chip">Strongest in Review</span>
+              <span class="pt-card__meta">Education · <b>340</b> students</span>
+            </div>
+          </article>
+        </li>
+        <li class="pt-card" data-tags="studio apac registered" data-stage="launch">
+          <article class="pt-card__in" data-spotlight aria-labelledby="pt-p-atlasink">
+            <div class="pt-card__top">
+              <span class="pt-box" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3.5c3.2 4.2 5.8 7.2 5.8 10.3a5.8 5.8 0 0 1-11.6 0C6.2 10.7 8.8 7.7 12 3.5Z"/><path d="M12 9.5v10M7 14.5h10"/></svg></span>
+              <span class="pt-tierbadge pt-tierbadge--registered">Registered</span>
+            </div>
+            <h3 class="pt-card__name" id="pt-p-atlasink">Atlas &amp; Ink</h3>
+            <p class="pt-card__where"><svg class="icon" aria-hidden="true"><use href="#i-map"/></svg>Melbourne, Australia · Publishing</p>
+            <p class="pt-card__text">Independent publishing for zines, poetry and small-run books, from the first manuscript to launch night at the bookshop.</p>
+            <div class="pt-card__foot">
+              <span class="lane-chip">Strongest in Launch</span>
+              <span class="pt-card__meta">Studio · <b>12</b> teams</span>
+            </div>
+          </article>
+        </li>
+      </ul>
+      <p class="pt-empty" data-filter-empty hidden>No partner in the directory matches both yet. Try all regions, or <a href="{{ROOT}}contact.html?topic=sales">ask us for an introduction</a>.</p>
+
+      <div class="pt-intro" data-reveal>
+        <span class="icon-box" aria-hidden="true"><svg class="icon icon--lg"><use href="#i-handshake"/></svg></span>
+        <p><strong>Want help setting up your team?</strong> Tell us what you make and how many of you there are. We’ll introduce you to a partner who fits within two working days.</p>
+        <a class="btn" href="{{ROOT}}contact.html?topic=sales" data-roll>Ask for an introduction</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- apply -->
+  <section class="pt-apply" id="apply" aria-labelledby="pt-apply-title">
+    <div class="container pt-apply__grid">
+      <div class="pt-apply__intro">
+        <p class="eyebrow" data-reveal="fade">Apply</p>
+        <h2 class="title-2" id="pt-apply-title" data-split>Bring your crew along.</h2>
+        <p class="lede" data-reveal>Tell us who you are and what you’d build, run or teach with Crestora. A person on the partner team reads every application.</p>
+        <ol class="pt-next" data-reveal-stagger>
+          <li><span class="pt-next__n" aria-hidden="true">01</span><strong>We read it</strong><span>Within five working days, and we reply either way.</span></li>
+          <li><span class="pt-next__n" aria-hidden="true">02</span><strong>A 30-minute call</strong><span>What you make, who you work with and where Crestora fits in.</span></li>
+          <li><span class="pt-next__n" aria-hidden="true">03</span><strong>You’re Registered</strong><span>Portal, sandbox and a directory listing, the same week.</span></li>
+        </ol>
+        <p class="pt-apply__mail">Rather write? <a href="mailto:partners@crestora.example">partners@crestora.example</a></p>
+      </div>
+
+      <form class="pt-form panel panel--raised" action="{{ROOT}}partners.html#apply" method="get" data-form data-demo data-success="Thanks. Our partner team will reply within five working days. (Demo: nothing was sent.)" data-success-key="Sent" data-reveal>
+        <fieldset class="field pt-pick">
+          <legend class="field__label">Which program fits?</legend>
+          <div class="pt-pick__row">
+            <label class="pt-pick__opt">
+              <input type="radio" name="program" value="integration" required data-msg-required="Pick the program that fits best." />
+              <span class="pt-pick__card"><svg class="icon" aria-hidden="true"><use href="#i-plug"/></svg><span>Integration</span></span>
+            </label>
+            <label class="pt-pick__opt">
+              <input type="radio" name="program" value="studio" required data-msg-required="Pick the program that fits best." />
+              <span class="pt-pick__card"><svg class="icon" aria-hidden="true"><use href="#i-users"/></svg><span>Studio</span></span>
+            </label>
+            <label class="pt-pick__opt">
+              <input type="radio" name="program" value="education" required data-msg-required="Pick the program that fits best." />
+              <span class="pt-pick__card"><svg class="icon" aria-hidden="true"><use href="#i-learn"/></svg><span>Education</span></span>
+            </label>
+          </div>
+          <p class="field__error"></p>
+        </fieldset>
+        <div class="pt-form__row">
+          <div class="field">
+            <label class="field__label" for="pt-company">Company or school</label>
+            <input class="input" id="pt-company" name="company" type="text" required maxlength="80" autocomplete="organization" placeholder="Northlight Studio" data-msg-required="Who should we write back to?" />
+            <p class="field__error"></p>
+          </div>
+          <div class="field">
+            <label class="field__label" for="pt-site">Website</label>
+            <input class="input" id="pt-site" name="website" type="text" inputmode="url" required maxlength="120" autocomplete="url" placeholder="northlight.example" pattern="(https?://)?[A-Za-z0-9\-]+(\.[A-Za-z0-9\-]+)+(/\S*)?" data-msg-required="Add your website, so we can see your work." data-msg-pattern="That doesn’t look like a web address. Try something like studio.example." />
+            <p class="field__error"></p>
+          </div>
+        </div>
+        <div class="field">
+          <label class="field__label" for="pt-email">Work email</label>
+          <input class="input" id="pt-email" name="email" type="email" required maxlength="120" autocomplete="email" inputmode="email" placeholder="you@studio.example" />
+          <p class="field__error"></p>
+        </div>
+        <div class="field">
+          <label class="field__label" for="pt-msg">What would you build, run or teach?</label>
+          <textarea class="input" id="pt-msg" name="message" required minlength="20" maxlength="1200" rows="4" placeholder="We set up review workflows for about ten film clients a year and would like to bring them onto Crestora." data-msg-required="A few lines are plenty, but we need something to go on."></textarea>
+          <p class="field__error"></p>
+        </div>
+        <button class="btn btn--primary btn--lg btn--block" type="submit">Send application <svg class="arrow" aria-hidden="true"><use href="#i-arrow"/></svg></button>
+        <p class="pt-form__note"><svg class="icon" aria-hidden="true"><use href="#i-info"/></svg>This is a demo: nothing you type here is stored or sent.</p>
+      </form>
+    </div>
+  </section>
+
+  {{> cta}}
+</main>

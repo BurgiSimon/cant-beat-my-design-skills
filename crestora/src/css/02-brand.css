@@ -1,0 +1,29 @@
+/* The brand: the chrome C and the wordmark. Size a .mark with width/height (it is square); the wordmark with
+   font-size. */
+
+.mark { position: relative; display: block; flex: none; width: 53px; height: 53px; }
+/* the C: a white ring cut open on the right, with a slow blue-violet sheen turning round it like light round chrome */
+.mark, .mark__sheen {
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 53 53'%3E%3Cpath d='M48.62 11.9A26.5 26.5 0 1 0 48.62 41.1L40.9 36.5A16.05 16.05 0 1 1 40.9 16.5Z'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 53 53'%3E%3Cpath d='M48.62 11.9A26.5 26.5 0 1 0 48.62 41.1L40.9 36.5A16.05 16.05 0 1 1 40.9 16.5Z'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+}
+.mark {
+  background:
+    linear-gradient(162deg, transparent 17%, rgb(64 72 214 / 0.9) 24%, rgb(140 150 250 / 0.55) 29%, transparent 36%),
+    radial-gradient(28% 18% at 62% 87%, rgb(70 82 220 / 0.8), transparent 75%),
+    radial-gradient(22% 40% at 9% 55%, rgb(170 178 255 / 0.45), transparent 70%),
+    linear-gradient(120deg, #fff 40%, #f1f2ff 70%, #fff 90%);
+}
+.mark__sheen {
+  position: absolute; inset: 0;
+  background: conic-gradient(from calc(var(--spin) + var(--look, 0deg)) at 50% 50%, transparent 0deg, rgb(255 255 255 / 0) 30deg, rgb(110 118 255 / 0.75) 62deg, rgb(190 200 255 / 0.4) 84deg, transparent 120deg, transparent 200deg, rgb(255 255 255 / 0.9) 228deg, transparent 260deg, transparent 360deg);
+  mix-blend-mode: multiply; opacity: 0.55;
+  animation: sheen 9s linear infinite;
+}
+@keyframes sheen { to { --spin: 360deg; } }
+/* Michroma is a shade lighter than the shot's wordmark: a hairline of stroke brings it up to weight */
+.wordmark { display: block; font-family: var(--font-brand); font-weight: 400; color: #fff; white-space: nowrap; line-height: 1; -webkit-text-stroke: 0.042em #fff; paint-order: stroke fill; }
+.wordmark .ch { display: inline-block; }
+
+
+.is-calm .mark__sheen { animation: none; }

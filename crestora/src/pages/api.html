@@ -1,0 +1,1591 @@
+<!--page
+title: API reference — Crestora
+description: A small REST API for lanes, versions, reviews and launches: authentication, rate limits, errors, pagination, every endpoint with samples in curl, JavaScript and Python, and signed webhooks.
+modules: tabs copy page-api
+nav: resources
+-->
+<main id="main">
+  <!-- API reference (generated from one data file, so every endpoint has the same parts). Three columns: the endpoint
+       nav (scrollspy in page-api.js; a <details> "Endpoints" on narrower screens), the descriptions with parameter
+       tables, and a sticky dark code panel per row whose curl / JavaScript / Python tabs stay in step across the page and
+       are remembered (generic tabs: data-tabs-sync + data-tabs-store="api-lang"). Copy buttons are the generic copy
+       module's. Method badges take their stage colour: GET cyan, POST green, PATCH amber, DELETE red. -->
+  <section class="page-hero api-hero" aria-labelledby="api-title">
+    <div class="page-hero__lanes" aria-hidden="true"></div>
+    <div class="container api-hero__grid">
+      <div class="page-hero__inner api-hero__text">
+        <p class="eyebrow" data-reveal="fade">API reference</p>
+        <h1 class="title-1" id="api-title" data-split>API reference.</h1>
+        <p class="lede" data-reveal data-delay="0.15">A small REST API for lanes, versions, reviews and launches. JSON in, JSON out.</p>
+        <div class="api-base" data-reveal data-delay="0.25">
+          <span class="api-base__label">Base URL</span>
+          <code class="api-base__url">https://api.crestora.example/v2</code>
+          <button class="api-copy" type="button" data-copy="https://api.crestora.example/v2" data-copy-toast="Base URL copied" aria-label="Copy the base URL" data-magnetic="0.2"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg></button>
+        </div>
+        <dl class="api-facts" data-reveal-stagger>
+          <div><dt><span data-odometer="600">600</span></dt><dd>requests a minute, per token</dd></div>
+          <div><dt><span data-odometer="10">10</span></dt><dd>endpoints, from lanes to launches</dd></div>
+          <div><dt><span data-odometer="4">4</span></dt><dd>signed webhook events</dd></div>
+        </dl>
+      </div>
+      <div class="api-hero__code" data-reveal data-delay="0.3">
+        <div class="api-code">
+      <div class="api-code__bar">
+        <p class="api-code__title">Your first request</p>
+        <div class="segmented api-langs" role="tablist" aria-label="Language for Your first request" data-tabs-sync="api-lang" data-tabs-store="api-lang">
+          <span class="segmented__thumb" aria-hidden="true"></span><button type="button" role="tab" id="first-request-t-curl" aria-controls="first-request-p-curl" aria-selected="true" tabindex="0" data-value="curl">curl</button><button type="button" role="tab" id="first-request-t-js" aria-controls="first-request-p-js" aria-selected="false" tabindex="-1" data-value="js">JavaScript</button><button type="button" role="tab" id="first-request-t-py" aria-controls="first-request-p-py" aria-selected="false" tabindex="-1" data-value="py">Python</button>
+        </div>
+      </div>
+      <div class="api-code__panels">
+        <div class="api-code__panel" role="tabpanel" id="first-request-p-curl" aria-labelledby="first-request-t-curl" data-lang-label="curl" data-copy-scope>
+          <button class="api-copy" type="button" data-copy data-copy-toast="curl request copied" aria-label="Copy the curl request"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg></button>
+          <pre tabindex="0" data-lenis-prevent><code data-lang="shell" data-copy-source>curl "https://api.crestora.example/v2/lanes?limit=1" \
+  -H "Authorization: Bearer $CRESTORA_TOKEN"</code></pre>
+        </div>
+        <div class="api-code__panel" role="tabpanel" id="first-request-p-js" aria-labelledby="first-request-t-js" data-lang-label="JavaScript" data-copy-scope hidden>
+          <button class="api-copy" type="button" data-copy data-copy-toast="JavaScript copied" aria-label="Copy the JavaScript sample"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg></button>
+          <pre tabindex="0" data-lenis-prevent><code data-lang="js" data-copy-source>const res = await fetch(
+  "https://api.crestora.example/v2/lanes?limit=1",
+  { headers: { Authorization: `Bearer ${token}` } },
+);
+console.log(await res.json());</code></pre>
+        </div>
+        <div class="api-code__panel" role="tabpanel" id="first-request-p-py" aria-labelledby="first-request-t-py" data-lang-label="Python" data-copy-scope hidden>
+          <button class="api-copy" type="button" data-copy data-copy-toast="Python copied" aria-label="Copy the Python sample"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg></button>
+          <pre tabindex="0" data-lenis-prevent><code data-lang="py" data-copy-source>import requests
+
+res = requests.get(
+    "https://api.crestora.example/v2/lanes",
+    params={"limit": 1},
+    headers={"Authorization": f"Bearer {token}"},
+)
+print(res.json())</code></pre>
+        </div>
+      </div>
+      <div class="api-code__res" data-copy-scope>
+        <div class="api-code__resbar">
+          <span class="api-code__reslabel">Response</span>
+          <span class="api-status"><b>200</b> OK</span>
+          <button class="api-copy" type="button" data-copy data-copy-toast="Response copied" aria-label="Copy the response"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg></button>
+        </div>
+        <pre tabindex="0" data-lenis-prevent><code data-lang="json" data-copy-source>{
+  "data": [
+    {
+      "id": "ln_8Fq2Tz",
+      "object": "lane",
+      "title": "Tidepool 1.1",
+      "stage": "review",
+      "launch_on": "2026-12-10"
+    }
+  ],
+  "has_more": true,
+  "next_cursor": "cur_8Lr4cY"
+}</code></pre>
+      </div>
+    </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="api" aria-label="The reference">
+    <div class="container api__grid">
+      <details class="api-side" open data-api-side>
+        <summary class="api-side__sum">
+          <span class="api-side__label"><svg class="icon" aria-hidden="true"><use href="#i-code"/></svg>Endpoints</span>
+          <span class="api-side__now" data-api-now aria-hidden="true">Conventions</span>
+          <svg class="api-side__chev" aria-hidden="true"><use href="#i-chev-down"/></svg>
+        </summary>
+        <nav class="api-nav" aria-label="API reference" data-lenis-prevent>
+          <div class="api-nav__group">
+            <p class="api-nav__label">Basics</p>
+            <ul>
+              <li class="api-nav__item"><a class="api-nav__link" href="#conventions">Conventions</a></li>
+              <li class="api-nav__item"><a class="api-nav__link" href="#authentication">Authentication</a></li>
+              <li class="api-nav__item"><a class="api-nav__link" href="#rate-limits">Rate limits</a></li>
+              <li class="api-nav__item"><a class="api-nav__link" href="#errors">Errors</a></li>
+              <li class="api-nav__item"><a class="api-nav__link" href="#pagination">Pagination</a></li>
+            </ul>
+          </div>
+          <div class="api-nav__group">
+            <p class="api-nav__label">Resources</p>
+            <ul>
+              <li class="api-nav__item"><a class="api-nav__link" href="#lanes">Lanes</a>
+                <ul class="api-nav__eps">
+                  <li><a href="#list-lanes" data-method="get"><span class="api-nav__m" data-method="get">GET</span><span class="api-nav__t">List lanes</span></a></li>
+                  <li><a href="#create-lane" data-method="post"><span class="api-nav__m" data-method="post">POST</span><span class="api-nav__t">Create a lane</span></a></li>
+                  <li><a href="#get-lane" data-method="get"><span class="api-nav__m" data-method="get">GET</span><span class="api-nav__t">Retrieve a lane</span></a></li>
+                  <li><a href="#update-lane" data-method="patch"><span class="api-nav__m" data-method="patch">PATCH</span><span class="api-nav__t">Update or move</span></a></li>
+                  <li><a href="#delete-lane" data-method="delete"><span class="api-nav__m" data-method="delete">DELETE</span><span class="api-nav__t">Delete a lane</span></a></li>
+                </ul></li>
+              <li class="api-nav__item"><a class="api-nav__link" href="#sparks">Sparks</a>
+                <ul class="api-nav__eps">
+                  <li><a href="#create-spark" data-method="post"><span class="api-nav__m" data-method="post">POST</span><span class="api-nav__t">Create a spark</span></a></li>
+                </ul></li>
+              <li class="api-nav__item"><a class="api-nav__link" href="#versions">Versions</a>
+                <ul class="api-nav__eps">
+                  <li><a href="#create-version" data-method="post"><span class="api-nav__m" data-method="post">POST</span><span class="api-nav__t">Add a version</span></a></li>
+                </ul></li>
+              <li class="api-nav__item"><a class="api-nav__link" href="#comments">Comments</a>
+                <ul class="api-nav__eps">
+                  <li><a href="#list-comments" data-method="get"><span class="api-nav__m" data-method="get">GET</span><span class="api-nav__t">List comments</span></a></li>
+                  <li><a href="#create-comment" data-method="post"><span class="api-nav__m" data-method="post">POST</span><span class="api-nav__t">Add a comment</span></a></li>
+                </ul></li>
+              <li class="api-nav__item"><a class="api-nav__link" href="#launches">Launches</a>
+                <ul class="api-nav__eps">
+                  <li><a href="#create-launch" data-method="post"><span class="api-nav__m" data-method="post">POST</span><span class="api-nav__t">Schedule a launch</span></a></li>
+                </ul></li>
+            </ul>
+          </div>
+          <div class="api-nav__group">
+            <p class="api-nav__label">Events</p>
+            <ul>
+              <li class="api-nav__item"><a class="api-nav__link" href="#webhooks">Webhooks</a>
+                <ul class="api-nav__eps">
+                  <li><a href="#webhook-events"><span class="api-nav__m api-nav__m--none" aria-hidden="true"></span><span class="api-nav__t">Events</span></a></li>
+                  <li><a href="#webhook-signatures"><span class="api-nav__m api-nav__m--none" aria-hidden="true"></span><span class="api-nav__t">Verifying signatures</span></a></li>
+                </ul></li>
+            </ul>
+          </div>
+          <div class="api-nav__more">
+            <a class="link-arrow" href="docs.html" data-roll>Documentation <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+          </div>
+        </nav>
+      </details>
+
+      <div class="api-main">
+    <section class="api-sec" id="conventions" aria-labelledby="conventions-title">
+      <div class="api-row api-row--intro">
+        <div class="api-doc">
+          <p class="api-kicker"><span class="api-kicker__mark" aria-hidden="true"></span>Basics</p>
+          <h2 class="api-h2" id="conventions-title">Conventions</h2>
+          <p class="api-lead">Everything goes over HTTPS to one base URL, and everything comes back as JSON. A few habits hold across the whole API:</p>
+          <ul class="api-list">
+            <li><strong>JSON both ways.</strong> Send <code>Content-Type: application/json</code> with a body; responses are UTF-8 JSON.</li>
+            <li><strong>Times in UTC.</strong> Timestamps are ISO 8601, like <code>2026-12-10T17:00:00Z</code>; plain dates are <code>YYYY-MM-DD</code>.</li>
+            <li><strong>IDs say what they are.</strong> <code>ln_</code> a lane, <code>sp_</code> a spark, <code>vr_</code> a version, <code>cm_</code> a comment, <code>lc_</code> a launch, <code>ev_</code> an event.</li>
+            <li><strong>Retries are safe.</strong> Send an <code>Idempotency-Key</code> header with a POST, and a repeat within 24 hours returns the first response instead of a duplicate.</li>
+            <li><strong>v2 is stable.</strong> Breaking changes only arrive in a new version, with 12 months of overlap. New fields can appear any time, so ignore the ones you don’t know.</li>
+          </ul>
+        </div>
+        <div class="api-aside">
+          <div class="api-code api-code--single" data-copy-scope>
+      <div class="api-code__bar">
+        <p class="api-code__title">Every response carries</p>
+        <span class="api-status"><b>200</b> OK</span>
+        <button class="api-copy" type="button" data-copy data-copy-toast="Headers copied" aria-label="Copy the headers"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg></button>
+      </div>
+      <pre tabindex="0" data-lenis-prevent><code data-lang="http" data-copy-source>HTTP/2 200
+content-type: application/json; charset=utf-8
+crestora-version: 2026-11-20
+request-id: req_8Kd2PqT4
+x-ratelimit-limit: 600
+x-ratelimit-remaining: 597
+x-ratelimit-reset: 1795789320</code></pre>
+    </div>
+        </div>
+      </div>
+      
+      
+    </section>
+
+    <section class="api-sec" id="authentication" aria-labelledby="authentication-title">
+      <div class="api-row api-row--intro">
+        <div class="api-doc">
+          <p class="api-kicker"><span class="api-kicker__mark" aria-hidden="true"></span>Basics</p>
+          <h2 class="api-h2" id="authentication-title">Authentication</h2>
+          <p class="api-lead">Every request carries a token in the <code>Authorization</code> header. Create tokens under Settings → API: personal tokens act as you, and app tokens act as an integration installed on a crew.</p>
+          <p>Live tokens start with <code>crst_live_</code>. Tokens from the sandbox start with <code>crst_test_</code> and only ever touch sample data. Keep tokens out of code you share; if one leaks, revoke it in Settings → API and it stops working within a minute.</p>
+          <p>Each token carries scopes. A request without the scope it needs gets <code>403 insufficient_scope</code>, and the message names the missing scope.</p>
+          <h4 class="api-h4">Scopes</h4>
+          <div class="api-table" role="region" aria-label="Scopes for Authentication" tabindex="0">
+            <table class="api-params api-params--2 " role="table">
+              <thead role="rowgroup"><tr role="row"><th scope="col" role="columnheader">Scope</th><th scope="col" role="columnheader">Grants</th></tr></thead>
+              <tbody role="rowgroup">
+              <tr role="row"><th scope="row" role="rowheader"><code>lanes:read</code></th><td role="cell">List and read lanes, their stages and Blueprints.</td></tr>
+              <tr role="row"><th scope="row" role="rowheader"><code>lanes:write</code></th><td role="cell">Create, update, move and delete lanes.</td></tr>
+              <tr role="row"><th scope="row" role="rowheader"><code>sparks:write</code></th><td role="cell">Add sparks to a board or a lane.</td></tr>
+              <tr role="row"><th scope="row" role="rowheader"><code>versions:write</code></th><td role="cell">Add new versions to a lane.</td></tr>
+              <tr role="row"><th scope="row" role="rowheader"><code>comments:read</code></th><td role="cell">Read the notes left on versions.</td></tr>
+              <tr role="row"><th scope="row" role="rowheader"><code>comments:write</code></th><td role="cell">Leave notes and replies on versions.</td></tr>
+              <tr role="row"><th scope="row" role="rowheader"><code>launches:write</code></th><td role="cell">Schedule launches and their channels.</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="api-fine">The JavaScript and Python samples below reuse the small <code>api</code> helper and session set up here.</p>
+        </div>
+        <div class="api-aside">
+          <div class="api-code">
+      <div class="api-code__bar">
+        <p class="api-code__title">Authenticate</p>
+        <div class="segmented api-langs" role="tablist" aria-label="Language for Authenticate" data-tabs-sync="api-lang" data-tabs-store="api-lang">
+          <span class="segmented__thumb" aria-hidden="true"></span><button type="button" role="tab" id="authentication-t-curl" aria-controls="authentication-p-curl" aria-selected="true" tabindex="0" data-value="curl">curl</button><button type="button" role="tab" id="authentication-t-js" aria-controls="authentication-p-js" aria-selected="false" tabindex="-1" data-value="js">JavaScript</button><button type="button" role="tab" id="authentication-t-py" aria-controls="authentication-p-py" aria-selected="false" tabindex="-1" data-value="py">Python</button>
+        </div>
+      </div>
+      <div class="api-code__panels">
+        <div class="api-code__panel" role="tabpanel" id="authentication-p-curl" aria-labelledby="authentication-t-curl" data-lang-label="curl" data-copy-scope>
+          <button class="api-copy" type="button" data-copy data-copy-toast="curl request copied" aria-label="Copy the curl request"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg></button>
+          <pre tabindex="0" data-lenis-prevent><code data-lang="shell" data-copy-source>curl https://api.crestora.example/v2/lanes \
+  -H "Authorization: Bearer $CRESTORA_TOKEN"</code></pre>
+        </div>
+        <div class="api-code__panel" role="tabpanel" id="authentication-p-js" aria-labelledby="authentication-t-js" data-lang-label="JavaScript" data-copy-scope hidden>
+          <button class="api-copy" type="button" data-copy data-copy-toast="JavaScript copied" aria-label="Copy the JavaScript sample"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg></button>
+          <pre tabindex="0" data-lenis-prevent><code data-lang="js" data-copy-source>const BASE = "https://api.crestora.example/v2";
+const token = process.env.CRESTORA_TOKEN;
+
+async function api(path, { method = "GET", body } = {}) {
+  const res = await fetch(BASE + path, {
+    method,
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+    body: body &amp;&amp; JSON.stringify(body),
+  });
+  return res.json();
+}
+
+const { data: lanes } = await api("/lanes");</code></pre>
+        </div>
+        <div class="api-code__panel" role="tabpanel" id="authentication-p-py" aria-labelledby="authentication-t-py" data-lang-label="Python" data-copy-scope hidden>
+          <button class="api-copy" type="button" data-copy data-copy-toast="Python copied" aria-label="Copy the Python sample"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg></button>
+          <pre tabindex="0" data-lenis-prevent><code data-lang="py" data-copy-source>import os
+import requests
+
+BASE = "https://api.crestora.example/v2"
+token = os.environ["CRESTORA_TOKEN"]
+
+api = requests.Session()
+api.headers["Authorization"] = f"Bearer {token}"
+
+lanes = api.get(f"{BASE}/lanes").json()["data"]</code></pre>
+        </div>
+      </div>
+      <div class="api-code__res" data-copy-scope>
+        <div class="api-code__resbar">
+          <span class="api-code__reslabel">Without a token</span>
+          <span class="api-status"><b>401</b> Unauthorized</span>
+          <button class="api-copy" type="button" data-copy data-copy-toast="Response copied" aria-label="Copy the without a token"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg></button>
+        </div>
+        <pre tabindex="0" data-lenis-prevent><code data-lang="json" data-copy-source>{
+  "error": {
+    "type": "unauthenticated",
+    "message": "Send a token in the Authorization header.",
+    "request_id": "req_3Fm9Ws1L"
+  }
+}</code></pre>
+      </div>
+    </div>
+        </div>
+      </div>
+      
+      
+    </section>
+
+    <section class="api-sec" id="rate-limits" aria-labelledby="rate-limits-title">
+      <div class="api-row api-row--intro">
+        <div class="api-doc">
+          <p class="api-kicker"><span class="api-kicker__mark" aria-hidden="true"></span>Basics</p>
+          <h2 class="api-h2" id="rate-limits-title">Rate limits</h2>
+          <p class="api-lead">Each token can make 600 requests per minute, counted over a sliding window. Every response says where you stand.</p>
+          <p>Go over and you get <code>429 rate_limited</code> with a <code>Retry-After</code> header in seconds. Wait that long, then carry on; there’s no penalty for hitting the limit.</p>
+          <h4 class="api-h4">Headers</h4>
+          <div class="api-table" role="region" aria-label="Headers for Rate limits" tabindex="0">
+            <table class="api-params" role="table">
+              <thead role="rowgroup"><tr role="row"><th scope="col" role="columnheader">Name</th><th scope="col" role="columnheader">Type</th><th scope="col" role="columnheader">Description</th></tr></thead>
+              <tbody role="rowgroup">
+              <tr role="row"><th scope="row" role="rowheader"><code>X-RateLimit-Limit</code></th><td role="cell" class="api-params__type"><span class="api-type">integer</span></td><td role="cell" class="api-params__desc">Requests allowed per minute: 600.</td></tr>
+              <tr role="row"><th scope="row" role="rowheader"><code>X-RateLimit-Remaining</code></th><td role="cell" class="api-params__type"><span class="api-type">integer</span></td><td role="cell" class="api-params__desc">Requests left in the current window.</td></tr>
+              <tr role="row"><th scope="row" role="rowheader"><code>X-RateLimit-Reset</code></th><td role="cell" class="api-params__type"><span class="api-type">unix time</span></td><td role="cell" class="api-params__desc">When the window has fully refilled.</td></tr>
+              <tr role="row"><th scope="row" role="rowheader"><code>Retry-After</code></th><td role="cell" class="api-params__type"><span class="api-type">seconds</span></td><td role="cell" class="api-params__desc">Only on a 429: how long to wait before trying again.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="api-aside">
+          <div class="api-code">
+      <div class="api-code__bar">
+        <p class="api-code__title">Back off on a 429</p>
+        <div class="segmented api-langs" role="tablist" aria-label="Language for Back off on a 429" data-tabs-sync="api-lang" data-tabs-store="api-lang">
+          <span class="segmented__thumb" aria-hidden="true"></span><button type="button" role="tab" id="rate-limits-t-curl" aria-controls="rate-limits-p-curl" aria-selected="true" tabindex="0" data-value="curl">curl</button><button type="button" role="tab" id="rate-limits-t-js" aria-controls="rate-limits-p-js" aria-selected="false" tabindex="-1" data-value="js">JavaScript</button><button type="button" role="tab" id="rate-limits-t-py" aria-controls="rate-limits-p-py" aria-selected="false" tabindex="-1" data-value="py">Python</button>
+        </div>
+      </div>
+      <div class="api-code__panels">
+        <div class="api-code__panel" role="tabpanel" id="rate-limits-p-curl" aria-labelledby="rate-limits-t-curl" data-lang-label="curl" data-copy-scope>
+          <button class="api-copy" type="button" data-copy data-copy-toast="curl request copied" aria-label="Copy the curl request"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg></button>
+          <pre tabindex="0" data-lenis-prevent><code data-lang="shell" data-copy-source>curl -i https://api.crestora.example/v2/lanes \
+  -H "Authorization: Bearer $CRESTORA_TOKEN"</code></pre>
+        </div>
+        <div class="api-code__panel" role="tabpanel" id="rate-limits-p-js" aria-labelledby="rate-limits-t-js" data-lang-label="JavaScript" data-copy-scope hidden>
+          <button class="api-copy" type="button" data-copy data-copy-toast="JavaScript copied" aria-label="Copy the JavaScript sample"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg></button>
+          <pre tabindex="0" data-lenis-prevent><code data-lang="js" data-copy-source>async function getWithRetry(path) {
+  const res = await fetch(BASE + path, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  if (res.status === 429) {
+    const wait = Number(res.headers.get("Retry-After"));
+    await new Promise((r) =&gt; setTimeout(r, wait * 1000));
+    return getWithRetry(path);
+  }
+  return res.json();
+}</code></pre>
+        </div>
+        <div class="api-code__panel" role="tabpanel" id="rate-limits-p-py" aria-labelledby="rate-limits-t-py" data-lang-label="Python" data-copy-scope hidden>
+          <button class="api-copy" type="button" data-copy data-copy-toast="Python copied" aria-label="Copy the Python sample"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg></button>
+          <pre tabindex="0" data-lenis-prevent><code data-lang="py" data-copy-source>import time
+
+def get_with_retry(path):
+    res = api.get(f"{BASE}{path}")
+    if res.status_code == 429:
+        time.sleep(int(res.headers["Retry-After"]))
+        return get_with_retry(path)
+    return res.json()</code></pre>
+        </div>
+      </div>
+      <div class="api-code__res" data-copy-scope>
+        <div class="api-code__resbar">
+          <span class="api-code__reslabel">Response</span>
+          <span class="api-status"><b>429</b> Too Many Requests</span>
+          <button class="api-copy" type="button" data-copy data-copy-toast="Response copied" aria-label="Copy the response"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg></button>
+        </div>
+        <pre tabindex="0" data-lenis-prevent><code data-lang="http" data-copy-source>HTTP/2 429
+x-ratelimit-limit: 600
+x-ratelimit-remaining: 0
+x-ratelimit-reset: 1795789320
+retry-after: 12
+
+{
+  "error": {
+    "type": "rate_limited",
+    "message": "600 requests a minute. Try again in 12 s."
+  }
+}</code></pre>
+      </div>
+    </div>
+        </div>
+      </div>
+      
+      
+    </section>
+
+    <section class="api-sec" id="errors" aria-labelledby="errors-title">
+      <div class="api-row api-row--intro">
+        <div class="api-doc">
+          <p class="api-kicker"><span class="api-kicker__mark" aria-hidden="true"></span>Basics</p>
+          <h2 class="api-h2" id="errors-title">Errors</h2>
+          <p class="api-lead">Crestora uses plain HTTP status codes. A 2xx worked, a 4xx means something in the request needs changing, and a 5xx is on us and safe to retry after a short wait.</p>
+          <p>Every error has the same shape: a <code>type</code> to switch on, a <code>message</code> written for people, and for validation errors the <code>field</code> at fault. Quote the <code>request_id</code> when you write to support.</p>
+          <div class="api-table" role="region" aria-label="Error codes" tabindex="0">
+            <table class="api-params api-errors" role="table">
+              <thead role="rowgroup"><tr role="row"><th scope="col" role="columnheader">Status</th><th scope="col" role="columnheader">Type</th><th scope="col" role="columnheader">What it means</th></tr></thead>
+              <tbody role="rowgroup">
+              <tr role="row"><th scope="row" role="rowheader"><span class="api-code-n">400</span></th><td role="cell"><code>invalid_request</code></td><td role="cell">The JSON or a parameter couldn’t be read.</td></tr>
+              <tr role="row"><th scope="row" role="rowheader"><span class="api-code-n">401</span></th><td role="cell"><code>unauthenticated</code></td><td role="cell">No token, or one that has expired or been revoked.</td></tr>
+              <tr role="row"><th scope="row" role="rowheader"><span class="api-code-n">403</span></th><td role="cell"><code>insufficient_scope</code></td><td role="cell">The token lacks a scope; the message names it.</td></tr>
+              <tr role="row"><th scope="row" role="rowheader"><span class="api-code-n">404</span></th><td role="cell"><code>not_found</code></td><td role="cell">No such object, or one you can’t see.</td></tr>
+              <tr role="row"><th scope="row" role="rowheader"><span class="api-code-n">409</span></th><td role="cell"><code>stage_conflict</code></td><td role="cell">The move isn’t allowed yet, such as into Launch with a version still awaiting approval.</td></tr>
+              <tr role="row"><th scope="row" role="rowheader"><span class="api-code-n">422</span></th><td role="cell"><code>validation_failed</code></td><td role="cell">A field failed a check; see <code>error.field</code>.</td></tr>
+              <tr role="row"><th scope="row" role="rowheader"><span class="api-code-n">429</span></th><td role="cell"><code>rate_limited</code></td><td role="cell">Over 600 requests a minute. See <a href="#rate-limits">Rate limits</a>.</td></tr>
+              <tr role="row"><th scope="row" role="rowheader"><span class="api-code-n">500</span></th><td role="cell"><code>server_error</code></td><td role="cell">Something broke on our side. Retry with a growing wait.</td></tr>
+              <tr role="row"><th scope="row" role="rowheader"><span class="api-code-n">503</span></th><td role="cell"><code>unavailable</code></td><td role="cell">Briefly down for maintenance. Retry after <code>Retry-After</code>.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="api-aside">
+          <div class="api-code api-code--single" data-copy-scope>
+      <div class="api-code__bar">
+        <p class="api-code__title">An error, in full</p>
+        <span class="api-status"><b>422</b> Unprocessable</span>
+        <button class="api-copy" type="button" data-copy data-copy-toast="Error copied" aria-label="Copy the error"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg></button>
+      </div>
+      <pre tabindex="0" data-lenis-prevent><code data-lang="json" data-copy-source>{
+  "error": {
+    "type": "validation_failed",
+    "message": "launch_on must be a date after today.",
+    "field": "launch_on",
+    "request_id": "req_8Kd2PqT4"
+  }
+}</code></pre>
+    </div>
+        </div>
+      </div>
+      
+      
+    </section>
+
+    <section class="api-sec" id="pagination" aria-labelledby="pagination-title">
+      <div class="api-row api-row--intro">
+        <div class="api-doc">
+          <p class="api-kicker"><span class="api-kicker__mark" aria-hidden="true"></span>Basics</p>
+          <h2 class="api-h2" id="pagination-title">Pagination</h2>
+          <p class="api-lead">List endpoints return pages of up to 100 objects, newest first, with a cursor for the next page.</p>
+          <p>Pass the <code>next_cursor</code> back as <code>cursor</code> until <code>has_more</code> is false. Cursors stay valid for 24 hours.</p>
+          <h4 class="api-h4">Query parameters</h4>
+          <div class="api-table" role="region" aria-label="Query parameters for Pagination" tabindex="0">
+            <table class="api-params" role="table">
+              <thead role="rowgroup"><tr role="row"><th scope="col" role="columnheader">Name</th><th scope="col" role="columnheader">Type</th><th scope="col" role="columnheader">Description</th></tr></thead>
+              <tbody role="rowgroup">
+              <tr role="row"><th scope="row" role="rowheader"><code>limit</code></th><td role="cell" class="api-params__type"><span class="api-type">integer</span></td><td role="cell" class="api-params__desc">How many objects to return, from 1 to 100. Defaults to 25.</td></tr>
+              <tr role="row"><th scope="row" role="rowheader"><code>cursor</code></th><td role="cell" class="api-params__type"><span class="api-type">string</span></td><td role="cell" class="api-params__desc">The <code>next_cursor</code> from the previous page.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="api-aside">
+          <div class="api-code">
+      <div class="api-code__bar">
+        <p class="api-code__title">Walk every page</p>
+        <div class="segmented api-langs" role="tablist" aria-label="Language for Walk every page" data-tabs-sync="api-lang" data-tabs-store="api-lang">
+          <span class="segmented__thumb" aria-hidden="true"></span><button type="button" role="tab" id="pagination-t-curl" aria-controls="pagination-p-curl" aria-selected="true" tabindex="0" data-value="curl">curl</button><button type="button" role="tab" id="pagination-t-js" aria-controls="pagination-p-js" aria-selected="false" tabindex="-1" data-value="js">JavaScript</button><button type="button" role="tab" id="pagination-t-py" aria-controls="pagination-p-py" aria-selected="false" tabindex="-1" data-value="py">Python</button>
+        </div>
+      </div>
+      <div class="api-code__panels">
+        <div class="api-code__panel" role="tabpanel" id="pagination-p-curl" aria-labelledby="pagination-t-curl" data-lang-label="curl" data-copy-scope>
+          <button class="api-copy" type="button" data-copy data-copy-toast="curl request copied" aria-label="Copy the curl request"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg></button>
+          <pre tabindex="0" data-lenis-prevent><code data-lang="shell" data-copy-source>curl -G https://api.crestora.example/v2/lanes \
+  -H "Authorization: Bearer $CRESTORA_TOKEN" \
+  -d limit=100 \
+  -d cursor=cur_8Lr4cY</code></pre>
+        </div>
+        <div class="api-code__panel" role="tabpanel" id="pagination-p-js" aria-labelledby="pagination-t-js" data-lang-label="JavaScript" data-copy-scope hidden>
+          <button class="api-copy" type="button" data-copy data-copy-toast="JavaScript copied" aria-label="Copy the JavaScript sample"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg></button>
+          <pre tabindex="0" data-lenis-prevent><code data-lang="js" data-copy-source>const lanes = [];
+let cursor;
+do {
+  const q = new URLSearchParams({ limit: 100 });
+  if (cursor) q.set("cursor", cursor);
+  const page = await api(`/lanes?${q}`);
+  lanes.push(...page.data);
+  cursor = page.has_more ? page.next_cursor : null;
+} while (cursor);</code></pre>
+        </div>
+        <div class="api-code__panel" role="tabpanel" id="pagination-p-py" aria-labelledby="pagination-t-py" data-lang-label="Python" data-copy-scope hidden>
+          <button class="api-copy" type="button" data-copy data-copy-toast="Python copied" aria-label="Copy the Python sample"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg></button>
+          <pre tabindex="0" data-lenis-prevent><code data-lang="py" data-copy-source>lanes, cursor = [], None
+while True:
+    params = {"limit": 100}
+    if cursor:
+        params["cursor"] = cursor
+    page = api.get(f"{BASE}/lanes", params=params).json()
+    lanes += page["data"]
+    if not page["has_more"]:
+        break
+    cursor = page["next_cursor"]</code></pre>
+        </div>
+      </div>
+      <div class="api-code__res" data-copy-scope>
+        <div class="api-code__resbar">
+          <span class="api-code__reslabel">Response</span>
+          <span class="api-status"><b>200</b> OK</span>
+          <button class="api-copy" type="button" data-copy data-copy-toast="Response copied" aria-label="Copy the response"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg></button>
+        </div>
+        <pre tabindex="0" data-lenis-prevent><code data-lang="json" data-copy-source>{
+  "data": [
+    { "id": "ln_8Fq2Tz", "title": "Tidepool 1.1" },
+    { "id": "ln_3Kd7Wp", "title": "Small Hours ep. 49" }
+  ],
+  "has_more": true,
+  "next_cursor": "cur_9Ts1dQ"
+}</code></pre>
+      </div>
+    </div>
+        </div>
+      </div>
+      
+      
+    </section>
+
+    <section class="api-sec" id="lanes" aria-labelledby="lanes-title">
+      <div class="api-row api-row--intro">
+        <div class="api-doc">
+          <p class="api-kicker"><span class="api-kicker__mark" aria-hidden="true"></span>Resource</p>
+          <h2 class="api-h2" id="lanes-title">Lanes</h2>
+          <p class="api-lead">A lane is one project moving through six stages: <span class="api-stages"><code data-stage="spark">spark</code> <code data-stage="shape">shape</code> <code data-stage="make">make</code> <code data-stage="review">review</code> <code data-stage="launch">launch</code> <code data-stage="afterglow">afterglow</code></span>. Lanes belong to you or to a crew, and carry their stage, their dates and a count of what’s on them.</p>
+          <h4 class="api-h4">The lane object</h4>
+          <div class="api-table" role="region" aria-label="The lane object for Lanes" tabindex="0">
+            <table class="api-params" role="table">
+              <thead role="rowgroup"><tr role="row"><th scope="col" role="columnheader">Name</th><th scope="col" role="columnheader">Type</th><th scope="col" role="columnheader">Description</th></tr></thead>
+              <tbody role="rowgroup">
+              <tr role="row"><th scope="row" role="rowheader"><code>id</code></th><td role="cell" class="api-params__type"><span class="api-type">string</span></td><td role="cell" class="api-params__desc">Starts with <code>ln_</code>.</td></tr>
+              <tr role="row"><th scope="row" role="rowheader"><code>title</code></th><td role="cell" class="api-params__type"><span class="api-type">string</span></td><td role="cell" class="api-params__desc">The working title.</td></tr>
+              <tr role="row"><th scope="row" role="rowheader"><code>stage</code></th><td role="cell" class="api-params__type"><span class="api-type">enum</span></td><td role="cell" class="api-params__desc">One of the six stages, in lower case.</td></tr>
+              <tr role="row"><th scope="row" role="rowheader"><code>crew_id</code></th><td role="cell" class="api-params__type"><span class="api-type">string or null</span></td><td role="cell" class="api-params__desc">The crew it’s shared with; <code>null</code> for a personal lane.</td></tr>
+              <tr role="row"><th scope="row" role="rowheader"><code>launch_on</code></th><td role="cell" class="api-params__type"><span class="api-type">date or null</span></td><td role="cell" class="api-params__desc">The planned launch day, from the Blueprint.</td></tr>
+              <tr role="row"><th scope="row" role="rowheader"><code>counts</code></th><td role="cell" class="api-params__type"><span class="api-type">object</span></td><td role="cell" class="api-params__desc">How many <code>versions</code>, <code>open_notes</code> and <code>sparks</code> it holds.</td></tr>
+              <tr role="row"><th scope="row" role="rowheader"><code>created_at</code></th><td role="cell" class="api-params__type"><span class="api-type">timestamp</span></td><td role="cell" class="api-params__desc">When the lane was opened.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="api-aside">
+          <div class="api-code api-code--single" data-copy-scope>
+      <div class="api-code__bar">
+        <p class="api-code__title">The lane object</p>
+        
+        <button class="api-copy" type="button" data-copy data-copy-toast="Lane object copied" aria-label="Copy the lane object"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg></button>
+      </div>
+      <pre tabindex="0" data-lenis-prevent><code data-lang="json" data-copy-source>{
+  "id": "ln_8Fq2Tz",
+  "object": "lane",
+  "title": "Tidepool 1.1",
+  "stage": "review",
+  "crew_id": "cr_4hW9",
+  "launch_on": "2026-12-10",
+  "counts": { "versions": 12, "open_notes": 3, "sparks": 17 },
+  "created_at": "2026-11-02T09:41:03Z",
+  "url": "https://app.crestora.example/l/ln_8Fq2Tz"
+}</code></pre>
+    </div>
+        </div>
+      </div>
+      <article class="api-row api-ep" id="list-lanes" aria-labelledby="list-lanes-title">
+        <div class="api-doc">
+          <h3 class="api-ep__title" id="list-lanes-title">List lanes</h3>
+          <p class="api-route" data-method="get"><span class="api-method">GET</span><code>/lanes</code></p>
+          <p>Returns the lanes you can see, most recently active first. Filter by stage or by crew.</p>
+          <p class="api-scope"><span>Scope</span><code>lanes:read</code></p>
+          <h4 class="api-h4">Query parameters</h4>
+          <div class="api-table" role="region" aria-label="Query parameters for List lanes" tabindex="0">
+            <table class="api-params" role="table">
+              <thead role="rowgroup"><tr role="row"><th scope="col" role="columnheader">Name</th><th scope="col" role="columnheader">Type</th><th scope="col" role="columnheader">Description</th></tr></thead>
+              <tbody role="rowgroup">
+              <tr role="row"><th scope="row" role="rowheader"><code>stage</code></th><td role="cell" class="api-params__type"><span class="api-type">enum</span></td><td role="cell" class="api-params__desc">Only lanes in this stage.</td></tr>
+              <tr role="row"><th scope="row" role="rowheader"><code>crew_id</code></th><td role="cell" class="api-params__type"><span class="api-type">string</span></td><td role="cell" class="api-params__desc">Only lanes shared with this crew.</td></tr>
+              <tr role="row"><th scope="row" role="rowheader"><code>limit</code></th><td role="cell" class="api-params__type"><span class="api-type">integer</span></td><td role="cell" class="api-params__desc">1 to 100; see <a href="#pagination">Pagination</a>.</td></tr>
+              <tr role="row"><th scope="row" role="rowheader"><code>cursor</code></th><td role="cell" class="api-params__type"><span class="api-type">string</span></td><td role="cell" class="api-params__desc">The cursor for the next page.</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <h4 class="api-h4">Returns</h4>
+          <p>A page of lane objects, in <code>data</code>.</p>
+        </div>
+        <div class="api-aside">
+          <div class="api-code">
+      <div class="api-code__bar">
+        <p class="api-code__title"><span class="api-method" data-method="get">GET</span><span class="api-code__path">/lanes</span></p>
+        <div class="segmented api-langs" role="tablist" aria-label="Language for GET /lanes" data-tabs-sync="api-lang" data-tabs-store="api-lang">
+          <span class="segmented__thumb" aria-hidden="true"></span><button type="button" role="tab" id="list-lanes-t-curl" aria-controls="list-lanes-p-curl" aria-selected="true" tabindex="0" data-value="curl">curl</button><button type="button" role="tab" id="list-lanes-t-js" aria-controls="list-lanes-p-js" aria-selected="false" tabindex="-1" data-value="js">JavaScript</button><button type="button" role="tab" id="list-lanes-t-py" aria-controls="list-lanes-p-py" aria-selected="false" tabindex="-1" data-value="py">Python</button>
+        </div>
+      </div>
+      <div class="api-code__panels">
+        <div class="api-code__panel" role="tabpanel" id="list-lanes-p-curl" aria-labelledby="list-lanes-t-curl" data-lang-label="curl" data-copy-scope>
+          <button class="api-copy" type="button" data-copy data-copy-toast="curl request copied" aria-label="Copy the curl request"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg></button>
+          <pre tabindex="0" data-lenis-prevent><code data-lang="shell" data-copy-source>curl -G https://api.crestora.example/v2/lanes \
+  -H "Authorization: Bearer $CRESTORA_TOKEN" \
+  -d stage=review \
+  -d limit=2</code></pre>
+        </div>
+        <div class="api-code__panel" role="tabpanel" id="list-lanes-p-js" aria-labelledby="list-lanes-t-js" data-lang-label="JavaScript" data-copy-scope hidden>
+          <button class="api-copy" type="button" data-copy data-copy-toast="JavaScript copied" aria-label="Copy the JavaScript sample"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg></button>
+          <pre tabindex="0" data-lenis-prevent><code data-lang="js" data-copy-source>const { data, has_more } = await api(
+  "/lanes?stage=review&amp;limit=2",
+);</code></pre>
+        </div>
+        <div class="api-code__panel" role="tabpanel" id="list-lanes-p-py" aria-labelledby="list-lanes-t-py" data-lang-label="Python" data-copy-scope hidden>
+          <button class="api-copy" type="button" data-copy data-copy-toast="Python copied" aria-label="Copy the Python sample"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg></button>
+          <pre tabindex="0" data-lenis-prevent><code data-lang="py" data-copy-source>page = api.get(
+    f"{BASE}/lanes",
+    params={"stage": "review", "limit": 2},
+).json()</code></pre>
+        </div>
+      </div>
+      <div class="api-code__res" data-copy-scope>
+        <div class="api-code__resbar">
+          <span class="api-code__reslabel">Response</span>
+          <span class="api-status"><b>200</b> OK</span>
+          <button class="api-copy" type="button" data-copy data-copy-toast="Response copied" aria-label="Copy the response"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg></button>
+        </div>
+        <pre tabindex="0" data-lenis-prevent><code data-lang="json" data-copy-source>{
+  "data": [
+    {
+      "id": "ln_8Fq2Tz",
+      "title": "Tidepool 1.1",
+      "stage": "review",
+      "launch_on": "2026-12-10"
+    },
+    {
+      "id": "ln_3Kd7Wp",
+      "title": "Small Hours ep. 49",
+      "stage": "review",
+      "launch_on": "2026-12-04"
+    }
+  ],
+  "has_more": true,
+  "next_cursor": "cur_8Lr4cY"
+}</code></pre>
+      </div>
+    </div>
+        </div>
+      </article>
+      <article class="api-row api-ep" id="create-lane" aria-labelledby="create-lane-title">
+        <div class="api-doc">
+          <h3 class="api-ep__title" id="create-lane-title">Create a lane</h3>
+          <p class="api-route" data-method="post"><span class="api-method">POST</span><code>/lanes</code></p>
+          <p>Opens a new lane. It starts at Spark unless you say otherwise, and counts toward your plan’s active lanes: three on Solo, unlimited on Studio and Crew.</p>
+          <p class="api-scope"><span>Scope</span><code>lanes:write</code></p>
+          <h4 class="api-h4">Body parameters</h4>
+          <div class="api-table" role="region" aria-label="Body parameters for Create a lane" tabindex="0">
+            <table class="api-params" role="table">
+              <thead role="rowgroup"><tr role="row"><th scope="col" role="columnheader">Name</th><th scope="col" role="columnheader">Type</th><th scope="col" role="columnheader">Description</th></tr></thead>
+              <tbody role="rowgroup">
+              <tr role="row"><th scope="row" role="rowheader"><code>title</code><span class="api-req">Required</span></th><td role="cell" class="api-params__type"><span class="api-type">string</span></td><td role="cell" class="api-params__desc">The working title, up to 120 characters.</td></tr>
+              <tr role="row"><th scope="row" role="rowheader"><code>stage</code></th><td role="cell" class="api-params__type"><span class="api-type">enum</span></td><td role="cell" class="api-params__desc">Where it starts. Defaults to <code>spark</code>.</td></tr>
+              <tr role="row"><th scope="row" role="rowheader"><code>crew_id</code></th><td role="cell" class="api-params__type"><span class="api-type">string</span></td><td role="cell" class="api-params__desc">Share it with a crew you belong to.</td></tr>
+              <tr role="row"><th scope="row" role="rowheader"><code>blueprint_template</code></th><td role="cell" class="api-params__type"><span class="api-type">string</span></td><td role="cell" class="api-params__desc">A template to start the plan from, such as <code>app-release</code> or <code>short-film</code>.</td></tr>
+              <tr role="row"><th scope="row" role="rowheader"><code>launch_on</code></th><td role="cell" class="api-params__type"><span class="api-type">date</span></td><td role="cell" class="api-params__desc">The planned launch day. Milestones fill in backwards from it.</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <h4 class="api-h4">Returns</h4>
+          <p>The new lane object, with <code>201 Created</code>.</p>
+        </div>
+        <div class="api-aside">
+          <div class="api-code">
+      <div class="api-code__bar">
+        <p class="api-code__title"><span class="api-method" data-method="post">POST</span><span class="api-code__path">/lanes</span></p>
+        <div class="segmented api-langs" role="tablist" aria-label="Language for POST /lanes" data-tabs-sync="api-lang" data-tabs-store="api-lang">
+          <span class="segmented__thumb" aria-hidden="true"></span><button type="button" role="tab" id="create-lane-t-curl" aria-controls="create-lane-p-curl" aria-selected="true" tabindex="0" data-value="curl">curl</button><button type="button" role="tab" id="create-lane-t-js" aria-controls="create-lane-p-js" aria-selected="false" tabindex="-1" data-value="js">JavaScript</button><button type="button" role="tab" id="create-lane-t-py" aria-controls="create-lane-p-py" aria-selected="false" tabindex="-1" data-value="py">Python</button>
+        </div>
+      </div>
+      <div class="api-code__panels">
+        <div class="api-code__panel" role="tabpanel" id="create-lane-p-curl" aria-labelledby="create-lane-t-curl" data-lang-label="curl" data-copy-scope>
+          <button class="api-copy" type="button" data-copy data-copy-toast="curl request copied" aria-label="Copy the curl request"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg></button>
+          <pre tabindex="0" data-lenis-prevent><code data-lang="shell" data-copy-source>curl https://api.crestora.example/v2/lanes \
+  -H "Authorization: Bearer $CRESTORA_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "title": "Tidepool 1.1",
+    "stage": "shape",
+    "blueprint_template": "app-release",
+    "launch_on": "2026-12-10"
+  }'</code></pre>
+        </div>
+        <div class="api-code__panel" role="tabpanel" id="create-lane-p-js" aria-labelledby="create-lane-t-js" data-lang-label="JavaScript" data-copy-scope hidden>
+          <button class="api-copy" type="button" data-copy data-copy-toast="JavaScript copied" aria-label="Copy the JavaScript sample"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg></button>
+          <pre tabindex="0" data-lenis-prevent><code data-lang="js" data-copy-source>const lane = await api("/lanes", {
+  method: "POST",
+  body: {
+    title: "Tidepool 1.1",
+    stage: "shape",
+    blueprint_template: "app-release",
+    launch_on: "2026-12-10",
+  },
+});</code></pre>
+        </div>
+        <div class="api-code__panel" role="tabpanel" id="create-lane-p-py" aria-labelledby="create-lane-t-py" data-lang-label="Python" data-copy-scope hidden>
+          <button class="api-copy" type="button" data-copy data-copy-toast="Python copied" aria-label="Copy the Python sample"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg></button>
+          <pre tabindex="0" data-lenis-prevent><code data-lang="py" data-copy-source>lane = api.post(f"{BASE}/lanes", json={
+    "title": "Tidepool 1.1",
+    "stage": "shape",
+    "blueprint_template": "app-release",
+    "launch_on": "2026-12-10",
+}).json()</code></pre>
+        </div>
+      </div>
+      <div class="api-code__res" data-copy-scope>
+        <div class="api-code__resbar">
+          <span class="api-code__reslabel">Response</span>
+          <span class="api-status"><b>201</b> Created</span>
+          <button class="api-copy" type="button" data-copy data-copy-toast="Response copied" aria-label="Copy the response"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg></button>
+        </div>
+        <pre tabindex="0" data-lenis-prevent><code data-lang="json" data-copy-source>{
+  "id": "ln_8Fq2Tz",
+  "object": "lane",
+  "title": "Tidepool 1.1",
+  "stage": "shape",
+  "crew_id": null,
+  "launch_on": "2026-12-10",
+  "counts": { "versions": 0, "open_notes": 0, "sparks": 0 },
+  "created_at": "2026-11-02T09:41:03Z"
+}</code></pre>
+      </div>
+    </div>
+        </div>
+      </article>
+      <article class="api-row api-ep" id="get-lane" aria-labelledby="get-lane-title">
+        <div class="api-doc">
+          <h3 class="api-ep__title" id="get-lane-title">Retrieve a lane</h3>
+          <p class="api-route" data-method="get"><span class="api-method">GET</span><code>/lanes/<span class="api-route__param">{id}</span></code></p>
+          <p>Fetches one lane by its ID, with its current stage and counts. Ask for more with <code>expand</code>.</p>
+          <p class="api-scope"><span>Scope</span><code>lanes:read</code></p>
+          <h4 class="api-h4">Path parameters</h4>
+          <div class="api-table" role="region" aria-label="Path parameters for Retrieve a lane" tabindex="0">
+            <table class="api-params" role="table">
+              <thead role="rowgroup"><tr role="row"><th scope="col" role="columnheader">Name</th><th scope="col" role="columnheader">Type</th><th scope="col" role="columnheader">Description</th></tr></thead>
+              <tbody role="rowgroup">
+              <tr role="row"><th scope="row" role="rowheader"><code>id</code><span class="api-req">Required</span></th><td role="cell" class="api-params__type"><span class="api-type">string</span></td><td role="cell" class="api-params__desc">The lane’s ID, such as <code>ln_8Fq2Tz</code>.</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <h4 class="api-h4">Query parameters</h4>
+          <div class="api-table" role="region" aria-label="Query parameters for Retrieve a lane" tabindex="0">
+            <table class="api-params" role="table">
+              <thead role="rowgroup"><tr role="row"><th scope="col" role="columnheader">Name</th><th scope="col" role="columnheader">Type</th><th scope="col" role="columnheader">Description</th></tr></thead>
+              <tbody role="rowgroup">
+              <tr role="row"><th scope="row" role="rowheader"><code>expand</code></th><td role="cell" class="api-params__type"><span class="api-type">string</span></td><td role="cell" class="api-params__desc"><code>stages</code> adds the day it entered each stage; <code>blueprint</code> adds the one-page plan.</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <h4 class="api-h4">Returns</h4>
+          <p>A lane object.</p>
+        </div>
+        <div class="api-aside">
+          <div class="api-code">
+      <div class="api-code__bar">
+        <p class="api-code__title"><span class="api-method" data-method="get">GET</span><span class="api-code__path">/lanes/<span class="api-route__param">{id}</span></span></p>
+        <div class="segmented api-langs" role="tablist" aria-label="Language for GET /lanes/ {id}" data-tabs-sync="api-lang" data-tabs-store="api-lang">
+          <span class="segmented__thumb" aria-hidden="true"></span><button type="button" role="tab" id="get-lane-t-curl" aria-controls="get-lane-p-curl" aria-selected="true" tabindex="0" data-value="curl">curl</button><button type="button" role="tab" id="get-lane-t-js" aria-controls="get-lane-p-js" aria-selected="false" tabindex="-1" data-value="js">JavaScript</button><button type="button" role="tab" id="get-lane-t-py" aria-controls="get-lane-p-py" aria-selected="false" tabindex="-1" data-value="py">Python</button>
+        </div>
+      </div>
+      <div class="api-code__panels">
+        <div class="api-code__panel" role="tabpanel" id="get-lane-p-curl" aria-labelledby="get-lane-t-curl" data-lang-label="curl" data-copy-scope>
+          <button class="api-copy" type="button" data-copy data-copy-toast="curl request copied" aria-label="Copy the curl request"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg></button>
+          <pre tabindex="0" data-lenis-prevent><code data-lang="shell" data-copy-source>curl -G https://api.crestora.example/v2/lanes/ln_8Fq2Tz \
+  -H "Authorization: Bearer $CRESTORA_TOKEN" \
+  -d expand=stages</code></pre>
+        </div>
+        <div class="api-code__panel" role="tabpanel" id="get-lane-p-js" aria-labelledby="get-lane-t-js" data-lang-label="JavaScript" data-copy-scope hidden>
+          <button class="api-copy" type="button" data-copy data-copy-toast="JavaScript copied" aria-label="Copy the JavaScript sample"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg></button>
+          <pre tabindex="0" data-lenis-prevent><code data-lang="js" data-copy-source>const lane = await api("/lanes/ln_8Fq2Tz?expand=stages");</code></pre>
+        </div>
+        <div class="api-code__panel" role="tabpanel" id="get-lane-p-py" aria-labelledby="get-lane-t-py" data-lang-label="Python" data-copy-scope hidden>
+          <button class="api-copy" type="button" data-copy data-copy-toast="Python copied" aria-label="Copy the Python sample"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg></button>
+          <pre tabindex="0" data-lenis-prevent><code data-lang="py" data-copy-source>lane = api.get(
+    f"{BASE}/lanes/ln_8Fq2Tz",
+    params={"expand": "stages"},
+).json()</code></pre>
+        </div>
+      </div>
+      <div class="api-code__res" data-copy-scope>
+        <div class="api-code__resbar">
+          <span class="api-code__reslabel">Response</span>
+          <span class="api-status"><b>200</b> OK</span>
+          <button class="api-copy" type="button" data-copy data-copy-toast="Response copied" aria-label="Copy the response"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg></button>
+        </div>
+        <pre tabindex="0" data-lenis-prevent><code data-lang="json" data-copy-source>{
+  "id": "ln_8Fq2Tz",
+  "object": "lane",
+  "title": "Tidepool 1.1",
+  "stage": "review",
+  "launch_on": "2026-12-10",
+  "stages": {
+    "spark": "2026-11-02",
+    "shape": "2026-11-04",
+    "make": "2026-11-09",
+    "review": "2026-11-26"
+  },
+  "counts": { "versions": 12, "open_notes": 3, "sparks": 17 }
+}</code></pre>
+      </div>
+    </div>
+        </div>
+      </article>
+      <article class="api-row api-ep" id="update-lane" aria-labelledby="update-lane-title">
+        <div class="api-doc">
+          <h3 class="api-ep__title" id="update-lane-title">Update or move a lane</h3>
+          <p class="api-route" data-method="patch"><span class="api-method">PATCH</span><code>/lanes/<span class="api-route__param">{id}</span></code></p>
+          <p>Changes a lane’s title or launch day, or moves it to another stage. A move through the API is the same as dragging the lane’s marker in the app: it goes into the lane’s history, and the crew hears about it once.</p>
+          <p class="api-callout"><svg class="icon" aria-hidden="true"><use href="#i-info"/></svg><span>A lane can’t move into <code>launch</code> while a version is still waiting for approval. You’ll get <code>409 stage_conflict</code>, listing the versions that are holding it.</span></p>
+          <p class="api-scope"><span>Scope</span><code>lanes:write</code></p>
+          <h4 class="api-h4">Path parameters</h4>
+          <div class="api-table" role="region" aria-label="Path parameters for Update or move a lane" tabindex="0">
+            <table class="api-params" role="table">
+              <thead role="rowgroup"><tr role="row"><th scope="col" role="columnheader">Name</th><th scope="col" role="columnheader">Type</th><th scope="col" role="columnheader">Description</th></tr></thead>
+              <tbody role="rowgroup">
+              <tr role="row"><th scope="row" role="rowheader"><code>id</code><span class="api-req">Required</span></th><td role="cell" class="api-params__type"><span class="api-type">string</span></td><td role="cell" class="api-params__desc">The lane to change.</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <h4 class="api-h4">Body parameters</h4>
+          <div class="api-table" role="region" aria-label="Body parameters for Update or move a lane" tabindex="0">
+            <table class="api-params" role="table">
+              <thead role="rowgroup"><tr role="row"><th scope="col" role="columnheader">Name</th><th scope="col" role="columnheader">Type</th><th scope="col" role="columnheader">Description</th></tr></thead>
+              <tbody role="rowgroup">
+              <tr role="row"><th scope="row" role="rowheader"><code>stage</code></th><td role="cell" class="api-params__type"><span class="api-type">enum</span></td><td role="cell" class="api-params__desc">The stage to move it to.</td></tr>
+              <tr role="row"><th scope="row" role="rowheader"><code>note</code></th><td role="cell" class="api-params__type"><span class="api-type">string</span></td><td role="cell" class="api-params__desc">A line for the lane’s history, such as “Build 215 approved”.</td></tr>
+              <tr role="row"><th scope="row" role="rowheader"><code>title</code></th><td role="cell" class="api-params__type"><span class="api-type">string</span></td><td role="cell" class="api-params__desc">A new working title.</td></tr>
+              <tr role="row"><th scope="row" role="rowheader"><code>launch_on</code></th><td role="cell" class="api-params__type"><span class="api-type">date</span></td><td role="cell" class="api-params__desc">A new launch day. Later milestones move with it.</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <h4 class="api-h4">Returns</h4>
+          <p>The updated lane object, with where it came from.</p>
+        </div>
+        <div class="api-aside">
+          <div class="api-code">
+      <div class="api-code__bar">
+        <p class="api-code__title"><span class="api-method" data-method="patch">PATCH</span><span class="api-code__path">/lanes/<span class="api-route__param">{id}</span></span></p>
+        <div class="segmented api-langs" role="tablist" aria-label="Language for PATCH /lanes/ {id}" data-tabs-sync="api-lang" data-tabs-store="api-lang">
+          <span class="segmented__thumb" aria-hidden="true"></span><button type="button" role="tab" id="update-lane-t-curl" aria-controls="update-lane-p-curl" aria-selected="true" tabindex="0" data-value="curl">curl</button><button type="button" role="tab" id="update-lane-t-js" aria-controls="update-lane-p-js" aria-selected="false" tabindex="-1" data-value="js">JavaScript</button><button type="button" role="tab" id="update-lane-t-py" aria-controls="update-lane-p-py" aria-selected="false" tabindex="-1" data-value="py">Python</button>
+        </div>
+      </div>
+      <div class="api-code__panels">
+        <div class="api-code__panel" role="tabpanel" id="update-lane-p-curl" aria-labelledby="update-lane-t-curl" data-lang-label="curl" data-copy-scope>
+          <button class="api-copy" type="button" data-copy data-copy-toast="curl request copied" aria-label="Copy the curl request"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg></button>
+          <pre tabindex="0" data-lenis-prevent><code data-lang="shell" data-copy-source>curl https://api.crestora.example/v2/lanes/ln_8Fq2Tz \
+  -X PATCH \
+  -H "Authorization: Bearer $CRESTORA_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{ "stage": "launch", "note": "Build 215 approved" }'</code></pre>
+        </div>
+        <div class="api-code__panel" role="tabpanel" id="update-lane-p-js" aria-labelledby="update-lane-t-js" data-lang-label="JavaScript" data-copy-scope hidden>
+          <button class="api-copy" type="button" data-copy data-copy-toast="JavaScript copied" aria-label="Copy the JavaScript sample"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg></button>
+          <pre tabindex="0" data-lenis-prevent><code data-lang="js" data-copy-source>const lane = await api("/lanes/ln_8Fq2Tz", {
+  method: "PATCH",
+  body: { stage: "launch", note: "Build 215 approved" },
+});</code></pre>
+        </div>
+        <div class="api-code__panel" role="tabpanel" id="update-lane-p-py" aria-labelledby="update-lane-t-py" data-lang-label="Python" data-copy-scope hidden>
+          <button class="api-copy" type="button" data-copy data-copy-toast="Python copied" aria-label="Copy the Python sample"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg></button>
+          <pre tabindex="0" data-lenis-prevent><code data-lang="py" data-copy-source>lane = api.patch(
+    f"{BASE}/lanes/ln_8Fq2Tz",
+    json={"stage": "launch", "note": "Build 215 approved"},
+).json()</code></pre>
+        </div>
+      </div>
+      <div class="api-code__res" data-copy-scope>
+        <div class="api-code__resbar">
+          <span class="api-code__reslabel">Response</span>
+          <span class="api-status"><b>200</b> OK</span>
+          <button class="api-copy" type="button" data-copy data-copy-toast="Response copied" aria-label="Copy the response"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg></button>
+        </div>
+        <pre tabindex="0" data-lenis-prevent><code data-lang="json" data-copy-source>{
+  "id": "ln_8Fq2Tz",
+  "object": "lane",
+  "title": "Tidepool 1.1",
+  "stage": "launch",
+  "previous_stage": "review",
+  "moved_by": "usr_4Lm2",
+  "moved_at": "2026-11-27T10:02:44Z",
+  "launch_on": "2026-12-10"
+}</code></pre>
+      </div>
+    </div>
+        </div>
+      </article>
+      <article class="api-row api-ep" id="delete-lane" aria-labelledby="delete-lane-title">
+        <div class="api-doc">
+          <h3 class="api-ep__title" id="delete-lane-title">Delete a lane</h3>
+          <p class="api-route" data-method="delete"><span class="api-method">DELETE</span><code>/lanes/<span class="api-route__param">{id}</span></code></p>
+          <p>Deletes a lane with its versions, notes and sparks. Only the lane’s Owner can do this. The lane leaves our live systems within 24 hours and our backups within 30 days, and it can’t be brought back, so <a href="docs.html#exporting">export it</a> first if you might want it.</p>
+          <p class="api-scope"><span>Scope</span><code>lanes:write</code><span class="api-scope__role">Owner only</span></p>
+          <h4 class="api-h4">Path parameters</h4>
+          <div class="api-table" role="region" aria-label="Path parameters for Delete a lane" tabindex="0">
+            <table class="api-params" role="table">
+              <thead role="rowgroup"><tr role="row"><th scope="col" role="columnheader">Name</th><th scope="col" role="columnheader">Type</th><th scope="col" role="columnheader">Description</th></tr></thead>
+              <tbody role="rowgroup">
+              <tr role="row"><th scope="row" role="rowheader"><code>id</code><span class="api-req">Required</span></th><td role="cell" class="api-params__type"><span class="api-type">string</span></td><td role="cell" class="api-params__desc">The lane to delete.</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <h4 class="api-h4">Returns</h4>
+          <p>A short confirmation object.</p>
+        </div>
+        <div class="api-aside">
+          <div class="api-code">
+      <div class="api-code__bar">
+        <p class="api-code__title"><span class="api-method" data-method="delete">DELETE</span><span class="api-code__path">/lanes/<span class="api-route__param">{id}</span></span></p>
+        <div class="segmented api-langs" role="tablist" aria-label="Language for DELETE /lanes/ {id}" data-tabs-sync="api-lang" data-tabs-store="api-lang">
+          <span class="segmented__thumb" aria-hidden="true"></span><button type="button" role="tab" id="delete-lane-t-curl" aria-controls="delete-lane-p-curl" aria-selected="true" tabindex="0" data-value="curl">curl</button><button type="button" role="tab" id="delete-lane-t-js" aria-controls="delete-lane-p-js" aria-selected="false" tabindex="-1" data-value="js">JavaScript</button><button type="button" role="tab" id="delete-lane-t-py" aria-controls="delete-lane-p-py" aria-selected="false" tabindex="-1" data-value="py">Python</button>
+        </div>
+      </div>
+      <div class="api-code__panels">
+        <div class="api-code__panel" role="tabpanel" id="delete-lane-p-curl" aria-labelledby="delete-lane-t-curl" data-lang-label="curl" data-copy-scope>
+          <button class="api-copy" type="button" data-copy data-copy-toast="curl request copied" aria-label="Copy the curl request"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg></button>
+          <pre tabindex="0" data-lenis-prevent><code data-lang="shell" data-copy-source>curl https://api.crestora.example/v2/lanes/ln_6Rb3Nq \
+  -X DELETE \
+  -H "Authorization: Bearer $CRESTORA_TOKEN"</code></pre>
+        </div>
+        <div class="api-code__panel" role="tabpanel" id="delete-lane-p-js" aria-labelledby="delete-lane-t-js" data-lang-label="JavaScript" data-copy-scope hidden>
+          <button class="api-copy" type="button" data-copy data-copy-toast="JavaScript copied" aria-label="Copy the JavaScript sample"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg></button>
+          <pre tabindex="0" data-lenis-prevent><code data-lang="js" data-copy-source>await api("/lanes/ln_6Rb3Nq", { method: "DELETE" });</code></pre>
+        </div>
+        <div class="api-code__panel" role="tabpanel" id="delete-lane-p-py" aria-labelledby="delete-lane-t-py" data-lang-label="Python" data-copy-scope hidden>
+          <button class="api-copy" type="button" data-copy data-copy-toast="Python copied" aria-label="Copy the Python sample"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg></button>
+          <pre tabindex="0" data-lenis-prevent><code data-lang="py" data-copy-source>api.delete(f"{BASE}/lanes/ln_6Rb3Nq").raise_for_status()</code></pre>
+        </div>
+      </div>
+      <div class="api-code__res" data-copy-scope>
+        <div class="api-code__resbar">
+          <span class="api-code__reslabel">Response</span>
+          <span class="api-status"><b>200</b> OK</span>
+          <button class="api-copy" type="button" data-copy data-copy-toast="Response copied" aria-label="Copy the response"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg></button>
+        </div>
+        <pre tabindex="0" data-lenis-prevent><code data-lang="json" data-copy-source>{
+  "id": "ln_6Rb3Nq",
+  "object": "lane",
+  "deleted": true
+}</code></pre>
+      </div>
+    </div>
+        </div>
+      </article>
+      
+    </section>
+
+    <section class="api-sec" id="sparks" aria-labelledby="sparks-title">
+      <div class="api-row api-row--intro api-row--solo">
+        <div class="api-doc">
+          <p class="api-kicker"><span class="api-kicker__mark" aria-hidden="true"></span>Resource</p>
+          <h2 class="api-h2" id="sparks-title">Sparks</h2>
+          <p class="api-lead">A spark is anything caught before it’s a plan: a note, a link, an image or a voice memo. Sparks land on your inbox board, or straight on a lane’s Sparkboard.</p>
+          <p>Crestora groups related sparks into constellations on its own servers, usually within a minute; <code>constellation_id</code> fills in when it does.</p>
+        </div>
+        
+      </div>
+      <article class="api-row api-ep" id="create-spark" aria-labelledby="create-spark-title">
+        <div class="api-doc">
+          <h3 class="api-ep__title" id="create-spark-title">Create a spark</h3>
+          <p class="api-route" data-method="post"><span class="api-method">POST</span><code>/sparks</code></p>
+          <p>Catches a spark from anywhere you can make an HTTP request: a form, a shortcut on your phone, a script that watches a folder.</p>
+          <p class="api-scope"><span>Scope</span><code>sparks:write</code></p>
+          <h4 class="api-h4">Body parameters</h4>
+          <div class="api-table" role="region" aria-label="Body parameters for Create a spark" tabindex="0">
+            <table class="api-params" role="table">
+              <thead role="rowgroup"><tr role="row"><th scope="col" role="columnheader">Name</th><th scope="col" role="columnheader">Type</th><th scope="col" role="columnheader">Description</th></tr></thead>
+              <tbody role="rowgroup">
+              <tr role="row"><th scope="row" role="rowheader"><code>kind</code><span class="api-req">Required</span></th><td role="cell" class="api-params__type"><span class="api-type">enum</span></td><td role="cell" class="api-params__desc"><code>note</code>, <code>link</code>, <code>image</code> or <code>audio</code>.</td></tr>
+              <tr role="row"><th scope="row" role="rowheader"><code>text</code></th><td role="cell" class="api-params__type"><span class="api-type">string</span></td><td role="cell" class="api-params__desc">The note itself, or a caption.</td></tr>
+              <tr role="row"><th scope="row" role="rowheader"><code>url</code></th><td role="cell" class="api-params__type"><span class="api-type">string</span></td><td role="cell" class="api-params__desc">The link, or a file URL we fetch for an image or audio spark.</td></tr>
+              <tr role="row"><th scope="row" role="rowheader"><code>lane_id</code></th><td role="cell" class="api-params__type"><span class="api-type">string</span></td><td role="cell" class="api-params__desc">Put it on this lane’s board instead of your inbox board.</td></tr>
+              <tr role="row"><th scope="row" role="rowheader"><code>tags</code></th><td role="cell" class="api-params__type"><span class="api-type">array of strings</span></td><td role="cell" class="api-params__desc">Up to 10 tags.</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <h4 class="api-h4">Returns</h4>
+          <p>The spark, with <code>201 Created</code>.</p>
+        </div>
+        <div class="api-aside">
+          <div class="api-code">
+      <div class="api-code__bar">
+        <p class="api-code__title"><span class="api-method" data-method="post">POST</span><span class="api-code__path">/sparks</span></p>
+        <div class="segmented api-langs" role="tablist" aria-label="Language for POST /sparks" data-tabs-sync="api-lang" data-tabs-store="api-lang">
+          <span class="segmented__thumb" aria-hidden="true"></span><button type="button" role="tab" id="create-spark-t-curl" aria-controls="create-spark-p-curl" aria-selected="true" tabindex="0" data-value="curl">curl</button><button type="button" role="tab" id="create-spark-t-js" aria-controls="create-spark-p-js" aria-selected="false" tabindex="-1" data-value="js">JavaScript</button><button type="button" role="tab" id="create-spark-t-py" aria-controls="create-spark-p-py" aria-selected="false" tabindex="-1" data-value="py">Python</button>
+        </div>
+      </div>
+      <div class="api-code__panels">
+        <div class="api-code__panel" role="tabpanel" id="create-spark-p-curl" aria-labelledby="create-spark-t-curl" data-lang-label="curl" data-copy-scope>
+          <button class="api-copy" type="button" data-copy data-copy-toast="curl request copied" aria-label="Copy the curl request"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg></button>
+          <pre tabindex="0" data-lenis-prevent><code data-lang="shell" data-copy-source>curl https://api.crestora.example/v2/sparks \
+  -H "Authorization: Bearer $CRESTORA_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "kind": "link",
+    "url": "https://tidepool.example/notes/swell-icons",
+    "text": "Swell icons that read at a glance",
+    "lane_id": "ln_8Fq2Tz"
+  }'</code></pre>
+        </div>
+        <div class="api-code__panel" role="tabpanel" id="create-spark-p-js" aria-labelledby="create-spark-t-js" data-lang-label="JavaScript" data-copy-scope hidden>
+          <button class="api-copy" type="button" data-copy data-copy-toast="JavaScript copied" aria-label="Copy the JavaScript sample"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg></button>
+          <pre tabindex="0" data-lenis-prevent><code data-lang="js" data-copy-source>const spark = await api("/sparks", {
+  method: "POST",
+  body: {
+    kind: "link",
+    url: "https://tidepool.example/notes/swell-icons",
+    text: "Swell icons that read at a glance",
+    lane_id: "ln_8Fq2Tz",
+  },
+});</code></pre>
+        </div>
+        <div class="api-code__panel" role="tabpanel" id="create-spark-p-py" aria-labelledby="create-spark-t-py" data-lang-label="Python" data-copy-scope hidden>
+          <button class="api-copy" type="button" data-copy data-copy-toast="Python copied" aria-label="Copy the Python sample"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg></button>
+          <pre tabindex="0" data-lenis-prevent><code data-lang="py" data-copy-source>spark = api.post(f"{BASE}/sparks", json={
+    "kind": "link",
+    "url": "https://tidepool.example/notes/swell-icons",
+    "text": "Swell icons that read at a glance",
+    "lane_id": "ln_8Fq2Tz",
+}).json()</code></pre>
+        </div>
+      </div>
+      <div class="api-code__res" data-copy-scope>
+        <div class="api-code__resbar">
+          <span class="api-code__reslabel">Response</span>
+          <span class="api-status"><b>201</b> Created</span>
+          <button class="api-copy" type="button" data-copy data-copy-toast="Response copied" aria-label="Copy the response"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg></button>
+        </div>
+        <pre tabindex="0" data-lenis-prevent><code data-lang="json" data-copy-source>{
+  "id": "sp_6Yd4Rm",
+  "object": "spark",
+  "kind": "link",
+  "text": "Swell icons that read at a glance",
+  "lane_id": "ln_8Fq2Tz",
+  "constellation_id": null,
+  "created_at": "2026-11-27T10:05:12Z"
+}</code></pre>
+      </div>
+    </div>
+        </div>
+      </article>
+      
+    </section>
+
+    <section class="api-sec" id="versions" aria-labelledby="versions-title">
+      <div class="api-row api-row--intro api-row--solo">
+        <div class="api-doc">
+          <p class="api-kicker"><span class="api-kicker__mark" aria-hidden="true"></span>Resource</p>
+          <h2 class="api-h2" id="versions-title">Versions</h2>
+          <p class="api-lead">A version is one upload of a file on a lane: a render, a build, a mix. Uploads under the same file name stack up as v1, v2, v3 and on, and every one is kept.</p>
+        </div>
+        
+      </div>
+      <article class="api-row api-ep" id="create-version" aria-labelledby="create-version-title">
+        <div class="api-doc">
+          <h3 class="api-ep__title" id="create-version-title">Add a version</h3>
+          <p class="api-route" data-method="post"><span class="api-method">POST</span><code>/lanes/<span class="api-route__param">{id}</span>/versions</code></p>
+          <p>Adds a version to a lane from a URL we can fetch, such as a signed link from your storage or your build server. Files can be up to 50 GB on Studio and Crew. Ask for review and the lane’s reviewers are told it’s waiting.</p>
+          <p class="api-scope"><span>Scope</span><code>versions:write</code></p>
+          <h4 class="api-h4">Path parameters</h4>
+          <div class="api-table" role="region" aria-label="Path parameters for Add a version" tabindex="0">
+            <table class="api-params" role="table">
+              <thead role="rowgroup"><tr role="row"><th scope="col" role="columnheader">Name</th><th scope="col" role="columnheader">Type</th><th scope="col" role="columnheader">Description</th></tr></thead>
+              <tbody role="rowgroup">
+              <tr role="row"><th scope="row" role="rowheader"><code>id</code><span class="api-req">Required</span></th><td role="cell" class="api-params__type"><span class="api-type">string</span></td><td role="cell" class="api-params__desc">The lane to add it to.</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <h4 class="api-h4">Body parameters</h4>
+          <div class="api-table" role="region" aria-label="Body parameters for Add a version" tabindex="0">
+            <table class="api-params" role="table">
+              <thead role="rowgroup"><tr role="row"><th scope="col" role="columnheader">Name</th><th scope="col" role="columnheader">Type</th><th scope="col" role="columnheader">Description</th></tr></thead>
+              <tbody role="rowgroup">
+              <tr role="row"><th scope="row" role="rowheader"><code>file_name</code><span class="api-req">Required</span></th><td role="cell" class="api-params__type"><span class="api-type">string</span></td><td role="cell" class="api-params__desc">Versions with the same name stack.</td></tr>
+              <tr role="row"><th scope="row" role="rowheader"><code>source_url</code><span class="api-req">Required</span></th><td role="cell" class="api-params__type"><span class="api-type">string</span></td><td role="cell" class="api-params__desc">Where we fetch the file. It must stay reachable for an hour.</td></tr>
+              <tr role="row"><th scope="row" role="rowheader"><code>label</code></th><td role="cell" class="api-params__type"><span class="api-type">string</span></td><td role="cell" class="api-params__desc">A name that pins the version, such as “build 215”.</td></tr>
+              <tr role="row"><th scope="row" role="rowheader"><code>notes</code></th><td role="cell" class="api-params__type"><span class="api-type">string</span></td><td role="cell" class="api-params__desc">What changed, shown above the compare view.</td></tr>
+              <tr role="row"><th scope="row" role="rowheader"><code>request_review</code></th><td role="cell" class="api-params__type"><span class="api-type">boolean</span></td><td role="cell" class="api-params__desc">Ask the lane’s reviewers to look. Defaults to false.</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <h4 class="api-h4">Returns</h4>
+          <p>The version, with <code>status: processing</code> until the file has arrived.</p>
+        </div>
+        <div class="api-aside">
+          <div class="api-code">
+      <div class="api-code__bar">
+        <p class="api-code__title"><span class="api-method" data-method="post">POST</span><span class="api-code__path">/lanes/<span class="api-route__param">{id}</span>/versions</span></p>
+        <div class="segmented api-langs" role="tablist" aria-label="Language for POST /lanes/ {id} /versions" data-tabs-sync="api-lang" data-tabs-store="api-lang">
+          <span class="segmented__thumb" aria-hidden="true"></span><button type="button" role="tab" id="create-version-t-curl" aria-controls="create-version-p-curl" aria-selected="true" tabindex="0" data-value="curl">curl</button><button type="button" role="tab" id="create-version-t-js" aria-controls="create-version-p-js" aria-selected="false" tabindex="-1" data-value="js">JavaScript</button><button type="button" role="tab" id="create-version-t-py" aria-controls="create-version-p-py" aria-selected="false" tabindex="-1" data-value="py">Python</button>
+        </div>
+      </div>
+      <div class="api-code__panels">
+        <div class="api-code__panel" role="tabpanel" id="create-version-p-curl" aria-labelledby="create-version-t-curl" data-lang-label="curl" data-copy-scope>
+          <button class="api-copy" type="button" data-copy data-copy-toast="curl request copied" aria-label="Copy the curl request"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg></button>
+          <pre tabindex="0" data-lenis-prevent><code data-lang="shell" data-copy-source>curl -X POST \
+  https://api.crestora.example/v2/lanes/ln_8Fq2Tz/versions \
+  -H "Authorization: Bearer $CRESTORA_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "file_name": "tidepool-ios.ipa",
+    "source_url": "https://ci.tidepool.example/b/215.ipa",
+    "label": "build 215",
+    "notes": "Swell chart redrawn, 2 crash fixes",
+    "request_review": true
+  }'</code></pre>
+        </div>
+        <div class="api-code__panel" role="tabpanel" id="create-version-p-js" aria-labelledby="create-version-t-js" data-lang-label="JavaScript" data-copy-scope hidden>
+          <button class="api-copy" type="button" data-copy data-copy-toast="JavaScript copied" aria-label="Copy the JavaScript sample"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg></button>
+          <pre tabindex="0" data-lenis-prevent><code data-lang="js" data-copy-source>const version = await api("/lanes/ln_8Fq2Tz/versions", {
+  method: "POST",
+  body: {
+    file_name: "tidepool-ios.ipa",
+    source_url: "https://ci.tidepool.example/b/215.ipa",
+    label: "build 215",
+    notes: "Swell chart redrawn, 2 crash fixes",
+    request_review: true,
+  },
+});</code></pre>
+        </div>
+        <div class="api-code__panel" role="tabpanel" id="create-version-p-py" aria-labelledby="create-version-t-py" data-lang-label="Python" data-copy-scope hidden>
+          <button class="api-copy" type="button" data-copy data-copy-toast="Python copied" aria-label="Copy the Python sample"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg></button>
+          <pre tabindex="0" data-lenis-prevent><code data-lang="py" data-copy-source>version = api.post(
+    f"{BASE}/lanes/ln_8Fq2Tz/versions",
+    json={
+        "file_name": "tidepool-ios.ipa",
+        "source_url": "https://ci.tidepool.example/b/215.ipa",
+        "label": "build 215",
+        "notes": "Swell chart redrawn, 2 crash fixes",
+        "request_review": True,
+    },
+).json()</code></pre>
+        </div>
+      </div>
+      <div class="api-code__res" data-copy-scope>
+        <div class="api-code__resbar">
+          <span class="api-code__reslabel">Response</span>
+          <span class="api-status"><b>201</b> Created</span>
+          <button class="api-copy" type="button" data-copy data-copy-toast="Response copied" aria-label="Copy the response"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg></button>
+        </div>
+        <pre tabindex="0" data-lenis-prevent><code data-lang="json" data-copy-source>{
+  "id": "vr_215bKq",
+  "object": "version",
+  "lane_id": "ln_8Fq2Tz",
+  "file_name": "tidepool-ios.ipa",
+  "number": 12,
+  "label": "build 215",
+  "status": "processing",
+  "review": "requested",
+  "created_at": "2026-11-27T10:12:30Z"
+}</code></pre>
+      </div>
+    </div>
+        </div>
+      </article>
+      
+    </section>
+
+    <section class="api-sec" id="comments" aria-labelledby="comments-title">
+      <div class="api-row api-row--intro api-row--solo">
+        <div class="api-doc">
+          <p class="api-kicker"><span class="api-kicker__mark" aria-hidden="true"></span>Resource</p>
+          <h2 class="api-h2" id="comments-title">Comments</h2>
+          <p class="api-lead">Comments are the notes left in Review Room: on a frame, a pixel, a moment of audio or a line of code. Each carries an <code>anchor</code> that says where it points.</p>
+          <h4 class="api-h4">Anchor types</h4>
+          <div class="api-table" role="region" aria-label="Anchor types for Comments" tabindex="0">
+            <table class="api-params" role="table">
+              <thead role="rowgroup"><tr role="row"><th scope="col" role="columnheader">Name</th><th scope="col" role="columnheader">Type</th><th scope="col" role="columnheader">Description</th></tr></thead>
+              <tbody role="rowgroup">
+              <tr role="row"><th scope="row" role="rowheader"><code>frame</code></th><td role="cell" class="api-params__type"><span class="api-type">object</span></td><td role="cell" class="api-params__desc"><code>frame</code>, or <code>from</code> and <code>to</code>, in a video.</td></tr>
+              <tr role="row"><th scope="row" role="rowheader"><code>pixel</code></th><td role="cell" class="api-params__type"><span class="api-type">object</span></td><td role="cell" class="api-params__desc"><code>x</code> and <code>y</code> from 0 to 1, plus <code>w</code> and <code>h</code> for a box.</td></tr>
+              <tr role="row"><th scope="row" role="rowheader"><code>audio</code></th><td role="cell" class="api-params__type"><span class="api-type">object</span></td><td role="cell" class="api-params__desc"><code>start_ms</code> and <code>end_ms</code> on the waveform.</td></tr>
+              <tr role="row"><th scope="row" role="rowheader"><code>line</code></th><td role="cell" class="api-params__type"><span class="api-type">object</span></td><td role="cell" class="api-params__desc"><code>line</code>, or <code>from</code> and <code>to</code>, in a document or diff.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        
+      </div>
+      <article class="api-row api-ep" id="list-comments" aria-labelledby="list-comments-title">
+        <div class="api-doc">
+          <h3 class="api-ep__title" id="list-comments-title">List comments</h3>
+          <p class="api-route" data-method="get"><span class="api-method">GET</span><code>/versions/<span class="api-route__param">{id}</span>/comments</code></p>
+          <p>Returns the notes on a version, oldest first, with the number of replies on each.</p>
+          <p class="api-scope"><span>Scope</span><code>comments:read</code></p>
+          <h4 class="api-h4">Path parameters</h4>
+          <div class="api-table" role="region" aria-label="Path parameters for List comments" tabindex="0">
+            <table class="api-params" role="table">
+              <thead role="rowgroup"><tr role="row"><th scope="col" role="columnheader">Name</th><th scope="col" role="columnheader">Type</th><th scope="col" role="columnheader">Description</th></tr></thead>
+              <tbody role="rowgroup">
+              <tr role="row"><th scope="row" role="rowheader"><code>id</code><span class="api-req">Required</span></th><td role="cell" class="api-params__type"><span class="api-type">string</span></td><td role="cell" class="api-params__desc">The version, such as <code>vr_215bKq</code>.</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <h4 class="api-h4">Query parameters</h4>
+          <div class="api-table" role="region" aria-label="Query parameters for List comments" tabindex="0">
+            <table class="api-params" role="table">
+              <thead role="rowgroup"><tr role="row"><th scope="col" role="columnheader">Name</th><th scope="col" role="columnheader">Type</th><th scope="col" role="columnheader">Description</th></tr></thead>
+              <tbody role="rowgroup">
+              <tr role="row"><th scope="row" role="rowheader"><code>status</code></th><td role="cell" class="api-params__type"><span class="api-type">enum</span></td><td role="cell" class="api-params__desc"><code>open</code> or <code>resolved</code>. Both by default.</td></tr>
+              <tr role="row"><th scope="row" role="rowheader"><code>limit</code></th><td role="cell" class="api-params__type"><span class="api-type">integer</span></td><td role="cell" class="api-params__desc">1 to 100; see <a href="#pagination">Pagination</a>.</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <h4 class="api-h4">Returns</h4>
+          <p>A page of comment objects.</p>
+        </div>
+        <div class="api-aside">
+          <div class="api-code">
+      <div class="api-code__bar">
+        <p class="api-code__title"><span class="api-method" data-method="get">GET</span><span class="api-code__path">/versions/<span class="api-route__param">{id}</span>/comments</span></p>
+        <div class="segmented api-langs" role="tablist" aria-label="Language for GET /versions/ {id} /comments" data-tabs-sync="api-lang" data-tabs-store="api-lang">
+          <span class="segmented__thumb" aria-hidden="true"></span><button type="button" role="tab" id="list-comments-t-curl" aria-controls="list-comments-p-curl" aria-selected="true" tabindex="0" data-value="curl">curl</button><button type="button" role="tab" id="list-comments-t-js" aria-controls="list-comments-p-js" aria-selected="false" tabindex="-1" data-value="js">JavaScript</button><button type="button" role="tab" id="list-comments-t-py" aria-controls="list-comments-p-py" aria-selected="false" tabindex="-1" data-value="py">Python</button>
+        </div>
+      </div>
+      <div class="api-code__panels">
+        <div class="api-code__panel" role="tabpanel" id="list-comments-p-curl" aria-labelledby="list-comments-t-curl" data-lang-label="curl" data-copy-scope>
+          <button class="api-copy" type="button" data-copy data-copy-toast="curl request copied" aria-label="Copy the curl request"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg></button>
+          <pre tabindex="0" data-lenis-prevent><code data-lang="shell" data-copy-source>curl -G \
+  https://api.crestora.example/v2/versions/vr_215bKq/comments \
+  -H "Authorization: Bearer $CRESTORA_TOKEN" \
+  -d status=open</code></pre>
+        </div>
+        <div class="api-code__panel" role="tabpanel" id="list-comments-p-js" aria-labelledby="list-comments-t-js" data-lang-label="JavaScript" data-copy-scope hidden>
+          <button class="api-copy" type="button" data-copy data-copy-toast="JavaScript copied" aria-label="Copy the JavaScript sample"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg></button>
+          <pre tabindex="0" data-lenis-prevent><code data-lang="js" data-copy-source>const { data: notes } = await api(
+  "/versions/vr_215bKq/comments?status=open",
+);</code></pre>
+        </div>
+        <div class="api-code__panel" role="tabpanel" id="list-comments-p-py" aria-labelledby="list-comments-t-py" data-lang-label="Python" data-copy-scope hidden>
+          <button class="api-copy" type="button" data-copy data-copy-toast="Python copied" aria-label="Copy the Python sample"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg></button>
+          <pre tabindex="0" data-lenis-prevent><code data-lang="py" data-copy-source>notes = api.get(
+    f"{BASE}/versions/vr_215bKq/comments",
+    params={"status": "open"},
+).json()["data"]</code></pre>
+        </div>
+      </div>
+      <div class="api-code__res" data-copy-scope>
+        <div class="api-code__resbar">
+          <span class="api-code__reslabel">Response</span>
+          <span class="api-status"><b>200</b> OK</span>
+          <button class="api-copy" type="button" data-copy data-copy-toast="Response copied" aria-label="Copy the response"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg></button>
+        </div>
+        <pre tabindex="0" data-lenis-prevent><code data-lang="json" data-copy-source>{
+  "data": [
+    {
+      "id": "cm_3Rt8Hv",
+      "author": { "name": "Lena K.", "role": "reviewer" },
+      "body": "Tide labels clip on the smallest phones.",
+      "anchor": { "type": "pixel", "x": 0.42, "y": 0.18 },
+      "status": "open",
+      "replies": 1
+    }
+  ],
+  "has_more": false,
+  "next_cursor": null
+}</code></pre>
+      </div>
+    </div>
+        </div>
+      </article>
+      <article class="api-row api-ep" id="create-comment" aria-labelledby="create-comment-title">
+        <div class="api-doc">
+          <h3 class="api-ep__title" id="create-comment-title">Add a comment</h3>
+          <p class="api-route" data-method="post"><span class="api-method">POST</span><code>/versions/<span class="api-route__param">{id}</span>/comments</code></p>
+          <p>Leaves a note on a version, as the token’s owner. Point it with an <code>anchor</code>, or leave the anchor out for a note on the whole version. To answer a note, pass its ID as <code>parent_id</code>.</p>
+          <p class="api-scope"><span>Scope</span><code>comments:write</code></p>
+          <h4 class="api-h4">Path parameters</h4>
+          <div class="api-table" role="region" aria-label="Path parameters for Add a comment" tabindex="0">
+            <table class="api-params" role="table">
+              <thead role="rowgroup"><tr role="row"><th scope="col" role="columnheader">Name</th><th scope="col" role="columnheader">Type</th><th scope="col" role="columnheader">Description</th></tr></thead>
+              <tbody role="rowgroup">
+              <tr role="row"><th scope="row" role="rowheader"><code>id</code><span class="api-req">Required</span></th><td role="cell" class="api-params__type"><span class="api-type">string</span></td><td role="cell" class="api-params__desc">The version to comment on.</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <h4 class="api-h4">Body parameters</h4>
+          <div class="api-table" role="region" aria-label="Body parameters for Add a comment" tabindex="0">
+            <table class="api-params" role="table">
+              <thead role="rowgroup"><tr role="row"><th scope="col" role="columnheader">Name</th><th scope="col" role="columnheader">Type</th><th scope="col" role="columnheader">Description</th></tr></thead>
+              <tbody role="rowgroup">
+              <tr role="row"><th scope="row" role="rowheader"><code>body</code><span class="api-req">Required</span></th><td role="cell" class="api-params__type"><span class="api-type">string</span></td><td role="cell" class="api-params__desc">The note, up to 4,000 characters. Links work.</td></tr>
+              <tr role="row"><th scope="row" role="rowheader"><code>anchor</code></th><td role="cell" class="api-params__type"><span class="api-type">object</span></td><td role="cell" class="api-params__desc">Where it points; see the anchor types above.</td></tr>
+              <tr role="row"><th scope="row" role="rowheader"><code>parent_id</code></th><td role="cell" class="api-params__type"><span class="api-type">string</span></td><td role="cell" class="api-params__desc">Reply to this comment instead of starting a thread.</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <h4 class="api-h4">Returns</h4>
+          <p>The comment, with <code>201 Created</code>.</p>
+        </div>
+        <div class="api-aside">
+          <div class="api-code">
+      <div class="api-code__bar">
+        <p class="api-code__title"><span class="api-method" data-method="post">POST</span><span class="api-code__path">/versions/<span class="api-route__param">{id}</span>/comments</span></p>
+        <div class="segmented api-langs" role="tablist" aria-label="Language for POST /versions/ {id} /comments" data-tabs-sync="api-lang" data-tabs-store="api-lang">
+          <span class="segmented__thumb" aria-hidden="true"></span><button type="button" role="tab" id="create-comment-t-curl" aria-controls="create-comment-p-curl" aria-selected="true" tabindex="0" data-value="curl">curl</button><button type="button" role="tab" id="create-comment-t-js" aria-controls="create-comment-p-js" aria-selected="false" tabindex="-1" data-value="js">JavaScript</button><button type="button" role="tab" id="create-comment-t-py" aria-controls="create-comment-p-py" aria-selected="false" tabindex="-1" data-value="py">Python</button>
+        </div>
+      </div>
+      <div class="api-code__panels">
+        <div class="api-code__panel" role="tabpanel" id="create-comment-p-curl" aria-labelledby="create-comment-t-curl" data-lang-label="curl" data-copy-scope>
+          <button class="api-copy" type="button" data-copy data-copy-toast="curl request copied" aria-label="Copy the curl request"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg></button>
+          <pre tabindex="0" data-lenis-prevent><code data-lang="shell" data-copy-source>curl -X POST \
+  https://api.crestora.example/v2/versions/vr_215bKq/comments \
+  -H "Authorization: Bearer $CRESTORA_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "body": "Swell arrow reads backwards here.",
+    "anchor": { "type": "pixel", "x": 0.61, "y": 0.47 }
+  }'</code></pre>
+        </div>
+        <div class="api-code__panel" role="tabpanel" id="create-comment-p-js" aria-labelledby="create-comment-t-js" data-lang-label="JavaScript" data-copy-scope hidden>
+          <button class="api-copy" type="button" data-copy data-copy-toast="JavaScript copied" aria-label="Copy the JavaScript sample"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg></button>
+          <pre tabindex="0" data-lenis-prevent><code data-lang="js" data-copy-source>const note = await api("/versions/vr_215bKq/comments", {
+  method: "POST",
+  body: {
+    body: "Swell arrow reads backwards here.",
+    anchor: { type: "pixel", x: 0.61, y: 0.47 },
+  },
+});</code></pre>
+        </div>
+        <div class="api-code__panel" role="tabpanel" id="create-comment-p-py" aria-labelledby="create-comment-t-py" data-lang-label="Python" data-copy-scope hidden>
+          <button class="api-copy" type="button" data-copy data-copy-toast="Python copied" aria-label="Copy the Python sample"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg></button>
+          <pre tabindex="0" data-lenis-prevent><code data-lang="py" data-copy-source>note = api.post(
+    f"{BASE}/versions/vr_215bKq/comments",
+    json={
+        "body": "Swell arrow reads backwards here.",
+        "anchor": {"type": "pixel", "x": 0.61, "y": 0.47},
+    },
+).json()</code></pre>
+        </div>
+      </div>
+      <div class="api-code__res" data-copy-scope>
+        <div class="api-code__resbar">
+          <span class="api-code__reslabel">Response</span>
+          <span class="api-status"><b>201</b> Created</span>
+          <button class="api-copy" type="button" data-copy data-copy-toast="Response copied" aria-label="Copy the response"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg></button>
+        </div>
+        <pre tabindex="0" data-lenis-prevent><code data-lang="json" data-copy-source>{
+  "id": "cm_5Wn2Ja",
+  "object": "comment",
+  "version_id": "vr_215bKq",
+  "author": { "name": "Theo Lindqvist", "role": "owner" },
+  "body": "Swell arrow reads backwards here.",
+  "anchor": { "type": "pixel", "x": 0.61, "y": 0.47 },
+  "status": "open",
+  "created_at": "2026-11-27T10:20:41Z"
+}</code></pre>
+      </div>
+    </div>
+        </div>
+      </article>
+      
+    </section>
+
+    <section class="api-sec" id="launches" aria-labelledby="launches-title">
+      <div class="api-row api-row--intro api-row--solo">
+        <div class="api-doc">
+          <p class="api-kicker"><span class="api-kicker__mark" aria-hidden="true"></span>Resource</p>
+          <h2 class="api-h2" id="launches-title">Launches</h2>
+          <p class="api-lead">A launch sends a lane out to one or more channels at a set time, with a checklist built from its Blueprint and, if you like, a launch room for the crew.</p>
+        </div>
+        
+      </div>
+      <article class="api-row api-ep" id="create-launch" aria-labelledby="create-launch-title">
+        <div class="api-doc">
+          <h3 class="api-ep__title" id="create-launch-title">Schedule a launch</h3>
+          <p class="api-route" data-method="post"><span class="api-method">POST</span><code>/lanes/<span class="api-route__param">{id}</span>/launches</code></p>
+          <p>Schedules a lane’s launch. The lane must be in the <code>launch</code> stage with its versions approved. Channels come from your connected integrations: up to 14 on Studio and Crew, one on Solo.</p>
+          <p class="api-scope"><span>Scope</span><code>launches:write</code></p>
+          <h4 class="api-h4">Path parameters</h4>
+          <div class="api-table" role="region" aria-label="Path parameters for Schedule a launch" tabindex="0">
+            <table class="api-params" role="table">
+              <thead role="rowgroup"><tr role="row"><th scope="col" role="columnheader">Name</th><th scope="col" role="columnheader">Type</th><th scope="col" role="columnheader">Description</th></tr></thead>
+              <tbody role="rowgroup">
+              <tr role="row"><th scope="row" role="rowheader"><code>id</code><span class="api-req">Required</span></th><td role="cell" class="api-params__type"><span class="api-type">string</span></td><td role="cell" class="api-params__desc">The lane to launch.</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <h4 class="api-h4">Body parameters</h4>
+          <div class="api-table" role="region" aria-label="Body parameters for Schedule a launch" tabindex="0">
+            <table class="api-params" role="table">
+              <thead role="rowgroup"><tr role="row"><th scope="col" role="columnheader">Name</th><th scope="col" role="columnheader">Type</th><th scope="col" role="columnheader">Description</th></tr></thead>
+              <tbody role="rowgroup">
+              <tr role="row"><th scope="row" role="rowheader"><code>go_live_at</code><span class="api-req">Required</span></th><td role="cell" class="api-params__type"><span class="api-type">timestamp</span></td><td role="cell" class="api-params__desc">When the first channel goes out.</td></tr>
+              <tr role="row"><th scope="row" role="rowheader"><code>channels</code><span class="api-req">Required</span></th><td role="cell" class="api-params__type"><span class="api-type">array</span></td><td role="cell" class="api-params__desc">Channel IDs, each with an optional <code>offset_minutes</code> and its own <code>copy</code>.</td></tr>
+              <tr role="row"><th scope="row" role="rowheader"><code>room</code></th><td role="cell" class="api-params__type"><span class="api-type">boolean</span></td><td role="cell" class="api-params__desc">Open a launch room an hour before. Defaults to true.</td></tr>
+              <tr role="row"><th scope="row" role="rowheader"><code>version_ids</code></th><td role="cell" class="api-params__type"><span class="api-type">array</span></td><td role="cell" class="api-params__desc">The approved versions to publish. Defaults to the latest approved.</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <h4 class="api-h4">Returns</h4>
+          <p>The launch, with <code>201 Created</code> and its checklist so far.</p>
+        </div>
+        <div class="api-aside">
+          <div class="api-code">
+      <div class="api-code__bar">
+        <p class="api-code__title"><span class="api-method" data-method="post">POST</span><span class="api-code__path">/lanes/<span class="api-route__param">{id}</span>/launches</span></p>
+        <div class="segmented api-langs" role="tablist" aria-label="Language for POST /lanes/ {id} /launches" data-tabs-sync="api-lang" data-tabs-store="api-lang">
+          <span class="segmented__thumb" aria-hidden="true"></span><button type="button" role="tab" id="create-launch-t-curl" aria-controls="create-launch-p-curl" aria-selected="true" tabindex="0" data-value="curl">curl</button><button type="button" role="tab" id="create-launch-t-js" aria-controls="create-launch-p-js" aria-selected="false" tabindex="-1" data-value="js">JavaScript</button><button type="button" role="tab" id="create-launch-t-py" aria-controls="create-launch-p-py" aria-selected="false" tabindex="-1" data-value="py">Python</button>
+        </div>
+      </div>
+      <div class="api-code__panels">
+        <div class="api-code__panel" role="tabpanel" id="create-launch-p-curl" aria-labelledby="create-launch-t-curl" data-lang-label="curl" data-copy-scope>
+          <button class="api-copy" type="button" data-copy data-copy-toast="curl request copied" aria-label="Copy the curl request"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg></button>
+          <pre tabindex="0" data-lenis-prevent><code data-lang="shell" data-copy-source>curl -X POST \
+  https://api.crestora.example/v2/lanes/ln_8Fq2Tz/launches \
+  -H "Authorization: Bearer $CRESTORA_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "go_live_at": "2026-12-10T17:00:00Z",
+    "channels": [
+      { "id": "ch_sharepage" },
+      { "id": "ch_postbox", "offset_minutes": 15 },
+      { "id": "ch_shipyard" }
+    ],
+    "room": true
+  }'</code></pre>
+        </div>
+        <div class="api-code__panel" role="tabpanel" id="create-launch-p-js" aria-labelledby="create-launch-t-js" data-lang-label="JavaScript" data-copy-scope hidden>
+          <button class="api-copy" type="button" data-copy data-copy-toast="JavaScript copied" aria-label="Copy the JavaScript sample"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg></button>
+          <pre tabindex="0" data-lenis-prevent><code data-lang="js" data-copy-source>const launch = await api("/lanes/ln_8Fq2Tz/launches", {
+  method: "POST",
+  body: {
+    go_live_at: "2026-12-10T17:00:00Z",
+    channels: [
+      { id: "ch_sharepage" },
+      { id: "ch_postbox", offset_minutes: 15 },
+      { id: "ch_shipyard" },
+    ],
+    room: true,
+  },
+});</code></pre>
+        </div>
+        <div class="api-code__panel" role="tabpanel" id="create-launch-p-py" aria-labelledby="create-launch-t-py" data-lang-label="Python" data-copy-scope hidden>
+          <button class="api-copy" type="button" data-copy data-copy-toast="Python copied" aria-label="Copy the Python sample"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg></button>
+          <pre tabindex="0" data-lenis-prevent><code data-lang="py" data-copy-source>launch = api.post(
+    f"{BASE}/lanes/ln_8Fq2Tz/launches",
+    json={
+        "go_live_at": "2026-12-10T17:00:00Z",
+        "channels": [
+            {"id": "ch_sharepage"},
+            {"id": "ch_postbox", "offset_minutes": 15},
+            {"id": "ch_shipyard"},
+        ],
+        "room": True,
+    },
+).json()</code></pre>
+        </div>
+      </div>
+      <div class="api-code__res" data-copy-scope>
+        <div class="api-code__resbar">
+          <span class="api-code__reslabel">Response</span>
+          <span class="api-status"><b>201</b> Created</span>
+          <button class="api-copy" type="button" data-copy data-copy-toast="Response copied" aria-label="Copy the response"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg></button>
+        </div>
+        <pre tabindex="0" data-lenis-prevent><code data-lang="json" data-copy-source>{
+  "id": "lc_9Vn1Ep",
+  "object": "launch",
+  "lane_id": "ln_8Fq2Tz",
+  "status": "scheduled",
+  "go_live_at": "2026-12-10T17:00:00Z",
+  "room_opens_at": "2026-12-10T16:00:00Z",
+  "channels": 3,
+  "checklist": { "items": 11, "done": 7 }
+}</code></pre>
+      </div>
+    </div>
+        </div>
+      </article>
+      
+    </section>
+
+    <section class="api-sec" id="webhooks" aria-labelledby="webhooks-title">
+      <div class="api-row api-row--intro api-row--solo">
+        <div class="api-doc">
+          <p class="api-kicker"><span class="api-kicker__mark" aria-hidden="true"></span>Events</p>
+          <h2 class="api-h2" id="webhooks-title">Webhooks</h2>
+          <p class="api-lead">Webhooks tell your server when something happens on a lane, so you don’t have to keep asking.</p>
+          <p>Add an endpoint under Settings → Webhooks, pick the events you want, and we’ll POST each one to it within seconds. Endpoints must use HTTPS.</p>
+        </div>
+        
+      </div>
+      
+      <article class="api-row api-ep" id="webhook-events" aria-labelledby="webhook-events-title">
+        <div class="api-doc">
+          <h3 class="api-ep__title" id="webhook-events-title">Events</h3>
+          <p>Four events cover the moments most tools care about. Each delivery is a POST with a JSON event; its <code>data</code> holds the object that changed.</p>
+          <div class="api-table" role="region" aria-label="Webhook events" tabindex="0">
+            <table class="api-params api-events" role="table">
+              <thead role="rowgroup"><tr role="row"><th scope="col" role="columnheader">Event</th><th scope="col" role="columnheader">Sent when</th></tr></thead>
+              <tbody role="rowgroup">
+              <tr role="row"><th scope="row" role="rowheader"><code>lane.stage_changed</code></th><td role="cell">A lane moves to another stage, in the app or through the API.</td></tr>
+              <tr role="row"><th scope="row" role="rowheader"><code>version.approved</code></th><td role="cell">A version gets its final approval.</td></tr>
+              <tr role="row"><th scope="row" role="rowheader"><code>launch.live</code></th><td role="cell">The first channel of a launch goes out.</td></tr>
+              <tr role="row"><th scope="row" role="rowheader"><code>recap.ready</code></th><td role="cell">An Afterglow recap is ready, on day 1, 7 and 30.</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="api-fine">Answer with any 2xx within 10 seconds and do slow work afterwards. Deliveries that fail are retried with a growing wait for 24 hours, and the same event can arrive twice, so use its <code>id</code> to skip repeats.</p>
+        </div>
+        <div class="api-aside">
+          <div class="api-code api-code--single" data-copy-scope>
+      <div class="api-code__bar">
+        <p class="api-code__title">A delivery</p>
+        
+        <button class="api-copy" type="button" data-copy data-copy-toast="Event copied" aria-label="Copy the event"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg></button>
+      </div>
+      <pre tabindex="0" data-lenis-prevent><code data-lang="http" data-copy-source>POST /hooks/crestora HTTP/1.1
+content-type: application/json
+crestora-signature: t=1795789560,v1=5f0c9e2b7d41a8c3
+
+{
+  "id": "ev_2Gs7Qa",
+  "type": "lane.stage_changed",
+  "created_at": "2026-11-27T10:26:00Z",
+  "data": {
+    "lane_id": "ln_8Fq2Tz",
+    "from": "review",
+    "to": "launch",
+    "moved_by": "usr_4Lm2"
+  }
+}</code></pre>
+    </div>
+        </div>
+      </article>
+      <article class="api-row api-ep" id="webhook-signatures" aria-labelledby="webhook-signatures-title">
+        <div class="api-doc">
+          <h3 class="api-ep__title" id="webhook-signatures-title">Verifying signatures</h3>
+          <p>Every delivery carries a <code>Crestora-Signature</code> header with a timestamp <code>t</code> and a signature <code>v1</code>: an HMAC-SHA256 of the string <code>t.body</code>, signed with your endpoint’s secret. Check it before you trust anything in the body.</p>
+          <ol class="api-steps">
+            <li>Split the header on commas to get <code>t</code> and <code>v1</code>.</li>
+            <li>Build the signed string: <code>t</code>, a full stop, then the raw request body, byte for byte.</li>
+            <li>HMAC it with SHA-256 and your endpoint secret, and compare the result with <code>v1</code> in constant time.</li>
+            <li>Reject the delivery if <code>t</code> is more than five minutes old.</li>
+          </ol>
+          <p class="api-fine">Find each endpoint’s secret under Settings → Webhooks. Rolling it keeps the old secret valid for 24 hours, so you can deploy without dropping deliveries.</p>
+        </div>
+        <div class="api-aside">
+          <div class="api-code">
+      <div class="api-code__bar">
+        <p class="api-code__title">Check a signature</p>
+        <div class="segmented api-langs" role="tablist" aria-label="Language for Check a signature" data-tabs-sync="api-lang" data-tabs-store="api-lang">
+          <span class="segmented__thumb" aria-hidden="true"></span><button type="button" role="tab" id="webhook-signatures-t-curl" aria-controls="webhook-signatures-p-curl" aria-selected="true" tabindex="0" data-value="curl">Shell</button><button type="button" role="tab" id="webhook-signatures-t-js" aria-controls="webhook-signatures-p-js" aria-selected="false" tabindex="-1" data-value="js">JavaScript</button><button type="button" role="tab" id="webhook-signatures-t-py" aria-controls="webhook-signatures-p-py" aria-selected="false" tabindex="-1" data-value="py">Python</button>
+        </div>
+      </div>
+      <div class="api-code__panels">
+        <div class="api-code__panel" role="tabpanel" id="webhook-signatures-p-curl" aria-labelledby="webhook-signatures-t-curl" data-lang-label="Shell" data-copy-scope>
+          <button class="api-copy" type="button" data-copy data-copy-toast="Shell copied" aria-label="Copy the Shell sample"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg></button>
+          <pre tabindex="0" data-lenis-prevent><code data-lang="shell" data-copy-source># t and v1 come from the Crestora-Signature header
+payload="$t.$(cat body.json)"
+expected=$(printf '%s' "$payload" \
+  | openssl dgst -sha256 -hmac "$CRESTORA_WEBHOOK_SECRET" \
+  | sed 's/^.* //')
+[ "$expected" = "$v1" ] &amp;&amp; echo "verified"</code></pre>
+        </div>
+        <div class="api-code__panel" role="tabpanel" id="webhook-signatures-p-js" aria-labelledby="webhook-signatures-t-js" data-lang-label="JavaScript" data-copy-scope hidden>
+          <button class="api-copy" type="button" data-copy data-copy-toast="JavaScript copied" aria-label="Copy the JavaScript sample"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg></button>
+          <pre tabindex="0" data-lenis-prevent><code data-lang="js" data-copy-source>import crypto from "node:crypto";
+
+function verify(header, rawBody, secret) {
+  const { t, v1 } = Object.fromEntries(
+    header.split(",").map((kv) =&gt; kv.split("=")),
+  );
+  const expected = crypto
+    .createHmac("sha256", secret)
+    .update(`${t}.${rawBody}`)
+    .digest("hex");
+  const fresh = Date.now() / 1000 - Number(t) &lt; 300;
+  if (!fresh || expected.length !== v1.length) return false;
+  return crypto.timingSafeEqual(
+    Buffer.from(expected),
+    Buffer.from(v1),
+  );
+}</code></pre>
+        </div>
+        <div class="api-code__panel" role="tabpanel" id="webhook-signatures-p-py" aria-labelledby="webhook-signatures-t-py" data-lang-label="Python" data-copy-scope hidden>
+          <button class="api-copy" type="button" data-copy data-copy-toast="Python copied" aria-label="Copy the Python sample"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg></button>
+          <pre tabindex="0" data-lenis-prevent><code data-lang="py" data-copy-source>import hashlib
+import hmac
+import time
+
+def verify(header, raw_body, secret):
+    parts = dict(kv.split("=", 1) for kv in header.split(","))
+    signed = f"{parts['t']}.".encode() + raw_body
+    expected = hmac.new(secret.encode(), signed,
+                        hashlib.sha256).hexdigest()
+    fresh = time.time() - int(parts["t"]) &lt; 300
+    return fresh and hmac.compare_digest(expected, parts["v1"])</code></pre>
+        </div>
+      </div>
+      
+    </div>
+        </div>
+      </article>
+    </section>
+
+        <div class="api-band" data-spotlight>
+          <span class="icon-box" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#i-plug"/></svg></span>
+          <div class="api-band__text">
+            <p class="api-band__t">Building for everyone, not just your crew?</p>
+            <p>Integration partners get a sandbox crew, a listing in the directory and help telling people about it.</p>
+          </div>
+          <div class="btn-row">
+            <a class="btn" href="integrations.html" data-roll>See the directory</a>
+            <a class="btn btn--primary" href="partners.html#pt-prog-integration" data-roll>Become a partner</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {{> cta}}
+</main>

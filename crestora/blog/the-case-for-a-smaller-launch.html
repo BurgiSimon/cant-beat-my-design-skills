@@ -1,0 +1,443 @@
+<!doctype html>
+<!-- Assembled by tools/pages.mjs from src/pages/blog/the-case-for-a-smaller-launch.html; edit that, not this. -->
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>The case for a smaller launch — Field Notes — Crestora</title>
+<meta name="description" content="A craft essay from an engineer on Countdown: why most launches are too big, what a supper club for forty taught us, and four questions to ask first." />
+<meta name="theme-color" content="#000000" />
+<meta name="color-scheme" content="dark" />
+<link rel="canonical" href="{{SITE_URL}}/blog/the-case-for-a-smaller-launch.html" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Crestora" />
+<meta property="og:url" content="{{SITE_URL}}/blog/the-case-for-a-smaller-launch.html" />
+<meta property="og:title" content="The case for a smaller launch — Field Notes — Crestora" />
+<meta property="og:description" content="A craft essay from an engineer on Countdown: why most launches are too big, what a supper club for forty taught us, and four questions to ask first." />
+<meta property="og:image" content="{{SITE_URL}}/assets/img/og.jpg" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml" />
+<link rel="preload" href="../assets/fonts/inter-latin-wght.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="../assets/fonts/michroma-latin.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="stylesheet" href="../vendor/lenis.css" />
+<link rel="stylesheet" href="../css/site.css?v={{VERSION}}" />
+<script>
+  // Scripts will run: the page may hide what they are about to bring in. A repeat visit in this tab gets short
+  // intros; reduced motion (or ?reduced) gets none.
+  (function (h) {
+    h.className = h.className.replace("no-js", "js");
+    try { if (sessionStorage.getItem("crestora:seen")) h.classList.add("is-repeat"); } catch (e) {}
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches || /[?&]reduced/.test(location.search)) h.classList.add("is-calm");
+    setTimeout(function () { h.classList.add("is-ready"); }, 6000); // if the scripts never get there, show everything anyway
+  })(document.documentElement);
+</script>
+<script defer src="../vendor/gsap.min.js"></script>
+<script defer src="../vendor/ScrollTrigger.min.js"></script>
+<script defer src="../vendor/SplitText.min.js"></script>
+<script defer src="../vendor/lenis.min.js"></script>
+<script type="module" src="../js/main.js?v={{VERSION}}"></script>
+</head>
+<body data-page="blog-the-case-for-a-smaller-launch" data-modules="page-blog">
+<!-- The icon sprite: drawn on a 24 px grid in the footer's hand (round caps and joins; stroke set by .icon). Use as
+     <svg class="icon" aria-hidden="true"><use href="#i-spark"/></svg>. -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <!-- the six stages -->
+    <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 3.5c.5 4.3 2.2 6 6.5 6.5-4.3.5-6 2.2-6.5 6.5-.5-4.3-2.2-6-6.5-6.5 4.3-.5 6-2.2 6.5-6.5Z"/><path d="M18.5 16.5v3M17 18h3"/></symbol>
+    <symbol id="i-shape" viewBox="0 0 24 24"><path d="M6 3.5h8.5L19 8v12.5H6Z"/><path d="M14.5 3.5V8H19M9 12.5h7M9 16h5"/></symbol>
+    <symbol id="i-make" viewBox="0 0 24 24"><path d="m14.5 4.5 5 5-8.8 8.8-5.6.6.6-5.6 8.8-8.8Z"/><path d="m12.5 6.5 5 5M5.1 18.9l3.3-3.3"/></symbol>
+    <symbol id="i-review" viewBox="0 0 24 24"><path d="M4.5 6.5a2 2 0 0 1 2-2h11a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-6l-4 3.5v-3.5h-1a2 2 0 0 1-2-2Z"/><circle cx="12" cy="10.5" r="1.6"/></symbol>
+    <symbol id="i-launch" viewBox="0 0 24 24"><path d="M3.5 19.5h17"/><path d="M12 15.5V4.5M7.5 9 12 4.5 16.5 9"/></symbol>
+    <symbol id="i-afterglow" viewBox="0 0 24 24"><path d="M3.5 17.5h17M6.5 17.5a5.5 5.5 0 0 1 11 0"/><path d="M12 6.5v2M5.6 9.6 7 11M18.4 9.6 17 11M3.5 14h1.5M19 14h1.5"/></symbol>
+    <!-- navigation and actions -->
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4.5 12h14.5M13.5 6.5 19 12l-5.5 5.5"/></symbol>
+    <symbol id="i-arrow-up-right" viewBox="0 0 24 24"><path d="M7 17 17 7M8.5 7H17v8.5"/></symbol>
+    <symbol id="i-arrow-down" viewBox="0 0 24 24"><path d="M12 4.5v14.5M6.5 13.5 12 19l5.5-5.5"/></symbol>
+    <symbol id="i-chev-down" viewBox="0 0 24 24"><path d="m6.5 9.5 5.5 5.5 5.5-5.5"/></symbol>
+    <symbol id="i-chev-right" viewBox="0 0 24 24"><path d="m9.5 6 6 6-6 6"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4 4"/></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8.5" y="8.5" width="11" height="11" rx="2"/><path d="M15.5 8.5v-2a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></symbol>
+    <symbol id="i-link" viewBox="0 0 24 24"><path d="M10 14a3.5 3.5 0 0 0 5 0l3.5-3.5a3.5 3.5 0 0 0-5-5L12 7"/><path d="M14 10a3.5 3.5 0 0 0-5 0l-3.5 3.5a3.5 3.5 0 0 0 5 5L12 17"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 4.5v11M7 11l5 5 5-5M5 19.5h14"/></symbol>
+    <symbol id="i-external" viewBox="0 0 24 24"><path d="M13.5 4.5h6v6M19.5 4.5l-8 8M17.5 13.5v5a1 1 0 0 1-1 1h-11a1 1 0 0 1-1-1v-11a1 1 0 0 1 1-1h5"/></symbol>
+    <symbol id="i-filter" viewBox="0 0 24 24"><path d="M4.5 6.5h15M7.5 12h9M10.5 17.5h3"/></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5.8v12.4c0 .6.7 1 1.2.7l9.6-6.2c.5-.3.5-1 0-1.3L9.2 5.1C8.7 4.8 8 5.2 8 5.8Z"/></symbol>
+    <!-- the site's pages -->
+    <symbol id="i-plug" viewBox="0 0 24 24"><path d="M9 3.5v4M15 3.5v4M6.5 7.5h11v3a5.5 5.5 0 0 1-11 0Z"/><path d="M12 16v4.5"/></symbol>
+    <symbol id="i-tag" viewBox="0 0 24 24"><path d="M3.5 12.2V4.5a1 1 0 0 1 1-1h7.7l8.3 8.3a1.5 1.5 0 0 1 0 2.1l-6.6 6.6a1.5 1.5 0 0 1-2.1 0Z"/><circle cx="8" cy="8" r="1.4"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></symbol>
+    <symbol id="i-map" viewBox="0 0 24 24"><path d="m3.5 6.5 5.5-2 6 2 5.5-2v13l-5.5 2-6-2-5.5 2Z"/><path d="M9 4.5v13M15 6.5v13"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 2.8 19.5 5.5v6c0 4.6-3.1 8.4-7.5 9.7-4.4-1.3-7.5-5.1-7.5-9.7v-6L12 2.8Z"/><path d="m8.7 12 2.3 2.3 4.4-4.6"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><rect x="4.5" y="10.5" width="15" height="10" rx="2.5"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/></symbol>
+    <symbol id="i-key" viewBox="0 0 24 24"><circle cx="8" cy="15" r="4"/><path d="m11 12 8.5-8.5M16 7l2.5 2.5M14 9l2 2"/></symbol>
+    <symbol id="i-book" viewBox="0 0 24 24"><path d="M4.5 5.5a2 2 0 0 1 2-2h12v15h-12a2 2 0 0 0-2 2Z"/><path d="M4.5 20.5a2 2 0 0 1 2-2h12v2h-12a2 2 0 0 1-2-2"/></symbol>
+    <symbol id="i-code" viewBox="0 0 24 24"><path d="m8.5 7.5-5 4.5 5 4.5M15.5 7.5l5 4.5-5 4.5M13.5 5l-3 14"/></symbol>
+    <symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M9.6 9.5a2.5 2.5 0 0 1 4.8.9c0 1.6-2.4 2.1-2.4 3.6"/><circle cx="12" cy="17" r=".6"/></symbol>
+    <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8.5" r="3.5"/><path d="M2.5 19.5a6.5 6.5 0 0 1 13 0"/><path d="M15.5 5.2a3.5 3.5 0 0 1 0 6.6M17.5 13.6a6.5 6.5 0 0 1 4 5.9"/></symbol>
+    <symbol id="i-learn" viewBox="0 0 24 24"><path d="m2.5 9 9.5-4.5L21.5 9 12 13.5Z"/><path d="M6.5 11v4.5c0 1.5 2.5 3 5.5 3s5.5-1.5 5.5-3V11M21.5 9v5"/></symbol>
+    <symbol id="i-broadcast" viewBox="0 0 24 24"><circle cx="12" cy="12" r="2"/><path d="M8 8a5.6 5.6 0 0 0 0 8M16 8a5.6 5.6 0 0 1 0 8M5.2 5.2a9.6 9.6 0 0 0 0 13.6M18.8 5.2a9.6 9.6 0 0 1 0 13.6"/></symbol>
+    <symbol id="i-pen" viewBox="0 0 24 24"><path d="M4.5 19.5h4l10-10a2.8 2.8 0 0 0-4-4l-10 10Z"/><path d="m13 7 4 4"/></symbol>
+    <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 11v5.5"/><circle cx="12" cy="7.8" r=".6"/></symbol>
+    <symbol id="i-briefcase" viewBox="0 0 24 24"><rect x="3.5" y="7.5" width="17" height="12" rx="2"/><path d="M8.5 7.5v-2a1 1 0 0 1 1-1h5a1 1 0 0 1 1 1v2M3.5 12.5h17"/></symbol>
+    <symbol id="i-news" viewBox="0 0 24 24"><path d="M4.5 5.5h12v13a2 2 0 0 1-2 2h-8a2 2 0 0 1-2-2Z"/><path d="M16.5 9.5h3v9a2 2 0 0 1-2 2M7.5 9h6M7.5 12.5h6M7.5 16h4"/></symbol>
+    <symbol id="i-handshake" viewBox="0 0 24 24"><path d="m3 10 4-4 5 2 5-2 4 4-7 7.5a1.5 1.5 0 0 1-2.1 0Z"/><path d="m12 8-3 3a1.4 1.4 0 0 0 2 2l2-1.8 3 3"/></symbol>
+    <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3.5" y="5.5" width="17" height="13" rx="2"/><path d="m4 7 8 6 8-6"/></symbol>
+    <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="4" y="5.5" width="16" height="14.5" rx="2"/><path d="M4 10h16M8.5 3.5v4M15.5 3.5v4"/></symbol>
+    <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c2.4 2.3 3.6 5.1 3.6 8.5s-1.2 6.2-3.6 8.5c-2.4-2.3-3.6-5.1-3.6-8.5S9.6 5.8 12 3.5Z"/></symbol>
+    <symbol id="i-star" viewBox="0 0 24 24"><path d="m12 3.5 2.6 5.4 5.9.8-4.3 4.1 1 5.9-5.2-2.8-5.2 2.8 1-5.9-4.3-4.1 5.9-.8Z"/></symbol>
+    <symbol id="i-vote" viewBox="0 0 24 24"><path d="m6.5 11 5.5-5.5 5.5 5.5M12 5.5v13"/></symbol>
+    <symbol id="i-sitemap" viewBox="0 0 24 24"><rect x="9" y="3.5" width="6" height="4.5" rx="1"/><rect x="3.5" y="16" width="6" height="4.5" rx="1"/><rect x="14.5" y="16" width="6" height="4.5" rx="1"/><path d="M12 8v4M6.5 16v-2a2 2 0 0 1 2-2h7a2 2 0 0 1 2 2v2"/></symbol>
+    <symbol id="i-doc" viewBox="0 0 24 24"><path d="M6.5 3.5h8l4 4v13h-12Z"/><path d="M14.5 3.5v4h4M9 12h6M9 15.5h6"/></symbol>
+    <symbol id="i-cookie" viewBox="0 0 24 24"><path d="M20.4 12.6A8.5 8.5 0 1 1 11.4 3.6a3 3 0 0 0 4 3.6 3 3 0 0 0 5 5.4Z"/><circle cx="9" cy="10" r=".8"/><circle cx="14.5" cy="15" r=".8"/><circle cx="9.5" cy="15.5" r=".8"/></symbol>
+    <symbol id="i-scale" viewBox="0 0 24 24"><path d="M12 4v16M7.5 20h9M5 7.5h14M5 7.5l-2.5 6a2.8 2.8 0 0 0 5 0Zm14 0-2.5 6a2.8 2.8 0 0 0 5 0Z"/></symbol>
+    <symbol id="i-server" viewBox="0 0 24 24"><rect x="4" y="4.5" width="16" height="6.5" rx="1.5"/><rect x="4" y="13" width="16" height="6.5" rx="1.5"/><path d="M7.5 7.8h.01M7.5 16.2h.01"/></symbol>
+    <symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13 2.5 4.5 13.5H11l-1 8 8.5-11H12l1-8Z"/></symbol>
+    <symbol id="i-layers" viewBox="0 0 24 24"><path d="m12 3.5 9 4.75-9 4.75-9-4.75 9-4.75ZM3 12.25 12 17l9-4.75M3 16.25 12 21l9-4.75"/></symbol>
+  </defs>
+</svg>
+<a class="skip" href="#main">Skip to content</a>
+<header class="header">
+  <div class="header__inner container">
+    <a class="header__logo" href=".././" aria-label="Crestora, home">
+      <span class="mark" aria-hidden="true"><span class="mark__sheen"></span></span>
+      <span class="wordmark" aria-hidden="true">Crestora</span>
+    </a>
+    <nav class="nav" aria-label="Main">
+      <div class="nav__item" data-menu>
+        <button class="nav__trigger" type="button" aria-expanded="false" aria-controls="menu-product">Product<svg aria-hidden="true"><use href="#i-chev-down"/></svg></button>
+        <div class="dropdown" id="menu-product" style="--cols:2">
+          <a href="../index.html#features"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-layers"/></svg></span><strong>Features</strong><small>Six lanes from spark to launch</small></a>
+          <a href="../integrations.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-plug"/></svg></span><strong>Integrations</strong><small>120+ tools merge into your lane</small></a>
+          <a href="../changelog.html#v4-12"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-clock"/></svg></span><strong>Changelog</strong><small>v4.12 · Review Room hears you</small></a>
+          <a href="../roadmap.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-map"/></svg></span><strong>Roadmap</strong><small>Vote on what comes next</small></a>
+          <a href="../security.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-shield"/></svg></span><strong>Security</strong><small>Your unreleased work, protected</small></a>
+          <a href="../pricing.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-tag"/></svg></span><strong>Pricing</strong><small>Free for three lanes</small></a>
+        </div>
+      </div>
+      <a class="nav__link" href="../index.html#creators" data-roll>Creators</a>
+      <div class="nav__item" data-menu>
+        <button class="nav__trigger is-current" type="button" aria-expanded="false" aria-controls="menu-resources">Resources<svg aria-hidden="true"><use href="#i-chev-down"/></svg></button>
+        <div class="dropdown" id="menu-resources" style="--cols:2">
+          <a href="../blog.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-pen"/></svg></span><strong>Field Notes</strong><small>Launch stories and craft notes</small></a>
+          <a href="../docs.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-book"/></svg></span><strong>Documentation</strong><small>Lanes, stages and every tool</small></a>
+          <a href="../api.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-code"/></svg></span><strong>API Reference</strong><small>A small REST API for lanes</small></a>
+          <a href="../help.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-help"/></svg></span><strong>Help Center</strong><small>Answers, fast</small></a>
+          <a href="../community.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-users"/></svg></span><strong>Community</strong><small>Circles, swaps and Launch Night</small></a>
+          <a href="../tutorials.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-learn"/></svg></span><strong>Tutorials</strong><small>Short lessons from people who ship</small></a>
+          <a href="../webinars.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-broadcast"/></svg></span><strong>Webinars</strong><small>Next: Dec 10, live</small></a>
+        </div>
+      </div>
+      <div class="nav__item" data-menu>
+        <button class="nav__trigger" type="button" aria-expanded="false" aria-controls="menu-company">Company<svg aria-hidden="true"><use href="#i-chev-down"/></svg></button>
+        <div class="dropdown" id="menu-company" style="--cols:1">
+          <a href="../about.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-info"/></svg></span><strong>About</strong><small>Why we build roads for makers</small></a>
+          <a href="../careers.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-briefcase"/></svg></span><strong>Careers</strong><small>8 open roles, four hubs</small></a>
+          <a href="../press.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-news"/></svg></span><strong>Press Kit</strong><small>Words, marks and facts</small></a>
+          <a href="../partners.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-handshake"/></svg></span><strong>Partners</strong><small>Studios, toolmakers, teachers</small></a>
+          <a href="../contact.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-mail"/></svg></span><strong>Contact</strong><small>Talk to a human</small></a>
+        </div>
+      </div>
+      <a class="nav__link" href="../pricing.html" data-roll>Pricing</a>
+    </nav>
+    <div class="header__actions">
+      <a class="header__signin" href="../start.html#signin" data-roll>Sign in</a>
+      <a class="btn btn--primary btn--sm" href="../start.html" data-roll>Open a lane</a>
+      <button class="header__burger" type="button" aria-expanded="false" aria-controls="menu" aria-label="Open menu"><span></span></button>
+    </div>
+  </div>
+</header>
+<div class="menu" id="menu" role="dialog" aria-modal="true" aria-label="Menu">
+  <div class="menu__groups">
+    <div class="menu__group">
+      <h2>Product</h2>
+      <ul>
+        <li><a href="../index.html#features">Features</a></li>
+        <li><a href="../integrations.html">Integrations</a></li>
+        <li><a href="../changelog.html">Changelog</a></li>
+        <li><a href="../roadmap.html">Roadmap</a></li>
+        <li><a href="../security.html">Security</a></li>
+        <li><a href="../pricing.html">Pricing</a></li>
+      </ul>
+    </div>
+    <div class="menu__group">
+      <h2>Resources</h2>
+      <ul>
+        <li><a href="../blog.html">Field Notes</a></li>
+        <li><a href="../docs.html">Documentation</a></li>
+        <li><a href="../api.html">API Reference</a></li>
+        <li><a href="../help.html">Help Center</a></li>
+        <li><a href="../community.html">Community</a></li>
+        <li><a href="../tutorials.html">Tutorials</a></li>
+        <li><a href="../webinars.html">Webinars</a></li>
+      </ul>
+    </div>
+    <div class="menu__group">
+      <h2>Company</h2>
+      <ul>
+        <li><a href="../about.html">About</a></li>
+        <li><a href="../careers.html">Careers</a></li>
+        <li><a href="../press.html">Press Kit</a></li>
+        <li><a href="../partners.html">Partners</a></li>
+        <li><a href="../contact.html">Contact</a></li>
+      </ul>
+    </div>
+    <div class="menu__group">
+      <h2>More</h2>
+      <ul>
+        <li><a href="../index.html#creators">Creators</a></li>
+        <li><a href="../sitemap.html">Sitemap</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="streak" aria-hidden="true"></div>
+  <div class="menu__actions">
+    <a class="btn btn--primary" href="../start.html">Open a lane</a>
+    <a class="btn" href="../start.html#signin">Sign in</a>
+  </div>
+</div>
+
+<main id="main">
+  <!-- A Field Notes post: the cover is a night poster in the colour of the stage the story is filed in; the lane recap
+       beside the text lights its six stages as you read (page-blog.js), and the header's spectrum line follows the
+       reading. Without scripts (or under reduced motion) the recap shows all six stages lit. -->
+  <article class="fn-post" data-stage="shape" aria-labelledby="fn-title">
+    <header class="page-hero fn-hero">
+      <div class="fn-hero__glow" aria-hidden="true"></div>
+      <p class="fn-hero__index" aria-hidden="true"><span>02</span></p>
+      <div class="container fn-hero__inner">
+        <nav class="breadcrumb" aria-label="Breadcrumb" data-reveal="fade"><a href="../blog.html">Field Notes</a><span aria-hidden="true">/</span><span>Craft</span></nav>
+        <h1 class="title-1 fn-hero__title" id="fn-title" data-split>The case for a smaller launch</h1>
+        <p class="lede fn-hero__dek" data-reveal data-delay="0.15">We build the tool that launches your work to fourteen channels at once. Rafael Mendes, who works on Countdown, makes the case for launching it to forty people instead.</p>
+        <div class="fn-byline" data-reveal data-delay="0.25">
+          <span class="avatar fn-byline__avatar" aria-hidden="true">RM</span>
+          <p class="fn-byline__who"><span class="fn-byline__name">Rafael Mendes</span><span class="fn-byline__role">Engineer, Countdown, Lisbon</span></p>
+          <p class="fn-byline__meta"><time datetime="2026-11-06">6 Nov 2026</time><span aria-hidden="true">·</span><span>4 min read</span><span aria-hidden="true">·</span><span class="fn-byline__stage"><i aria-hidden="true"></i>Filed in Shape</span></p>
+          <button class="btn btn--sm fn-copy" type="button" data-fn-copy hidden><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg>Copy link</button>
+        </div>
+      </div>
+    </header>
+
+    <figure class="container fn-cover" data-reveal="fade">
+      <div class="fn-art fn-cover__art" data-stage="shape"><svg class="fn-poster fn-poster--table" viewBox="0 0 1200 750" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><path class="st" d="M316.3 186.8h0M355.2 182.8h0M431.1 252.5h0M261.5 158h0M469.1 151.7h0M710.4 130.7h0M406.2 90.4h0M642.9 19.4h0M516.9 53.2h0M511.6 139h0M298.8 84.7h0M337.7 28.6h0M789.5 206.2h0M578.2 245.8h0M967.3 245.9h0M619.7 30.3h0M619.7 2.8h0M911.9 178.2h0M402.1 139.9h0M414.8 20.6h0M538.1 46.9h0M327.6 192.2h0M877.8 155.8h0M588.4 195.4h0M399.9 43h0M446.4 229.4h0M375.1 182.8h0M946.2 143.6h0M265.5 243.4h0M353.8 204.4h0M814.5 177.7h0M696.6 41.5h0M890.8 175.8h0M602.9 106.8h0M313.2 194.3h0M704.9 171h0M459.8 244.3h0M558.7 245.8h0M880.7 155.3h0M769.2 225.3h0M378.7 114.4h0M444.2 8h0M799.6 178.2h0M555.6 214.4h0M757.7 181h0M692.6 243.3h0M774.5 126.7h0M235.8 146.4h0M960.3 209.2h0M562.5 87.8h0M603.6 210h0M582.3 148.8h0M241.9 111.1h0M712.4 29.4h0M709.7 196.1h0M869.5 217.7h0"/><path class="st st--b" d="M751.9 171.8h0M877.2 75.8h0M847 255.4h0M295 153.4h0M773.6 153.9h0M944.4 184.7h0M766.3 78.7h0M834.1 123.4h0M591.8 70.2h0M811.9 100.9h0M505.8 191.6h0M570.3 110.9h0M579.8 12h0M811.9 197.1h0"/><path class="s" opacity="0.18" d="M-925 870.5V-354.5M2125 870.5V-354.5M-400.4 680.4V-123.2M1600.4 680.4V-123.2M-83.2 565.5V16.7M1283.2 565.5V16.7M112 494.8V102.8M1088 494.8V102.8M246.2 446.2V162M953.8 446.2V162M343.8 410.8V205M856.2 410.8V205M417 384.3V237.3M783 384.3V237.3"/><path class="s" opacity="0.24" d="M526.8 285.7L-986 -381.4M673.2 285.7L2186 -381.4"/><path class="s" opacity="0.55" d="M526.8 344.5L-986 892.6M673.2 344.5L2186 892.6"/><path class="s" opacity="0.2" stroke-dasharray="14 18" d="M548.4 344.5L-518 892.6M567.6 344.5L-102 892.6M632.4 344.5L1302 892.6M651.6 344.5L1718 892.6"/><g class="fn-poster__art"><path class="fs" opacity=".07" d="M590 362.2L610 362.2L730 892.6L470 892.6Z"/><path class="w" opacity="0.6" d="M590 362.2L470 892.6M610 362.2L730 892.6"/><g class="w" opacity=".55"><ellipse cx="594" cy="366.6" rx="3.7" ry="1.3"/><ellipse cx="606.1" cy="366.6" rx="3.7" ry="1.3"/><ellipse cx="593.4" cy="371.3" rx="3.8" ry="1.3"/><ellipse cx="606.6" cy="371.3" rx="3.8" ry="1.3"/><ellipse cx="592.2" cy="380.4" rx="4.1" ry="1.4"/><ellipse cx="607.8" cy="380.4" rx="4.1" ry="1.4"/><ellipse cx="590.7" cy="392.4" rx="4.5" ry="1.5"/><ellipse cx="609.3" cy="392.4" rx="4.5" ry="1.5"/><ellipse cx="588.9" cy="406.9" rx="5" ry="1.6"/><ellipse cx="611.1" cy="406.9" rx="5" ry="1.6"/><ellipse cx="586.9" cy="423.6" rx="5.6" ry="1.8"/><ellipse cx="613.1" cy="423.6" rx="5.6" ry="1.8"/><ellipse cx="584.6" cy="442.1" rx="6.2" ry="2"/><ellipse cx="615.4" cy="442.1" rx="6.2" ry="2"/><ellipse cx="582" cy="462.5" rx="6.9" ry="2.2"/><ellipse cx="618" cy="462.5" rx="6.9" ry="2.2"/><ellipse cx="579.3" cy="484.6" rx="7.7" ry="2.4"/><ellipse cx="620.7" cy="484.6" rx="7.7" ry="2.4"/><ellipse cx="576.3" cy="508.2" rx="8.5" ry="2.6"/><ellipse cx="623.7" cy="508.2" rx="8.5" ry="2.6"/><ellipse cx="573.2" cy="533.3" rx="9.3" ry="2.8"/><ellipse cx="626.8" cy="533.3" rx="9.3" ry="2.8"/><ellipse cx="569.9" cy="559.9" rx="10.2" ry="3.1"/><ellipse cx="630.1" cy="559.9" rx="10.2" ry="3.1"/><ellipse cx="566.4" cy="587.8" rx="11.2" ry="3.4"/><ellipse cx="633.6" cy="587.8" rx="11.2" ry="3.4"/><ellipse cx="562.8" cy="617" rx="12.1" ry="3.6"/><ellipse cx="637.2" cy="617" rx="12.1" ry="3.6"/><ellipse cx="559" cy="647.5" rx="13.2" ry="3.9"/><ellipse cx="641" cy="647.5" rx="13.2" ry="3.9"/><ellipse cx="555.1" cy="679.2" rx="14.3" ry="4.2"/><ellipse cx="644.9" cy="679.2" rx="14.3" ry="4.2"/><ellipse cx="551" cy="712" rx="15.4" ry="4.5"/><ellipse cx="649" cy="712" rx="15.4" ry="4.5"/><ellipse cx="546.7" cy="746.1" rx="16.5" ry="4.9"/><ellipse cx="653.3" cy="746.1" rx="16.5" ry="4.9"/><ellipse cx="542.4" cy="781.2" rx="17.7" ry="5.2"/><ellipse cx="657.6" cy="781.2" rx="17.7" ry="5.2"/><ellipse cx="537.9" cy="817.5" rx="19" ry="5.5"/><ellipse cx="662.2" cy="817.5" rx="19" ry="5.5"/></g><g class="fs" opacity=".85"><circle cx="618.7" cy="366.6" r="2.1"/><circle cx="579.5" cy="371.3" r="2.1"/><circle cx="576" cy="380.4" r="2.3"/><circle cx="624" cy="380.4" r="2.3"/><circle cx="571.4" cy="392.4" r="2.5"/><circle cx="628.6" cy="392.4" r="2.5"/><circle cx="634.2" cy="406.9" r="2.7"/><circle cx="559.4" cy="423.6" r="3"/><circle cx="552.3" cy="442.1" r="3.3"/><circle cx="647.7" cy="442.1" r="3.3"/><circle cx="544.4" cy="462.5" r="3.6"/><circle cx="655.6" cy="462.5" r="3.6"/><circle cx="664.1" cy="484.6" r="3.9"/><circle cx="526.8" cy="508.2" r="4.3"/><circle cx="517.2" cy="533.3" r="4.7"/><circle cx="682.8" cy="533.3" r="4.7"/><circle cx="507" cy="559.9" r="5.1"/><circle cx="693" cy="559.9" r="5.1"/><circle cx="703.8" cy="587.8" r="5.6"/><circle cx="485" cy="617" r="6"/><circle cx="473.3" cy="647.5" r="6.5"/><circle cx="726.7" cy="647.5" r="6.5"/><circle cx="461.1" cy="679.2" r="7"/><circle cx="738.9" cy="679.2" r="7"/><circle cx="751.6" cy="712" r="7.5"/><circle cx="435.4" cy="746.1" r="8.1"/><circle cx="421.8" cy="781.2" r="8.6"/><circle cx="778.2" cy="781.2" r="8.6"/><circle cx="407.9" cy="817.5" r="9.2"/><circle cx="792.1" cy="817.5" r="9.2"/></g><g class="fw"><circle cx="581.3" cy="366.6" r="2.1"/><circle cx="620.5" cy="371.3" r="2.1"/><circle cx="565.8" cy="406.9" r="2.7"/><circle cx="640.6" cy="423.6" r="3"/><circle cx="535.9" cy="484.6" r="3.9"/><circle cx="673.2" cy="508.2" r="4.3"/><circle cx="496.2" cy="587.8" r="5.6"/><circle cx="715" cy="617" r="6"/><circle cx="448.4" cy="712" r="7.5"/><circle cx="764.6" cy="746.1" r="8.1"/></g><path class="s" opacity="0.4" d="M-925 -183Q600 42 2125 -183M-400.4 -10.7Q600 136.9 1600.4 -10.7M-83.2 93.6Q600 194.4 1283.2 93.6M112 157.7Q600 229.7 1088 157.7M246.2 201.8Q600 254 953.8 201.8M343.8 233.8Q600 271.6 856.2 233.8"/><g class="s" opacity=".35"><circle cx="164.3" cy="-74.7" r="14"/><circle cx="382.1" cy="-67.8" r="14"/><circle cx="600" cy="-65.5" r="14"/><circle cx="817.9" cy="-67.8" r="14"/><circle cx="1035.7" cy="-74.7" r="14"/><circle cx="28.3" cy="42.3" r="10.6"/><circle cx="171.3" cy="52.9" r="10.6"/><circle cx="314.2" cy="60.4" r="10.6"/><circle cx="457.1" cy="64.9" r="10.6"/><circle cx="600" cy="66.4" r="10.6"/><circle cx="742.9" cy="64.9" r="10.6"/><circle cx="885.8" cy="60.4" r="10.6"/><circle cx="1028.7" cy="52.9" r="10.6"/><circle cx="1171.7" cy="42.3" r="10.6"/><circle cx="14.4" cy="109.2" r="8.5"/><circle cx="112" cy="120.5" r="8.5"/><circle cx="209.6" cy="129.7" r="8.5"/><circle cx="307.2" cy="136.9" r="8.5"/><circle cx="404.8" cy="142.1" r="8.5"/><circle cx="502.4" cy="145.2" r="8.5"/><circle cx="600" cy="146.2" r="8.5"/><circle cx="697.6" cy="145.2" r="8.5"/><circle cx="795.2" cy="142.1" r="8.5"/><circle cx="892.8" cy="136.9" r="8.5"/><circle cx="990.4" cy="129.7" r="8.5"/><circle cx="1088" cy="120.5" r="8.5"/><circle cx="1185.6" cy="109.2" r="8.5"/></g><g class="fw" opacity=".9"><circle cx="164.3" cy="-74.7" r="4.6"/><circle cx="382.1" cy="-67.8" r="4.6"/><circle cx="600" cy="-65.5" r="4.6"/><circle cx="817.9" cy="-67.8" r="4.6"/><circle cx="1035.7" cy="-74.7" r="4.6"/><circle cx="28.3" cy="42.3" r="3.4"/><circle cx="171.3" cy="52.9" r="3.4"/><circle cx="314.2" cy="60.4" r="3.4"/><circle cx="457.1" cy="64.9" r="3.4"/><circle cx="600" cy="66.4" r="3.4"/><circle cx="742.9" cy="64.9" r="3.4"/><circle cx="885.8" cy="60.4" r="3.4"/><circle cx="1028.7" cy="52.9" r="3.4"/><circle cx="1171.7" cy="42.3" r="3.4"/><circle cx="14.4" cy="109.2" r="2.7"/><circle cx="112" cy="120.5" r="2.7"/><circle cx="209.6" cy="129.7" r="2.7"/><circle cx="307.2" cy="136.9" r="2.7"/><circle cx="404.8" cy="142.1" r="2.7"/><circle cx="502.4" cy="145.2" r="2.7"/><circle cx="600" cy="146.2" r="2.7"/><circle cx="697.6" cy="145.2" r="2.7"/><circle cx="795.2" cy="142.1" r="2.7"/><circle cx="892.8" cy="136.9" r="2.7"/><circle cx="990.4" cy="129.7" r="2.7"/><circle cx="1088" cy="120.5" r="2.7"/><circle cx="1185.6" cy="109.2" r="2.7"/><circle cx="181.7" cy="168.8" r="2.2"/><circle cx="251.4" cy="176.9" r="2.2"/><circle cx="321.1" cy="183.5" r="2.2"/><circle cx="390.9" cy="188.7" r="2.2"/><circle cx="460.6" cy="192.3" r="2.2"/><circle cx="530.3" cy="194.5" r="2.2"/><circle cx="600" cy="195.3" r="2.2"/><circle cx="669.7" cy="194.5" r="2.2"/><circle cx="739.4" cy="192.3" r="2.2"/><circle cx="809.1" cy="188.7" r="2.2"/><circle cx="878.9" cy="183.5" r="2.2"/><circle cx="948.6" cy="176.9" r="2.2"/><circle cx="1018.3" cy="168.8" r="2.2"/><circle cx="296.7" cy="209.9" r="1.9"/><circle cx="347.3" cy="215.7" r="1.9"/><circle cx="397.8" cy="220.5" r="1.9"/><circle cx="448.4" cy="224.2" r="1.9"/><circle cx="498.9" cy="226.9" r="1.9"/><circle cx="549.5" cy="228.5" r="1.9"/><circle cx="600" cy="229" r="1.9"/><circle cx="650.5" cy="228.5" r="1.9"/><circle cx="701.1" cy="226.9" r="1.9"/><circle cx="751.6" cy="224.2" r="1.9"/><circle cx="802.2" cy="220.5" r="1.9"/><circle cx="852.7" cy="215.7" r="1.9"/><circle cx="903.3" cy="209.9" r="1.9"/><circle cx="380.4" cy="239.7" r="1.7"/><circle cx="417" cy="243.9" r="1.7"/><circle cx="453.6" cy="247.4" r="1.7"/><circle cx="490.2" cy="250.1" r="1.7"/><circle cx="526.8" cy="252" r="1.7"/><circle cx="563.4" cy="253.2" r="1.7"/><circle cx="600" cy="253.6" r="1.7"/><circle cx="636.6" cy="253.2" r="1.7"/><circle cx="673.2" cy="252" r="1.7"/><circle cx="709.8" cy="250.1" r="1.7"/><circle cx="746.4" cy="247.4" r="1.7"/><circle cx="783" cy="243.9" r="1.7"/><circle cx="819.6" cy="239.7" r="1.7"/></g></g><circle class="w" opacity=".5" cx="600" cy="318" r="2.5"/></svg><span class="fn-art__tag" aria-hidden="true"><i></i>02 Shape</span></div>
+      <figcaption class="fn-cover__cap">Long Table: forty seats down the middle of a closed street in Graça, sold with one email.</figcaption>
+    </figure>
+
+    <div class="container fn-body">
+      <div class="prose fn-prose">
+<p>I work on Countdown, the part of Crestora that schedules a launch to fourteen channels at once and opens a room where your crew watches it go live. So it may sound strange coming from me: most launches are too big.</p>
+<p>Not too ambitious. Too big. Too many channels, too many people, too much riding on one night. Big launches feel brave, but in my experience they are often a way of not deciding who the thing is actually for.</p>
+<h2>Forty seats on a closed street</h2>
+<p>The best launch I have seen this year had forty people at it. Tomás Ruiz runs Long Table, a supper club in Lisbon. In September he decided to close a street in Graça for one night and seat forty strangers at a single table down the middle of it.</p>
+<p>He opened a lane on a Tuesday. By Friday it had a Blueprint, a menu, a street permit, a playlist and exactly one launch channel: an email to the 212 people who had eaten with him before. Forty seats went in an hour. Nine days after the first note, forty strangers sat down under strings of lights and passed the bread.</p>
+<p>He didn’t post it anywhere else. He didn’t need to. Everyone who wanted to be there heard about it from the one place they already trusted him.</p>
+<p>The rest of the lane was just as small. On the Monday he cooked the whole menu for six friends and let them pin notes to it: less salt in the clams, the dessert too sweet after that much wine, a jumper for anyone who forgot that Lisbon gets cold after ten. By the morning after the dinner he had thirty-one replies, two of them asking to help with the next one. The next one is already on his Sparkboard.</p>
+<h2>Small is a decision</h2>
+<p>A smaller launch is not a launch with less effort. It is a launch with fewer things left to chance. When you choose one channel, you can make that channel good. When you choose forty people, you can know who they are. When you choose one night, you can be there for all of it. A big launch tells everyone. A small launch tells the right people, properly.</p>
+<p>Countdown is happy to schedule one channel. The checklist gets shorter, the launch room gets quieter, and you can read every reply that comes back. That is not a lesser launch. It is one you can actually pay attention to.</p>
+<p>Here are the four questions I ask before I schedule anything in Countdown, my own work included:</p>
+<ol>
+<li><strong>Who are the first forty people this is for?</strong> Can I name them?</li>
+<li><strong>Where do they already listen?</strong> That’s the channel. One, maybe two.</li>
+<li><strong>What do I want them to do in the first hour?</strong> Make that the only button.</li>
+<li><strong>What will I do with what they tell me?</strong> If the answer is “nothing”, it’s too early to launch.</li>
+</ol>
+<p>If you can’t answer the first one, a bigger launch won’t help. It will only tell more people that you weren’t sure.</p>
+<figure class="fn-pull" data-reveal>
+<blockquote><p>A big launch tells everyone. A small launch tells the right people, properly.</p></blockquote>
+<figcaption>Rafael Mendes</figcaption>
+</figure>
+<h2>Three hundred copies</h2>
+<p>I am taking my own advice. Outside work I make records, and on 27 November a 7-inch of fado covers comes out: two songs, pressed in Porto, three hundred copies. It will not go to fourteen channels. It goes to one: a letter to the people who came to the four gigs I played this year, with a link and a date. If they buy a hundred, I’ll be thrilled. If they buy three hundred, I will press more and tell a few more people.</p>
+<h2>Small launches compound</h2>
+<p>Here is the part that surprised me. Looking across thousands of lanes in Afterglow, creators whose first launch went to a single channel launched their second thing much sooner: a median of 19 days later, against 47 days for first launches sent to five channels or more. A small launch is survivable. You learn, you fix, you go again. A huge launch that lands softly can take a year to get over.</p>
+<p>So use all fourteen channels when the work is ready for the whole world. But the next time you’re about to launch something you made, ask whether it would be better as a dinner for forty. It usually is.</p>
+      </div>
+
+      <aside class="fn-recap" aria-labelledby="fn-recap-title" data-fn-recap>
+        <div class="fn-recap__inner">
+          <p class="fn-recap__eyebrow" id="fn-recap-title">Lane recap</p>
+          <p class="fn-recap__project">Long Table, a supper club</p>
+          <p class="fn-recap__sum">Spark to supper in 9 days</p>
+          <ol class="fn-recap__list">
+          <li class="fn-recap__stage" data-stage="spark" style="--next: var(--shape)">
+            <span class="fn-recap__dot" aria-hidden="true"></span>
+            <span class="fn-recap__head"><span class="fn-recap__n">01</span> <span class="fn-recap__name">Spark</span> <time class="fn-recap__date" datetime="2026-09-08">8 Sep</time></span>
+            <span class="fn-recap__note">A closed street in Graça</span>
+          </li>
+          <li class="fn-recap__stage" data-stage="shape" style="--next: var(--make)">
+            <span class="fn-recap__dot" aria-hidden="true"></span>
+            <span class="fn-recap__head"><span class="fn-recap__n">02</span> <span class="fn-recap__name">Shape</span> <time class="fn-recap__date" datetime="2026-09-09">9 Sep</time></span>
+            <span class="fn-recap__note">Forty seats, one table</span>
+          </li>
+          <li class="fn-recap__stage" data-stage="make" style="--next: var(--review)">
+            <span class="fn-recap__dot" aria-hidden="true"></span>
+            <span class="fn-recap__head"><span class="fn-recap__n">03</span> <span class="fn-recap__name">Make</span> <time class="fn-recap__date" datetime="2026-09-11">11 Sep</time></span>
+            <span class="fn-recap__note">Menu, permit, one email</span>
+          </li>
+          <li class="fn-recap__stage" data-stage="review" style="--next: var(--launch)">
+            <span class="fn-recap__dot" aria-hidden="true"></span>
+            <span class="fn-recap__head"><span class="fn-recap__n">04</span> <span class="fn-recap__name">Review</span> <time class="fn-recap__date" datetime="2026-09-14">14 Sep</time></span>
+            <span class="fn-recap__note">A tasting for six friends</span>
+          </li>
+          <li class="fn-recap__stage" data-stage="launch" style="--next: var(--afterglow)">
+            <span class="fn-recap__dot" aria-hidden="true"></span>
+            <span class="fn-recap__head"><span class="fn-recap__n">05</span> <span class="fn-recap__name">Launch</span> <time class="fn-recap__date" datetime="2026-09-17">17 Sep</time></span>
+            <span class="fn-recap__note">Forty strangers sit down</span>
+          </li>
+          <li class="fn-recap__stage" data-stage="afterglow" style="--next: var(--afterglow)">
+            <span class="fn-recap__dot" aria-hidden="true"></span>
+            <span class="fn-recap__head"><span class="fn-recap__n">06</span> <span class="fn-recap__name">Afterglow</span> <time class="fn-recap__date" datetime="2026-09-18">18 Sep</time></span>
+            <span class="fn-recap__note">31 replies by morning</span>
+          </li>
+          </ol>
+        </div>
+      </aside>
+      <footer class="fn-end">
+        <div class="fn-author">
+          <span class="avatar fn-author__avatar" aria-hidden="true">RM</span>
+          <div>
+            <p class="fn-author__name">Rafael Mendes</p>
+            <p class="fn-author__bio">Rafael works on Countdown from the Lisbon hub. His 7-inch of fado covers was pressed in Porto: three hundred copies, one letter, out on 27 November.</p>
+          </div>
+        </div>
+        <div class="fn-end__row">
+          <button class="btn btn--sm fn-copy" type="button" data-fn-copy hidden><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg>Copy link</button>
+          <a class="link-arrow" href="../blog.html">All field notes<svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+        </div>
+        <p class="fiction">Crestora is a fictional company; figures are illustrative.</p>
+      </footer>
+    </div>
+  </article>
+
+  <nav class="fn-pager" aria-label="More field notes">
+    <div class="container fn-pager__grid">
+      <a class="fn-pager__item fn-pager__item--prev" href="../blog/why-theo-ships-on-fridays.html" data-stage="launch">
+        <span aria-hidden="true" class="fn-art fn-pager__art" data-stage="launch"><svg class="fn-poster fn-poster--tides" viewBox="0 0 1200 750" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><path class="st" d="M294 218.9h0M983 154.5h0M249.9 541.9h0M585.9 49h0M309.9 141h0M388.7 78.5h0M372.9 47h0M1121.7 43.7h0M1167.2 86.4h0M596.1 87.1h0M673.7 179.4h0M679.9 565.3h0M1152.8 46h0M482.6 189.6h0M1067.2 597.7h0M149.4 87h0M1092.3 24.5h0M794.4 22.4h0M191.2 131.1h0M1003.5 558.5h0M915.9 569.7h0M659.1 32.4h0M576.1 195h0M392.2 46.5h0M48 180.9h0M297.8 548.9h0M43.7 22.9h0M118.5 221.6h0M854.6 49.7h0M1022.2 135.4h0M505 578h0M1018 113.5h0M249.7 81.7h0M1008.2 32.2h0M164.1 96.5h0M224.8 128.2h0M61.8 122.9h0M350.7 214.7h0M849.2 176.3h0M976.1 164.8h0M1179.2 38.2h0M1100.6 592.9h0M495.2 544.3h0M1019.9 19.3h0M35.5 114.1h0M146.3 174h0M206.9 219.1h0M826.4 25.1h0M93.5 60h0M312.6 229.4h0M777.1 140h0M1120.7 93.1h0M1045.2 46.7h0M194.3 155.5h0M523 22.9h0M885.4 187.1h0M752.6 161.7h0M629.6 102.8h0M391.1 207.3h0M518.2 148.3h0M742.4 178.6h0M856.4 152.6h0M696.1 25.4h0M821.8 155.1h0M691.6 91.5h0M78 16.8h0M876.6 196.3h0M72.6 62.9h0M945.7 62.5h0M595.1 116.4h0M1078.6 68.6h0M257.1 164h0M174.8 101.9h0M16.3 219.9h0M467 159.6h0M954.4 176.4h0M943.8 23.4h0M572.2 125.9h0M1073.2 71.5h0M1106.6 571.1h0M651.1 541.7h0M799.8 582.1h0M802.4 211h0M14.3 551.2h0M857 89.8h0M318.7 40.1h0M995.1 44.6h0"/><path class="st st--b" d="M793.5 150.9h0M921.7 153h0M674 561.2h0M512.2 163.1h0M80 194.7h0M839 82.6h0M1198.2 45.5h0M90.9 541.5h0M377.2 596.2h0M930.6 86.6h0M68.3 42.2h0M188.3 169.1h0M1090.3 106.2h0M733.4 153.7h0M846.6 30.3h0M1000.6 73.6h0M726.6 154.3h0M1092.2 185.3h0M733.5 45.1h0M1106.9 51.2h0M45 5.8h0M587.2 216.8h0M177.2 47.7h0"/><rect class="fs" opacity=".07" x="668.6" y="150" width="137.1" height="454"/><path class="w" opacity="0.08" stroke-dasharray="2 8" d="M257.1 150V590M394.3 150V590M531.4 150V590M668.6 150V590M805.7 150V590M942.9 150V590"/><g class="fn-poster__art"><path class="s" opacity="0.5" d="M-40 345.8L-32 353.1L-24 358.8L-16 361.9L-8 362.1L0 359.4L8 354.1L16 346.9L24 338.8L32 330.9L40 324.2L48 319.6L56 317.5L64 318.2L72 322L80 328.4L88 336.5L96 345.3L104 353.4L112 359.9L120 363.8L128 364.7L136 362.5L144 357.4L152 349.9L160 340.7L168 331L176 322L184 315L192 311.5L200 312L208 316.7L216 324.8L224 335L232 345.8L240 355.5L248 363L256 367.7L264 369L272 367.1L280 362L288 353.8L296 343.3L304 331.5L312 320.1L320 310.9L328 305.6L336 305.6L344 310.9L352 320.6L360 332.9L368 345.7L376 357.2L384 366L392 371.5L400 373.4L408 371.8L416 366.7L424 358L432 346.4L440 332.7L448 318.8L456 307.2L464 300.1L472 299.2L480 304.8L488 315.8L496 330.2L504 345.2L512 358.5L520 368.7L528 375.1L536 377.7L544 376.5L552 371.5L560 362.5L568 349.9L576 334.5L584 318.3L592 304.1L600 294.9L608 292.7L616 298.3L624 310.5L632 326.8L640 344L648 359.4L656 371.1L664 378.6L672 381.9L680 381.1L688 376.4L696 367.3L704 353.8L712 336.9L720 318.4L728 301.7L736 290.1L744 286.4L752 291.6L760 304.7L768 322.8L776 342.2L784 359.8L792 373.3L800 382L808 386L816 385.8L824 381.3L832 372.2L840 358.2L848 339.8L856 319.2L864 299.8L872 285.7L880 280.1L888 284.7L896 298.4L904 318.1L912 339.9L920 359.7L928 375.1L936 385.1L944 390L952 390.4L960 386.3L968 377.3L976 362.8L984 343.3L992 320.7L1000 298.7L1008 281.8L1016 274.1L1024 277.6L1032 291.6L1040 312.9L1048 336.9L1056 359.1L1064 376.5L1072 388L1080 393.9L1088 394.7L1096 390.8L1104 381.8L1112 367.2L1120 347L1128 323.2L1136 299.6L1144 281L1152 271.6L1160 274L1168 287.4L1176 308.8L1184 333.4L1192 356.4L1200 374.7L1208 387L1216 393.4L1224 394.8L1232 391.6L1240 383.5"/><path class="s" opacity="0.92" d="M-40 357L-32 364.7L-24 370.5L-16 373.8L-8 374L0 371.2L8 365.6L16 358.2L24 349.8L32 341.5L40 334.5L48 329.7L56 327.5L64 328.3L72 332.2L80 338.9L88 347.4L96 356.5L104 365L112 371.7L120 375.7L128 376.7L136 374.4L144 369.1L152 361.3L160 351.7L168 341.6L176 332.2L184 325L192 321.3L200 321.9L208 326.7L216 335.1L224 345.8L232 357L240 367.1L248 375L256 379.8L264 381.3L272 379.3L280 373.9L288 365.3L296 354.4L304 342.1L312 330.2L320 320.7L328 315.3L336 315.3L344 320.8L352 330.8L360 343.5L368 356.9L376 368.8L384 378.1L392 383.8L400 385.9L408 384.2L416 378.8L424 369.7L432 357.5L440 343.3L448 328.9L456 316.9L464 309.6L472 308.6L480 314.4L488 325.8L496 340.7L504 356.2L512 370.2L520 380.9L528 387.6L536 390.3L544 389.1L552 383.8L560 374.4L568 361.2L576 345.1L584 328.3L592 313.7L600 304.2L608 302L616 307.7L624 320.3L632 337.1L640 355L648 371L656 383.4L664 391.3L672 394.8L680 394L688 388.9L696 379.3L704 365.2L712 347.6L720 328.4L728 311.1L736 299.2L744 295.4L752 300.8L760 314.3L768 333L776 353.1L784 371.4L792 385.6L800 394.8L808 399.1L816 398.8L824 394.1L832 384.4L840 369.7L848 350.6L856 329.2L864 309.2L872 294.6L880 288.9L888 293.6L896 307.7L904 328.1L912 350.6L920 371.3L928 387.4L936 398L944 403.3L952 403.7L960 399.3L968 389.7L976 374.5L984 354.2L992 330.7L1000 308L1008 290.6L1016 282.7L1024 286.3L1032 300.7L1040 322.7L1048 347.5L1056 370.6L1064 388.8L1072 401L1080 407.4L1088 408.2L1096 404L1104 394.5L1112 379.1L1120 358L1128 333.3L1136 308.9L1144 289.7L1152 280.1L1160 282.5L1168 296.4L1176 318.4L1184 343.9L1192 367.8L1200 387L1208 399.9L1216 406.8L1224 408.4L1232 404.9L1240 396.2"/><path class="s" opacity="0.28" d="M-40 368.3L-32 376.2L-24 382.3L-16 385.7L-8 385.9L0 382.9L8 377.2L16 369.5L24 360.7L32 352.2L40 344.9L48 339.9L56 337.6L64 338.4L72 342.5L80 349.4L88 358.2L96 367.7L104 376.5L112 383.5L120 387.7L128 388.7L136 386.3L144 380.8L152 372.7L160 362.7L168 352.2L176 342.5L184 335L192 331.2L200 331.8L208 336.8L216 345.5L224 356.5L232 368.1L240 378.7L248 386.9L256 392L264 393.5L272 391.4L280 385.7L288 376.9L296 365.4L304 352.7L312 340.4L320 330.5L328 325L336 325L344 330.6L352 341L360 354.2L368 368L376 380.5L384 390.1L392 396.2L400 398.3L408 396.5L416 390.9L424 381.4L432 368.7L440 353.9L448 339L456 326.6L464 319.1L472 318.1L480 324L488 335.8L496 351.2L504 367.3L512 381.8L520 393L528 400.1L536 403L544 401.7L552 396.1L560 386.3L568 372.4L576 355.8L584 338.4L592 323.3L600 313.5L608 311.2L616 317.1L624 330.1L632 347.5L640 366L648 382.7L656 395.6L664 404L672 407.6L680 406.8L688 401.4L696 391.4L704 376.6L712 358.3L720 338.5L728 320.6L736 308.3L744 304.4L752 309.9L760 323.8L768 343.1L776 364L784 383.1L792 397.9L800 407.6L808 412.1L816 411.9L824 406.9L832 396.7L840 381.3L848 361.4L856 339.3L864 318.6L872 303.6L880 297.7L888 302.5L896 317.1L904 338.1L912 361.4L920 382.9L928 399.8L936 410.9L944 416.5L952 417L960 412.3L968 402.2L976 386.3L984 365L992 340.8L1000 317.3L1008 299.4L1016 291.3L1024 295L1032 309.8L1040 332.4L1048 358.1L1056 382.1L1064 401.2L1072 414.1L1080 420.8L1088 421.7L1096 417.3L1104 407.2L1112 391L1120 369L1128 343.4L1136 318.3L1144 298.5L1152 288.6L1160 291.1L1168 305.4L1176 328.1L1184 354.3L1192 379.2L1200 399.3L1208 412.9L1216 420.2L1224 421.9L1232 418.2L1240 409"/><path class="s" opacity="0.5" d="M-40 379.5L-32 387.7L-24 394L-16 397.5L-8 397.8L0 394.7L8 388.8L16 380.8L24 371.7L32 362.8L40 355.3L48 350.1L56 347.7L64 348.6L72 352.8L80 359.9L88 369.1L96 378.9L104 388.1L112 395.3L120 399.7L128 400.7L136 398.2L144 392.5L152 384L160 373.7L168 362.8L176 352.7L184 345.1L192 341.1L200 341.7L208 346.9L216 355.9L224 367.3L232 379.3L240 390.3L248 398.9L256 404.2L264 405.8L272 403.6L280 397.6L288 388.4L296 376.5L304 363.3L312 350.6L320 340.4L328 334.7L336 334.6L344 340.5L352 351.2L360 364.8L368 379.2L376 392.1L384 402.2L392 408.5L400 410.8L408 408.9L416 403L424 393.1L432 379.8L440 364.5L448 349.1L456 336.3L464 328.5L472 327.5L480 333.7L488 345.8L496 361.7L504 378.4L512 393.5L520 405.2L528 412.7L536 415.7L544 414.3L552 408.4L560 398.1L568 383.7L576 366.4L584 348.4L592 332.9L600 322.8L608 320.4L616 326.5L624 339.9L632 357.8L640 377L648 394.4L656 407.9L664 416.6L672 420.5L680 419.6L688 414L696 403.4L704 388L712 369L720 348.5L728 330.1L736 317.4L744 313.4L752 319.1L760 333.4L768 353.3L776 374.9L784 394.7L792 410.2L800 420.4L808 425.2L816 425L824 419.6L832 408.9L840 392.8L848 372.1L856 349.3L864 328L872 312.5L880 306.5L888 311.5L896 326.4L904 348.1L912 372.2L920 394.4L928 412.1L936 423.9L944 429.8L952 430.3L960 425.3L968 414.7L976 398L984 375.9L992 350.8L1000 326.6L1008 308.2L1016 299.9L1024 303.7L1032 318.9L1040 342.2L1048 368.7L1056 393.6L1064 413.6L1072 427.1L1080 434.2L1088 435.2L1096 430.5L1104 419.9L1112 402.9L1120 380L1128 353.5L1136 327.6L1144 307.3L1152 297.1L1160 299.7L1168 314.3L1176 337.7L1184 364.8L1192 390.6L1200 411.5L1208 425.9L1216 433.6L1224 435.4L1232 431.5L1240 421.8"/><path class="s" opacity="0.92" d="M-40 390.7L-32 399.3L-24 405.8L-16 409.4L-8 409.7L0 406.5L8 400.4L16 392L24 382.6L32 373.4L40 365.6L48 360.2L56 357.8L64 358.7L72 363L80 370.5L88 379.9L96 390.1L104 399.6L112 407.1L120 411.7L128 412.7L136 410.2L144 404.2L152 395.4L160 384.7L168 373.4L176 363L184 355.1L192 351L200 351.6L208 356.9L216 366.2L224 378L232 390.5L240 401.9L248 410.8L256 416.3L264 418L272 415.7L280 409.5L288 399.9L296 387.6L304 373.9L312 360.8L320 350.2L328 344.3L336 344.3L344 350.3L352 361.4L360 375.5L368 390.3L376 403.8L384 414.2L392 420.8L400 423.2L408 421.3L416 415.1L424 404.8L432 391L440 375.1L448 359.2L456 346L464 338L472 337L480 343.3L488 355.8L496 372.2L504 389.5L512 405.2L520 417.4L528 425.2L536 428.3L544 426.9L552 420.7L560 410L568 395L576 377L584 358.5L592 342.4L600 332L608 329.6L616 335.9L624 349.7L632 368.2L640 388L648 406L656 420.1L664 429.3L672 433.4L680 432.5L688 426.5L696 415.5L704 399.4L712 379.6L720 358.5L728 339.5L736 326.5L744 322.4L752 328.3L760 343L768 363.5L776 385.8L784 406.3L792 422.5L800 433.2L808 438.3L816 438L824 432.4L832 421.2L840 404.4L848 382.9L856 359.3L864 337.4L872 321.5L880 315.3L888 320.4L896 335.7L904 358.1L912 382.9L920 406L928 424.4L936 436.8L944 443.1L952 443.5L960 438.4L968 427.2L976 409.7L984 386.8L992 360.8L1000 335.9L1008 317L1016 308.5L1024 312.4L1032 328L1040 352L1048 379.3L1056 405.1L1064 425.9L1072 440.1L1080 447.7L1088 448.7L1096 443.8L1104 432.6L1112 414.8L1120 391L1128 363.6L1136 336.9L1144 316L1152 305.6L1160 308.2L1168 323.3L1176 347.3L1184 375.3L1192 402L1200 423.8L1208 438.8L1216 447L1224 448.9L1232 444.9L1240 434.6"/><path class="s" opacity="0.5" d="M-40 402L-32 410.8L-24 417.6L-16 421.3L-8 421.6L0 418.3L8 411.9L16 403.3L24 393.6L32 384.1L40 376L48 370.4L56 367.9L64 368.8L72 373.3L80 381L88 390.8L96 401.3L104 411.1L112 418.9L120 423.7L128 424.8L136 422.1L144 415.9L152 406.8L160 395.7L168 384L176 373.3L184 365.1L192 360.8L200 361.5L208 367L216 376.6L224 388.8L232 401.7L240 413.5L248 422.8L256 428.5L264 430.3L272 427.9L280 421.4L288 411.4L296 398.6L304 384.5L312 370.9L320 360.1L328 354L336 354L344 360.2L352 371.5L360 386.1L368 401.5L376 415.4L384 426.3L392 433.2L400 435.7L408 433.7L416 427.2L424 416.4L432 402.2L440 385.7L448 369.3L456 355.7L464 347.5L472 346.4L480 352.9L488 365.8L496 382.7L504 400.6L512 416.8L520 429.5L528 437.7L536 441L544 439.5L552 433.1L560 421.8L568 406.2L576 387.7L584 368.5L592 352L600 341.3L608 338.9L616 345.3L624 359.5L632 378.5L640 399L648 417.7L656 432.4L664 442L672 446.2L680 445.3L688 439.1L696 427.5L704 410.8L712 390.3L720 368.5L728 349L736 335.6L744 331.4L752 337.4L760 352.6L768 373.7L776 396.7L784 418L792 434.8L800 446L808 451.4L816 451.1L824 445.2L832 433.5L840 415.9L848 393.7L856 369.3L864 346.7L872 330.4L880 324.1L888 329.3L896 345.1L904 368.1L912 393.7L920 417.6L928 436.8L936 449.7L944 456.3L952 456.8L960 451.4L968 439.6L976 421.5L984 397.7L992 370.8L1000 345.2L1008 325.8L1016 317.1L1024 321.1L1032 337.1L1040 361.8L1048 389.9L1056 416.6L1064 438.3L1072 453.2L1080 461.1L1088 462.2L1096 457L1104 445.3L1112 426.7L1120 402L1128 373.7L1136 346.2L1144 324.8L1152 314.1L1160 316.8L1168 332.2L1176 357L1184 385.8L1192 413.4L1200 436L1208 451.8L1216 460.4L1224 462.4L1232 458.2L1240 447.4"/><path class="s" opacity="0.28" d="M-40 413.2L-32 422.4L-24 429.3L-16 433.2L-8 433.5L0 430.1L8 423.5L16 414.6L24 404.5L32 394.7L40 386.3L48 380.6L56 378L64 378.9L72 383.6L80 391.5L88 401.6L96 412.5L104 422.7L112 430.7L120 435.6L128 436.8L136 434L144 427.6L152 418.2L160 406.7L168 394.6L176 383.5L184 375.1L192 370.7L200 371.4L208 377.1L216 387L224 399.5L232 412.9L240 425.1L248 434.7L256 440.7L264 442.5L272 440L280 433.3L288 422.9L296 409.7L304 395.1L312 381.1L320 369.9L328 363.7L336 363.7L344 370L352 381.7L360 396.7L368 412.6L376 427.1L384 438.4L392 445.5L400 448.1L408 446L416 439.3L424 428.1L432 413.3L440 396.3L448 379.4L456 365.4L464 357L472 355.9L480 362.6L488 375.8L496 393.2L504 411.7L512 428.5L520 441.7L528 450.2L536 453.7L544 452.1L552 445.4L560 433.7L568 417.5L576 398.3L584 378.6L592 361.6L600 350.6L608 348.1L616 354.7L624 369.3L632 388.9L640 410L648 429.3L656 444.6L664 454.6L672 459.1L680 458.1L688 451.6L696 439.5L704 422.2L712 401L720 378.6L728 358.5L736 344.8L744 340.4L752 346.6L760 362.1L768 383.8L776 407.6L784 429.6L792 447.1L800 458.8L808 464.4L816 464.2L824 458L832 445.7L840 427.5L848 404.5L856 379.3L864 356.1L872 339.4L880 332.9L888 338.2L896 354.4L904 378L912 404.5L920 429.2L928 449.1L936 462.6L944 469.6L952 470.1L960 464.4L968 452.1L976 433.2L984 408.5L992 380.9L1000 354.5L1008 334.6L1016 325.6L1024 329.7L1032 346.2L1040 371.5L1048 400.5L1056 428.1L1064 450.6L1072 466.2L1080 474.5L1088 475.7L1096 470.3L1104 458L1112 438.6L1120 413L1128 383.8L1136 355.5L1144 333.5L1152 322.6L1160 325.4L1168 341.2L1176 366.6L1184 396.2L1192 424.8L1200 448.3L1208 464.7L1216 473.8L1224 475.9L1232 471.5L1240 460.1"/><path class="s" opacity="0.92" d="M-40 424.4L-32 433.9L-24 441.1L-16 445.1L-8 445.4L0 441.9L8 435.1L16 425.9L24 415.5L32 405.3L40 396.7L48 390.8L56 388.1L64 389L72 393.8L80 402L88 412.5L96 423.7L104 434.2L112 442.6L120 447.6L128 448.8L136 446L144 439.3L152 429.6L160 417.7L168 405.3L176 393.8L184 385.1L192 380.6L200 381.3L208 387.1L216 397.3L224 410.3L232 424.1L240 436.7L248 446.7L256 452.9L264 454.7L272 452.1L280 445.2L288 434.5L296 420.8L304 405.7L312 391.3L320 379.8L328 373.4L336 373.3L344 379.9L352 391.9L360 407.4L368 423.8L376 438.7L384 450.4L392 457.9L400 460.6L408 458.4L416 451.4L424 439.8L432 424.5L440 406.9L448 389.5L456 375.1L464 366.4L472 365.3L480 372.2L488 385.8L496 403.7L504 422.7L512 440.1L520 453.8L528 462.7L536 466.3L544 464.7L552 457.7L560 445.5L568 428.8L576 409L584 388.6L592 371.2L600 359.9L608 357.3L616 364.1L624 379.1L632 399.2L640 421L648 441L656 456.8L664 467.3L672 472L680 471L688 464.2L696 451.6L704 433.6L712 411.7L720 388.6L728 367.9L736 353.9L744 349.4L752 355.8L760 371.7L768 394L776 418.5L784 441.2L792 459.4L800 471.6L808 477.5L816 477.2L824 470.8L832 458L840 439L848 415.2L856 389.3L864 365.5L872 348.4L880 341.7L888 347.2L896 363.8L904 388L912 415.2L920 440.8L928 461.5L936 475.6L944 482.8L952 483.4L960 477.4L968 464.6L976 444.9L984 419.4L992 390.9L1000 363.8L1008 343.4L1016 334.2L1024 338.4L1032 355.3L1040 381.3L1048 411.1L1056 439.7L1064 463L1072 479.2L1080 488L1088 489.2L1096 483.5L1104 470.6L1112 450.5L1120 424L1128 393.9L1136 364.8L1144 342.3L1152 331.1L1160 333.9L1168 350.2L1176 376.2L1184 406.7L1192 436.2L1200 460.6L1208 477.7L1216 487.2L1224 489.5L1232 484.8L1240 472.9"/><path class="s" opacity="0.5" d="M-40 435.7L-32 445.4L-24 452.9L-16 457L-8 457.3L0 453.7L8 446.7L16 437.2L24 426.4L32 415.9L40 407L48 400.9L56 398.1L64 399.1L72 404.1L80 412.5L88 423.3L96 434.9L104 445.8L112 454.4L120 459.6L128 460.8L136 457.9L144 451L152 440.9L160 428.7L168 415.9L176 404L184 395.1L192 390.5L200 391.2L208 397.2L216 407.7L224 421.1L232 435.3L240 448.3L248 458.6L256 465L264 467L272 464.3L280 457.1L288 446L296 431.8L304 416.3L312 401.4L320 389.6L328 383L336 383L344 389.7L352 402.1L360 418L368 434.9L376 450.4L384 462.5L392 470.2L400 473L408 470.8L416 463.5L424 451.5L432 435.6L440 417.6L448 399.6L456 384.8L464 375.9L472 374.8L480 381.8L488 395.8L496 414.2L504 433.8L512 451.8L520 466L528 475.2L536 479L544 477.3L552 470L560 457.4L568 440L576 419.6L584 398.7L592 380.8L600 369.2L608 366.6L616 373.5L624 388.9L632 409.6L640 432L648 452.7L656 469.1L664 479.9L672 484.9L680 483.8L688 476.7L696 463.6L704 445L712 422.4L720 398.6L728 377.4L736 363L744 358.4L752 364.9L760 381.3L768 404.2L776 429.4L784 452.9L792 471.7L800 484.4L808 490.6L816 490.3L824 483.5L832 470.2L840 450.6L848 426L856 399.3L864 374.9L872 357.3L880 350.5L888 356.1L896 373.1L904 398L912 426L920 452.4L928 473.8L936 488.5L944 496.1L952 496.7L960 490.4L968 477.1L976 456.6L984 430.3L992 400.9L1000 373.1L1008 352.2L1016 342.8L1024 347.1L1032 364.4L1040 391.1L1048 421.8L1056 451.2L1064 475.4L1072 492.2L1080 501.4L1088 502.7L1096 496.8L1104 483.3L1112 462.4L1120 435L1128 404L1136 374.1L1144 351L1152 339.6L1160 342.5L1168 359.1L1176 385.8L1184 417.2L1192 447.6L1200 472.8L1208 490.7L1216 500.6L1224 503L1232 498.1L1240 485.7"/></g><path class="w" opacity="0.5" d="M-20 604H1220"/><path class="w" opacity="0.5" d="M120 596V614M257.1 596V614M394.3 596V614M531.4 596V614M668.6 596V614M805.7 596V614M942.9 596V614M1080 596V614"/><path class="w" opacity="0.22" d="M154.3 602V608M188.6 602V608M222.9 602V608M291.4 602V608M325.7 602V608M360 602V608M428.6 602V608M462.9 602V608M497.1 602V608M565.7 602V608M600 602V608M634.3 602V608M702.9 602V608M737.1 602V608M771.4 602V608M840 602V608M874.3 602V608M908.6 602V608M977.1 602V608M1011.4 602V608M1045.7 602V608"/><path class="s" opacity="0.34" d="M-20 624H1220"/><path class="s" opacity="0.24" d="M-20 650H1220"/><path class="s" opacity="0.16" d="M-20 686H1220"/><path class="s" opacity="0.1" d="M-20 734H1220"/><path class="s" opacity="0.06" d="M-20 796H1220"/><path class="w" opacity="0.5" stroke-dasharray="3 6" d="M710 624h20M700 650h40M690 686h60M680 734h80"/><path class="w" opacity="0.35" stroke-width="5" d="M720 604V176"/><path class="w" opacity="0.95" d="M720 604V176"/><path class="w" opacity="0.95" d="M706 192L720 176L734 192"/><circle class="w" opacity=".55" cx="720" cy="604" r="10"/><circle class="fw" cx="720" cy="604" r="3.2"/></svg></span>
+        <span class="fn-pager__text">
+          <span class="fn-pager__dir"><svg aria-hidden="true"><use href="#i-arrow"/></svg>Previous note</span>
+          <span class="fn-pager__title">Why Theo ships on Fridays</span>
+          <span class="fn-pager__meta">Launch stories · 4 min read</span>
+        </span>
+      </a>
+      <a class="fn-pager__item fn-pager__item--next" href="../blog/forty-one-days-to-night-bloom.html" data-stage="afterglow">
+        <span aria-hidden="true" class="fn-art fn-pager__art" data-stage="afterglow"><svg class="fn-poster fn-poster--bloom" viewBox="0 0 1200 750" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><path class="st" d="M288.4 207.2h0M90.1 536.4h0M256.5 590.8h0M364.6 94h0M60.1 271.1h0M968.1 546.4h0M56.6 271.7h0M38.2 160.8h0M211.9 212.1h0M901 703.5h0M185.6 346.6h0M304.6 463.1h0M42.7 519.1h0M1193.8 107.2h0M48.4 386.9h0M388.7 549.2h0M243 406.6h0M179 51.1h0M1177.7 20.1h0M441.7 597.8h0M382.9 731.6h0M196 289.7h0M582.7 719.3h0M1094.2 171.2h0M546 81.6h0M394.1 176.8h0M799.2 358.9h0M1083.7 470.8h0M117.8 581.5h0M881.7 134.2h0M72.4 68.9h0M1103.9 323.4h0M1111.5 313.6h0M914.2 300.1h0M448.8 108.1h0M765.2 504.8h0M921.3 563.5h0M101.4 537.8h0M831.8 54.9h0M166.9 544.6h0M969.8 71.4h0M1019.1 169.4h0M608 113.4h0M1192.7 401.3h0M500.6 14.8h0M663.6 114.2h0M808.2 479.9h0M212.8 245.2h0M1177.7 541h0M783.2 621.3h0M26.2 20.3h0M720.5 572.9h0M818.8 578.4h0M144 382.4h0M75.7 170h0M1072.5 654.4h0M27.3 506.4h0M1128.5 705.7h0M298.4 242.1h0M897.1 424.8h0M747.5 480.7h0M1189.2 22h0M978.1 175.2h0M90.7 712.2h0M1133.3 43.9h0M550.5 741.6h0M1055 69h0M1185.6 714.6h0M1115 426.4h0M952.1 312.7h0M716.5 43.6h0M1004.2 565.8h0M1117.8 603.6h0M802 29.8h0M1181.7 694.6h0M827.1 473.8h0M379.2 435.5h0M31.1 88.7h0M762.5 634.3h0M1058.4 319.8h0M368.6 572.4h0M279 41.8h0M388.4 306.1h0M834.9 634.1h0M1163.5 138.7h0M3.6 330.1h0M106.5 744.4h0M483.9 627.1h0M950.9 22.6h0M1060.1 282h0M351.8 379.9h0M796.9 170.6h0M890.4 331.9h0M948.3 161.6h0M660 718.3h0M850.4 211h0M1084.4 17.5h0M964.8 389.1h0M1161.8 427.9h0M744.5 559.5h0M705.7 611h0M682.3 594.8h0M471.5 5h0M505.1 26.2h0M982.6 178.9h0M732 489.9h0M1134.9 278.4h0"/><path class="st st--b" d="M102.2 538.3h0M802.1 299.4h0M879.4 579.7h0M56.7 569.2h0M843.7 633.1h0M432.2 51.7h0M337.1 743.9h0M1070.2 448.1h0M945.1 42.9h0M328.2 249.6h0M321 609.6h0M229.6 523.7h0M1057.6 220h0"/><path class="w" opacity="0.22" d="M-20 612H1220"/><path class="s" opacity="0.22" d="M-20 626H1220"/><path class="s" opacity="0.12" d="M-20 648H1220"/><path class="s" opacity="0.07" d="M-20 684H1220"/><circle class="s" opacity=".16" cx="600" cy="318" r="226"/><circle class="s" opacity=".12" stroke-dasharray="2 7" cx="600" cy="318" r="262"/><circle class="w" opacity=".08" cx="600" cy="318" r="300"/><g class="fn-poster__art"><path class="s" opacity="0.55" d="M892 468C882 528 910 554.4 898 612"/><path class="s" opacity="0.25" d="M897 468C887 528 915 554.4 903 612"/><g transform="translate(892 468) scale(0.36)"><g transform="rotate(12)"><path class="s" opacity="0.75" d="M0 0C60 -45 37.2 -135 0 -150C-37.2 -135 -60 -45 0 0"/><path class="s" opacity="0.35" d="M0 0C40 -30 24.8 -90 0 -100C-24.8 -90 -40 -30 0 0"/></g><g transform="rotate(72)"><path class="s" opacity="0.75" d="M0 0C60 -45 37.2 -135 0 -150C-37.2 -135 -60 -45 0 0"/><path class="s" opacity="0.35" d="M0 0C40 -30 24.8 -90 0 -100C-24.8 -90 -40 -30 0 0"/></g><g transform="rotate(132)"><path class="s" opacity="0.75" d="M0 0C60 -45 37.2 -135 0 -150C-37.2 -135 -60 -45 0 0"/><path class="s" opacity="0.35" d="M0 0C40 -30 24.8 -90 0 -100C-24.8 -90 -40 -30 0 0"/></g><g transform="rotate(192)"><path class="s" opacity="0.75" d="M0 0C60 -45 37.2 -135 0 -150C-37.2 -135 -60 -45 0 0"/><path class="s" opacity="0.35" d="M0 0C40 -30 24.8 -90 0 -100C-24.8 -90 -40 -30 0 0"/></g><g transform="rotate(252)"><path class="s" opacity="0.75" d="M0 0C60 -45 37.2 -135 0 -150C-37.2 -135 -60 -45 0 0"/><path class="s" opacity="0.35" d="M0 0C40 -30 24.8 -90 0 -100C-24.8 -90 -40 -30 0 0"/></g><g transform="rotate(312)"><path class="s" opacity="0.75" d="M0 0C60 -45 37.2 -135 0 -150C-37.2 -135 -60 -45 0 0"/><path class="s" opacity="0.35" d="M0 0C40 -30 24.8 -90 0 -100C-24.8 -90 -40 -30 0 0"/></g></g><circle class="fw" cx="892" cy="468" r="2"/><path class="s" opacity="0.55" d="M1006 540C996 600 1024 583.2 1012 612"/><path class="s" opacity="0.25" d="M1011 540C1001 600 1029 583.2 1017 612"/><g transform="translate(1006 540) scale(0.2)"><g transform="rotate(40)"><path class="s" opacity="0.75" d="M0 0C60 -45 37.2 -135 0 -150C-37.2 -135 -60 -45 0 0"/><path class="s" opacity="0.35" d="M0 0C40 -30 24.8 -90 0 -100C-24.8 -90 -40 -30 0 0"/></g><g transform="rotate(100)"><path class="s" opacity="0.75" d="M0 0C60 -45 37.2 -135 0 -150C-37.2 -135 -60 -45 0 0"/><path class="s" opacity="0.35" d="M0 0C40 -30 24.8 -90 0 -100C-24.8 -90 -40 -30 0 0"/></g><g transform="rotate(160)"><path class="s" opacity="0.75" d="M0 0C60 -45 37.2 -135 0 -150C-37.2 -135 -60 -45 0 0"/><path class="s" opacity="0.35" d="M0 0C40 -30 24.8 -90 0 -100C-24.8 -90 -40 -30 0 0"/></g><g transform="rotate(220)"><path class="s" opacity="0.75" d="M0 0C60 -45 37.2 -135 0 -150C-37.2 -135 -60 -45 0 0"/><path class="s" opacity="0.35" d="M0 0C40 -30 24.8 -90 0 -100C-24.8 -90 -40 -30 0 0"/></g><g transform="rotate(280)"><path class="s" opacity="0.75" d="M0 0C60 -45 37.2 -135 0 -150C-37.2 -135 -60 -45 0 0"/><path class="s" opacity="0.35" d="M0 0C40 -30 24.8 -90 0 -100C-24.8 -90 -40 -30 0 0"/></g><g transform="rotate(340)"><path class="s" opacity="0.75" d="M0 0C60 -45 37.2 -135 0 -150C-37.2 -135 -60 -45 0 0"/><path class="s" opacity="0.35" d="M0 0C40 -30 24.8 -90 0 -100C-24.8 -90 -40 -30 0 0"/></g></g><circle class="fw" cx="1006" cy="540" r="2"/><path class="s" opacity="0.55" d="M214 520C204 580 232 575.2 220 612"/><path class="s" opacity="0.25" d="M219 520C209 580 237 575.2 225 612"/><g transform="translate(214 520) scale(0.24)"><g transform="rotate(25)"><path class="s" opacity="0.75" d="M0 0C60 -45 37.2 -135 0 -150C-37.2 -135 -60 -45 0 0"/><path class="s" opacity="0.35" d="M0 0C40 -30 24.8 -90 0 -100C-24.8 -90 -40 -30 0 0"/></g><g transform="rotate(85)"><path class="s" opacity="0.75" d="M0 0C60 -45 37.2 -135 0 -150C-37.2 -135 -60 -45 0 0"/><path class="s" opacity="0.35" d="M0 0C40 -30 24.8 -90 0 -100C-24.8 -90 -40 -30 0 0"/></g><g transform="rotate(145)"><path class="s" opacity="0.75" d="M0 0C60 -45 37.2 -135 0 -150C-37.2 -135 -60 -45 0 0"/><path class="s" opacity="0.35" d="M0 0C40 -30 24.8 -90 0 -100C-24.8 -90 -40 -30 0 0"/></g><g transform="rotate(205)"><path class="s" opacity="0.75" d="M0 0C60 -45 37.2 -135 0 -150C-37.2 -135 -60 -45 0 0"/><path class="s" opacity="0.35" d="M0 0C40 -30 24.8 -90 0 -100C-24.8 -90 -40 -30 0 0"/></g><g transform="rotate(265)"><path class="s" opacity="0.75" d="M0 0C60 -45 37.2 -135 0 -150C-37.2 -135 -60 -45 0 0"/><path class="s" opacity="0.35" d="M0 0C40 -30 24.8 -90 0 -100C-24.8 -90 -40 -30 0 0"/></g><g transform="rotate(325)"><path class="s" opacity="0.75" d="M0 0C60 -45 37.2 -135 0 -150C-37.2 -135 -60 -45 0 0"/><path class="s" opacity="0.35" d="M0 0C40 -30 24.8 -90 0 -100C-24.8 -90 -40 -30 0 0"/></g></g><circle class="fw" cx="214" cy="520" r="2"/><path class="s" opacity="0.85" d="M214 790C268 612 470 458 597.6 322"/><path class="s" opacity="0.4" d="M223 790C281 614 475 461 598.2 322"/><path class="s" opacity="0.85" d="M232 790C294 616 480 464 598.8 322"/><path class="s" opacity="0.4" d="M241 790C307 618 485 467 599.4 322"/><path class="s" opacity="0.85" d="M250 790C320 620 490 470 600 322"/><path class="s" opacity="0.4" d="M259 790C333 622 495 473 600.6 322"/><path class="s" opacity="0.85" d="M268 790C346 624 500 476 601.2 322"/><path class="s" opacity="0.4" d="M277 790C359 626 505 479 601.8 322"/><path class="s" opacity="0.85" d="M286 790C372 628 510 482 602.4 322"/><path class="w" opacity="0.5" stroke-dasharray="2 10" d="M250 790C320 620 490 470 600 322"/><g transform="translate(600 318)"><path class="w" opacity="0.16" transform="rotate(14)" d="M0 0C84 -61.8 52.1 -185.4 0 -206C-52.1 -185.4 -84 -61.8 0 0"/><path class="w" opacity="0.16" transform="rotate(74)" d="M0 0C84 -61.8 52.1 -185.4 0 -206C-52.1 -185.4 -84 -61.8 0 0"/><path class="w" opacity="0.16" transform="rotate(134)" d="M0 0C84 -61.8 52.1 -185.4 0 -206C-52.1 -185.4 -84 -61.8 0 0"/><path class="w" opacity="0.16" transform="rotate(194)" d="M0 0C84 -61.8 52.1 -185.4 0 -206C-52.1 -185.4 -84 -61.8 0 0"/><path class="w" opacity="0.16" transform="rotate(254)" d="M0 0C84 -61.8 52.1 -185.4 0 -206C-52.1 -185.4 -84 -61.8 0 0"/><path class="w" opacity="0.16" transform="rotate(314)" d="M0 0C84 -61.8 52.1 -185.4 0 -206C-52.1 -185.4 -84 -61.8 0 0"/><g transform="rotate(0)"><path class="s" opacity="0.95" d="M0 0C70 -53.4 43.4 -160.2 0 -178C-43.4 -160.2 -70 -53.4 0 0"/><path class="s" opacity="0.62" d="M0 0C56 -42.7 34.7 -128.2 0 -142.4C-34.7 -128.2 -56 -42.7 0 0"/><path class="s" opacity="0.4" d="M0 0C42 -32 26 -96.1 0 -106.8C-26 -96.1 -42 -32 0 0"/><path class="s" opacity="0.24" d="M0 0C28 -21.4 17.4 -64.1 0 -71.2C-17.4 -64.1 -28 -21.4 0 0"/></g><g transform="rotate(30)"><path class="s" opacity="0.95" d="M0 0C52 -35.4 32.2 -106.2 0 -118C-32.2 -106.2 -52 -35.4 0 0"/><path class="s" opacity="0.62" d="M0 0C41.6 -28.3 25.8 -85 0 -94.4C-25.8 -85 -41.6 -28.3 0 0"/><path class="s" opacity="0.4" d="M0 0C31.2 -21.2 19.3 -63.7 0 -70.8C-19.3 -63.7 -31.2 -21.2 0 0"/><path class="s" opacity="0.24" d="M0 0C20.8 -14.2 12.9 -42.5 0 -47.2C-12.9 -42.5 -20.8 -14.2 0 0"/></g><g transform="rotate(60)"><path class="s" opacity="0.95" d="M0 0C70 -53.4 43.4 -160.2 0 -178C-43.4 -160.2 -70 -53.4 0 0"/><path class="s" opacity="0.62" d="M0 0C56 -42.7 34.7 -128.2 0 -142.4C-34.7 -128.2 -56 -42.7 0 0"/><path class="s" opacity="0.4" d="M0 0C42 -32 26 -96.1 0 -106.8C-26 -96.1 -42 -32 0 0"/><path class="s" opacity="0.24" d="M0 0C28 -21.4 17.4 -64.1 0 -71.2C-17.4 -64.1 -28 -21.4 0 0"/></g><g transform="rotate(90)"><path class="s" opacity="0.95" d="M0 0C52 -35.4 32.2 -106.2 0 -118C-32.2 -106.2 -52 -35.4 0 0"/><path class="s" opacity="0.62" d="M0 0C41.6 -28.3 25.8 -85 0 -94.4C-25.8 -85 -41.6 -28.3 0 0"/><path class="s" opacity="0.4" d="M0 0C31.2 -21.2 19.3 -63.7 0 -70.8C-19.3 -63.7 -31.2 -21.2 0 0"/><path class="s" opacity="0.24" d="M0 0C20.8 -14.2 12.9 -42.5 0 -47.2C-12.9 -42.5 -20.8 -14.2 0 0"/></g><g transform="rotate(120)"><path class="s" opacity="0.95" d="M0 0C70 -53.4 43.4 -160.2 0 -178C-43.4 -160.2 -70 -53.4 0 0"/><path class="s" opacity="0.62" d="M0 0C56 -42.7 34.7 -128.2 0 -142.4C-34.7 -128.2 -56 -42.7 0 0"/><path class="s" opacity="0.4" d="M0 0C42 -32 26 -96.1 0 -106.8C-26 -96.1 -42 -32 0 0"/><path class="s" opacity="0.24" d="M0 0C28 -21.4 17.4 -64.1 0 -71.2C-17.4 -64.1 -28 -21.4 0 0"/></g><g transform="rotate(150)"><path class="s" opacity="0.95" d="M0 0C52 -35.4 32.2 -106.2 0 -118C-32.2 -106.2 -52 -35.4 0 0"/><path class="s" opacity="0.62" d="M0 0C41.6 -28.3 25.8 -85 0 -94.4C-25.8 -85 -41.6 -28.3 0 0"/><path class="s" opacity="0.4" d="M0 0C31.2 -21.2 19.3 -63.7 0 -70.8C-19.3 -63.7 -31.2 -21.2 0 0"/><path class="s" opacity="0.24" d="M0 0C20.8 -14.2 12.9 -42.5 0 -47.2C-12.9 -42.5 -20.8 -14.2 0 0"/></g><g transform="rotate(180)"><path class="s" opacity="0.95" d="M0 0C70 -53.4 43.4 -160.2 0 -178C-43.4 -160.2 -70 -53.4 0 0"/><path class="s" opacity="0.62" d="M0 0C56 -42.7 34.7 -128.2 0 -142.4C-34.7 -128.2 -56 -42.7 0 0"/><path class="s" opacity="0.4" d="M0 0C42 -32 26 -96.1 0 -106.8C-26 -96.1 -42 -32 0 0"/><path class="s" opacity="0.24" d="M0 0C28 -21.4 17.4 -64.1 0 -71.2C-17.4 -64.1 -28 -21.4 0 0"/></g><g transform="rotate(210)"><path class="s" opacity="0.95" d="M0 0C52 -35.4 32.2 -106.2 0 -118C-32.2 -106.2 -52 -35.4 0 0"/><path class="s" opacity="0.62" d="M0 0C41.6 -28.3 25.8 -85 0 -94.4C-25.8 -85 -41.6 -28.3 0 0"/><path class="s" opacity="0.4" d="M0 0C31.2 -21.2 19.3 -63.7 0 -70.8C-19.3 -63.7 -31.2 -21.2 0 0"/><path class="s" opacity="0.24" d="M0 0C20.8 -14.2 12.9 -42.5 0 -47.2C-12.9 -42.5 -20.8 -14.2 0 0"/></g><g transform="rotate(240)"><path class="s" opacity="0.95" d="M0 0C70 -53.4 43.4 -160.2 0 -178C-43.4 -160.2 -70 -53.4 0 0"/><path class="s" opacity="0.62" d="M0 0C56 -42.7 34.7 -128.2 0 -142.4C-34.7 -128.2 -56 -42.7 0 0"/><path class="s" opacity="0.4" d="M0 0C42 -32 26 -96.1 0 -106.8C-26 -96.1 -42 -32 0 0"/><path class="s" opacity="0.24" d="M0 0C28 -21.4 17.4 -64.1 0 -71.2C-17.4 -64.1 -28 -21.4 0 0"/></g><g transform="rotate(270)"><path class="s" opacity="0.95" d="M0 0C52 -35.4 32.2 -106.2 0 -118C-32.2 -106.2 -52 -35.4 0 0"/><path class="s" opacity="0.62" d="M0 0C41.6 -28.3 25.8 -85 0 -94.4C-25.8 -85 -41.6 -28.3 0 0"/><path class="s" opacity="0.4" d="M0 0C31.2 -21.2 19.3 -63.7 0 -70.8C-19.3 -63.7 -31.2 -21.2 0 0"/><path class="s" opacity="0.24" d="M0 0C20.8 -14.2 12.9 -42.5 0 -47.2C-12.9 -42.5 -20.8 -14.2 0 0"/></g><g transform="rotate(300)"><path class="s" opacity="0.95" d="M0 0C70 -53.4 43.4 -160.2 0 -178C-43.4 -160.2 -70 -53.4 0 0"/><path class="s" opacity="0.62" d="M0 0C56 -42.7 34.7 -128.2 0 -142.4C-34.7 -128.2 -56 -42.7 0 0"/><path class="s" opacity="0.4" d="M0 0C42 -32 26 -96.1 0 -106.8C-26 -96.1 -42 -32 0 0"/><path class="s" opacity="0.24" d="M0 0C28 -21.4 17.4 -64.1 0 -71.2C-17.4 -64.1 -28 -21.4 0 0"/></g><g transform="rotate(330)"><path class="s" opacity="0.95" d="M0 0C52 -35.4 32.2 -106.2 0 -118C-32.2 -106.2 -52 -35.4 0 0"/><path class="s" opacity="0.62" d="M0 0C41.6 -28.3 25.8 -85 0 -94.4C-25.8 -85 -41.6 -28.3 0 0"/><path class="s" opacity="0.4" d="M0 0C31.2 -21.2 19.3 -63.7 0 -70.8C-19.3 -63.7 -31.2 -21.2 0 0"/><path class="s" opacity="0.24" d="M0 0C20.8 -14.2 12.9 -42.5 0 -47.2C-12.9 -42.5 -20.8 -14.2 0 0"/></g></g><g transform="translate(600 318)"><circle class="w" opacity=".38" r="22"/><circle class="w" opacity=".7" stroke-dasharray="1.5 4" r="12"/><circle class="fw" r="3.4"/></g><path class="seed" d="M384.7 80.2h0M698.4 33.5h0M283.7 183.3h0M522.1 138.1h0M275.3 163.8h0M880.7 213.4h0M564 69.9h0M686.5 49.5h0M782.1 134.7h0M577.8 32.3h0M502 89.3h0M315.8 165.3h0M803.9 160.2h0M337.2 101.5h0M365.1 171h0M574.2 122.1h0M341.6 162.6h0M747.8 164h0"/></g></svg></span>
+        <span class="fn-pager__text">
+          <span class="fn-pager__dir"><svg aria-hidden="true"><use href="#i-arrow"/></svg>Next note</span>
+          <span class="fn-pager__title">Forty-one days to Night Bloom</span>
+          <span class="fn-pager__meta">Launch stories · 4 min read</span>
+        </span>
+      </a>
+    </div>
+  </nav>
+
+  <!-- The compact call to action that hands every page over to the footer. -->
+<section class="cta" aria-labelledby="cta-title">
+  <div class="cta__glow" aria-hidden="true"></div>
+  <div class="container cta__inner">
+    <p class="eyebrow">Your turn</p>
+    <h2 class="title-1" id="cta-title" data-split>Your lane is <span class="ink-spectrum">open</span>.</h2>
+    <p class="lede">Bring one idea. Crestora brings the road.</p>
+    <div class="btn-row">
+      <a class="btn btn--primary btn--lg" href="../start.html" data-roll>Open your first lane</a>
+      <a class="btn btn--lg" href="../pricing.html" data-roll>See plans</a>
+    </div>
+    <p class="small">Free for 3 lanes · No card · Export everything, always.</p>
+  </div>
+</section>
+</main>
+
+<footer class="footer" id="footer">
+  <!-- The night the footer sits in: stars, the light, the car and its dust, drawn in WebGL behind the type. -->
+  <canvas class="scene" aria-hidden="true"></canvas>
+  <div class="poster" aria-hidden="true"></div>
+  <div class="stage">
+    <div class="brand">
+      <a class="logo" href=".././#top" aria-label="Crestora, home">
+        <span class="mark" aria-hidden="true"><span class="mark__sheen"></span></span>
+        <span class="wordmark" aria-hidden="true">Crestora</span>
+      </a>
+      <p class="tagline"><span class="line">Join thousands of creators, builders and dreamers</span> <span class="line">already using Crestora to simplify their workflow.</span></p>
+      <ul class="social" aria-label="Crestora elsewhere">
+        <li><a href="../community.html#elsewhere" data-net="X" aria-label="Crestora on X (fictional)">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path class="o" d="M4.6 4.3h4.1l10.7 15.4h-4.1z"/><path d="M18.9 4.3 13.2 10.8M10.7 13.4 5.1 19.7"/></svg>
+        </a></li>
+        <li><a href="../community.html#elsewhere" data-net="Instagram" aria-label="Crestora on Instagram (fictional)">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="4.6"/><circle cx="12" cy="12" r="3.7"/><circle class="f" cx="16.5" cy="7.5" r="1"/></svg>
+        </a></li>
+        <li><a href="../community.html#elsewhere" data-net="LinkedIn" aria-label="Crestora on LinkedIn (fictional)">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><g class="f"><rect x="4.4" y="9.4" width="3.3" height="10.3" rx=".3"/><circle cx="6.05" cy="5.9" r="1.95"/><path d="M10.1 9.4h3.15v1.45c.55-1.02 1.83-1.72 3.33-1.72 2.85 0 3.62 1.78 3.62 4.48v6.09h-3.3v-5.4c0-1.33-.33-2.27-1.58-2.27-1.3 0-1.92.95-1.92 2.4v5.27h-3.3z"/></g></svg>
+        </a></li>
+        <li><a href="../community.html#elsewhere" data-net="YouTube" aria-label="Crestora on YouTube (fictional)">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path class="f" fill-rule="evenodd" d="M6.2 6.1h11.6a3.6 3.6 0 0 1 3.6 3.6v4.6a3.6 3.6 0 0 1-3.6 3.6H6.2a3.6 3.6 0 0 1-3.6-3.6V9.7a3.6 3.6 0 0 1 3.6-3.6Zm4 3.05v5.7L15 12z"/></svg>
+        </a></li>
+      </ul>
+    </div>
+
+    <div class="cols">
+      <nav class="col" aria-labelledby="col-product">
+        <h2 id="col-product">Product</h2>
+        <ul>
+          <li><a href="../index.html#features">Features</a></li>
+          <li><a href="../integrations.html">Integrations</a></li>
+          <li><a href="../pricing.html">Pricing</a></li>
+          <li><a href="../changelog.html">Changelog</a></li>
+          <li><a href="../roadmap.html">Roadmap</a></li>
+          <li><a href="../security.html">Security</a></li>
+        </ul>
+      </nav>
+      <nav class="col" aria-labelledby="col-company">
+        <h2 id="col-company">Company</h2>
+        <ul>
+          <li><a href="../about.html">About Us</a></li>
+          <li><a href="../careers.html">Careers</a></li>
+          <li><a href="../press.html">Press Kit</a></li>
+          <li><a href="../partners.html">Partners</a></li>
+          <li><a href="../contact.html">Contact</a></li>
+        </ul>
+      </nav>
+      <nav class="col" aria-labelledby="col-resources">
+        <h2 id="col-resources">Resources</h2>
+        <ul>
+          <li><a href="../blog.html">Blogs</a></li>
+          <li><a href="../docs.html">Documentation</a></li>
+          <li><a href="../api.html">API Reference</a></li>
+          <li><a href="../help.html">Help Center</a></li>
+          <li><a href="../community.html">Community</a></li>
+          <li><a href="../tutorials.html">Tutorials</a></li>
+          <li><a href="../webinars.html">Webinars</a></li>
+        </ul>
+      </nav>
+      <nav class="col" aria-labelledby="col-legal">
+        <h2 id="col-legal">Legal</h2>
+        <ul>
+          <li><a href="../privacy.html">Privacy Policy</a></li>
+          <li><a href="../terms.html">Terms of Service</a></li>
+          <li><a href="../cookies.html">Cookie Policy</a></li>
+          <li><a href="../compliance.html">Compliance</a></li>
+          <li><a href="../sitemap.html">Sitemap</a></li>
+        </ul>
+      </nav>
+    </div>
+
+    <div class="rule" aria-hidden="true"><span class="rule__glint"></span></div>
+
+    <div class="base">
+      <p class="copy">© <span class="year">2026</span> Crestora. All rights reserved.</p>
+      <p class="love"><button class="heart" type="button" aria-label="Send some love"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19.6S4.4 15.1 4.4 9.6A4.2 4.2 0 0 1 12 7.2a4.2 4.2 0 0 1 7.6 2.4c0 5.5-7.6 10-7.6 10Z"/></svg></button><span>Made with love by Pranav</span></p>
+    </div>
+
+    <!-- the road: where the car is; holding it down puts your foot down -->
+    <div class="road" aria-hidden="true"></div>
+  </div>
+
+  <!-- What the car does when it is held: shown next to the pointer over the road. -->
+  <p class="hint" aria-hidden="true"><span class="hint__key">Hold</span><span class="hint__text">to accelerate</span></p>
+</footer>
+</body>
+</html>

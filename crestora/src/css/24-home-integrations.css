@@ -1,0 +1,111 @@
+/* Home #integrations: the on-ramps. Twelve apps in two staggered columns, each in one of the footer's 44 px boxes with
+   a self-drawn monogram; from each, a hairline ramp curves into a strip of six lanes (the footer ribbon's order, top to
+   bottom). At rest the ramps are their stage colour at a whisper and one app (Framewright) is lit; hover or focus lights
+   another (home-integrations.js runs a white dash along it). The geometry is fixed in px vertically and stretches
+   sideways: stops 38 px apart, lanes 30 px apart around the middle (y 176…326), the strip from --xs to the right edge.
+   Under 1100 px the apps are a grid with their lanes written under them. */
+
+.onramps .ramp { --xs: 58%; position: relative; height: 502px; }
+.onramps .ramp__roads { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+.onramps .ramp__roads path, .onramps .ramp__roads circle { vector-effect: non-scaling-stroke; }
+
+/* ---- the roads ---- */
+.onramps .ramp__ramps path {
+  fill: none; stroke: color-mix(in srgb, var(--stage) 32%, transparent); stroke-width: 1; stroke-linecap: round;
+  transition: stroke 0.45s var(--ease-out), filter 0.45s var(--ease-out), stroke-width 0.45s var(--ease-out);
+}
+.onramps .ramp__ramps path.is-on { stroke: var(--stage); stroke-width: 1.5; filter: drop-shadow(0 0 4px var(--stage)); }
+.onramps .ramp__lanes path { fill: none; stroke: color-mix(in srgb, var(--stage) 42%, transparent); stroke-width: 1; transition: stroke 0.45s var(--ease-out), filter 0.45s var(--ease-out); }
+.onramps .ramp__lanes path.is-on { stroke: var(--stage); filter: drop-shadow(0 0 5px var(--stage)); }
+.onramps .ramp__glows rect { opacity: 0; transition: opacity 0.6s var(--ease-out); }
+.onramps .ramp__glows rect.is-on { opacity: 1; }
+.onramps .ramp__nodes circle { fill: #000; stroke: color-mix(in srgb, var(--stage) 70%, transparent); stroke-width: 1; transition: fill 0.45s var(--ease-out), filter 0.45s var(--ease-out); }
+.onramps .ramp__nodes circle.is-on { fill: var(--stage); stroke: var(--stage); filter: drop-shadow(0 0 5px var(--stage)); }
+.onramps .ramp__dash { fill: none; stroke: #fff; stroke-width: 1.6; stroke-linecap: round; opacity: 0; filter: drop-shadow(0 0 3px #fff); }
+.onramps .ramp__dash--glow { stroke-width: 6; stroke: rgb(255 255 255 / 0.22); filter: blur(3px); }
+
+/* ---- the stops: a box, a name, what it is ---- */
+.onramps .ramp__apps { position: absolute; inset: 0; }
+.onramps .ramp__stop { position: absolute; left: calc(var(--col) * 196px); top: calc(20px + var(--k) * 38px); }
+.onramps .ramp__app { display: flex; align-items: center; gap: 12px; width: max-content; border-radius: 12px; }
+.onramps .ramp__app:focus-visible { outline-offset: 6px; }
+.onramps .ramp__box {
+  position: relative; display: grid; place-items: center; flex: none; width: 44px; height: 44px; border-radius: var(--radius); color: #fff; isolation: isolate;
+  background: #000; box-shadow: inset 0 0 0 1px var(--box);
+  transition: box-shadow 0.35s var(--ease-out), background-color 0.35s var(--ease-out);
+}
+.onramps .ramp__box svg { width: 52%; height: 52%; fill: none; stroke: currentColor; stroke-width: 1.55; stroke-linecap: round; stroke-linejoin: round; overflow: visible; transition: transform 0.45s var(--ease-spring); }
+.onramps .ramp__box svg .f { fill: currentColor; stroke: none; }
+/* the footer's spectrum ring: shown on the lit app, turning only while it is pointed at or focused */
+.onramps .ramp__box::before {
+  content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit; padding: 1px; opacity: 0;
+  background: conic-gradient(from var(--spin), #3a6dff, #23d3ff, #20d69b, #ffb13d, #ff3b3b, #ff7ad9, #3a6dff);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  transition: opacity 0.4s var(--ease-out); animation: sheen 3.2s linear infinite paused;
+}
+.onramps .ramp__app.is-on .ramp__box { box-shadow: inset 0 0 0 1px transparent, 0 0 22px -6px var(--stage); background-color: #07080c; }
+.onramps .ramp__app.is-on .ramp__box::before { opacity: 1; }
+.onramps .ramp__app:is(:hover, :focus-visible) .ramp__box::before { animation-play-state: running; }
+@media (hover: hover) { .onramps .ramp__app:hover .ramp__box svg { transform: scale(1.1); } }
+
+.onramps .ramp__text { display: grid; gap: 4px; min-width: 0; }
+.onramps .ramp__name { font: 500 15px/1.2 var(--font); letter-spacing: -0.01em; color: var(--ink-soft); white-space: nowrap; transition: color var(--dur) var(--ease-out); }
+.onramps .ramp__kind { display: flex; align-items: center; gap: 7px; font-size: 12.5px; line-height: 1.2; color: var(--ink-muted); white-space: nowrap; }
+.onramps .ramp__kind::before { content: ""; flex: none; width: 6px; height: 6px; border-radius: 50%; background: var(--stage); box-shadow: 0 0 6px var(--stage); }
+.onramps .ramp__lane { display: none; }
+.onramps .ramp__app.is-on .ramp__name { color: #fff; }
+
+/* ---- the strip: its name, its lanes, what arrives ---- */
+.onramps .ramp__into { position: absolute; left: var(--xs); top: 126px; display: flex; align-items: center; gap: 10px; font: 400 10px/1 var(--font-brand); letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-muted); }
+.onramps .ramp__into::before { content: ""; width: 18px; height: 1px; background: var(--rainbow); }
+.onramps .ramp__key { position: absolute; inset: 0; pointer-events: none; }
+.onramps .ramp__key li {
+  position: absolute; right: 0; top: calc(var(--ly) * 1px); translate: 0 -50%; display: flex; align-items: baseline; gap: 8px;
+  padding-left: 14px; background: linear-gradient(90deg, transparent, #000 12px); font-size: 13px; color: var(--ink-muted); transition: color var(--dur) var(--ease-out);
+}
+.onramps .ramp__key b { font: 400 9.5px/1 var(--font-brand); letter-spacing: 0.08em; color: var(--ink-faint); font-weight: 400; transition: color var(--dur) var(--ease-out); }
+.onramps .ramp__key li.is-on { color: #fff; }
+.onramps .ramp__key li.is-on b { color: var(--ink-soft); }
+.onramps .ramp__arrival {
+  position: absolute; right: 124px; top: calc(var(--ly) * 1px); translate: 0 -50%; display: flex; align-items: center; gap: 8px; height: 26px; padding: 0 11px 0 9px; border-radius: 999px;
+  font: 500 12px/1 var(--font-mono); letter-spacing: -0.01em; color: #fff; white-space: nowrap;
+  background: rgb(8 9 13 / 0.92); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--stage) 55%, transparent), 0 0 18px -6px var(--stage);
+  transition: top 0.5s var(--ease-out), opacity 0.35s var(--ease-out), box-shadow 0.45s var(--ease-out);
+}
+.onramps .ramp__arrival::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--stage); box-shadow: 0 0 7px var(--stage); }
+.onramps .ramp__arrival.is-new { animation: ramp-arrive 0.6s var(--ease-out) both; }
+@keyframes ramp-arrive { from { opacity: 0; translate: -18px -50%; } }
+
+/* ---- the caption: what the lit ramp carries ---- */
+.onramps .ramp__caption { position: absolute; left: var(--xs); right: 0; top: 368px; display: flex; flex-wrap: wrap; align-items: baseline; column-gap: 10px; row-gap: 4px; font-size: 17px; line-height: 1.45; color: var(--ink-soft); }
+.onramps .ramp__caption-app { font-weight: 600; color: #fff; }
+.onramps .ramp__caption-to { color: var(--ink-muted); }
+.onramps .ramp__caption-lane { color: #fff; font-weight: 500; }
+.onramps .ramp__caption-lane::before { content: ""; display: inline-block; width: 7px; height: 7px; margin-right: 9px; vertical-align: middle; border-radius: 50%; background: var(--stage); box-shadow: 0 0 8px var(--stage); translate: 0 -2px; }
+.onramps .ramp__caption-says { margin-left: -6px; }
+
+/* ================= under 1100 px: a grid of apps, each with its lane written under it ================= */
+@media (max-width: 1099.98px) {
+  .onramps .ramp { height: auto; }
+  .onramps .ramp__roads, .onramps .ramp__key, .onramps .ramp__into, .onramps .ramp__arrival, .onramps .ramp__caption { display: none; }
+  .onramps .ramp__apps { position: static; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 36px 12px; padding-top: 4px; border-top: 1px solid var(--line-soft); }
+  .onramps .ramp__stop { position: relative; left: auto; top: auto; padding-top: 32px; }
+  /* each app's ramp, reduced to a short stub of its stage colour above it */
+  .onramps .ramp__stop::before { content: ""; position: absolute; left: 50%; top: -4px; width: 1px; height: 26px; background: linear-gradient(var(--stage), transparent); opacity: 0.8; }
+  .onramps .ramp__app { flex-direction: column; gap: 14px; width: auto; text-align: center; }
+  .onramps .ramp__text { justify-items: center; gap: 5px; }
+  .onramps .ramp__name { color: #fff; }
+  .onramps .ramp__kind { white-space: normal; justify-content: center; }
+  .onramps .ramp__kind::before { display: none; }
+  .onramps .ramp__lane { display: inline-flex; align-items: center; gap: 7px; font-size: 12px; color: var(--ink-muted); }
+  .onramps .ramp__lane::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--stage); box-shadow: 0 0 6px var(--stage); }
+  /* no lit app without the strip to light: the ring is for the pointer and the keyboard */
+  .onramps .ramp__app.is-on .ramp__box { box-shadow: inset 0 0 0 1px var(--box); background-color: #000; }
+  .onramps .ramp__app.is-on .ramp__box::before { opacity: 0; }
+  .onramps .ramp__app:is(:hover, :focus-visible) .ramp__box::before { opacity: 1; }
+}
+@media (max-width: 899.98px) { .onramps .ramp__apps { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+@media (max-width: 559.98px) { .onramps .ramp__apps { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px 8px; } .onramps .ramp__kind { font-size: 12px; } }
+
+.is-calm .onramps .ramp__box::before { animation: none; }

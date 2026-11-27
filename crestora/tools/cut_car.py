@@ -58,6 +58,26 @@ rgb[:] = rgb * (1 - 0.7 * k) + 0.02 * 0.7 * k
 img = Image.fromarray((rgba * 255 + 0.5).astype(np.uint8), 'RGBA')
 img.save(f'{out_dir}/car-1x.png')
 up = img.resize((img.width * 2, img.height * 2), Image.LANCZOS)
+
+
+def retouch(im):
+    """Paint the maker's lettering off the side stripe: the stripe's grey runs on through, each row blended between
+    the band just before the lettering and just after it (2x px: lettering spans x 250-480, rows 277-294)."""
+    a = np.asarray(im).astype(float)
+    x0, x1, y0, y1 = 250, 482, 276, 295
+    rng = np.random.default_rng(7)
+    for y in range(y0, y1):
+        left = a[y, 236:247].mean(0)
+        right = a[y, 486:497].mean(0)
+        for x in range(x0, x1):
+            t = (x - x0) / (x1 - x0)
+            px = left * (1 - t) + right * t
+            px[:3] += rng.normal(0, 2.2, 3)          # the photo's grain, so the patch doesn't read as flat
+            a[y, x] = px
+    return Image.fromarray(np.clip(a, 0, 255).astype(np.uint8), 'RGBA')
+
+
+up = retouch(up)
 r, g, b, al = up.split()
 rgb_up = Image.merge('RGB', (r, g, b)).filter(ImageFilter.UnsharpMask(radius=1.6, percent=70, threshold=2))
 up = Image.merge('RGBA', (*rgb_up.split(), al))

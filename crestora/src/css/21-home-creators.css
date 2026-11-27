@@ -1,0 +1,157 @@
+/* Home #creators: three people, one lane each. Tall cards with a night poster drawn from lane lines in the person's
+   stage colour. On a wide screen (and with scripts) the row is an accordion: the open card is 1.8fr and tells the
+   whole story, the others narrow to their poster and name; the open card's poster comes alive (the bloom draws and
+   turns, the swell rolls, the pot turns). Under 1100 px, and without scripts, the cards stack, fully open. */
+
+.creators { --cr-gap: 20px; --cr-pad: clamp(22px, 2vw, 30px); overflow-x: clip; }
+.creators .cr-row { display: grid; gap: var(--cr-gap); }
+.creators .cr-item { position: relative; isolation: isolate; min-width: 0; }
+/* a soft glow in the stage colour behind each card */
+.creators .cr-item::before {
+  content: ""; position: absolute; z-index: -1; inset: 6% -8% -6%; border-radius: 50%; pointer-events: none;
+  background: radial-gradient(closest-side, color-mix(in srgb, var(--stage) 12%, transparent), transparent);
+}
+
+/* ---- the card ---- */
+.creators .cr-card {
+  position: relative; display: flex; flex-direction: column; height: 100%; overflow: hidden; isolation: isolate;
+  border-radius: var(--radius-lg); background: rgb(7 8 12 / 0.72);
+}
+/* its hairline, drawn over the poster */
+.creators .cr-card::before { content: ""; position: absolute; z-index: 3; inset: 0; border-radius: inherit; pointer-events: none; box-shadow: inset 0 0 0 1px var(--line-soft); transition: box-shadow 0.5s var(--ease-out); }
+.creators .cr-card.is-open::before { box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.22); }
+
+/* the poster: a night drawn from lane lines */
+.creators .cr-art {
+  position: relative; flex: none; height: clamp(240px, 26vw, 320px); overflow: hidden; isolation: isolate;
+  background: radial-gradient(60% 62% at 50% 46%, color-mix(in srgb, var(--stage) 18%, transparent), transparent 72%), #000;
+  box-shadow: inset 0 -1px 0 var(--line-faint);
+}
+.creators .cr-art::after {
+  content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background: linear-gradient(180deg, rgb(0 0 0 / 0.55), transparent 24%, transparent 62%, rgb(0 0 0 / 0.78));
+}
+.creators .cr-poster { position: absolute; inset: 0; width: 100%; height: 100%; fill: none; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; }
+.creators .cr-poster * { vector-effect: non-scaling-stroke; }
+.creators .cr-poster .s1 { stroke: var(--spark); } .creators .cr-poster .s2 { stroke: var(--shape); } .creators .cr-poster .s3 { stroke: var(--make); }
+.creators .cr-poster .s4 { stroke: var(--review); } .creators .cr-poster .s5 { stroke: var(--launch); } .creators .cr-poster .s6 { stroke: var(--afterglow); }
+.creators .cr-poster .w { stroke: #fff; }
+.creators .cr-poster .fw { fill: #fff; stroke: none; }
+.creators .cr-poster .st { stroke: #fff; stroke-width: 1.2; opacity: 0.42; }
+.creators .cr-poster .st--b { stroke-width: 1.9; opacity: 0.75; }
+
+.creators .cr-tags {
+  position: absolute; z-index: 2; top: 13px; left: var(--cr-pad); right: 14px;
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 12px;
+}
+.creators .cr-persona { font: 400 10.5px/1 var(--font-brand); letter-spacing: 0.2em; text-transform: uppercase; color: #fff; }
+.creators .cr-chip { -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
+.creators .cr-project { position: absolute; z-index: 2; left: var(--cr-pad); right: var(--cr-pad); bottom: 18px; display: grid; gap: 6px; }
+.creators .cr-project__name { font: 400 15px/1.25 var(--font-brand); color: #fff; letter-spacing: 0.01em; }
+.creators .cr-project__sub { font-size: 13.5px; line-height: 1.35; color: var(--ink-soft); }
+
+/* who */
+.creators .cr-body { display: flex; flex-direction: column; flex: 1 1 auto; min-height: 0; padding: 22px var(--cr-pad) var(--cr-pad); }
+.creators .cr-who { display: flex; align-items: center; gap: 14px; min-height: 48px; }
+.creators .cr-avatar {
+  position: relative; display: inline-grid; place-items: center; flex: none; width: 44px; height: 44px; border-radius: 50%;
+  font: 600 14px/1 var(--font); letter-spacing: 0.02em; color: #fff; background: #0b0d12;
+}
+/* the conic ring, in the person's stage colour */
+.creators .cr-avatar::before {
+  content: ""; position: absolute; inset: -4px; border-radius: 50%; padding: 1.5px;
+  background: conic-gradient(from 200deg, var(--stage), color-mix(in srgb, var(--stage) 12%, transparent) 45%, rgb(255 255 255 / 0.5) 70%, var(--stage));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+}
+.creators .cr-name { font: 600 18px/1.25 var(--font); letter-spacing: -0.012em; color: #fff; }
+.creators .cr-role { margin-top: 2px; font-size: 14px; line-height: 1.4; color: var(--ink-muted); text-wrap: balance; }
+
+/* the story */
+.creators .cr-more { display: grid; grid-template-rows: 1fr; flex: 1 1 auto; }
+.creators .cr-more__inner { display: flex; flex-direction: column; min-height: 0; }
+.creators .cr-more__inner > * + *:not(.cr-link) { margin-top: 22px; }
+.creators .cr-quote { margin-top: 22px; }
+.creators .cr-quote p { font: 400 clamp(19px, 1.55vw, 22px)/1.42 var(--font); letter-spacing: -0.014em; color: #fff; text-wrap: pretty; }
+.creators .cr-facts { display: grid; grid-template-columns: max-content 1fr; column-gap: 18px; border-top: 1px solid var(--line-faint); }
+.creators .cr-facts li { display: grid; grid-column: 1 / -1; grid-template-columns: subgrid; align-items: baseline; padding: 11px 0; border-bottom: 1px solid var(--line-faint); }
+.creators .cr-facts b { font: 400 15px/1.3 var(--font-brand); color: #fff; white-space: nowrap; }
+.creators .cr-facts span { font-size: 14.5px; line-height: 1.4; color: var(--ink-soft); }
+
+/* where the lane is now: the stage rail and its six names */
+.creators .cr-lane { display: grid; gap: 10px; }
+.creators .cr-lane .stage-rail i { transition-delay: calc(var(--k, 0) * 0.11s); }
+.creators .cr-lane .stage-rail i:nth-child(2) { --k: 1; } .creators .cr-lane .stage-rail i:nth-child(3) { --k: 2; }
+.creators .cr-lane .stage-rail i:nth-child(4) { --k: 3; } .creators .cr-lane .stage-rail i:nth-child(5) { --k: 4; }
+.creators .cr-lane .stage-rail i:nth-child(6) { --k: 5; }
+.creators .cr-stages { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); font-size: 11.5px; line-height: 1.2; color: var(--ink-faint); }
+.creators .cr-stages li { text-align: center; white-space: nowrap; }
+.creators .cr-stages li:first-child { text-align: left; } .creators .cr-stages li:last-child { text-align: right; }
+.creators .cr-stages .is-past { color: var(--ink-muted); }
+.creators .cr-stages .is-now { color: #fff; }
+.creators .cr-link { align-self: flex-start; margin-top: auto; }
+.creators .cr-lane { margin-bottom: 26px; }
+.creators .cr-link:focus-visible { outline-offset: 5px; }
+
+/* ---- stacked (under 1100 px, and without scripts): each card open, its poster beside the story ---- */
+@media (min-width: 720px) {
+  .creators .cr-row { gap: 24px; }
+  .creators .cr-card { flex-direction: row; min-height: 460px; }
+  .creators .cr-art { flex: 0 0 42%; height: auto; box-shadow: inset -1px 0 0 var(--line-faint); }
+  .creators .cr-body { padding: 30px clamp(28px, 3.4vw, 48px); }
+  .creators .cr-quote p { max-width: 30em; }
+}
+
+/* ---- the accordion row ---- */
+@media (min-width: 1100px) {
+  .js .creators .cr-row {
+    container-type: inline-size; gap: var(--cr-gap);
+    grid-template-columns: 1.8fr 1fr 1fr; height: clamp(720px, 54vw, 800px);
+    transition: grid-template-columns 0.6s var(--ease-out);
+  }
+  .js .creators .cr-row[data-open="1"] { grid-template-columns: 1fr 1.8fr 1fr; }
+  .js .creators .cr-row[data-open="2"] { grid-template-columns: 1fr 1fr 1.8fr; }
+  .js .creators .cr-card { flex-direction: column; min-height: 0; cursor: pointer; }
+  .js .creators .cr-card.is-open { cursor: auto; }
+  .js .creators .cr-art { flex: 1 1 auto; height: auto; min-height: 200px; box-shadow: inset 0 -1px 0 var(--line-faint); }
+  .js .creators .cr-body { flex: none; padding: 20px var(--cr-pad) calc(var(--cr-pad) - 8px); }
+  .js .creators .cr-who { min-height: 64px; }
+  /* a narrow card sets the city on its own line */
+  .js .creators .cr-card:not(.is-open) .cr-city { display: block; }
+  .js .creators .cr-card:not(.is-open) .cr-dot { display: none; }
+  /* the story folds away in a narrow card; its text keeps the open card's measure, so nothing reflows as it moves */
+  .js .creators .cr-more { grid-template-rows: 0fr; transition: grid-template-rows 0.6s var(--ease-out); }
+  /* (8 px of room either side, and under the link, so a focus ring is not clipped by the fold) */
+  .js .creators .cr-more__inner {
+    width: calc((100cqw - 2 * var(--cr-gap)) * 1.8 / 3.8 - 2 * var(--cr-pad) + 16px); margin-inline: -8px; padding-inline: 8px; overflow: hidden;
+    opacity: 0; transition: opacity 0.25s var(--ease-out);
+  }
+  .js .creators .cr-link { margin-bottom: 8px; }
+  .js .creators .cr-lane { margin-bottom: 22px; }
+  .js .creators .cr-card.is-open .cr-more { grid-template-rows: 1fr; }
+  .js .creators .cr-card.is-open .cr-more__inner { opacity: 1; transition: opacity 0.55s var(--ease-out) 0.18s; }
+  .js .creators .cr-quote { margin-top: 18px; }
+  .js .creators .cr-more__inner > * + *:not(.cr-link) { margin-top: 20px; }
+  /* a narrow card's project line keeps to its poster */
+  .js .creators .cr-card:not(.is-open) .cr-project__sub { opacity: 0.8; }
+  .js .creators .cr-card:not(.is-open):hover::before { box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.3); }
+}
+
+/* ---- the open card's poster comes alive (home-creators.js marks the row live and on screen) ---- */
+.creators .cr-row.is-live.is-inview .cr-card.is-open .bloom-stem path[pathLength] { animation: cr-draw 1.3s var(--ease-out) both; }
+.creators .cr-row.is-live.is-inview .cr-card.is-open .bloom-petal path { animation: cr-draw 1.7s var(--ease-out) both; animation-delay: calc(0.45s + var(--i) * 0.09s); }
+.creators .cr-row.is-live.is-inview .cr-card.is-open .bloom { transform-origin: 0 0; animation: cr-spin 140s linear infinite; }
+.creators .cr-row.is-live.is-inview .cr-card.is-open .tide-wave { animation: cr-roll var(--d) linear infinite; }
+.creators .cr-row.is-live.is-inview .cr-card.is-open .tide-moon { transform-box: fill-box; transform-origin: 50% 50%; animation: cr-rise 2.4s var(--ease-out) both; }
+.creators .cr-row.is-live.is-inview .cr-card.is-open .kiln-turn path { animation: cr-turn 3.6s linear infinite; }
+.creators .cr-row.is-live.is-inview .cr-card.is-open .kiln-wheel { transform-box: fill-box; transform-origin: 50% 50%; animation: cr-settle 1.8s var(--ease-out) both; }
+@keyframes cr-draw { from { stroke-dasharray: 1; stroke-dashoffset: 1; } to { stroke-dasharray: 1; stroke-dashoffset: 0; } }
+@keyframes cr-spin { to { transform: rotate(360deg); } }
+@keyframes cr-roll { to { transform: translateX(var(--l)); } }
+@keyframes cr-rise { from { transform: translateY(18px); opacity: 0.2; } }
+@keyframes cr-turn { to { stroke-dashoffset: calc(var(--p) * -1); } }
+@keyframes cr-settle { from { transform: scale(0.9); opacity: 0.3; } }
+
+/* reduced motion: the posters rest and the widths switch without moving */
+.is-calm .creators .cr-row, .is-calm .creators .cr-more, .is-calm .creators .cr-more__inner, .is-calm .creators .stage-rail::after, .is-calm .creators .stage-rail i { transition: none !important; }
+.is-calm .creators .cr-poster * { animation: none !important; }

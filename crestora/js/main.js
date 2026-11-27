@@ -1,50 +1,35 @@
-// Crestora: the entry. Builds the scene behind the footer, plays the intro, wires the details.
-import { createScene } from './scene.js';
-import { intro } from './intro.js';
-import { details } from './ui.js';
+// Crestora: the entry on every page. The shared runtime first (smooth scroll, header, reveals), then the page's own
+// modules (named in <body data-modules>, from js/modules/<name>.js, each exporting a default init), then the footer.
+import { boot, calm } from './core.js';
 
-const root = document.documentElement;
 const params = new URLSearchParams(location.search);
-const calm = root.classList.contains('is-calm');
-const still = params.has('still');                       // a still of the resting picture (for stills and the poster)
+const still = params.has('still');                       // a still of the resting page (for stills and the poster)
 
-const canvas = document.querySelector('.scene');
-const stage = document.querySelector('.stage');
-const road = document.querySelector('.road');
-export const wide = matchMedia('(min-width: 1100px) and (min-aspect-ratio: 6/5)');
+boot();
 
-// Where the shot's design frame sits in the canvas (css px). On a landscape screen it is the stage itself; when the page
-// flows, the road at its foot is a window onto the car, fitted round it and resting on the window's bottom edge.
-function frame() {
-  const c = canvas.getBoundingClientRect();
-  if (wide.matches) {
-    const r = stage.getBoundingClientRect();
-    return { x: r.left - c.left, y: r.top - c.top, s: r.width / 1597 };
+// fetched together, started in the order the page lists them
+const names = (document.body.dataset.modules || '').split(/\s+/).filter(Boolean);
+const loads = names.map((name) => import(`./modules/${name}.js`).catch((e) => { console.error(`[crestora] module ${name}`, e); return null; }));
+(async () => {
+  for (const [i, load] of loads.entries()) {
+    const m = await load;
+    try { m?.default?.({ calm, still }); } catch (e) { console.error(`[crestora] module ${names[i]}`, e); }
   }
-  const r = road.getBoundingClientRect();
-  const s = Math.min(r.height / 560, (0.96 * r.width) / 610);
-  return { x: r.left - c.left + r.width / 2 - 852 * s, y: r.bottom - c.top - 985 * s, s };
-}
+})();
 
-let scene = null;
-try {
-  scene = createScene(canvas, { frame, calm: calm || still });
-} catch (e) {
-  console.error('[crestora] no scene', e);
+// The footer (its WebGL night, the car's picture) loads once it is within a screen and a half, so a long page's first
+// paint is its own; a launch from the page (crestora:launch) loads it at once.
+const foot = document.querySelector('.footer');
+if (foot) {
+  let loaded = false;
+  const load = () => {
+    if (loaded) return;
+    loaded = true;
+    io.disconnect();
+    import('./footer/index.js').then((m) => m.initFooter(foot, { calm, still })).catch((e) => console.error('[crestora] footer', e));
+  };
+  const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) load(); }, { rootMargin: '150% 0px' });
+  io.observe(foot);
+  addEventListener('crestora:launch', () => { window.__crestoraLaunched = true; load(); });
+  if (still) load();
 }
-if (!scene) root.classList.add('no-webgl');
-
-const year = document.querySelector('.year');
-if (year) year.textContent = String(new Date().getFullYear());
-
-if (scene && (calm || still)) {
-  scene.ready.then(() => {
-    scene.warm(3);                                       // the dust, as it lies after a few seconds' driving
-    scene.draw();
-    root.classList.add('is-ready', 'is-drawn');
-  });
-  addEventListener('scroll', () => scene.draw(), { passive: true });
-} else {
-  intro(scene);
-}
-details(scene, { calm, wide });

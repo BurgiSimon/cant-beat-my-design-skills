@@ -1,0 +1,163 @@
+/* Home #start: the finale. The darkest black, a few stars thickening toward the footer, and a low arc of the road's
+   six lanes glowing at the bottom edge so the footer feels lit before it arrives. One idea and an email open Lane 001:
+   the card beside the form fills in as you type, and on "Hit the green light" its rail runs from Spark to Afterglow
+   and the footer launches. The Lane card's look is shared with start.html (scoped to both). */
+
+.home-start {
+  position: relative; isolation: isolate; overflow: clip; background: #000;
+  display: grid; align-content: center; min-height: max(90svh, 780px);
+  padding: clamp(96px, 10vw, 150px) 0 calc(clamp(150px, 15vw, 230px) + clamp(40px, 4vw, 72px));
+}
+
+/* ---- the night ---- */
+.home-start__night { position: absolute; z-index: -1; inset: 0; pointer-events: none; }
+.home-start__stars { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0.75;
+  -webkit-mask: linear-gradient(180deg, transparent 8%, rgb(0 0 0 / 0.45) 45%, #000 85%); mask: linear-gradient(180deg, transparent 8%, rgb(0 0 0 / 0.45) 45%, #000 85%); }
+.home-start__glow {
+  position: absolute; left: 50%; bottom: 0; width: min(1500px, 140vw); height: 62%; translate: -50% 0;
+  background:
+    radial-gradient(46% 62% at 50% 86%, rgb(58 109 255 / 0.16), rgb(35 211 255 / 0.06) 42%, transparent 72%),
+    radial-gradient(30% 36% at 50% 86%, rgb(255 59 59 / 0.07), transparent 70%);
+  /* it fades out before the section ends, so the footer's night takes over without a seam */
+  -webkit-mask: linear-gradient(180deg, #000 70%, transparent); mask: linear-gradient(180deg, #000 70%, transparent);
+}
+/* the arc: six bands of three lanes in the footer ribbon's order, top to bottom */
+.home-start__horizon {
+  position: absolute; left: 0; bottom: 0; width: 100%; height: clamp(150px, 15vw, 230px); overflow: visible;
+  /* the ends dissolve to the sides and the lanes sink into the dark before the section's edge */
+  -webkit-mask: linear-gradient(90deg, transparent 3%, #000 26%, #000 74%, transparent 97%), linear-gradient(180deg, #000 30%, transparent 92%);
+  -webkit-mask-composite: source-in;
+  mask: linear-gradient(90deg, transparent 3%, #000 26%, #000 74%, transparent 97%), linear-gradient(180deg, #000 30%, transparent 92%);
+  mask-composite: intersect;
+}
+.home-start__horizon path { stroke-width: 1; vector-effect: non-scaling-stroke; }
+.home-start__lanes { filter: drop-shadow(0 0 6px rgb(58 109 255 / 0.35)); }
+/* the launch: a white glint runs out along the middle lane of each band */
+.home-start__glint use { stroke-width: 1.6; stroke-linecap: round; stroke-dasharray: 0.07 1.3; stroke-dashoffset: 0.08; opacity: 0; }
+.home-start__glint { filter: drop-shadow(0 0 3px #fff) drop-shadow(0 0 10px rgb(160 220 255 / 0.8)); }
+.home-start.is-launched .home-start__glint use { animation: home-start-glint 1.5s var(--ease-in-out) forwards; }
+.home-start.is-launched .home-start__glint use:nth-child(2) { animation-delay: 0.06s; }
+.home-start.is-launched .home-start__glint use:nth-child(3) { animation-delay: 0.12s; }
+.home-start.is-launched .home-start__glint use:nth-child(4) { animation-delay: 0.18s; }
+.home-start.is-launched .home-start__glint use:nth-child(5) { animation-delay: 0.24s; }
+.home-start.is-launched .home-start__glint use:nth-child(6) { animation-delay: 0.3s; }
+@keyframes home-start-glint { 0% { stroke-dashoffset: 0.08; opacity: 1; } 92% { opacity: 1; } 100% { stroke-dashoffset: -1.1; opacity: 0; } }
+.home-start__lanes path { transition: opacity 1.2s var(--ease-out); }
+.home-start.is-launched .home-start__lanes { filter: drop-shadow(0 0 8px rgb(58 109 255 / 0.5)); }
+
+/* ---- the head, centred ---- */
+.home-start__head { display: grid; justify-items: center; text-align: center; }
+.home-start__title { margin-top: clamp(22px, 2.4vw, 30px); font-size: clamp(36px, 6vw, 96px); }
+.home-start__sub { margin-top: clamp(20px, 2vw, 28px); text-align: center; }
+
+/* ---- the form and the card ---- */
+.home-start__body {
+  display: grid; grid-template-columns: minmax(0, 480px) minmax(0, 420px); justify-content: center; align-items: center;
+  gap: clamp(40px, 5.5vw, 88px); margin-top: clamp(56px, 6vw, 88px);
+}
+.home-start__form { display: grid; gap: 20px; }
+.home-start__field { gap: 10px; }
+.home-start__field .field__label { font-size: 14.5px; }
+.home-start__input { height: 56px; padding: 0 18px; font-size: 17px; background: rgb(255 255 255 / 0.035); }
+.home-start__input::placeholder { transition: color 0.28s var(--ease-out); }
+.home-start__input.is-swapping::placeholder { color: transparent; }
+.home-start__field .field__error:empty { display: none; }
+.home-start__go { height: 56px; margin-top: 6px; font-size: 16px; }
+.home-start__fine { color: var(--ink-muted); }
+.home-start__fine span { margin: 0 0.35em; opacity: 0.6; }
+.home-start__done { display: flex; align-items: center; gap: 10px; font-size: 14px; line-height: 1.5; color: var(--ink-soft); }
+.home-start__done[hidden] { display: none; }
+.home-start__done .icon { width: 16px; height: 16px; color: #fff; }
+
+/* ================= the Lane card (shared with start.html) ================= */
+:is(.home-start, [data-page="start"]) .lane-card {
+  position: relative; isolation: isolate; overflow: hidden; margin: 0; padding: clamp(22px, 2vw, 30px);
+  border-radius: var(--radius-lg);
+  background: linear-gradient(180deg, rgb(255 255 255 / 0.065), rgb(255 255 255 / 0.018)), rgb(6 7 11 / 0.82);
+  box-shadow: inset 0 0 0 1px var(--line-soft), inset 0 1px 0 rgb(255 255 255 / 0.06), 0 40px 100px -40px #000;
+  -webkit-backdrop-filter: blur(14px) saturate(1.3); backdrop-filter: blur(14px) saturate(1.3);
+}
+/* the light of the stage it is in, from the top right */
+:is(.home-start, [data-page="start"]) .lane-card::after {
+  content: ""; position: absolute; z-index: -1; right: -20%; top: -45%; width: 80%; aspect-ratio: 1; border-radius: 50%; pointer-events: none;
+  background: radial-gradient(closest-side, color-mix(in srgb, var(--stage) 16%, transparent), transparent);
+  transition: background 0.5s var(--ease-out);
+}
+/* once it is open: the spectrum ring, the whole flow */
+:is(.home-start, [data-page="start"]) .lane-card::before {
+  content: ""; position: absolute; z-index: 2; inset: 0; border-radius: inherit; padding: 1px; pointer-events: none; opacity: 0;
+  background: conic-gradient(from var(--spin), var(--spectrum), #3a6dff);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  transition: opacity 0.8s var(--ease-out);
+}
+:is(.home-start, [data-page="start"]) .lane-card.is-open::before { opacity: 0.85; animation: sheen 2.4s linear 1; }
+:is(.home-start, [data-page="start"]) .lane-card__top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+:is(.home-start, [data-page="start"]) .lane-card__no { font: 400 10.5px/1 var(--font-brand); letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-soft); }
+:is(.home-start, [data-page="start"]) .lane-card__chip { transition: background-color 0.4s var(--ease-out), box-shadow 0.4s var(--ease-out); }
+:is(.home-start, [data-page="start"]) .lane-card__chip::before { transition: background-color 0.4s var(--ease-out), box-shadow 0.4s var(--ease-out); }
+:is(.home-start, [data-page="start"]) .lane-card.is-open .lane-card__chip { color: #fff; background: rgb(255 255 255 / 0.05); box-shadow: inset 0 0 0 1px var(--line-soft); }
+:is(.home-start, [data-page="start"]) .lane-card.is-open .lane-card__chip::before { background: conic-gradient(var(--spectrum), #3a6dff); box-shadow: 0 0 8px rgb(35 211 255 / 0.7); }
+
+:is(.home-start, [data-page="start"]) .lane-card__title {
+  display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden;
+  margin-top: clamp(24px, 2.2vw, 30px); min-height: 2.5em;
+  font: 400 clamp(20px, 1.7vw, 25px)/1.25 var(--font-brand); letter-spacing: -0.01em; color: #fff; overflow-wrap: anywhere;
+}
+:is(.home-start, [data-page="start"]) .lane-card__title.is-default { color: var(--ink-soft); }
+/* a caret while you type into it */
+:is(.home-start, [data-page="start"]) .lane-card__caret { display: none; width: 2px; height: 0.95em; margin-left: 4px; vertical-align: -0.1em; background: #fff; border-radius: 1px; }
+:is(.home-start, [data-page="start"]) .lane-card.is-typing .lane-card__caret { display: inline-block; animation: lane-card-caret 1.05s steps(1) infinite; }
+@keyframes lane-card-caret { 50% { opacity: 0; } }
+:is(.home-start, [data-page="start"]) .lane-card__meta { margin-top: 8px; font-size: 14px; line-height: 1.45; color: var(--ink-muted); }
+:is(.home-start, [data-page="start"]) .lane-card__meta span[aria-hidden] { margin: 0 0.3em; opacity: 0.6; }
+
+:is(.home-start, [data-page="start"]) .lane-card__road { display: grid; gap: 11px; margin-top: clamp(24px, 2.2vw, 30px); }
+:is(.home-start, [data-page="start"]) .lane-card .stage-rail i { transition-delay: 0s; }
+:is(.home-start, [data-page="start"]) .lane-card__names { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); font-size: 11.5px; line-height: 1.2; color: var(--ink-faint); }
+:is(.home-start, [data-page="start"]) .lane-card__names li { text-align: center; white-space: nowrap; transition: color 0.4s var(--ease-out); }
+:is(.home-start, [data-page="start"]) .lane-card__names li:first-child { text-align: left; }
+:is(.home-start, [data-page="start"]) .lane-card__names li:last-child { text-align: right; }
+:is(.home-start, [data-page="start"]) .lane-card__names li.is-lit { color: var(--ink-soft); }
+:is(.home-start, [data-page="start"]) .lane-card__names li.is-now { color: #fff; }
+
+:is(.home-start, [data-page="start"]) .lane-card__foot { display: flex; align-items: center; gap: 14px; margin-top: clamp(22px, 2vw, 28px); padding-top: 20px; border-top: 1px solid var(--line-faint); min-width: 0; }
+/* the maker: an empty dashed seat until an email is typed, then their initials in a ring of the lane's stage */
+:is(.home-start, [data-page="start"]) .lane-card__avatar {
+  position: relative; display: inline-grid; place-items: center; flex: none; width: 40px; height: 40px; border-radius: 50%;
+  font: 600 13.5px/1 var(--font); letter-spacing: 0.03em; color: #fff; background: transparent;
+  box-shadow: inset 0 0 0 1px var(--line-soft); outline: 1px dashed rgb(255 255 255 / 0.28); outline-offset: -1px;
+  transition: background-color 0.3s var(--ease-out);
+}
+:is(.home-start, [data-page="start"]) .lane-card__avatar.is-set { background: #0b0d12; outline: 0; box-shadow: none; }
+:is(.home-start, [data-page="start"]) .lane-card__avatar.is-set::before {
+  content: ""; position: absolute; inset: -4px; border-radius: 50%; padding: 1.5px;
+  background: conic-gradient(from 200deg, var(--stage), color-mix(in srgb, var(--stage) 12%, transparent) 45%, rgb(255 255 255 / 0.5) 70%, var(--stage));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+}
+:is(.home-start, [data-page="start"]) .lane-card__who { display: grid; gap: 3px; min-width: 0; }
+:is(.home-start, [data-page="start"]) .lane-card__name { font-size: 15px; font-weight: 600; line-height: 1.3; color: #fff; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+:is(.home-start, [data-page="start"]) .lane-card__mail { font-size: 13.5px; line-height: 1.3; color: var(--ink-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+:is(.home-start, [data-page="start"]) .lane-card__name.is-empty { font-weight: 500; color: var(--ink-soft); }
+
+.is-calm :is(.home-start, [data-page="start"]) .lane-card *,
+.is-calm :is(.home-start, [data-page="start"]) .lane-card::before,
+.is-calm :is(.home-start, [data-page="start"]) .lane-card::after,
+.is-calm :is(.home-start, [data-page="start"]) .lane-card .stage-rail::after { transition: none !important; animation: none !important; }
+.is-calm .home-start__glint use { animation: none !important; opacity: 0 !important; }
+
+/* ---- smaller screens: the card under the form ---- */
+@media (max-width: 959.98px) {
+  .home-start__body { grid-template-columns: minmax(0, 520px); }
+  .home-start__card { order: 2; }
+}
+@media (max-width: 600px) {
+  .home-start { min-height: 0; }
+  .home-start__head .eyebrow { font-size: 10px; }
+  .home-start__title { font-size: clamp(30px, 9vw, 44px); }
+  .home-start__horizon { height: 120px; }
+}
+@media (max-width: 420px) {
+  :is(.home-start, [data-page="start"]) .lane-card__names { font-size: 10.5px; letter-spacing: -0.01em; }
+}
