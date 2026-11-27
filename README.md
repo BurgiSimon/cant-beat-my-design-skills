@@ -9,6 +9,8 @@ Websites built from a single design, each its own project, behind one picker.
 | **Mist**, a marketing site for an AI workflow-automation product | [`/mist/`](https://burgisimon.github.io/cant-beat-my-design-skills/mist/) |
 | **Nelson**, a CRM landing page recreated 1:1 and given a motion layer | [`/nelson-crm/`](https://burgisimon.github.io/cant-beat-my-design-skills/nelson-crm/) |
 | **AsterPay**, a money app's hero recreated from one shot and grown into a full landing page | [`/asterpay/`](https://burgisimon.github.io/cant-beat-my-design-skills/asterpay/) |
+| **Vizen**, a helmet store's product page recreated from one shot, its rider raymarched in WebGL | [`/vizen/`](https://burgisimon.github.io/cant-beat-my-design-skills/vizen/) |
+| **UnoRouter**, an AI model router's hero recreated from one shot, in pixels, and grown into a full landing page | [`/unorouter/`](https://burgisimon.github.io/cant-beat-my-design-skills/unorouter/) |
 | **OQURO**, a cyber-security page recreated from one shot, its 3D renders rebuilt as real-time 3D in code | [`/oquro/`](https://burgisimon.github.io/cant-beat-my-design-skills/oquro/) |
 
 ## The picker
@@ -18,11 +20,13 @@ The front page ([`picker/`](picker/)) is a line of cards, one per site, each wit
 - **Point at a card** and it lights up with a trace in its site's own manner: on Mist, wisps of mist drift
   across the foot and part around the pointer; on Nelson, a hole tears open in the clouds onto a night of
   drifting ASCII, the way its hero tears its paper; on AsterPay, an orbit of light closes round the pointer and a
-  streak sweeps along its horizon, as in its hero; on OQURO, the vault dial of its preloader closes round the pointer
-  while rings spread through the water under it.
+  streak sweeps along its horizon, as in its hero; on Vizen, the hero's reticle locks onto the pointer with a streak
+  of brake light through it; on UnoRouter, a halo of cells round the pointer steps through its four colours the way
+  its mark does; on OQURO, the vault dial of its preloader closes round the pointer while rings spread through the
+  water under it.
 - **Choose one** and the card grows to fill the screen, its still giving way to the colour that site paints
-  first: Mist's bare violet sky, Nelson's white preloader, AsterPay's dark one, OQURO's pale grey one. The site's own entrance then plays from there, so
-  the move from picker to site has no seam.
+  first: Mist's bare violet sky, Nelson's white preloader, AsterPay's dark one, the black of Vizen and of UnoRouter,
+  OQURO's pale grey. The site's own entrance then plays from there, so the move from picker to site has no seam.
 - While the cards fit the screen they stand in the middle. With more sites than fit, the line becomes
   endless: it drifts when left alone, and the wheel, a drag or the arrow keys move it.
 - On a phone the cards are a strip you swipe; the one in the middle is lit.
@@ -31,7 +35,8 @@ The front page ([`picker/`](picker/)) is a line of cards, one per site, each wit
 
 To add a site: a link in `picker/index.html` with its own `data-id`, its `--still` and `--arrive` in
 `picker/picker.css`, and its stills from `node picker/tools/stills.mjs` (which renders every still and the
-share image; it needs Playwright). A trace of its own in `picker/picker.js` is optional.
+share image, or only the named sites' stills: `node picker/tools/stills.mjs vizen unorouter`; it needs Playwright). A
+trace of its own in `picker/picker.js` is optional.
 
 ## Mist
 
@@ -78,9 +83,38 @@ against it at 1440px) and grown into a full landing page in the same language.
 No build step: plain HTML, CSS and ES modules, copied into `dist/asterpay/` by `build.mjs`. See
 [`asterpay/README.md`](asterpay/README.md).
 
+## Vizen
+
+A fourth project lives in [`vizen/`](vizen/): a helmet store's product page recreated from one shot (measured against
+it at 1440 × 960) and grown into a full page. The shot's rider is a photograph; here he is a model, raymarched in one
+WebGL2 shader, so the camera can go round him, the visor opens and the paint changes.
+
+| Part | What it is |
+| --- | --- |
+| Hero | The shot, live: the rider in WebGL with the photograph's ghosting and the brake light's streak; the views, arrows and a drag turn him, a click opens the visor, a colour is scanned onto the shell; sizes, quantity, an accordion, a cart the helmet flies into |
+| Sections | An anatomy where the helmet lifts off his shoulders and turns to each part under leader lines from its 3D points, a wind tunnel drawn in ASCII round the helmet's own silhouette, the Vault of paints as turntables, about, a footer whose wordmark draws itself |
+| Motion | A preloader whose reticle becomes the product frame and a rider who develops out of ASCII, Lenis smooth scroll, GSAP scroll reveals and SplitText, rolling digits, scrambled labels |
+
+No build step either; copied into `dist/vizen/` by `build.mjs`. See [`vizen/README.md`](vizen/README.md).
+
+## UnoRouter
+
+A fifth project lives in [`unorouter/`](unorouter/): an AI model router's hero recreated from a single shot (measured
+against it at 1440 × 1080, down to the colour of each cell in its mark) and grown into a full landing page in the same
+pixel language.
+
+| Part | What it is |
+| --- | --- |
+| Hero | The shot, live: the mark as 52 × 48 cells whose colour bands flow from the shot's own frame, part round the pointer, ring out from a press and route requests down its bars and out through its rays; a dot-matrix headline that decodes; figures that count and a token count that runs |
+| Sections | A providers strip, a quickstart whose one changed line types itself and whose request streams back, a models explorer (search, filters, sorting, copy), a fallback simulator you can break, rankings in bars of cells, pricing, FAQ, and a key generator over the mark in the dark |
+| Motion | A boot log into the hero, a WebGL dot grid that wakes round the pointer, Lenis smooth scroll, GSAP scroll reveals, magnetic buttons, a favicon that cycles colours |
+
+No build step: plain HTML, CSS and ES modules, copied into `dist/unorouter/` by `build.mjs`. See
+[`unorouter/README.md`](unorouter/README.md).
+
 ## OQURO
 
-A fourth project lives in [`oquro/`](oquro/): a cyber-security landing page recreated from one shot, every section of
+A sixth project lives in [`oquro/`](oquro/): a cyber-security landing page recreated from one shot, every section of
 it, with the shot's 3D renders (a mossy stone ring holding a vault door, a rocky outcrop, a laptop on a boulder, a
 chain link in sand) rebuilt as real-time 3D, entirely in code.
 
@@ -98,7 +132,7 @@ No build step: plain HTML, CSS and ES modules, copied into `dist/oquro/` by `bui
 Requires Node 20+. No dependencies to install.
 
 ```bash
-node build.mjs --serve        # http://localhost:4321 — the picker, /mist/, /nelson-crm/, /asterpay/ and /oquro/; rebuilds and live-reloads on change
+node build.mjs --serve        # http://localhost:4321 — the picker, /mist/, /nelson-crm/, /asterpay/, /vizen/, /unorouter/ and /oquro/; rebuilds and live-reloads on change
 node build.mjs                # production build into ./dist
 ```
 
@@ -125,6 +159,8 @@ src/                   Mist, published under /mist/ (its 404 page answers for th
   static/              copied to the root of Mist (web manifest)
 nelson-crm/            separate prebuilt project, published under /nelson-crm/
 asterpay/              separate project, no build step, published under /asterpay/ (its README and tools/ stay behind)
+vizen/                 separate project, no build step, published under /vizen/ (its README and tools/ stay behind)
+unorouter/             separate project, no build step, published under /unorouter/ (its README and tools/ stay behind)
 oquro/                 separate project, no build step, published under /oquro/ (its README and tools/ stay behind)
 ```
 
@@ -155,7 +191,13 @@ GitHub Pages (Settings → Pages → Source: GitHub Actions).
   mist added). Check its licence before using this site commercially.
 - AsterPay: [Satoshi](https://www.fontshare.com/fonts/satoshi) (ITF Free Font License), loaded from Fontshare's CDN
   rather than committed; land outlines from [Natural Earth](https://www.naturalearthdata.com/) (public domain).
+- Vizen: [Inter Tight](https://github.com/rsms/inter) and [Roboto Mono](https://github.com/googlefonts/robotomono)
+  (SIL Open Font License, licences in `vizen/assets/fonts/`).
+- UnoRouter: [Doto](https://github.com/oliverlalan/Doto) and [Geist Mono and Geist](https://github.com/vercel/geist-font)
+  (SIL Open Font License, licences in `unorouter/assets/fonts/`).
 - OQURO: [Anton](https://github.com/googlefonts/AntonFont), Inter and JetBrains Mono (SIL Open Font License, licences in
   `oquro/assets/fonts/`); [three.js](https://threejs.org) (MIT), cut down to what it uses.
 - Mist, its customers, people, quotes and numbers are fictional. The investor line in the hero comes
-  from the original design. AsterPay, its people, reviews and figures are fictional too, and so are OQURO, its numbers and its threats.
+  from the original design. AsterPay, its people, reviews and figures are fictional too, and so are Vizen and its
+  helmets, and OQURO, its numbers and its threats. UnoRouter's hero copy and figures come from its shot; its models
+  list, prices, rankings and routing are illustrative and simulated.

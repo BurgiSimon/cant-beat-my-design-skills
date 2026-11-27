@@ -37,6 +37,8 @@
   --mist: url("assets/stills/mist-wide.jpg");
   --nelson: url("assets/stills/nelson-wide.jpg");
   --asterpay: url("assets/stills/asterpay-wide.jpg");
+  --vizen: url("assets/stills/vizen-wide.jpg");
+  --unorouter: url("assets/stills/unorouter-wide.jpg");
   --oquro: url("assets/stills/oquro-wide.jpg");
 }
 @media (orientation: portrait) {
@@ -44,11 +46,14 @@
     --mist: url("assets/stills/mist-tall.jpg");
     --nelson: url("assets/stills/nelson-tall.jpg");
     --asterpay: url("assets/stills/asterpay-tall.jpg");
+    --vizen: url("assets/stills/vizen-tall.jpg");
+    --unorouter: url("assets/stills/unorouter-tall.jpg");
     --oquro: url("assets/stills/oquro-tall.jpg");
   }
 }
 /* Mist opens on its bare sky (the peaks and the copy rise into it); Nelson on the white of its preloader; AsterPay on
-   the dark of its preloader, or of its hero before the light rises; OQURO on the pale grey of its vault-dial preloader. */
+   the dark of its preloader, or of its hero before the light rises; Vizen on the black its rider develops out of;
+   UnoRouter on black; OQURO on the pale grey of its vault-dial preloader. */
 [data-id="mist"] {
   --still: var(--mist);
   --arrive: linear-gradient(transparent calc(100% - 72px), #07050d),
@@ -67,6 +72,17 @@
   --still: var(--asterpay);
   --arrive: #0c0b0e;
   --at: 50% 62%;
+}
+[data-id="vizen"] {
+  --still: var(--vizen);
+  --arrive: #000;
+  --at: 52% 30%;
+}
+/* UnoRouter opens on the black of its boot log (or of its hero, on a repeat visit). */
+[data-id="unorouter"] {
+  --still: var(--unorouter);
+  --arrive: #000;
+  --at: 50% 40%;
 }
 [data-id="oquro"] {
   --still: var(--oquro);
