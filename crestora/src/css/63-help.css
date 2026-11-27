@@ -134,11 +134,11 @@
 /* ---- the answers ---- */
 [data-page="help"] .hc-answers__grid { display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: clamp(40px, 6vw, 112px); align-items: start; }
 [data-page="help"] .hc-nav a { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-[data-page="help"] .hc-nav__n { font: 400 10.5px/1 var(--font-brand); color: var(--ink-faint); letter-spacing: 0.04em; transition: color var(--dur); }
-[data-page="help"] .hc-nav a[aria-current="true"] .hc-nav__n { color: var(--ink-soft); }
+[data-page="help"] .hc-nav__n { font: 400 10.5px/1 var(--font-brand); color: var(--ink-muted); letter-spacing: 0.04em; transition: color var(--dur); }
+[data-page="help"] .hc-nav a[aria-current="true"] .hc-nav__n { color: #fff; }
 [data-page="help"] .hc-nav .hc-nav__stuck { margin-top: 14px; color: var(--ink-soft); border-left-color: transparent; }
-[data-page="help"] .hc-answers__body { display: grid; gap: clamp(72px, 7vw, 112px); max-width: 860px; }
-[data-page="help"] .hc-topic { scroll-margin-top: calc(var(--header-h) + 24px); }
+[data-page="help"] .hc-answers__body { display: grid; gap: clamp(72px, 7vw, 112px); min-width: 0; }
+[data-page="help"] .hc-topic { scroll-margin-top: 8px; }
 [data-page="help"] .hc-topic__head { display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; gap: 8px 20px; align-items: start; margin-bottom: 28px; }
 [data-page="help"] .hc-topic__head .icon-box { margin-top: -6px; }
 [data-page="help"] .hc-topic__title { font: 400 clamp(22px, 2vw, 28px)/1.2 var(--font-brand); color: #fff; letter-spacing: -0.01em; }
@@ -147,7 +147,7 @@
 [data-page="help"] .hc-topic[data-stage] .hc-topic__head .icon-box { box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--stage) 55%, transparent), 0 0 24px -8px var(--stage); }
 
 /* one answer: the kit's accordion, with a white tick in the gutter while it's open */
-[data-page="help"] .hc-a { position: relative; scroll-margin-top: calc(var(--header-h) + 28px); }
+[data-page="help"] .hc-a { position: relative; scroll-margin-top: 8px; }
 [data-page="help"] .hc-a > summary { position: relative; }
 [data-page="help"] .hc-a > summary::before { content: ""; position: absolute; left: -22px; top: 50%; width: 1px; height: 18px; margin-top: -9px; background: #fff; opacity: 0; scale: 1 0.4; transition: opacity var(--dur) var(--ease-out), scale 0.45s var(--ease-out); }
 [data-page="help"] .hc-a[open] > summary::before { opacity: 1; scale: 1 1; }
@@ -157,7 +157,8 @@
 [data-page="help"] .hc-a:not([open]) > summary { color: var(--ink-copy); }
 [data-page="help"] .hc-a > summary:focus-visible { outline-offset: 2px; border-radius: 6px; }
 [data-page="help"] .hc-a__body { display: grid; gap: 14px; font-size: 16px; }
-[data-page="help"] .hc-a__body > :not(.hc-a__foot) { max-width: 66ch; }
+[data-page="help"] .hc-a__body > :is(p:not(.hc-a__foot)) { max-width: 38rem; }
+[data-page="help"] .hc-a__body > :is(.hc-stages, .hc-roles) { max-width: 44rem; }
 [data-page="help"] .hc-a__body strong { color: #fff; font-weight: 600; }
 [data-page="help"] .hc-a__body kbd { margin-inline: 1px; }
 [data-page="help"] .hc-a__body .mono { font-size: 14px; color: #fff; }
@@ -248,3 +249,7 @@
   [data-page="help"] .hc-more .fiction { margin-left: 0; }
   [data-page="help"] .hc-door__stats { gap: 6px 28px; }
 }
+
+/* an in-page link moves focus to its target (core.js gives it tabindex="-1"): the section is not a control, so no ring
+   is drawn round it; the next Tab carries on from there */
+[data-page="help"] [tabindex="-1"]:not(a, button, input, select, textarea, summary, [role]):focus-visible { outline: none; }

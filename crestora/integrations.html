@@ -303,8 +303,8 @@
   </section>
 
   <!-- the directory -->
-  <section class="section ig-dir" id="directory" aria-labelledby="ig-dir-title" data-filter-scope>
-    <div class="container">
+  <section class="section ig-dir" aria-labelledby="ig-dir-title" data-filter-scope>
+    <div class="container ig-land" id="directory">
       <header class="section-head ig-dir__head">
         <div>
           <p class="eyebrow">The directory</p>
@@ -683,11 +683,12 @@
       <div class="ig-empty panel" data-filter-empty hidden>
         <span class="ig-empty__box" aria-hidden="true"><svg class="icon icon--lg"><use href="#i-plug"/></svg></span>
         <div class="ig-empty__text">
-          <p class="ig-empty__title">Nothing <span data-ig-empty-where></span>matches “<span data-ig-empty-q></span>” yet.</p>
-          <p class="body">We’ve put it in the request form below. Tell us what it should send and we’ll take it from there.</p>
+          <p class="ig-empty__title">Nothing <span data-ig-empty-where></span>matches “<span data-ig-empty-q></span>”<span data-ig-empty-yet> yet</span>.</p>
+          <p class="body" data-ig-empty-body>We’ve put it in the request form below. Tell us what it should send and we’ll take it from there.</p>
         </div>
         <div class="btn-row">
-          <a class="btn btn--primary" href="#request" data-roll>Request it</a>
+          <a class="btn btn--primary" href="#request" data-roll data-ig-request>Request it</a>
+          <button class="btn btn--primary" type="button" data-ig-all hidden>Search every lane</button>
           <button class="btn" type="button" data-ig-clear>Clear the search</button>
         </div>
       </div>
@@ -696,8 +697,8 @@
   </section>
 
   <!-- how connecting works: three stops on a lane -->
-  <section class="section ig-how" id="how" aria-labelledby="ig-how-title">
-    <div class="container">
+  <section class="section ig-how" aria-labelledby="ig-how-title">
+    <div class="container ig-land" id="how">
       <header class="section-head">
         <div>
           <p class="eyebrow">How connecting works</p>
@@ -750,8 +751,8 @@
   </section>
 
   <!-- build your own -->
-  <section class="section section--tight ig-build" id="build" aria-labelledby="ig-build-title">
-    <div class="container">
+  <section class="section section--tight ig-build" aria-labelledby="ig-build-title">
+    <div class="container ig-land" id="build">
       <div class="ig-build__band panel panel--raised" data-spotlight>
         <div class="ig-build__copy">
           <p class="eyebrow">Build your own</p>
@@ -767,7 +768,7 @@
 <pre class="ig-code"><code><span class="ig-code__p">{</span>
   <span class="ig-code__k">"source"</span>: <span class="ig-code__s">"your-app"</span>,
   <span class="ig-code__k">"file"</span>: <span class="ig-code__s">"render_v8.mov"</span>,
-  <span class="ig-code__k">"note"</span>: <span class="ig-code__s">"Grade pass two, warmer skies"</span>,
+  <span class="ig-code__k">"note"</span>: <span class="ig-code__s">"Warmer skies"</span>,
   <span class="ig-code__k">"stage"</span>: <span class="ig-code__s">"make"</span>
 <span class="ig-code__p">}</span></code></pre>
           <figcaption class="ig-build__reply"><span class="ig-build__ok" data-stage="make"></span><span class="mono">201 Created</span><span>lands on the Make lane as v8</span></figcaption>
@@ -777,8 +778,8 @@
   </section>
 
   <!-- request an integration -->
-  <section class="section ig-request" id="request" aria-labelledby="ig-request-title">
-    <div class="container ig-request__grid">
+  <section class="section ig-request" aria-labelledby="ig-request-title">
+    <div class="container ig-request__grid ig-land" id="request">
       <div class="ig-request__copy">
         <p class="eyebrow">Request an integration</p>
         <h2 class="title-2" id="ig-request-title" data-split>Missing a&nbsp;tool?</h2>
@@ -979,7 +980,7 @@
         <h3 class="ig-dlg__h" id="app-inkwell-perms">What it asks for</h3>
         <ul class="ig-perms">
           <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Read the documents you link to a lane</li>
-          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Add a “Open in Crestora” link to them</li>
+          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Add an “Open in Crestora” link to them</li>
           <li class="ig-perms__never"><svg class="icon" aria-hidden="true"><use href="#i-lock"/></svg><span><strong>Never:</strong> edit your writing</span></li>
         </ul>
       </section>

@@ -17,11 +17,14 @@ nav: product
         <h1 class="title-1 rm-hero__title" id="rm-title" data-split>Where the road goes next.</h1>
         <p class="lede" data-reveal data-delay="0.15">What we’re building now, next and later, shaped by the people who ride with us. Vote for what matters to you.</p>
       </div>
-      <dl class="rm-stats" data-reveal data-delay="0.25">
-        <div class="rm-stats__row"><dt>Votes on the board</dt><dd><span class="rm-stats__n" data-rm-total>11,436</span></dd></div>
-        <div class="rm-stats__row"><dt>Ideas on the road</dt><dd><span class="rm-stats__n">9</span></dd></div>
-        <div class="rm-stats__row"><dt>Next roadmap review</dt><dd><span class="rm-stats__n rm-stats__n--date">18 Dec</span></dd></div>
-      </dl>
+      <div class="rm-hero__side" data-reveal data-delay="0.25">
+        <dl class="rm-stats">
+          <div class="rm-stats__row"><dt>Votes on the board</dt><dd><span class="rm-stats__n" data-rm-total>11,436</span></dd></div>
+          <div class="rm-stats__row"><dt>Ideas on the road</dt><dd><span class="rm-stats__n">9</span></dd></div>
+          <div class="rm-stats__row"><dt>Next roadmap review</dt><dd><span class="rm-stats__n rm-stats__n--date">18 Dec</span></dd></div>
+        </dl>
+        <p class="fiction">Crestora is a fictional company; figures are illustrative.</p>
+      </div>
     </div>
   </section>
 
@@ -73,12 +76,12 @@ nav: product
           <ol class="rm-list" data-rm-list>
             <li class="rm-item" data-id="android" data-votes="2417" data-added="2026-04-20" data-stages="spark shape make review launch afterglow">
               <article class="rm-card panel rm-card--all" data-spotlight aria-labelledby="rm-c-android">
-                <div class="rm-card__top"><span class="lane-chip rm-chip-all">Every stage</span><span class="rm-card__status">Open beta in December</span></div>
+                <div class="rm-card__top"><span class="lane-chip rm-chip-all">Every stage</span><span class="rm-card__status">Open beta on 4 Dec</span></div>
                 <h4 class="rm-card__title" id="rm-c-android">Android app (beta)</h4>
                 <p class="rm-card__why">Capture on the bus, answer a review in the queue, watch your launch go live. Everything the iOS app does, on the phone most of the world actually carries.</p>
                 <div class="rm-card__foot">
                   <span class="rm-card__added">Added <time datetime="2026-04-20">20 Apr 2026</time></span>
-                  <button class="btn rm-vote" type="button" aria-pressed="false" data-vote><svg class="icon" aria-hidden="true"><use href="#i-vote"/></svg><span class="rm-vote__n" data-vote-n>2,417</span><span class="sr"> votes. Vote for Android app (beta)</span></button>
+                  <button class="btn rm-vote" type="button" aria-pressed="false" data-vote disabled><svg class="icon" aria-hidden="true"><use href="#i-vote"/></svg><span class="rm-vote__n" data-vote-n>2,417</span><span class="sr"> votes. Vote for Android app (beta)</span></button>
                 </div>
               </article>
             </li>
@@ -89,7 +92,7 @@ nav: product
                 <p class="rm-card__why">Pin a note to a point on a model, orbit it together with your reviewer, and compare two versions under the same light. For product designers, game artists and anyone whose work has a back side.</p>
                 <div class="rm-card__foot">
                   <span class="rm-card__added">Added <time datetime="2026-06-12">12 Jun 2026</time></span>
-                  <button class="btn rm-vote" type="button" aria-pressed="false" data-vote><svg class="icon" aria-hidden="true"><use href="#i-vote"/></svg><span class="rm-vote__n" data-vote-n>1,284</span><span class="sr"> votes. Vote for Review Room for 3D files</span></button>
+                  <button class="btn rm-vote" type="button" aria-pressed="false" data-vote disabled><svg class="icon" aria-hidden="true"><use href="#i-vote"/></svg><span class="rm-vote__n" data-vote-n>1,284</span><span class="sr"> votes. Vote for Review Room for 3D files</span></button>
                 </div>
               </article>
             </li>
@@ -100,7 +103,7 @@ nav: product
                 <p class="rm-card__why">One board for the whole crew. Everyone’s sparks land in the same constellations, with who caught what and when, so the best idea in the room doesn’t stay on one person’s phone.</p>
                 <div class="rm-card__foot">
                   <span class="rm-card__added">Added <time datetime="2026-08-03">3 Aug 2026</time></span>
-                  <button class="btn rm-vote" type="button" aria-pressed="false" data-vote><svg class="icon" aria-hidden="true"><use href="#i-vote"/></svg><span class="rm-vote__n" data-vote-n>962</span><span class="sr"> votes. Vote for Shared Sparkboards</span></button>
+                  <button class="btn rm-vote" type="button" aria-pressed="false" data-vote disabled><svg class="icon" aria-hidden="true"><use href="#i-vote"/></svg><span class="rm-vote__n" data-vote-n>962</span><span class="sr"> votes. Vote for Shared Sparkboards</span></button>
                 </div>
               </article>
             </li>
@@ -124,7 +127,7 @@ nav: product
                 <p class="rm-card__why">Small rules that keep work moving while you sleep: when a version is approved, move to Launch; when a launch goes live, start the recap; when a review stalls for two days, nudge.</p>
                 <div class="rm-card__foot">
                   <span class="rm-card__added">Added <time datetime="2026-09-15">15 Sep 2026</time></span>
-                  <button class="btn rm-vote" type="button" aria-pressed="false" data-vote><svg class="icon" aria-hidden="true"><use href="#i-vote"/></svg><span class="rm-vote__n" data-vote-n>1,876</span><span class="sr"> votes. Vote for Lane automations</span></button>
+                  <button class="btn rm-vote" type="button" aria-pressed="false" data-vote disabled><svg class="icon" aria-hidden="true"><use href="#i-vote"/></svg><span class="rm-vote__n" data-vote-n>1,876</span><span class="sr"> votes. Vote for Lane automations</span></button>
                 </div>
               </article>
             </li>
@@ -135,7 +138,7 @@ nav: product
                 <p class="rm-card__why">Put a number next to the plan. Track spend against each milestone, so the money and the deadline ride in the same lane and nobody finds out at the end.</p>
                 <div class="rm-card__foot">
                   <span class="rm-card__added">Added <time datetime="2026-07-08">8 Jul 2026</time></span>
-                  <button class="btn rm-vote" type="button" aria-pressed="false" data-vote><svg class="icon" aria-hidden="true"><use href="#i-vote"/></svg><span class="rm-vote__n" data-vote-n>1,105</span><span class="sr"> votes. Vote for Budgets in Blueprints</span></button>
+                  <button class="btn rm-vote" type="button" aria-pressed="false" data-vote disabled><svg class="icon" aria-hidden="true"><use href="#i-vote"/></svg><span class="rm-vote__n" data-vote-n>1,105</span><span class="sr"> votes. Vote for Budgets in Blueprints</span></button>
                 </div>
               </article>
             </li>
@@ -146,7 +149,7 @@ nav: product
                 <p class="rm-card__why">Write your launch page once and publish it in twelve languages, with every translation reviewable line by line in Review Room before it goes live.</p>
                 <div class="rm-card__foot">
                   <span class="rm-card__added">Added <time datetime="2026-10-21">21 Oct 2026</time></span>
-                  <button class="btn rm-vote" type="button" aria-pressed="false" data-vote><svg class="icon" aria-hidden="true"><use href="#i-vote"/></svg><span class="rm-vote__n" data-vote-n>734</span><span class="sr"> votes. Vote for Share Pages in 12 languages</span></button>
+                  <button class="btn rm-vote" type="button" aria-pressed="false" data-vote disabled><svg class="icon" aria-hidden="true"><use href="#i-vote"/></svg><span class="rm-vote__n" data-vote-n>734</span><span class="sr"> votes. Vote for Share Pages in 12 languages</span></button>
                 </div>
               </article>
             </li>
@@ -170,7 +173,7 @@ nav: product
                 <p class="rm-card__why">Keep your files in your own storage, in the EU or the US, while Crestora handles the versions, notes and approvals on top. For studios with rules about where work lives.</p>
                 <div class="rm-card__foot">
                   <span class="rm-card__added">Added <time datetime="2026-05-27">27 May 2026</time></span>
-                  <button class="btn rm-vote" type="button" aria-pressed="false" data-vote><svg class="icon" aria-hidden="true"><use href="#i-vote"/></svg><span class="rm-vote__n" data-vote-n>1,392</span><span class="sr"> votes. Vote for Bring-your-own storage</span></button>
+                  <button class="btn rm-vote" type="button" aria-pressed="false" data-vote disabled><svg class="icon" aria-hidden="true"><use href="#i-vote"/></svg><span class="rm-vote__n" data-vote-n>1,392</span><span class="sr"> votes. Vote for Bring-your-own storage</span></button>
                 </div>
               </article>
             </li>
@@ -181,7 +184,7 @@ nav: product
                 <p class="rm-card__why">Keep working at 30,000 feet. Versions and notes queue up on your laptop and sync when you land, the way Sparkboard already does on iOS.</p>
                 <div class="rm-card__foot">
                   <span class="rm-card__added">Added <time datetime="2026-09-30">30 Sep 2026</time></span>
-                  <button class="btn rm-vote" type="button" aria-pressed="false" data-vote><svg class="icon" aria-hidden="true"><use href="#i-vote"/></svg><span class="rm-vote__n" data-vote-n>1,018</span><span class="sr"> votes. Vote for Desktop offline mode</span></button>
+                  <button class="btn rm-vote" type="button" aria-pressed="false" data-vote disabled><svg class="icon" aria-hidden="true"><use href="#i-vote"/></svg><span class="rm-vote__n" data-vote-n>1,018</span><span class="sr"> votes. Vote for Desktop offline mode</span></button>
                 </div>
               </article>
             </li>
@@ -192,7 +195,7 @@ nav: product
                 <p class="rm-card__why">Teachers set briefs as Blueprints, every student rides their own lane, and crits happen in Review Room. Built with the three art schools already using Crestora this way.</p>
                 <div class="rm-card__foot">
                   <span class="rm-card__added">Added <time datetime="2026-11-12">12 Nov 2026</time></span>
-                  <button class="btn rm-vote" type="button" aria-pressed="false" data-vote><svg class="icon" aria-hidden="true"><use href="#i-vote"/></svg><span class="rm-vote__n" data-vote-n>648</span><span class="sr"> votes. Vote for Crestora for classrooms</span></button>
+                  <button class="btn rm-vote" type="button" aria-pressed="false" data-vote disabled><svg class="icon" aria-hidden="true"><use href="#i-vote"/></svg><span class="rm-vote__n" data-vote-n>648</span><span class="sr"> votes. Vote for Crestora for classrooms</span></button>
                 </div>
               </article>
             </li>

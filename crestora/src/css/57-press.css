@@ -261,11 +261,21 @@
 /* ---- smaller screens ---- */
 @media (max-width: 1200px) {
   [data-page="press"] .pr-screens__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  [data-page="press"] .pr-shot:last-child { grid-column: 1 / -1; max-width: calc(50% - 8px); }
+  [data-page="press"] .pr-shot:last-child { grid-column: 1 / -1; }
   [data-page="press"] .pr-mock { min-height: 0; }
   [data-page="press"] .pr-facts__list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   [data-page="press"] .pr-tester__controls { grid-template-columns: minmax(0, 1fr) minmax(200px, 0.6fr); }
   [data-page="press"] .pr-tester__presets { grid-column: 1 / -1; }
+}
+/* two screens side by side, the third across the full width below them: its numbers and channels beside the curve */
+@media (min-width: 641px) and (max-width: 1200px) {
+  [data-page="press"] .pr-shot:last-child .pr-glow { grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); grid-template-areas: "stats spark" "ch spark"; gap: 22px clamp(24px, 3.4vw, 40px); }
+  [data-page="press"] .pr-shot:last-child .pr-glow__stats { grid-area: stats; }
+  [data-page="press"] .pr-shot:last-child .pr-glow__ch { grid-area: ch; align-self: end; }
+  [data-page="press"] .pr-shot:last-child .pr-glow__spark { grid-area: spark; height: 100%; min-height: 150px; }
+  /* the jump links in two even rows (five and four) instead of a row with one left over */
+  [data-page="press"] .pr-jump { display: grid; grid-template-columns: repeat(5, max-content); }
+  [data-page="press"] .pr-jump a:nth-child(5n + 1) { padding-left: 0; }
 }
 @media (max-width: 1024px) {
   [data-page="press"] .pr-band { grid-template-columns: repeat(6, minmax(0, 1fr)); }
@@ -320,7 +330,7 @@
   [data-page="press"] .pr-swatch__light i { width: 40px; height: 40px; }
   [data-page="press"] .pr-swatch__body { padding: 14px 14px 16px; }
   [data-page="press"] .pr-swatch__name { font-size: 15px; }
-  [data-page="press"] .pr-swatch__codes { font-size: 11.5px; }
+  [data-page="press"] .pr-swatch__codes { flex-direction: column; gap: 3px; font-size: 11.5px; }
   [data-page="press"] .pr-tester__controls { grid-template-columns: 1fr; }
   [data-page="press"] .pr-donts { grid-template-columns: 1fr; }
   [data-page="press"] .pr-dont__mark { width: 84px; height: 84px; }

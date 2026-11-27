@@ -78,19 +78,20 @@
 @keyframes ramp-arrive { from { opacity: 0; translate: -18px -50%; } }
 
 /* ---- the caption: what the lit ramp carries ---- */
-.onramps .ramp__caption { position: absolute; left: var(--xs); right: 0; top: 368px; display: flex; flex-wrap: wrap; align-items: baseline; column-gap: 10px; row-gap: 4px; font-size: 17px; line-height: 1.45; color: var(--ink-soft); }
+.onramps .ramp__caption { position: absolute; left: var(--xs); right: 0; top: 368px; display: flex; flex-wrap: wrap; align-items: baseline; column-gap: 10px; row-gap: 6px; font-size: 17px; line-height: 1.45; color: var(--ink-soft); }
 .onramps .ramp__caption-app { font-weight: 600; color: #fff; }
 .onramps .ramp__caption-to { color: var(--ink-muted); }
 .onramps .ramp__caption-lane { color: #fff; font-weight: 500; }
 .onramps .ramp__caption-lane::before { content: ""; display: inline-block; width: 7px; height: 7px; margin-right: 9px; vertical-align: middle; border-radius: 50%; background: var(--stage); box-shadow: 0 0 8px var(--stage); translate: 0 -2px; }
-.onramps .ramp__caption-says { margin-left: -6px; }
+/* what it brings, on its own line under the route (so a narrow strip never breaks the sentence mid-way) */
+.onramps .ramp__caption-says { flex-basis: 100%; font-size: 15.5px; color: var(--ink-soft); text-wrap: pretty; }
 
 /* ================= under 1100 px: a grid of apps, each with its lane written under it ================= */
 @media (max-width: 1099.98px) {
   .onramps .ramp { height: auto; }
   .onramps .ramp__roads, .onramps .ramp__key, .onramps .ramp__into, .onramps .ramp__arrival, .onramps .ramp__caption { display: none; }
   .onramps .ramp__apps { position: static; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 36px 12px; padding-top: 4px; border-top: 1px solid var(--line-soft); }
-  .onramps .ramp__stop { position: relative; left: auto; top: auto; padding-top: 32px; }
+  .onramps .ramp__stop { position: relative; left: auto; top: auto; min-width: 0; padding-top: 32px; }
   /* each app's ramp, reduced to a short stub of its stage colour above it */
   .onramps .ramp__stop::before { content: ""; position: absolute; left: 50%; top: -4px; width: 1px; height: 26px; background: linear-gradient(var(--stage), transparent); opacity: 0.8; }
   .onramps .ramp__app { flex-direction: column; gap: 14px; width: auto; text-align: center; }
@@ -106,6 +107,10 @@
   .onramps .ramp__app:is(:hover, :focus-visible) .ramp__box::before { opacity: 1; }
 }
 @media (max-width: 899.98px) { .onramps .ramp__apps { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
-@media (max-width: 559.98px) { .onramps .ramp__apps { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px 8px; } .onramps .ramp__kind { font-size: 12px; } }
+@media (max-width: 559.98px) {
+  .onramps .ramp__apps { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px 8px; }
+  .onramps .ramp__kind { font-size: 12px; }
+  .onramps .ramp__name { font-size: 14.5px; }
+}
 
 .is-calm .onramps .ramp__box::before { animation: none; }

@@ -273,7 +273,7 @@ print(res.json())</code></pre>
       "object": "lane",
       "title": "Tidepool 1.1",
       "stage": "review",
-      "launch_on": "2026-12-10"
+      "launch_on": "2026-12-04"
     }
   ],
   "has_more": true,
@@ -340,7 +340,7 @@ print(res.json())</code></pre>
               <li class="api-nav__item"><a class="api-nav__link" href="#webhooks">Webhooks</a>
                 <ul class="api-nav__eps">
                   <li><a href="#webhook-events"><span class="api-nav__m api-nav__m--none" aria-hidden="true"></span><span class="api-nav__t">Events</span></a></li>
-                  <li><a href="#webhook-signatures"><span class="api-nav__m api-nav__m--none" aria-hidden="true"></span><span class="api-nav__t">Verifying signatures</span></a></li>
+                  <li><a href="#webhook-signatures"><span class="api-nav__m api-nav__m--none" aria-hidden="true"></span><span class="api-nav__t">Signatures</span></a></li>
                 </ul></li>
             </ul>
           </div>
@@ -359,7 +359,7 @@ print(res.json())</code></pre>
           <p class="api-lead">Everything goes over HTTPS to one base URL, and everything comes back as JSON. A few habits hold across the whole API:</p>
           <ul class="api-list">
             <li><strong>JSON both ways.</strong> Send <code>Content-Type: application/json</code> with a body; responses are UTF-8 JSON.</li>
-            <li><strong>Times in UTC.</strong> Timestamps are ISO 8601, like <code>2026-12-10T17:00:00Z</code>; plain dates are <code>YYYY-MM-DD</code>.</li>
+            <li><strong>Times in UTC.</strong> Timestamps are ISO 8601, like <code>2026-12-04T08:00:00Z</code>; plain dates are <code>YYYY-MM-DD</code>.</li>
             <li><strong>IDs say what they are.</strong> <code>ln_</code> a lane, <code>sp_</code> a spark, <code>vr_</code> a version, <code>cm_</code> a comment, <code>lc_</code> a launch, <code>ev_</code> an event.</li>
             <li><strong>Retries are safe.</strong> Send an <code>Idempotency-Key</code> header with a POST, and a repeat within 24 hours returns the first response instead of a duplicate.</li>
             <li><strong>v2 is stable.</strong> Breaking changes only arrive in a new version, with 12 months of overlap. New fields can appear any time, so ignore the ones you don’t know.</li>
@@ -378,7 +378,7 @@ crestora-version: 2026-11-20
 request-id: req_8Kd2PqT4
 x-ratelimit-limit: 600
 x-ratelimit-remaining: 597
-x-ratelimit-reset: 1795789320</code></pre>
+x-ratelimit-reset: 1795773960</code></pre>
     </div>
         </div>
       </div>
@@ -394,7 +394,7 @@ x-ratelimit-reset: 1795789320</code></pre>
           <p class="api-lead">Every request carries a token in the <code>Authorization</code> header. Create tokens under Settings → API: personal tokens act as you, and app tokens act as an integration installed on a crew.</p>
           <p>Live tokens start with <code>crst_live_</code>. Tokens from the sandbox start with <code>crst_test_</code> and only ever touch sample data. Keep tokens out of code you share; if one leaks, revoke it in Settings → API and it stops working within a minute.</p>
           <p>Each token carries scopes. A request without the scope it needs gets <code>403 insufficient_scope</code>, and the message names the missing scope.</p>
-          <h4 class="api-h4">Scopes</h4>
+          <h3 class="api-h4">Scopes</h3>
           <div class="api-table" role="region" aria-label="Scopes for Authentication" tabindex="0">
             <table class="api-params api-params--2 " role="table">
               <thead role="rowgroup"><tr role="row"><th scope="col" role="columnheader">Scope</th><th scope="col" role="columnheader">Grants</th></tr></thead>
@@ -460,9 +460,9 @@ lanes = api.get(f"{BASE}/lanes").json()["data"]</code></pre>
       </div>
       <div class="api-code__res" data-copy-scope>
         <div class="api-code__resbar">
-          <span class="api-code__reslabel">Without a token</span>
+          <span class="api-code__reslabel">No token</span>
           <span class="api-status"><b>401</b> Unauthorized</span>
-          <button class="api-copy" type="button" data-copy data-copy-toast="Response copied" aria-label="Copy the without a token"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg></button>
+          <button class="api-copy" type="button" data-copy data-copy-toast="Response copied" aria-label="Copy the 401 response"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg></button>
         </div>
         <pre tabindex="0" data-lenis-prevent><code data-lang="json" data-copy-source>{
   "error": {
@@ -486,7 +486,7 @@ lanes = api.get(f"{BASE}/lanes").json()["data"]</code></pre>
           <h2 class="api-h2" id="rate-limits-title">Rate limits</h2>
           <p class="api-lead">Each token can make 600 requests per minute, counted over a sliding window. Every response says where you stand.</p>
           <p>Go over and you get <code>429 rate_limited</code> with a <code>Retry-After</code> header in seconds. Wait that long, then carry on; there’s no penalty for hitting the limit.</p>
-          <h4 class="api-h4">Headers</h4>
+          <h3 class="api-h4">Headers</h3>
           <div class="api-table" role="region" aria-label="Headers for Rate limits" tabindex="0">
             <table class="api-params" role="table">
               <thead role="rowgroup"><tr role="row"><th scope="col" role="columnheader">Name</th><th scope="col" role="columnheader">Type</th><th scope="col" role="columnheader">Description</th></tr></thead>
@@ -548,7 +548,7 @@ def get_with_retry(path):
         <pre tabindex="0" data-lenis-prevent><code data-lang="http" data-copy-source>HTTP/2 429
 x-ratelimit-limit: 600
 x-ratelimit-remaining: 0
-x-ratelimit-reset: 1795789320
+x-ratelimit-reset: 1795773960
 retry-after: 12
 
 {
@@ -618,7 +618,7 @@ retry-after: 12
           <h2 class="api-h2" id="pagination-title">Pagination</h2>
           <p class="api-lead">List endpoints return pages of up to 100 objects, newest first, with a cursor for the next page.</p>
           <p>Pass the <code>next_cursor</code> back as <code>cursor</code> until <code>has_more</code> is false. Cursors stay valid for 24 hours.</p>
-          <h4 class="api-h4">Query parameters</h4>
+          <h3 class="api-h4">Query parameters</h3>
           <div class="api-table" role="region" aria-label="Query parameters for Pagination" tabindex="0">
             <table class="api-params" role="table">
               <thead role="rowgroup"><tr role="row"><th scope="col" role="columnheader">Name</th><th scope="col" role="columnheader">Type</th><th scope="col" role="columnheader">Description</th></tr></thead>
@@ -699,7 +699,7 @@ while True:
           <p class="api-kicker"><span class="api-kicker__mark" aria-hidden="true"></span>Resource</p>
           <h2 class="api-h2" id="lanes-title">Lanes</h2>
           <p class="api-lead">A lane is one project moving through six stages: <span class="api-stages"><code data-stage="spark">spark</code> <code data-stage="shape">shape</code> <code data-stage="make">make</code> <code data-stage="review">review</code> <code data-stage="launch">launch</code> <code data-stage="afterglow">afterglow</code></span>. Lanes belong to you or to a crew, and carry their stage, their dates and a count of what’s on them.</p>
-          <h4 class="api-h4">The lane object</h4>
+          <h3 class="api-h4">The lane object</h3>
           <div class="api-table" role="region" aria-label="The lane object for Lanes" tabindex="0">
             <table class="api-params" role="table">
               <thead role="rowgroup"><tr role="row"><th scope="col" role="columnheader">Name</th><th scope="col" role="columnheader">Type</th><th scope="col" role="columnheader">Description</th></tr></thead>
@@ -728,7 +728,7 @@ while True:
   "title": "Tidepool 1.1",
   "stage": "review",
   "crew_id": "cr_4hW9",
-  "launch_on": "2026-12-10",
+  "launch_on": "2026-12-04",
   "counts": { "versions": 12, "open_notes": 3, "sparks": 17 },
   "created_at": "2026-11-02T09:41:03Z",
   "url": "https://app.crestora.example/l/ln_8Fq2Tz"
@@ -799,7 +799,7 @@ while True:
       "id": "ln_8Fq2Tz",
       "title": "Tidepool 1.1",
       "stage": "review",
-      "launch_on": "2026-12-10"
+      "launch_on": "2026-12-04"
     },
     {
       "id": "ln_3Kd7Wp",
@@ -855,7 +855,7 @@ while True:
     "title": "Tidepool 1.1",
     "stage": "shape",
     "blueprint_template": "app-release",
-    "launch_on": "2026-12-10"
+    "launch_on": "2026-12-04"
   }'</code></pre>
         </div>
         <div class="api-code__panel" role="tabpanel" id="create-lane-p-js" aria-labelledby="create-lane-t-js" data-lang-label="JavaScript" data-copy-scope hidden>
@@ -866,7 +866,7 @@ while True:
     title: "Tidepool 1.1",
     stage: "shape",
     blueprint_template: "app-release",
-    launch_on: "2026-12-10",
+    launch_on: "2026-12-04",
   },
 });</code></pre>
         </div>
@@ -876,7 +876,7 @@ while True:
     "title": "Tidepool 1.1",
     "stage": "shape",
     "blueprint_template": "app-release",
-    "launch_on": "2026-12-10",
+    "launch_on": "2026-12-04",
 }).json()</code></pre>
         </div>
       </div>
@@ -892,7 +892,7 @@ while True:
   "title": "Tidepool 1.1",
   "stage": "shape",
   "crew_id": null,
-  "launch_on": "2026-12-10",
+  "launch_on": "2026-12-04",
   "counts": { "versions": 0, "open_notes": 0, "sparks": 0 },
   "created_at": "2026-11-02T09:41:03Z"
 }</code></pre>
@@ -931,7 +931,7 @@ while True:
           <div class="api-code">
       <div class="api-code__bar">
         <p class="api-code__title"><span class="api-method" data-method="get">GET</span><span class="api-code__path">/lanes/<span class="api-route__param">{id}</span></span></p>
-        <div class="segmented api-langs" role="tablist" aria-label="Language for GET /lanes/ {id}" data-tabs-sync="api-lang" data-tabs-store="api-lang">
+        <div class="segmented api-langs" role="tablist" aria-label="Language for GET /lanes/{id}" data-tabs-sync="api-lang" data-tabs-store="api-lang">
           <span class="segmented__thumb" aria-hidden="true"></span><button type="button" role="tab" id="get-lane-t-curl" aria-controls="get-lane-p-curl" aria-selected="true" tabindex="0" data-value="curl">curl</button><button type="button" role="tab" id="get-lane-t-js" aria-controls="get-lane-p-js" aria-selected="false" tabindex="-1" data-value="js">JavaScript</button><button type="button" role="tab" id="get-lane-t-py" aria-controls="get-lane-p-py" aria-selected="false" tabindex="-1" data-value="py">Python</button>
         </div>
       </div>
@@ -965,10 +965,9 @@ while True:
   "object": "lane",
   "title": "Tidepool 1.1",
   "stage": "review",
-  "launch_on": "2026-12-10",
+  "launch_on": "2026-12-04",
   "stages": {
-    "spark": "2026-11-02",
-    "shape": "2026-11-04",
+    "shape": "2026-11-02",
     "make": "2026-11-09",
     "review": "2026-11-26"
   },
@@ -1013,7 +1012,7 @@ while True:
           <div class="api-code">
       <div class="api-code__bar">
         <p class="api-code__title"><span class="api-method" data-method="patch">PATCH</span><span class="api-code__path">/lanes/<span class="api-route__param">{id}</span></span></p>
-        <div class="segmented api-langs" role="tablist" aria-label="Language for PATCH /lanes/ {id}" data-tabs-sync="api-lang" data-tabs-store="api-lang">
+        <div class="segmented api-langs" role="tablist" aria-label="Language for PATCH /lanes/{id}" data-tabs-sync="api-lang" data-tabs-store="api-lang">
           <span class="segmented__thumb" aria-hidden="true"></span><button type="button" role="tab" id="update-lane-t-curl" aria-controls="update-lane-p-curl" aria-selected="true" tabindex="0" data-value="curl">curl</button><button type="button" role="tab" id="update-lane-t-js" aria-controls="update-lane-p-js" aria-selected="false" tabindex="-1" data-value="js">JavaScript</button><button type="button" role="tab" id="update-lane-t-py" aria-controls="update-lane-p-py" aria-selected="false" tabindex="-1" data-value="py">Python</button>
         </div>
       </div>
@@ -1055,7 +1054,7 @@ while True:
   "previous_stage": "review",
   "moved_by": "usr_4Lm2",
   "moved_at": "2026-11-27T10:02:44Z",
-  "launch_on": "2026-12-10"
+  "launch_on": "2026-12-04"
 }</code></pre>
       </div>
     </div>
@@ -1083,7 +1082,7 @@ while True:
           <div class="api-code">
       <div class="api-code__bar">
         <p class="api-code__title"><span class="api-method" data-method="delete">DELETE</span><span class="api-code__path">/lanes/<span class="api-route__param">{id}</span></span></p>
-        <div class="segmented api-langs" role="tablist" aria-label="Language for DELETE /lanes/ {id}" data-tabs-sync="api-lang" data-tabs-store="api-lang">
+        <div class="segmented api-langs" role="tablist" aria-label="Language for DELETE /lanes/{id}" data-tabs-sync="api-lang" data-tabs-store="api-lang">
           <span class="segmented__thumb" aria-hidden="true"></span><button type="button" role="tab" id="delete-lane-t-curl" aria-controls="delete-lane-p-curl" aria-selected="true" tabindex="0" data-value="curl">curl</button><button type="button" role="tab" id="delete-lane-t-js" aria-controls="delete-lane-p-js" aria-selected="false" tabindex="-1" data-value="js">JavaScript</button><button type="button" role="tab" id="delete-lane-t-py" aria-controls="delete-lane-p-py" aria-selected="false" tabindex="-1" data-value="py">Python</button>
         </div>
       </div>
@@ -1262,7 +1261,7 @@ while True:
           <div class="api-code">
       <div class="api-code__bar">
         <p class="api-code__title"><span class="api-method" data-method="post">POST</span><span class="api-code__path">/lanes/<span class="api-route__param">{id}</span>/versions</span></p>
-        <div class="segmented api-langs" role="tablist" aria-label="Language for POST /lanes/ {id} /versions" data-tabs-sync="api-lang" data-tabs-store="api-lang">
+        <div class="segmented api-langs" role="tablist" aria-label="Language for POST /lanes/{id}/versions" data-tabs-sync="api-lang" data-tabs-store="api-lang">
           <span class="segmented__thumb" aria-hidden="true"></span><button type="button" role="tab" id="create-version-t-curl" aria-controls="create-version-p-curl" aria-selected="true" tabindex="0" data-value="curl">curl</button><button type="button" role="tab" id="create-version-t-js" aria-controls="create-version-p-js" aria-selected="false" tabindex="-1" data-value="js">JavaScript</button><button type="button" role="tab" id="create-version-t-py" aria-controls="create-version-p-py" aria-selected="false" tabindex="-1" data-value="py">Python</button>
         </div>
       </div>
@@ -1323,7 +1322,7 @@ while True:
   "label": "build 215",
   "status": "processing",
   "review": "requested",
-  "created_at": "2026-11-27T10:12:30Z"
+  "created_at": "2026-11-26T09:12:30Z"
 }</code></pre>
       </div>
     </div>
@@ -1338,7 +1337,7 @@ while True:
           <p class="api-kicker"><span class="api-kicker__mark" aria-hidden="true"></span>Resource</p>
           <h2 class="api-h2" id="comments-title">Comments</h2>
           <p class="api-lead">Comments are the notes left in Review Room: on a frame, a pixel, a moment of audio or a line of code. Each carries an <code>anchor</code> that says where it points.</p>
-          <h4 class="api-h4">Anchor types</h4>
+          <h3 class="api-h4">Anchor types</h3>
           <div class="api-table" role="region" aria-label="Anchor types for Comments" tabindex="0">
             <table class="api-params" role="table">
               <thead role="rowgroup"><tr role="row"><th scope="col" role="columnheader">Name</th><th scope="col" role="columnheader">Type</th><th scope="col" role="columnheader">Description</th></tr></thead>
@@ -1385,7 +1384,7 @@ while True:
           <div class="api-code">
       <div class="api-code__bar">
         <p class="api-code__title"><span class="api-method" data-method="get">GET</span><span class="api-code__path">/versions/<span class="api-route__param">{id}</span>/comments</span></p>
-        <div class="segmented api-langs" role="tablist" aria-label="Language for GET /versions/ {id} /comments" data-tabs-sync="api-lang" data-tabs-store="api-lang">
+        <div class="segmented api-langs" role="tablist" aria-label="Language for GET /versions/{id}/comments" data-tabs-sync="api-lang" data-tabs-store="api-lang">
           <span class="segmented__thumb" aria-hidden="true"></span><button type="button" role="tab" id="list-comments-t-curl" aria-controls="list-comments-p-curl" aria-selected="true" tabindex="0" data-value="curl">curl</button><button type="button" role="tab" id="list-comments-t-js" aria-controls="list-comments-p-js" aria-selected="false" tabindex="-1" data-value="js">JavaScript</button><button type="button" role="tab" id="list-comments-t-py" aria-controls="list-comments-p-py" aria-selected="false" tabindex="-1" data-value="py">Python</button>
         </div>
       </div>
@@ -1468,7 +1467,7 @@ while True:
           <div class="api-code">
       <div class="api-code__bar">
         <p class="api-code__title"><span class="api-method" data-method="post">POST</span><span class="api-code__path">/versions/<span class="api-route__param">{id}</span>/comments</span></p>
-        <div class="segmented api-langs" role="tablist" aria-label="Language for POST /versions/ {id} /comments" data-tabs-sync="api-lang" data-tabs-store="api-lang">
+        <div class="segmented api-langs" role="tablist" aria-label="Language for POST /versions/{id}/comments" data-tabs-sync="api-lang" data-tabs-store="api-lang">
           <span class="segmented__thumb" aria-hidden="true"></span><button type="button" role="tab" id="create-comment-t-curl" aria-controls="create-comment-p-curl" aria-selected="true" tabindex="0" data-value="curl">curl</button><button type="button" role="tab" id="create-comment-t-js" aria-controls="create-comment-p-js" aria-selected="false" tabindex="-1" data-value="js">JavaScript</button><button type="button" role="tab" id="create-comment-t-py" aria-controls="create-comment-p-py" aria-selected="false" tabindex="-1" data-value="py">Python</button>
         </div>
       </div>
@@ -1519,7 +1518,7 @@ while True:
   "body": "Swell arrow reads backwards here.",
   "anchor": { "type": "pixel", "x": 0.61, "y": 0.47 },
   "status": "open",
-  "created_at": "2026-11-27T10:20:41Z"
+  "created_at": "2026-11-26T15:20:41Z"
 }</code></pre>
       </div>
     </div>
@@ -1571,7 +1570,7 @@ while True:
           <div class="api-code">
       <div class="api-code__bar">
         <p class="api-code__title"><span class="api-method" data-method="post">POST</span><span class="api-code__path">/lanes/<span class="api-route__param">{id}</span>/launches</span></p>
-        <div class="segmented api-langs" role="tablist" aria-label="Language for POST /lanes/ {id} /launches" data-tabs-sync="api-lang" data-tabs-store="api-lang">
+        <div class="segmented api-langs" role="tablist" aria-label="Language for POST /lanes/{id}/launches" data-tabs-sync="api-lang" data-tabs-store="api-lang">
           <span class="segmented__thumb" aria-hidden="true"></span><button type="button" role="tab" id="create-launch-t-curl" aria-controls="create-launch-p-curl" aria-selected="true" tabindex="0" data-value="curl">curl</button><button type="button" role="tab" id="create-launch-t-js" aria-controls="create-launch-p-js" aria-selected="false" tabindex="-1" data-value="js">JavaScript</button><button type="button" role="tab" id="create-launch-t-py" aria-controls="create-launch-p-py" aria-selected="false" tabindex="-1" data-value="py">Python</button>
         </div>
       </div>
@@ -1583,7 +1582,7 @@ while True:
   -H "Authorization: Bearer $CRESTORA_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
-    "go_live_at": "2026-12-10T17:00:00Z",
+    "go_live_at": "2026-12-04T08:00:00Z",
     "channels": [
       { "id": "ch_sharepage" },
       { "id": "ch_postbox", "offset_minutes": 15 },
@@ -1597,7 +1596,7 @@ while True:
           <pre tabindex="0" data-lenis-prevent><code data-lang="js" data-copy-source>const launch = await api("/lanes/ln_8Fq2Tz/launches", {
   method: "POST",
   body: {
-    go_live_at: "2026-12-10T17:00:00Z",
+    go_live_at: "2026-12-04T08:00:00Z",
     channels: [
       { id: "ch_sharepage" },
       { id: "ch_postbox", offset_minutes: 15 },
@@ -1612,7 +1611,7 @@ while True:
           <pre tabindex="0" data-lenis-prevent><code data-lang="py" data-copy-source>launch = api.post(
     f"{BASE}/lanes/ln_8Fq2Tz/launches",
     json={
-        "go_live_at": "2026-12-10T17:00:00Z",
+        "go_live_at": "2026-12-04T08:00:00Z",
         "channels": [
             {"id": "ch_sharepage"},
             {"id": "ch_postbox", "offset_minutes": 15},
@@ -1634,8 +1633,8 @@ while True:
   "object": "launch",
   "lane_id": "ln_8Fq2Tz",
   "status": "scheduled",
-  "go_live_at": "2026-12-10T17:00:00Z",
-  "room_opens_at": "2026-12-10T16:00:00Z",
+  "go_live_at": "2026-12-04T08:00:00Z",
+  "room_opens_at": "2026-12-04T07:00:00Z",
   "channels": 3,
   "checklist": { "items": 11, "done": 7 }
 }</code></pre>
@@ -1683,12 +1682,12 @@ while True:
       </div>
       <pre tabindex="0" data-lenis-prevent><code data-lang="http" data-copy-source>POST /hooks/crestora HTTP/1.1
 content-type: application/json
-crestora-signature: t=1795789560,v1=5f0c9e2b7d41a8c3
+crestora-signature: t=1795773765,v1=5f0c9e2b7d41a8c3
 
 {
   "id": "ev_2Gs7Qa",
   "type": "lane.stage_changed",
-  "created_at": "2026-11-27T10:26:00Z",
+  "created_at": "2026-11-27T10:02:44Z",
   "data": {
     "lane_id": "ln_8Fq2Tz",
     "from": "review",

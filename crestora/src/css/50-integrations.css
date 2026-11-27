@@ -16,7 +16,10 @@
 [data-page="integrations"] .ig-hero__facts { display: grid; border-top: 1px solid var(--line-soft); }
 [data-page="integrations"] .ig-fact { display: grid; gap: 6px; padding: 20px 0 22px; border-bottom: 1px solid var(--line-faint); }
 [data-page="integrations"] .ig-fact__n { display: inline-flex; align-items: baseline; font: 400 clamp(30px, 2.6vw, 40px)/1.15 var(--font-brand); letter-spacing: -0.02em; color: #fff; white-space: nowrap; }
-[data-page="integrations"] .ig-fact__n small { margin-left: 0.18em; font-size: 0.45em; color: var(--ink-soft); letter-spacing: 0; }
+/* the unit sits on the digits' baseline (an odometer's own baseline is the foot of its clipped cells) */
+[data-page="integrations"] .ig-fact__n:has(.odo) { align-items: flex-end; }
+[data-page="integrations"] .ig-fact__n small { margin-left: 0.18em; font-size: 0.45em; line-height: 1; color: var(--ink-soft); letter-spacing: 0; }
+[data-page="integrations"] .ig-fact__n:has(.odo) small { margin-bottom: 0.36em; }
 [data-page="integrations"] .ig-fact .odo__d, [data-page="integrations"] .ig-fact .odo__s { flex: none; }
 [data-page="integrations"] .ig-fact .odo { letter-spacing: 0; }
 [data-page="integrations"] .ig-fact .odo__d { width: 0.9em; }
@@ -42,6 +45,13 @@
 [data-page="integrations"] .ig-box--lit { background: #07080c; box-shadow: inset 0 0 0 1px var(--box), 0 0 26px -8px var(--stage); }
 [data-page="integrations"] .ig-box--sm { width: 36px; height: 36px; border-radius: 8px; }
 
+/* the kit's rolling label rises into a white copy of itself; on a white primary button that copy is invisible, so
+   here it takes the button's own ink */
+[data-page="integrations"] .btn--primary > .roll > span { text-shadow: 0 1.5em 0 currentColor; }
+/* in-page links land on a section's content (its container carries the #id; the page's scroll-padding keeps it clear
+   of the header), and the focus they hand over draws no frame around a whole section */
+[data-page="integrations"] .ig-land:focus { outline: none; }
+
 /* ================= section heads ================= */
 [data-page="integrations"] .ig-nw { white-space: nowrap; }
 [data-page="integrations"] .ig-head { display: grid; gap: 22px; justify-items: start; margin-bottom: clamp(40px, 4.4vw, 64px); }
@@ -63,7 +73,7 @@
 [data-page="integrations"] .ig-ramp__road { stroke: var(--stage); stroke-width: 1.4; filter: drop-shadow(0 0 3px var(--stage)); }
 [data-page="integrations"] .ig-ramp__dash { stroke: #fff; stroke-width: 1.8; stroke-dasharray: 9 100; stroke-dashoffset: 9; opacity: 0; filter: drop-shadow(0 0 4px rgb(255 255 255 / 0.8)); }
 [data-page="integrations"] .ig-ramp .ig-box { position: absolute; left: 11.5%; top: 50%; translate: -50% -50%; }
-[data-page="integrations"] .ig-ramp__into { position: absolute; left: 55%; top: 5%; display: flex; align-items: center; gap: 8px; font: 400 9px/1 var(--font-brand); letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-muted); }
+[data-page="integrations"] .ig-ramp__into { position: absolute; left: 55%; top: 7.5%; display: flex; align-items: center; gap: 8px; font: 400 9px/1 var(--font-brand); letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-muted); }
 [data-page="integrations"] .ig-ramp__tag {
   position: absolute; right: 5%; top: calc(var(--ly) / 150 * 100%); display: inline-flex; align-items: center; gap: 7px; height: 22px; padding: 0 9px 0 8px; border-radius: 999px;
   font: 500 11px/1 var(--font-mono); color: #fff; white-space: nowrap;
@@ -109,10 +119,10 @@
   transition: color var(--dur) var(--ease-out), background-color var(--dur) var(--ease-out), box-shadow var(--dur) var(--ease-out);
 }
 [data-page="integrations"] .ig-chip__dot { width: 7px; height: 7px; margin-left: -2px; border-radius: 50%; background: var(--stage); box-shadow: 0 0 7px var(--stage); }
-[data-page="integrations"] .ig-chip__n { font: 400 9.5px/1 var(--font-brand); color: var(--ink-faint); transition: color var(--dur) var(--ease-out); }
+[data-page="integrations"] .ig-chip__n { font: 400 10.5px/1 var(--font-brand); color: var(--ink-muted); transition: color var(--dur) var(--ease-out); }
 @media (hover: hover) { [data-page="integrations"] .ig-chip:hover { color: #fff; box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.34); } }
 [data-page="integrations"] .ig-chip[aria-pressed="true"] { color: #000; background: #fff; box-shadow: none; }
-[data-page="integrations"] .ig-chip[aria-pressed="true"] .ig-chip__n { color: rgb(0 0 0 / 0.5); }
+[data-page="integrations"] .ig-chip[aria-pressed="true"] .ig-chip__n { color: rgb(0 0 0 / 0.62); }
 [data-page="integrations"] .ig-chip[aria-pressed="true"] .ig-chip__dot { box-shadow: 0 0 0 2px rgb(0 0 0 / 0.08); }
 [data-page="integrations"] .ig-chip:focus-visible { outline-offset: 3px; border-radius: 999px; }
 
@@ -168,7 +178,7 @@
 
 /* nothing matches: the request form already has the name */
 [data-page="integrations"] .ig-empty { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 20px 28px; padding: clamp(24px, 3vw, 40px); }
-[data-page="integrations"] .ig-empty[hidden] { display: none; }
+[data-page="integrations"] .ig-empty[hidden], [data-page="integrations"] .ig-empty [hidden], [data-page="integrations"] .ig-status__note[hidden] { display: none; }
 [data-page="integrations"] .ig-empty__box { display: grid; place-items: center; width: 56px; height: 56px; border-radius: 12px; box-shadow: inset 0 0 0 1px var(--box); color: #fff; }
 [data-page="integrations"] .ig-empty__title { font: 600 19px/1.35 var(--font); color: #fff; margin-bottom: 6px; overflow-wrap: anywhere; }
 [data-page="integrations"] .ig-dir__fiction { margin-top: 28px; }
@@ -263,7 +273,7 @@
 [data-page="integrations"] .ig-dlg__lead { display: grid; gap: 14px; justify-items: start; }
 [data-page="integrations"] .ig-dlg__lead .body-l { font-size: 17px; color: #fff; text-wrap: pretty; }
 [data-page="integrations"] .ig-dlg__part { display: grid; gap: 12px; }
-[data-page="integrations"] .ig-dlg__h { font: 400 10px/1 var(--font-brand); letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-muted); }
+[data-page="integrations"] .ig-dlg__h { font: 400 10.5px/1 var(--font-brand); letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-muted); }
 [data-page="integrations"] .ig-flows { display: grid; border-top: 1px solid var(--line-faint); }
 [data-page="integrations"] .ig-flows li { display: grid; grid-template-columns: minmax(0, 1fr) minmax(40px, 0.6fr) minmax(0, 1fr); align-items: center; gap: 14px; min-height: 50px; padding: 8px 0; border-bottom: 1px solid var(--line-faint); font-size: 15px; line-height: 1.35; }
 [data-page="integrations"] .ig-flows__from { color: var(--ink-soft); }
@@ -314,6 +324,13 @@
   [data-page="integrations"] .ig-step__n { position: absolute; left: 0; top: 0; margin: 0; }
   [data-page="integrations"] .ig-step__art { max-width: 460px; }
 }
+/* tablets: each stop reads beside its picture instead of under it */
+@media (min-width: 700px) and (max-width: 960px) {
+  [data-page="integrations"] .ig-step { grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); grid-template-rows: auto 1fr; column-gap: clamp(24px, 4vw, 40px); }
+  [data-page="integrations"] .ig-step__art { grid-column: 2; grid-row: 1 / span 2; max-width: none; margin: 0; }
+  [data-page="integrations"] .ig-step > h3 { grid-column: 1; grid-row: 1; padding-top: 10px; }
+  [data-page="integrations"] .ig-step > .body { grid-column: 1; grid-row: 2; }
+}
 @media (max-width: 899.98px) {
   [data-page="integrations"] .ig-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   [data-page="integrations"] .ig-status { justify-items: start; text-align: left; }
@@ -346,7 +363,14 @@
   [data-page="integrations"] .ig-build__reply { padding: 12px 16px; }
   [data-page="integrations"] .ig-fact__n { font-size: 24px; }
   [data-page="integrations"] .ig-fact__l { font-size: 13px; }
-  [data-page="integrations"] .ig-flows li { grid-template-columns: minmax(0, 1fr) 28px minmax(0, 1fr); gap: 10px; font-size: 14px; }
+  [data-page="integrations"] .ig-flows li { grid-template-columns: minmax(0, 1fr) 28px minmax(0, 1fr); gap: 10px; min-height: 44px; padding: 6px 0; font-size: 14px; }
+  [data-page="integrations"] .ig-dlg .dialog__head { padding: 14px 14px 14px 18px; }
+  [data-page="integrations"] .ig-dlg .dialog__body { gap: 22px; padding: 20px 18px 22px; }
+  [data-page="integrations"] .ig-dlg__lead { gap: 12px; }
+  [data-page="integrations"] .ig-dlg__lead .body-l { font-size: 16px; line-height: 1.5; }
+  [data-page="integrations"] .ig-perms { gap: 10px; }
+  [data-page="integrations"] .ig-perms li { font-size: 14.5px; }
+  [data-page="integrations"] .ig-code { white-space: pre-wrap; overflow-wrap: anywhere; }
   [data-page="integrations"] .ig-build__band .btn-row .btn { width: 100%; }
   [data-page="integrations"] .ig-hero__copy .btn-row .btn { flex: 1 1 auto; }
 }

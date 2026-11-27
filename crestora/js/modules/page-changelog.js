@@ -19,7 +19,6 @@ export default function init({ calm }) {
   const list = road && $('.cl-timeline', road);
   if (!list) return;
   const rail = $('.cl-rail', road);
-  const fill = $('.cl-rail__fill', rail);
   const end = $('.cl-node--end', road);
   const entries = $$('.cl-entry', list);
   const count = $('[data-filter-count]', scope);
@@ -37,20 +36,25 @@ export default function init({ calm }) {
   }
 
   // ---- the rail: from the first visible node to the last stop, its colours at each release's node ----
-  const centre = (node) => { const r = node.getBoundingClientRect(); return r.top + r.height / 2; };
+  // Measured from the layout (offsets), not the screen: a release's reveal or a filter's glide moves it with a
+  // transform for a moment, and the rail must not set itself by that.
+  const centre = (node) => {
+    let y = node.offsetHeight / 2;
+    for (let el = node; el && el !== road; el = el.offsetParent) y += el.offsetTop;
+    return y;
+  };
   let live = false, was = '';
   const layout = () => {
     const shown = entries.filter((e) => !e.hidden);
     if (!shown.length || !end) { rail.style.opacity = '0'; return; }
     rail.style.opacity = '';
-    const base = road.getBoundingClientRect().top;
-    const top = centre($('.cl-node', shown[0])) - base;
-    const bottom = centre(end) - base;
+    const top = centre($('.cl-node', shown[0]));
+    const bottom = centre(end);
     const h = Math.max(1, bottom - top);
     road.style.setProperty('--rail-top', `${top.toFixed(1)}px`);
     road.style.setProperty('--rail-h', `${h.toFixed(1)}px`);
     const stops = shown.map((e) => {
-      const y = ((centre($('.cl-node', e)) - base - top) / h) * 100;
+      const y = ((centre($('.cl-node', e)) - top) / h) * 100;
       return `${getComputedStyle(e).getPropertyValue('--stage').trim()} ${y.toFixed(2)}%`;
     });
     const last = getComputedStyle(shown[shown.length - 1]).getPropertyValue('--stage').trim();
@@ -108,5 +112,4 @@ export default function init({ calm }) {
     });
   }
   layout();
-  void fill;
 }

@@ -71,22 +71,29 @@
 [data-page="changelog"] .cl-next { padding-bottom: clamp(56px, 5.5vw, 84px); }
 [data-page="changelog"] .cl-next::after { content: ""; position: absolute; left: var(--cl-x); top: calc(var(--cl-node-y) + 18px); bottom: calc(var(--cl-node-y) * -1 + 4px); border-left: 1px dashed var(--line-soft); translate: -0.5px 0; }
 [data-page="changelog"] .cl-next__meta { grid-column: 1; display: grid; gap: 10px; }
-[data-page="changelog"] .cl-ver--next { color: var(--ink-faint); }
 [data-page="changelog"] .cl-next__text { grid-column: 3; max-width: 46em; padding-top: 8px; font-size: 16px; line-height: 1.6; color: var(--ink-muted); }
 [data-page="changelog"] .cl-next__label { color: #fff; font-weight: 500; }
 [data-page="changelog"] .cl-next .link-arrow { display: flex; width: max-content; margin-top: 10px; font-size: 15px; }
 [data-page="changelog"] .cl-end { padding-top: 4px; }
-[data-page="changelog"] .cl-end__text { grid-column: 3; max-width: 40em; font-size: 15px; line-height: 1.6; color: var(--ink-muted); }
+[data-page="changelog"] .cl-end__body { grid-column: 3; display: grid; gap: 14px; }
+[data-page="changelog"] .cl-end__text { max-width: 40em; font-size: 15px; line-height: 1.6; color: var(--ink-muted); }
 [data-page="changelog"] .cl-end__text a { color: #fff; text-decoration: underline; text-decoration-color: rgb(255 255 255 / 0.35); text-underline-offset: 3px; }
 [data-page="changelog"] .cl-end__text a:hover { text-decoration-color: #fff; }
+/* no scripts: nothing can measure the rail, so each release draws its own stretch of road instead, from its node down to
+   the next one, in its stage's colour (the last one stops at the end of the road) */
+.no-js [data-page="changelog"] .cl-rail { display: none; }
+.no-js [data-page="changelog"] .cl-entry::before { content: ""; position: absolute; left: var(--cl-x); top: calc(var(--cl-node-y) + 5.5px); width: 1px; height: 100%; translate: -0.5px 0; background: linear-gradient(var(--stage), color-mix(in srgb, var(--stage) 35%, transparent)); }
+.no-js [data-page="changelog"] .cl-entry:last-child::before { height: calc(100% + 6px - var(--cl-node-y)); }
 [data-page="changelog"] .cl-empty { padding: 40px 0 40px calc(var(--cl-meta) + var(--cl-gap)); color: var(--ink-muted); }
 
 /* ---- a release ---- */
-[data-page="changelog"] .cl-entry { position: relative; display: grid; grid-template-columns: var(--cl-meta) var(--cl-gap) minmax(0, 1fr); padding-bottom: clamp(80px, 8vw, 128px); scroll-margin-top: calc(var(--header-h) + 24px); }
+[data-page="changelog"] .cl-entry { position: relative; display: grid; grid-template-columns: var(--cl-meta) var(--cl-gap) minmax(0, 1fr); padding-bottom: clamp(80px, 8vw, 128px); }
 [data-page="changelog"] .cl-entry__meta { grid-column: 1; position: sticky; top: calc(var(--header-h) + 32px); align-self: start; display: grid; gap: 14px; justify-items: start; }
 [data-page="changelog"] .cl-ver { display: block; font: 400 clamp(30px, 2.75vw, 42px)/1 var(--font-brand); letter-spacing: -0.02em; color: #fff; transition: color 0.6s var(--ease-out); }
 [data-page="changelog"] .is-live .cl-entry:not(.is-lit) .cl-ver { color: var(--ink-faint); }
 [data-page="changelog"] a.cl-ver:focus-visible { outline-offset: 6px; }
+/* the next stop hasn't shipped: its number is drawn as an outline, a ghost of a version */
+[data-page="changelog"] .cl-ver.cl-ver--next { color: transparent; -webkit-text-stroke: 1px rgb(220 228 237 / 0.5); }
 [data-page="changelog"] .cl-date { font-size: 14px; color: var(--ink-muted); margin-top: 2px; }
 [data-page="changelog"] .cl-copy {
   display: inline-flex; align-items: center; gap: 7px; height: 32px; padding: 0 11px 0 9px; margin-top: 2px; border-radius: 8px;
@@ -170,7 +177,7 @@
 [data-page="changelog"] .cl-recap__spark { width: 100%; height: 64px; }
 [data-page="changelog"] .cl-recap__line { fill: none; stroke: var(--afterglow); stroke-width: 1.6; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
 [data-page="changelog"] .cl-recap__quote { font-size: 13.5px; color: #fff; }
-[data-page="changelog"] .cl-recap__quote span { color: var(--ink-muted); }
+[data-page="changelog"] .cl-recap__quote span { color: var(--ink-muted); white-space: nowrap; }
 
 /* v4.10: two lanes merging */
 [data-page="changelog"] .cl-merge { position: relative; height: 236px; }
@@ -178,7 +185,9 @@
 [data-page="changelog"] .cl-merge__svg path { fill: none; stroke-width: 1.4; vector-effect: non-scaling-stroke; }
 [data-page="changelog"] .cl-merge__a path { stroke: var(--make); }
 [data-page="changelog"] .cl-merge__b path { stroke: color-mix(in srgb, var(--make) 55%, #fff 10%); stroke-dasharray: 10 5; }
-[data-page="changelog"] .cl-merge__dot { fill: #000; stroke: #fff; stroke-width: 1.4; vector-effect: non-scaling-stroke; }
+/* the meeting point: drawn in HTML at the curve's join (x 262 of 400, y 87 + the svg's 28 px), so it stays round however
+   the stretched svg is scaled */
+[data-page="changelog"] .cl-merge__dot { position: absolute; left: 65.5%; top: 115px; width: 10px; height: 10px; translate: -50% -50%; border-radius: 50%; background: #000; box-shadow: inset 0 0 0 1.4px #fff; }
 [data-page="changelog"] .cl-merge__label { position: absolute; display: grid; gap: 3px; font-size: 13px; font-weight: 500; color: #fff; line-height: 1.2; }
 [data-page="changelog"] .cl-merge__label em { font-style: normal; font-weight: 400; font-size: 12px; color: var(--ink-muted); }
 [data-page="changelog"] .cl-merge__label--a { left: 18px; top: 16px; }
@@ -262,6 +271,11 @@
 @media (max-width: 1100px) {
   [data-page="changelog"] .cl-count { grid-column: 3; text-align: left; }
 }
+/* where the words' column is narrow, the facts sit two to a row, with no divider left hanging at a line's end */
+@media (max-width: 1180px) and (min-width: 961px) {
+  [data-page="changelog"] .cl-facts { display: grid; grid-template-columns: repeat(2, max-content); gap: 20px 40px; }
+  [data-page="changelog"] .cl-facts__item { padding: 0; margin: 0; border: 0; }
+}
 @media (max-width: 960px) {
   [data-page="changelog"] .cl-hero__grid { grid-template-columns: minmax(0, 1fr); align-items: start; }
   [data-page="changelog"] .cl-sub { max-width: 560px; }
@@ -279,7 +293,7 @@
   [data-page="changelog"] .cl-copy { grid-area: copy; margin: 0; }
   [data-page="changelog"] .cl-copy span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
   [data-page="changelog"] .cl-copy { width: 34px; padding: 0; justify-content: center; }
-  [data-page="changelog"] .cl-entry__body, [data-page="changelog"] .cl-next__text, [data-page="changelog"] .cl-end__text, [data-page="changelog"] .cl-next__meta { grid-column: 1; }
+  [data-page="changelog"] .cl-entry__body, [data-page="changelog"] .cl-next__text, [data-page="changelog"] .cl-end__body, [data-page="changelog"] .cl-next__meta { grid-column: 1; }
   [data-page="changelog"] .cl-next__meta { display: flex; align-items: baseline; gap: 14px; margin-bottom: 10px; }
   [data-page="changelog"] .cl-next__meta .cl-ver { font-size: 26px; }
   [data-page="changelog"] .cl-tags { padding-top: 0; }
@@ -297,4 +311,6 @@
   [data-page="changelog"] .cl-tpl { grid-template-columns: minmax(0, 1fr); }
   [data-page="changelog"] .cl-tpl li:nth-child(n + 5) { display: none; }
   [data-page="changelog"] .cl-merge__label--c { top: 40px; }
+  [data-page="changelog"] .cl-offline__kind { white-space: normal; }
+  [data-page="changelog"] .cl-recap__nums dd { font-size: 19px; }
 }

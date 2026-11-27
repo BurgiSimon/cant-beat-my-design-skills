@@ -63,7 +63,7 @@
 .home-start__input.is-swapping::placeholder { color: transparent; }
 .home-start__field .field__error:empty { display: none; }
 .home-start__go { height: 56px; margin-top: 6px; font-size: 16px; }
-.home-start__fine { color: var(--ink-muted); }
+.home-start__fine { color: var(--ink-muted); text-wrap: balance; }
 .home-start__fine span { margin: 0 0.35em; opacity: 0.6; }
 .home-start__done { display: flex; align-items: center; gap: 10px; font-size: 14px; line-height: 1.5; color: var(--ink-soft); }
 .home-start__done[hidden] { display: none; }
@@ -116,8 +116,12 @@
 :is(.home-start, [data-page="start"]) .lane-card .stage-rail i { transition-delay: 0s; }
 :is(.home-start, [data-page="start"]) .lane-card__names { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); font-size: 11.5px; line-height: 1.2; color: var(--ink-faint); }
 :is(.home-start, [data-page="start"]) .lane-card__names li { text-align: center; white-space: nowrap; transition: color 0.4s var(--ease-out); }
-:is(.home-start, [data-page="start"]) .lane-card__names li:first-child { text-align: left; }
-:is(.home-start, [data-page="start"]) .lane-card__names li:last-child { text-align: right; }
+/* the rail's dots evenly spread (the kit's rail stretches its end gaps, and its fill then misses the dot it means):
+   with names under them, each dot sits at the centre of its sixth; without, they run edge to edge */
+.home-start .lane-card .stage-rail i:first-child, .home-start .lane-card .stage-rail i:last-child { justify-self: center; }
+.home-start .lane-card .stage-rail::before { left: calc(100% / 12); right: calc(100% / 12); }
+.home-start .lane-card .stage-rail::after { left: calc(100% / 12); width: calc(100% / 6 * max(0, var(--n) - 1)); }
+[data-page="start"] .lane-card .stage-rail { display: flex; justify-content: space-between; }
 :is(.home-start, [data-page="start"]) .lane-card__names li.is-lit { color: var(--ink-soft); }
 :is(.home-start, [data-page="start"]) .lane-card__names li.is-now { color: #fff; }
 
@@ -156,7 +160,8 @@
   .home-start { min-height: 0; }
   .home-start__head .eyebrow { font-size: 10px; }
   .home-start__title { font-size: clamp(30px, 9vw, 44px); }
-  .home-start__horizon { height: 120px; }
+  /* the arc stays a low horizon, wider than the screen, rather than a narrow rainbow */
+  .home-start__horizon { left: 50%; width: 260%; max-width: none; height: 110px; translate: -50% 0; }
 }
 @media (max-width: 420px) {
   :is(.home-start, [data-page="start"]) .lane-card__names { font-size: 10.5px; letter-spacing: -0.01em; }

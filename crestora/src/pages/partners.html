@@ -447,12 +447,12 @@ nav: company
           </article>
         </li>
       </ul>
-      <p class="pt-empty" data-filter-empty hidden>No partner in the directory matches both yet. Try all regions, or <a href="{{ROOT}}contact.html?topic=sales">ask us for an introduction</a>.</p>
+      <p class="pt-empty" data-filter-empty hidden>No partner in the directory matches both yet. Try all regions, or <a href="{{ROOT}}contact.html?topic=sales#write">ask us for an introduction</a>.</p>
 
       <div class="pt-intro" data-reveal>
         <span class="icon-box" aria-hidden="true"><svg class="icon icon--lg"><use href="#i-handshake"/></svg></span>
         <p><strong>Want help setting up your team?</strong> Tell us what you make and how many of you there are. We’ll introduce you to a partner who fits within two working days.</p>
-        <a class="btn" href="{{ROOT}}contact.html?topic=sales" data-roll>Ask for an introduction</a>
+        <a class="btn" href="{{ROOT}}contact.html?topic=sales#write" data-roll>Ask for an introduction</a>
       </div>
     </div>
   </section>
@@ -505,7 +505,7 @@ nav: company
         </div>
         <div class="field">
           <label class="field__label" for="pt-email">Work email</label>
-          <input class="input" id="pt-email" name="email" type="email" required maxlength="120" autocomplete="email" inputmode="email" placeholder="you@studio.example" />
+          <input class="input" id="pt-email" name="email" type="email" required maxlength="120" autocomplete="email" inputmode="email" placeholder="you@studio.example" data-msg-required="We need an address to reply to." />
           <p class="field__error"></p>
         </div>
         <div class="field">

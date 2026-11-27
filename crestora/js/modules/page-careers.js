@@ -1,5 +1,6 @@
 // careers.html: the location select drives a hidden [data-filter-group] (so the generic filter combines hub and team,
-// keeps the live count and the empty line), a #role-slug link opens that role, and the hiring lanes light one by one
+// keeps the live count and the empty line), the team chips count the roles in the chosen hub, a #role-slug link
+// opens that role, and the hiring lanes light one by one
 // as they come into view (at rest, all lit, under reduced motion or without scripts).
 import { ScrollTrigger, $, $$ } from '../core.js';
 
@@ -16,10 +17,24 @@ export default function init({ calm }) {
     if (select.value !== 'all') pick();   // a value the browser restored on the way back
   }
 
+  // the team chips count the roles in the hub picked below, so "Design 1" never leads to an empty list
+  const roles = $$('.cr-roles > li', page);
+  const counts = () => {
+    const hub = select?.value || 'all';
+    for (const chip of $$('.cr-chips [data-filter]', page)) {
+      const team = chip.dataset.filter;
+      const n = roles.filter((r) => { const tags = (r.dataset.tags || '').split(/\s+/); return (team === 'all' || tags.includes(team)) && (hub === 'all' || tags.includes(hub)); }).length;
+      const out = $('.cr-chip__n', chip);
+      if (out) out.textContent = String(n);
+      chip.classList.toggle('is-none', n === 0);
+    }
+  };
+
   // filtering and opening a role move everything below: the reveals further down need to know where they are now
   let t = 0;
   const refresh = () => { clearTimeout(t); t = setTimeout(() => ScrollTrigger?.refresh(), 120); };
-  $('[data-filter-scope]', page)?.addEventListener('filter:change', refresh);
+  $('[data-filter-scope]', page)?.addEventListener('filter:change', () => { counts(); refresh(); });
+  counts();
   for (const d of $$('.cr-role', page)) d.addEventListener('toggle', refresh);
 
   // a deep link to a role opens it

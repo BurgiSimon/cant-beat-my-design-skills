@@ -18,7 +18,7 @@ const TOPICS = {
     ask: 'Tell us about your team', placeholder: 'We’re a 12-person animation studio moving three productions off shared drives. We’d like SSO and EU hosting.', hint: 'What you make, how you work today, and anything you must have (SSO, residency, invoices).' },
   support: { team: 'Support', short: 'Support', mail: 'support@crestora.example', time: 'Under 2 hours on weekdays', where: 'Read in all four hubs',
     ask: 'What’s going on?', placeholder: 'Since this morning my lane “Night Bloom” won’t move from Review to Launch. The button spins and nothing happens.', hint: 'The lane’s name, what you expected and what happened instead. Screenshots can follow by email.' },
-  press: { team: 'Press', short: 'Press', mail: 'press@crestora.example', time: 'The same working day', where: 'Read in Lisbon',
+  press: { team: 'Press', short: 'Press', mail: 'press@crestora.example', time: 'The same working day', where: 'Read in Lisbon, Toronto and Seoul',
     ask: 'What are you working on?', placeholder: 'I’m writing about small studios and launch-day tools for Frame & Pixel, due Thursday. Could I speak to Mira?', hint: 'Your outlet, your deadline and who you’d like to talk to. The press kit has logos and facts.' },
   partners: { team: 'Partnerships', short: 'Partnerships', mail: 'partners@crestora.example', time: 'Within 2 working days', where: 'Read in Toronto and Nairobi',
     ask: 'What would you build, run or teach?', placeholder: 'We’re a post house in Porto and set up review workflows for about ten film clients a year.', hint: 'Integration, studio or education partner? A link to your work helps.' },

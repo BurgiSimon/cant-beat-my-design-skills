@@ -3,9 +3,8 @@
    four-week road that light up as they come into view. White light only: none of this is a stage of a lane. */
 
 /* ---- hero ---- */
-[data-page="careers"] .cr-hero__facts { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
-[data-page="careers"] .cr-hero__facts li { display: inline-flex; align-items: center; gap: 9px; height: 30px; padding: 0 12px; border-radius: 999px; font-size: 13px; color: var(--ink-soft); box-shadow: inset 0 0 0 1px var(--line-soft); background: rgb(255 255 255 / 0.03); }
-[data-page="careers"] .cr-hero__facts li::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: #fff; }
+/* one quiet line of fine print under the buttons (the site keeps hero chips to one, on the home page) */
+[data-page="careers"] .cr-hero__note { margin-top: -6px; text-wrap: balance; }
 
 /* ---- how we work ---- */
 [data-page="careers"] .cr-how { padding-top: clamp(56px, 7vw, 110px); }
@@ -22,6 +21,7 @@
 [data-page="careers"] .cr-quote blockquote { margin: 0; font-size: clamp(20px, 1.7vw, 25px); line-height: 1.45; letter-spacing: -0.012em; color: #fff; text-wrap: pretty; }
 [data-page="careers"] .cr-quote figcaption { margin-top: 8px; font-size: 14px; color: var(--ink-muted); }
 [data-page="careers"] .cr-quote figcaption strong { color: #fff; font-weight: 600; margin-right: 8px; }
+[data-page="careers"] .cr-fiction { margin-top: clamp(32px, 3.4vw, 48px); }
 
 /* ---- perks ---- */
 [data-page="careers"] .cr-perks { padding-top: 0; }
@@ -41,10 +41,12 @@
   font: 500 14px/1 var(--font); color: var(--ink-soft); background: rgb(255 255 255 / 0.03); box-shadow: inset 0 0 0 1px var(--line-soft);
   transition: color var(--dur) var(--ease-out), background-color var(--dur) var(--ease-out), box-shadow var(--dur) var(--ease-out);
 }
-[data-page="careers"] .cr-chip__n { font: 400 9.5px/1 var(--font-brand); color: var(--ink-faint); transition: color var(--dur) var(--ease-out); }
+/* how many roles each team has (in the hub picked below): information, so muted rather than faint */
+[data-page="careers"] .cr-chip__n { min-width: 0.9em; font: 400 10px/1 var(--font-brand); color: var(--ink-muted); text-align: center; transition: color var(--dur) var(--ease-out); }
+[data-page="careers"] .cr-chip.is-none:not([aria-pressed="true"]) { color: var(--ink-muted); }
 @media (hover: hover) { [data-page="careers"] .cr-chip:hover { color: #fff; box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.34); } }
 [data-page="careers"] .cr-chip[aria-pressed="true"] { color: #000; background: #fff; box-shadow: none; }
-[data-page="careers"] .cr-chip[aria-pressed="true"] .cr-chip__n { color: rgb(0 0 0 / 0.5); }
+[data-page="careers"] .cr-chip[aria-pressed="true"] .cr-chip__n { color: rgb(0 0 0 / 0.62); }
 [data-page="careers"] .cr-chip:focus-visible { outline-offset: 3px; border-radius: 999px; }
 [data-page="careers"] .cr-tools__end { display: flex; align-items: center; gap: 22px; }
 [data-page="careers"] .cr-loc { display: flex; align-items: center; gap: 12px; }

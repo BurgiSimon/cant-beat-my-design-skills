@@ -93,20 +93,23 @@ const FLOW_ROWS = 145, FLOW_COLS = 320;
 // the ribbon lofted once (the mesh and the card's ride both read it)
 let flowLoft = null;
 const lofted = () => flowLoft || (flowLoft = loft(FLOW, { cols: FLOW_COLS, rows: FLOW_ROWS }));
-let centreLine = null;
-/** The ribbon's centre line (v = 0.5, the middle row of its mesh) at design x, in design px: the card rides on it. */
-export function flowCentre(x) {
-  if (!centreLine) {
-    const d = lofted().data, mid = (FLOW_ROWS - 1) / 2;
-    centreLine = Array.from({ length: FLOW_COLS }, (_, j) => [d[(mid * FLOW_COLS + j) * 5], d[(mid * FLOW_COLS + j) * 5 + 1]]);
-  }
-  const c = centreLine;
+const rowLines = {};
+function rowAt(row, x) {
+  const c = rowLines[row] || (rowLines[row] = (() => {
+    const d = lofted().data;
+    return Array.from({ length: FLOW_COLS }, (_, j) => [d[(row * FLOW_COLS + j) * 5], d[(row * FLOW_COLS + j) * 5 + 1]]);
+  })());
   if (x <= c[0][0]) return c[0][1];
   let lo = 0, hi = c.length - 1;
   if (x >= c[hi][0]) return c[hi][1];
   while (hi - lo > 1) { const m = (lo + hi) >> 1; if (c[m][0] < x) lo = m; else hi = m; }
   return c[lo][1] + ((c[hi][1] - c[lo][1]) * (x - c[lo][0])) / (c[hi][0] - c[lo][0]);
 }
+/** The ribbon's centre line (v = 0.5, the middle row of its mesh) at design x, in design px: the card rides on it. */
+export const flowCentre = (x) => rowAt((FLOW_ROWS - 1) / 2, x);
+/** The ribbon's top (Spark's outer lane) and bottom (Afterglow's) edges at design x, in design px: the page keeps
+ *  its type clear of them. */
+export const flowEdges = (x) => ({ top: rowAt(0, x), bottom: rowAt(FLOW_ROWS - 1, x) });
 
 // ================= shaders =================
 const GLSL = '#version 300 es\nprecision highp float;\n';

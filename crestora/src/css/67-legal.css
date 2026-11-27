@@ -1,7 +1,7 @@
 /* The legal pages: privacy, terms, cookies and compliance share one template (and the sitemap borrows its hero and
    its row of legal links). A page hero with the date and the legal row; then a sticky, numbered table of contents
-   beside the document: "The short version" first (six lane-chip points, one per stage colour, in the ribbon's order),
-   then numbered sections, each with a one-line "In short" in the margin. Tables stack into cards on a phone. The
+   beside the document: "The short version" first (six lane-chip points, in white: a stage colour here would claim a
+   stage the point has nothing to do with), then numbered sections, each with a one-line "In short" in the margin. Tables stack into cards on a phone. The
    cookies page adds a live table of what this browser holds and a preferences panel with switches. Everything here is
    scoped to .legal-* and .ck-* classes. */
 
@@ -14,7 +14,7 @@
 .legal-hero__meta li + li::before { content: ""; width: 3px; height: 3px; margin: 0 14px; border-radius: 50%; background: var(--ink-faint); }
 .legal-hero__meta time, .legal-hero__meta strong { color: #fff; font-weight: 500; }
 .legal-hero__jump { margin-top: 4px; }
-.legal-hero .fiction { margin-top: -6px; }
+.legal-hero .fiction { margin-top: -6px; color: var(--ink-muted); }
 
 /* the footer's Legal column, laid on its side: one row of documents under a hairline; the current one carries a short
    streak of light on the rule above it */
@@ -96,7 +96,7 @@
 .legal-short__head p { font-size: 14px; color: var(--ink-muted); }
 .legal-short__list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 clamp(24px, 3vw, 44px); }
 .legal-short__list li { display: grid; align-content: start; gap: 14px; padding: 22px 0 24px; border-top: 1px solid var(--line-faint); }
-.legal-short__list .lane-chip { justify-self: start; }
+.legal-short__list .lane-chip { --stage: var(--ink-soft); justify-self: start; color: #fff; }
 .legal-short__list p { font-size: 15.5px; line-height: 1.58; color: var(--ink-soft); text-wrap: pretty; }
 .legal-short__list p strong { color: #fff; font-weight: 500; }
 .legal-short__list a { color: #fff; text-decoration: underline; text-decoration-color: rgb(255 255 255 / 0.3); text-underline-offset: 3px; }
@@ -105,16 +105,24 @@
 @media (max-width: 599.98px) { .legal-short__list { grid-template-columns: 1fr; } .legal-short__list li { padding: 18px 0 20px; } }
 
 /* ---- a numbered section: the title, an "In short" in the margin, the text ---- */
+/* the text's measure, computed once in the body's own type size, so children in smaller type keep the same edge */
+@property --legal-measure { syntax: "<length>"; inherits: true; initial-value: 0px; }
 .legal-sec { display: grid; grid-template-columns: minmax(0, 1fr) 232px; column-gap: clamp(40px, 4.4vw, 64px); align-items: start; padding-block: clamp(48px, 4.6vw, 68px); border-top: 1px solid var(--line-faint); }
 .legal-short + .legal-sec { margin-top: clamp(12px, 1.6vw, 24px); border-top: 0; }
 .legal-sec__title { grid-column: 1; font: 400 clamp(22px, 2vw, 28px)/1.25 var(--font-brand); color: #fff; letter-spacing: -0.01em; text-wrap: balance; scroll-margin-top: calc(var(--header-h) + 28px); }
 .legal-sec__title::before { counter-increment: legal; content: counter(legal, decimal-leading-zero); display: block; margin-bottom: 16px; font: 400 11px/1 var(--font-brand); letter-spacing: 0.16em; color: var(--ink-muted); }
 .legal-gist { grid-column: 2; grid-row: 1 / span 2; padding-left: 18px; border-left: 1px solid var(--line-soft); font-size: 14.5px; line-height: 1.6; color: var(--ink-soft); text-wrap: pretty; }
 .legal-gist__label { display: block; margin-bottom: 12px; font: 400 10.5px/1 var(--font-brand); letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-muted); }
-.legal-sec__body { grid-column: 1; margin-top: 22px; max-width: 68ch; }
+.legal-sec__body { --legal-measure: 68ch; grid-column: 1; margin-top: 22px; max-width: var(--legal-measure); }
 .legal-sec__body > :first-child { margin-top: 0; }
 .legal-sec__body h3 { margin-top: 1.6em; font-size: 17.5px; }
 .legal-sec__body .legal-wide { max-width: none; }
+/* a wide table (four columns) runs on under the "In short" margin, which it always sits below; the text around it
+   keeps its measure */
+@media (min-width: 1200px) {
+  .legal-sec:has(.legal-wide) .legal-sec__body { grid-column: 1 / -1; grid-row: 2; max-width: none; }
+  .legal-sec:has(.legal-wide) .legal-sec__body > :not(.legal-wide) { max-width: min(var(--legal-measure), calc(100% - 232px - clamp(40px, 4.4vw, 64px))); }
+}
 @media (max-width: 1199.98px) {
   .legal-sec { grid-template-columns: minmax(0, 1fr); }
   .legal-gist { grid-column: 1; grid-row: auto; margin-top: 22px; max-width: 60ch; }
@@ -126,7 +134,7 @@
 .legal-table caption { text-align: left; caption-side: top; padding-bottom: 12px; font-size: 13.5px; color: var(--ink-muted); }
 .legal-table th, .legal-table td { text-align: left; vertical-align: top; padding: 15px 20px 15px 0; border-bottom: 1px solid var(--line-faint); }
 .legal-table th:last-child, .legal-table td:last-child { padding-right: 0; }
-.legal-table thead th { padding-top: 0; padding-bottom: 12px; font: 400 10.5px/1.3 var(--font-brand); letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-muted); border-bottom-color: var(--line-soft); }
+.legal-table thead th { padding-top: 0; padding-bottom: 12px; white-space: nowrap; font: 400 10.5px/1.3 var(--font-brand); letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-muted); border-bottom-color: var(--line-soft); }
 .legal-table tbody th, .legal-table td:first-child { color: #fff; font-weight: 500; }
 .legal-table td { color: var(--ink-soft); }
 .legal-table td small { display: block; margin-top: 3px; font-size: 13px; color: var(--ink-muted); font-weight: 400; }

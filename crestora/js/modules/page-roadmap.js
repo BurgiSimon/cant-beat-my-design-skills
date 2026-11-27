@@ -38,6 +38,7 @@ export default function init({ calm }) {
     const btn = $('[data-vote]', it);
     const n = $('[data-vote-n]', it);
     if (!btn || !n) continue;
+    btn.disabled = false;   // a real control only once scripts can count the vote
     btn.setAttribute('aria-pressed', String(voted.has(it.dataset.id)));
     settle(n, votes(it));
     btn.addEventListener('click', () => {

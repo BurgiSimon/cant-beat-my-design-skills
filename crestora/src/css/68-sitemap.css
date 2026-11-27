@@ -53,7 +53,7 @@
 }
 .sm-stop__box .icon { width: 18px; height: 18px; }
 .sm-stop__title { align-self: end; font: 500 16px/1.3 var(--font); color: var(--ink-soft); }
-.sm-stop__desc { grid-column: 2; align-self: start; font-size: 13.5px; line-height: 1.4; color: var(--ink-muted); }
+.sm-stop__desc { grid-column: 2; align-self: start; font-size: 13.5px; line-height: 1.4; color: var(--ink-muted); text-wrap: pretty; }
 .sm-stop__id { grid-column: 3; grid-row: 1 / span 2; font: 12px/1 var(--font-mono); color: var(--ink-muted); opacity: 0.7; transition: opacity var(--dur), color var(--dur); }
 
 /* this stop's own lane, lit from its box down to the next */
@@ -90,9 +90,13 @@
 .is-calm .sm-stop--flow .sm-stop__box::before { animation: none; }
 
 /* ================= the groups ================= */
-.sm-groups { columns: 2; column-gap: clamp(32px, 4vw, 56px); }
-.sm-groups .sm-group { break-inside: avoid; padding-bottom: clamp(36px, 3.6vw, 52px); }
-.sm-groups .sm-group:last-child { padding-bottom: 0; }
+/* the footer's four columns as two, read down: Product over Company, Resources over Legal, the second row's heads level */
+.sm-groups { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: clamp(32px, 4vw, 56px); align-items: start; }
+.sm-groups .sm-group { padding-bottom: clamp(36px, 3.6vw, 52px); }
+.sm-groups .sm-group:nth-child(1) { grid-area: 1 / 1; }
+.sm-groups .sm-group:nth-child(2) { grid-area: 2 / 1; padding-bottom: 0; }
+.sm-groups .sm-group:nth-child(3) { grid-area: 1 / 2; }
+.sm-groups .sm-group:nth-child(4) { grid-area: 2 / 2; padding-bottom: 0; }
 /* Field Notes: a band across the page, three notes a row */
 .sm-notes { margin-top: clamp(56px, 6vw, 96px); }
 .sm-notes .sm-list { grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: clamp(32px, 4vw, 56px); }
@@ -114,7 +118,8 @@
 
 @media (min-width: 1100px) and (max-width: 1279.98px) { .sm-item__path { display: none; } }
 @media (max-width: 699.98px) {
-  .sm-groups { columns: 1; }
+  .sm-groups { grid-template-columns: minmax(0, 1fr); }
+  .sm-groups .sm-group:nth-child(n) { grid-area: auto; padding-bottom: clamp(36px, 3.6vw, 52px); }
   .sm-groups .sm-group:last-child { padding-bottom: 0; }
   .sm-notes .sm-list { grid-template-columns: minmax(0, 1fr); }
   .sm-item > a { font-size: 17px; }
