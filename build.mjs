@@ -12,8 +12,8 @@
  *   src/         →  /mist/        the Mist site (its 404.html goes to the root: Pages has one per site)
  *   nelson-crm/  →  /nelson-crm/  the prebuilt Nelson CRM project, runtime files only
  *   asterpay/    →  /asterpay/    the AsterPay project, as written (no build step; its README and tools stay behind)
- *   unorouter/   →  /unorouter/   the UnoRouter project, as written (no build step; its README and tools stay behind)
  *   vizen/       →  /vizen/       the Vizen project, the same way
+ *   unorouter/   →  /unorouter/   the UnoRouter project, the same way
  * Mist used to live at the root, so each of its old page URLs gets a small redirect into /mist/.
  *
  * Mist pages live in src/pages/*.html and may include partials from src/partials with
