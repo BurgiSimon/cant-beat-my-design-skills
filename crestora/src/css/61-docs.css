@@ -6,6 +6,8 @@
 
 /* ---- hero ---- */
 [data-page="docs"] .docs-hero { padding-bottom: clamp(48px, 6vw, 88px); }
+/* "Documentation." is one long Michroma word: under ~400 px it steps down with the screen instead of running past it */
+[data-page="docs"] .docs-hero .title-1 { font-size: min(clamp(34px, 4.6vw, 72px), calc((100vw - 2 * var(--gutter)) / 10.2)); }
 [data-page="docs"] .docs-hero__meta { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; }
 [data-page="docs"] .docs-hero__ver { height: 32px; padding: 0 13px 0 11px; color: var(--ink-soft); transition: color var(--dur) var(--ease-out), box-shadow var(--dur) var(--ease-out); }
 [data-page="docs"] .docs-hero__vdot { width: 6px; height: 6px; border-radius: 50%; background: #fff; box-shadow: 0 0 0 3px rgb(255 255 255 / 0.12); }

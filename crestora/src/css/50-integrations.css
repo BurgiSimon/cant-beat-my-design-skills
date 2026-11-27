@@ -225,7 +225,7 @@
 /* ================= build your own ================= */
 [data-page="integrations"] .ig-build__band { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 520px); align-items: center; gap: 48px clamp(48px, 6vw, 96px); padding: clamp(28px, 4.4vw, 72px); border-radius: 20px; }
 [data-page="integrations"] .ig-build__band::before { content: ""; position: absolute; z-index: -1; left: -10%; bottom: -60%; width: 70%; aspect-ratio: 1.4; pointer-events: none; background: radial-gradient(closest-side, rgb(32 214 155 / 0.1), transparent); }
-[data-page="integrations"] .ig-build__copy { display: grid; gap: 22px; justify-items: start; }
+[data-page="integrations"] .ig-build__copy { display: grid; gap: 22px; justify-items: start; min-width: 0; }
 [data-page="integrations"] .ig-build__copy .body-l { max-width: 34em; }
 [data-page="integrations"] .ig-build__copy .btn-row { margin-top: 8px; }
 [data-page="integrations"] .ig-build__code { margin: 0; }
@@ -288,13 +288,20 @@
 [data-page="integrations"] .ig-perms__never strong { color: #fff; font-weight: 600; }
 [data-page="integrations"] .ig-dlg__foot { display: grid; gap: 12px; justify-items: start; padding-top: 4px; }
 
-/* ================= without scripts: no search, no chips, no dialogs; everything is listed ================= */
+/* ================= without scripts: no search or chips; every app's details are listed under the directory ======
+   (each card's Details, and each featured app's link, is an #app-<slug> link down to its own) */
+[data-page="integrations"] .ig-dlgs { display: contents; }
 .no-js [data-page="integrations"] .ig-tools,
 .no-js [data-page="integrations"] .ig-chips-wrap,
 .no-js [data-page="integrations"] .ig-status__note,
-.no-js [data-page="integrations"] .ig-card__open,
-.no-js [data-page="integrations"] .ig-feat__open { display: none; }
+.no-js [data-page="integrations"] :is(.ig-dlg .dialog__close, [data-ig-connect]) { display: none; }
 .no-js [data-page="integrations"] .ig-card { cursor: default; }
+.no-js [data-page="integrations"] .ig-dlgs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; align-items: start; margin-top: clamp(40px, 4vw, 64px); }
+.no-js [data-page="integrations"] dialog.ig-dlg { position: relative; display: block; width: auto; max-height: none; margin: 0; overflow: hidden; scroll-margin-top: 24px; }
+.no-js [data-page="integrations"] .ig-dlg .dialog__head { position: relative; }
+.no-js [data-page="integrations"] .ig-dlg:target { box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.5), 0 0 40px -12px var(--stage); }
+@media (max-width: 1199.98px) { .no-js [data-page="integrations"] .ig-dlgs { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 699.98px) { .no-js [data-page="integrations"] .ig-dlgs { grid-template-columns: minmax(0, 1fr); } }
 
 /* ================= at rest ================= */
 .is-calm [data-page="integrations"] .ig-ramp__dash,
@@ -338,9 +345,9 @@
   [data-page="integrations"] .ig-feat { display: flex; }
   [data-page="integrations"] .ig-ramp { border-right: 0; border-bottom: 1px solid var(--line-faint); }
   /* the chips ride one line, scrolled sideways, fading at the edge */
-  [data-page="integrations"] .ig-chips-wrap { margin-inline: calc(var(--gutter) * -1); overflow-x: auto; scrollbar-width: none; -webkit-mask: linear-gradient(90deg, transparent, #000 var(--gutter), #000 calc(100% - 40px), transparent); mask: linear-gradient(90deg, transparent, #000 var(--gutter), #000 calc(100% - 40px), transparent); }
+  [data-page="integrations"] .ig-chips-wrap { margin-inline: calc(var(--gutter) * -1); overflow-x: auto; scrollbar-width: none; -webkit-mask: linear-gradient(90deg, transparent, #000 var(--gutter), #000 calc(100% - 40px), transparent); mask: linear-gradient(90deg, transparent, #000 var(--gutter), #000 calc(100% - 40px), transparent); scroll-padding-inline: var(--gutter) 48px; }
   [data-page="integrations"] .ig-chips-wrap::-webkit-scrollbar { display: none; }
-  [data-page="integrations"] .ig-chips { flex-wrap: nowrap; width: max-content; padding: 4px var(--gutter); }
+  [data-page="integrations"] .ig-chips { flex-wrap: nowrap; width: max-content; padding: 4px 48px 4px var(--gutter); }
   [data-page="integrations"] .ig-search { flex-basis: 100%; max-width: none; }
   [data-page="integrations"] .ig-search__key { display: none; }
   [data-page="integrations"] .ig-empty { grid-template-columns: minmax(0, 1fr); }
@@ -370,6 +377,15 @@
   [data-page="integrations"] .ig-perms { gap: 10px; }
   [data-page="integrations"] .ig-perms li { font-size: 14.5px; }
   [data-page="integrations"] .ig-code { white-space: pre-wrap; overflow-wrap: anywhere; }
+  [data-page="integrations"] .ig-build__band .btn-row { justify-self: stretch; }
   [data-page="integrations"] .ig-build__band .btn-row .btn { width: 100%; }
   [data-page="integrations"] .ig-hero__copy .btn-row .btn { flex: 1 1 auto; }
+}
+/* small phones: the band gives its buttons the room for one line of label ("Become an integration partner") */
+@media (max-width: 399.98px) {
+  [data-page="integrations"] .ig-build__band { padding-inline: 16px; }
+  [data-page="integrations"] .ig-build__band .btn-row .btn { padding-inline: 12px; font-size: min(16px, 4.6vw); }
+  /* the request's path breaks before "versions" rather than run out of the mock */
+  [data-page="integrations"] .ig-build__code .mock__bar { height: auto; min-height: 44px; padding-block: 8px; }
+  [data-page="integrations"] .ig-build__code .mock__bar .mono { min-width: 0; line-height: 1.35; overflow-wrap: anywhere; }
 }

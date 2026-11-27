@@ -1,8 +1,10 @@
 <!-- home #workspace: inside a lane. The app window is drawn in HTML/CSS at 1200 × 720 design px and scaled to its
-     frame with --u (1 design px), like the footer's --fu, so it is the same picture from a phone to a wall screen.
-     A real tablist switches its three views; a short scripted story plays in it (home-workspace.js): frame 118 waits in
-     Review, Lena approves it, its chip turns green and it rolls on to Launch. Without scripts, and under reduced motion,
-     the window rests on the story's last frame. Under 680 px the window is a pane you can pan, with its own tabs above. -->
+     frame with --u (1 design px), like the footer's --fu. Where that would shrink its type too far it sheds the
+     activity rail (under 1180 px) and the sidebar (under 900 px); under 680 px the lane keeps its design size and is a
+     pane you can pan, with its tabs repeated above it. A real tablist switches its three views; a short scripted story plays in it
+     (home-workspace.js): frame 118 waits in Review, Lena approves it, its chip turns green and it rolls on to Launch.
+     Without scripts, and under reduced motion, the window rests on the story's last frame; without scripts it is a
+     still picture of the lane, with no tabs. -->
 <section class="section workspace" id="workspace" aria-labelledby="workspace-title">
   <div class="container">
     <header class="section-head">
@@ -15,7 +17,7 @@
       </div>
     </header>
 
-    <!-- phones: the window's tabs at a size a thumb can use (kept in step with the ones inside the window) -->
+    <!-- under 680 px: the window's tabs at a size a thumb can use (kept in step with the ones inside the window) -->
     <div class="ws-ptabs segmented" role="tablist" aria-label="The festival cut’s lane, as" data-tabs-sync="ws-view">
       <span class="segmented__thumb" aria-hidden="true"></span>
       <button type="button" role="tab" id="ws-ptab-lane" aria-controls="ws-view-lane" aria-selected="true" data-value="lane">Lane</button>

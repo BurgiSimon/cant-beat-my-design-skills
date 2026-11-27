@@ -25,11 +25,11 @@
 <link rel="stylesheet" href="css/site.css?v={{VERSION}}" />
 <script>
   // Scripts will run: the page may hide what they are about to bring in. A repeat visit in this tab gets short
-  // intros; reduced motion (or ?reduced) gets none.
+  // intros; reduced motion (or ?reduced, or ?still: a still of the resting page) gets none.
   (function (h) {
     h.className = h.className.replace("no-js", "js");
     try { if (sessionStorage.getItem("crestora:seen")) h.classList.add("is-repeat"); } catch (e) {}
-    if (matchMedia("(prefers-reduced-motion: reduce)").matches || /[?&]reduced/.test(location.search)) h.classList.add("is-calm");
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches || /[?&](reduced|still)(?![^&=])/.test(location.search)) h.classList.add("is-calm");
     setTimeout(function () { h.classList.add("is-ready"); }, 6000); // if the scripts never get there, show everything anyway
   })(document.documentElement);
 </script>
@@ -110,7 +110,7 @@
     </a>
     <nav class="nav" aria-label="Main">
       <div class="nav__item" data-menu>
-        <button class="nav__trigger" type="button" aria-expanded="false" aria-controls="menu-product">Product<svg aria-hidden="true"><use href="#i-chev-down"/></svg></button>
+        <button class="nav__trigger" type="button" aria-controls="menu-product">Product<svg aria-hidden="true"><use href="#i-chev-down"/></svg></button>
         <div class="dropdown" id="menu-product" style="--cols:2">
           <a href="index.html#features"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-layers"/></svg></span><strong>Features</strong><small>Six lanes from spark to launch</small></a>
           <a href="integrations.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-plug"/></svg></span><strong>Integrations</strong><small>120+ tools merge into your lane</small></a>
@@ -122,7 +122,7 @@
       </div>
       <a class="nav__link" href="index.html#creators" data-roll>Creators</a>
       <div class="nav__item" data-menu>
-        <button class="nav__trigger" type="button" aria-expanded="false" aria-controls="menu-resources">Resources<svg aria-hidden="true"><use href="#i-chev-down"/></svg></button>
+        <button class="nav__trigger" type="button" aria-controls="menu-resources">Resources<svg aria-hidden="true"><use href="#i-chev-down"/></svg></button>
         <div class="dropdown" id="menu-resources" style="--cols:2">
           <a href="blog.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-pen"/></svg></span><strong>Field Notes</strong><small>Launch stories and craft notes</small></a>
           <a href="docs.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-book"/></svg></span><strong>Documentation</strong><small>Lanes, stages and every tool</small></a>
@@ -134,7 +134,7 @@
         </div>
       </div>
       <div class="nav__item" data-menu>
-        <button class="nav__trigger is-current" type="button" aria-expanded="false" aria-controls="menu-company">Company<svg aria-hidden="true"><use href="#i-chev-down"/></svg></button>
+        <button class="nav__trigger is-current" type="button" aria-controls="menu-company">Company<svg aria-hidden="true"><use href="#i-chev-down"/></svg></button>
         <div class="dropdown" id="menu-company" style="--cols:1">
           <a href="about.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-info"/></svg></span><strong>About</strong><small>Why we build roads for makers</small></a>
           <a href="careers.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-briefcase"/></svg></span><strong>Careers</strong><small>8 open roles, four hubs</small></a>
@@ -149,10 +149,12 @@
       <a class="header__signin" href="start.html#signin" data-roll>Sign in</a>
       <a class="btn btn--primary btn--sm" href="start.html" data-roll>Open a lane</a>
       <button class="header__burger" type="button" aria-expanded="false" aria-controls="menu" aria-label="Open menu"><span></span></button>
+      <!-- without scripts the menu can't open: the same burger takes you to every link, in the footer's columns -->
+      <a class="header__burger header__burger--link" href="#footer" aria-label="Menu: every link, at the foot of the page"><span></span></a>
     </div>
   </div>
 </header>
-<div class="menu" id="menu" role="dialog" aria-modal="true" aria-label="Menu">
+<div class="menu" id="menu" role="dialog" aria-label="Menu">
   <div class="menu__groups">
     <div class="menu__group">
       <h2>Product</h2>
@@ -325,9 +327,9 @@
           <figcaption class="pr-tile__foot">
             <span class="pr-tile__name"><strong>On dark</strong> Chrome C, white name</span>
             <span class="pr-tile__dl pr-js" role="group" aria-label="Download for dark backgrounds">
-              <button class="btn btn--sm" type="button" data-logo="lockup" data-theme="dark" aria-label="Download the lockup for dark backgrounds, SVG"><svg aria-hidden="true"><use href="#i-download"/></svg>Lockup</button>
-              <button class="btn btn--sm" type="button" data-logo="mark" data-theme="dark" aria-label="Download the C for dark backgrounds, SVG"><svg aria-hidden="true"><use href="#i-download"/></svg>Mark</button>
-              <button class="btn btn--sm" type="button" data-logo="wordmark" data-theme="dark" aria-label="Download the wordmark for dark backgrounds, SVG"><svg aria-hidden="true"><use href="#i-download"/></svg>Wordmark</button>
+              <button class="btn btn--sm" type="button" data-logo="lockup" data-theme="dark" aria-label="Lockup: download it for dark backgrounds, SVG"><svg aria-hidden="true"><use href="#i-download"/></svg>Lockup</button>
+              <button class="btn btn--sm" type="button" data-logo="mark" data-theme="dark" aria-label="Mark: download the C for dark backgrounds, SVG"><svg aria-hidden="true"><use href="#i-download"/></svg>Mark</button>
+              <button class="btn btn--sm" type="button" data-logo="wordmark" data-theme="dark" aria-label="Wordmark: download it for dark backgrounds, SVG"><svg aria-hidden="true"><use href="#i-download"/></svg>Wordmark</button>
             </span>
           </figcaption>
         </figure>
@@ -341,9 +343,9 @@
           <figcaption class="pr-tile__foot">
             <span class="pr-tile__name"><strong>On light</strong> Solid black, C and name</span>
             <span class="pr-tile__dl pr-js" role="group" aria-label="Download for light backgrounds">
-              <button class="btn btn--sm" type="button" data-logo="lockup" data-theme="light" aria-label="Download the lockup for light backgrounds, SVG"><svg aria-hidden="true"><use href="#i-download"/></svg>Lockup</button>
-              <button class="btn btn--sm" type="button" data-logo="mark" data-theme="light" aria-label="Download the C for light backgrounds, SVG"><svg aria-hidden="true"><use href="#i-download"/></svg>Mark</button>
-              <button class="btn btn--sm" type="button" data-logo="wordmark" data-theme="light" aria-label="Download the wordmark for light backgrounds, SVG"><svg aria-hidden="true"><use href="#i-download"/></svg>Wordmark</button>
+              <button class="btn btn--sm" type="button" data-logo="lockup" data-theme="light" aria-label="Lockup: download it for light backgrounds, SVG"><svg aria-hidden="true"><use href="#i-download"/></svg>Lockup</button>
+              <button class="btn btn--sm" type="button" data-logo="mark" data-theme="light" aria-label="Mark: download the C for light backgrounds, SVG"><svg aria-hidden="true"><use href="#i-download"/></svg>Mark</button>
+              <button class="btn btn--sm" type="button" data-logo="wordmark" data-theme="light" aria-label="Wordmark: download it for light backgrounds, SVG"><svg aria-hidden="true"><use href="#i-download"/></svg>Wordmark</button>
             </span>
           </figcaption>
         </figure>
@@ -383,47 +385,47 @@
           <h2 class="title-2" id="pr-colour-title" data-split>Six stages, one night.</h2>
         </div>
         <div class="section-head__aside">
-          <p class="lede">Every colour means a stage of the lane, always. Set them as light on black: hairlines, dots and soft glows, never big flat fills. Click a swatch to copy its hex.</p>
+          <p class="lede">Every colour means a stage of the lane, always. Set them as light on black: hairlines, dots and soft glows, never big flat fills.<span class="pr-js"> Click a swatch to copy its hex.</span></p>
         </div>
       </div>
       <ul class="pr-swatches" data-reveal-stagger="0.05">
-        <li><button class="pr-swatch" type="button" style="--c: #3a6dff" data-copy="#3a6dff" data-copy-toast="#3a6dff copied" aria-label="Copy Spark blue, #3a6dff">
-          <span class="pr-swatch__light" aria-hidden="true"><i></i></span>
+        <li><button class="pr-swatch" type="button" style="--c: #3a6dff" data-copy="#3a6dff" data-copy-toast="#3a6dff copied" disabled>
+          <span class="sr pr-js">Copy </span><span class="pr-swatch__light" aria-hidden="true"><i></i></span>
           <span class="pr-swatch__body"><span class="pr-swatch__n">01 · Spark</span><span class="pr-swatch__name">Spark blue</span><span class="pr-swatch__tool">Sparkboard</span>
           <span class="pr-swatch__codes"><span>#3A6DFF</span><span>RGB 58 109 255</span></span></span>
           <svg class="icon pr-swatch__copy" aria-hidden="true"><use href="#i-copy"/></svg></button></li>
-        <li><button class="pr-swatch" type="button" style="--c: #23d3ff" data-copy="#23d3ff" data-copy-toast="#23d3ff copied" aria-label="Copy Shape cyan, #23d3ff">
-          <span class="pr-swatch__light" aria-hidden="true"><i></i></span>
+        <li><button class="pr-swatch" type="button" style="--c: #23d3ff" data-copy="#23d3ff" data-copy-toast="#23d3ff copied" disabled>
+          <span class="sr pr-js">Copy </span><span class="pr-swatch__light" aria-hidden="true"><i></i></span>
           <span class="pr-swatch__body"><span class="pr-swatch__n">02 · Shape</span><span class="pr-swatch__name">Shape cyan</span><span class="pr-swatch__tool">Blueprints</span>
           <span class="pr-swatch__codes"><span>#23D3FF</span><span>RGB 35 211 255</span></span></span>
           <svg class="icon pr-swatch__copy" aria-hidden="true"><use href="#i-copy"/></svg></button></li>
-        <li><button class="pr-swatch" type="button" style="--c: #20d69b" data-copy="#20d69b" data-copy-toast="#20d69b copied" aria-label="Copy Make green, #20d69b">
-          <span class="pr-swatch__light" aria-hidden="true"><i></i></span>
+        <li><button class="pr-swatch" type="button" style="--c: #20d69b" data-copy="#20d69b" data-copy-toast="#20d69b copied" disabled>
+          <span class="sr pr-js">Copy </span><span class="pr-swatch__light" aria-hidden="true"><i></i></span>
           <span class="pr-swatch__body"><span class="pr-swatch__n">03 · Make</span><span class="pr-swatch__name">Make green</span><span class="pr-swatch__tool">Workbench</span>
           <span class="pr-swatch__codes"><span>#20D69B</span><span>RGB 32 214 155</span></span></span>
           <svg class="icon pr-swatch__copy" aria-hidden="true"><use href="#i-copy"/></svg></button></li>
-        <li><button class="pr-swatch" type="button" style="--c: #ffb13d" data-copy="#ffb13d" data-copy-toast="#ffb13d copied" aria-label="Copy Review amber, #ffb13d">
-          <span class="pr-swatch__light" aria-hidden="true"><i></i></span>
+        <li><button class="pr-swatch" type="button" style="--c: #ffb13d" data-copy="#ffb13d" data-copy-toast="#ffb13d copied" disabled>
+          <span class="sr pr-js">Copy </span><span class="pr-swatch__light" aria-hidden="true"><i></i></span>
           <span class="pr-swatch__body"><span class="pr-swatch__n">04 · Review</span><span class="pr-swatch__name">Review amber</span><span class="pr-swatch__tool">Review Room</span>
           <span class="pr-swatch__codes"><span>#FFB13D</span><span>RGB 255 177 61</span></span></span>
           <svg class="icon pr-swatch__copy" aria-hidden="true"><use href="#i-copy"/></svg></button></li>
-        <li><button class="pr-swatch" type="button" style="--c: #ff3b3b" data-copy="#ff3b3b" data-copy-toast="#ff3b3b copied" aria-label="Copy Launch red, #ff3b3b">
-          <span class="pr-swatch__light" aria-hidden="true"><i></i></span>
+        <li><button class="pr-swatch" type="button" style="--c: #ff3b3b" data-copy="#ff3b3b" data-copy-toast="#ff3b3b copied" disabled>
+          <span class="sr pr-js">Copy </span><span class="pr-swatch__light" aria-hidden="true"><i></i></span>
           <span class="pr-swatch__body"><span class="pr-swatch__n">05 · Launch</span><span class="pr-swatch__name">Launch red</span><span class="pr-swatch__tool">Countdown</span>
           <span class="pr-swatch__codes"><span>#FF3B3B</span><span>RGB 255 59 59</span></span></span>
           <svg class="icon pr-swatch__copy" aria-hidden="true"><use href="#i-copy"/></svg></button></li>
-        <li><button class="pr-swatch" type="button" style="--c: #ff7ad9" data-copy="#ff7ad9" data-copy-toast="#ff7ad9 copied" aria-label="Copy Afterglow pink, #ff7ad9">
-          <span class="pr-swatch__light" aria-hidden="true"><i></i></span>
+        <li><button class="pr-swatch" type="button" style="--c: #ff7ad9" data-copy="#ff7ad9" data-copy-toast="#ff7ad9 copied" disabled>
+          <span class="sr pr-js">Copy </span><span class="pr-swatch__light" aria-hidden="true"><i></i></span>
           <span class="pr-swatch__body"><span class="pr-swatch__n">06 · Afterglow</span><span class="pr-swatch__name">Afterglow pink</span><span class="pr-swatch__tool">Afterglow</span>
           <span class="pr-swatch__codes"><span>#FF7AD9</span><span>RGB 255 122 217</span></span></span>
           <svg class="icon pr-swatch__copy" aria-hidden="true"><use href="#i-copy"/></svg></button></li>
-        <li><button class="pr-swatch pr-swatch--night" type="button" style="--c: #000000" data-copy="#000000" data-copy-toast="#000000 copied" aria-label="Copy Night, #000000">
-          <span class="pr-swatch__light" aria-hidden="true"><i></i></span>
+        <li><button class="pr-swatch pr-swatch--night" type="button" style="--c: #000000" data-copy="#000000" data-copy-toast="#000000 copied" disabled>
+          <span class="sr pr-js">Copy </span><span class="pr-swatch__light" aria-hidden="true"><i></i></span>
           <span class="pr-swatch__body"><span class="pr-swatch__n">Ground</span><span class="pr-swatch__name">Night</span><span class="pr-swatch__tool">Every surface</span>
           <span class="pr-swatch__codes"><span>#000000</span><span>RGB 0 0 0</span></span></span>
           <svg class="icon pr-swatch__copy" aria-hidden="true"><use href="#i-copy"/></svg></button></li>
-        <li><button class="pr-swatch pr-swatch--white" type="button" style="--c: #ffffff" data-copy="#ffffff" data-copy-toast="#ffffff copied" aria-label="Copy White, #ffffff">
-          <span class="pr-swatch__light" aria-hidden="true"><i></i></span>
+        <li><button class="pr-swatch pr-swatch--white" type="button" style="--c: #ffffff" data-copy="#ffffff" data-copy-toast="#ffffff copied" disabled>
+          <span class="sr pr-js">Copy </span><span class="pr-swatch__light" aria-hidden="true"><i></i></span>
           <span class="pr-swatch__body"><span class="pr-swatch__n">Ink</span><span class="pr-swatch__name">White</span><span class="pr-swatch__tool">Type, hairlines, the C</span>
           <span class="pr-swatch__codes"><span>#FFFFFF</span><span>RGB 255 255 255</span></span></span>
           <svg class="icon pr-swatch__copy" aria-hidden="true"><use href="#i-copy"/></svg></button></li>
@@ -709,7 +711,7 @@
       <a class="btn btn--primary btn--lg" href="start.html" data-roll>Open your first lane</a>
       <a class="btn btn--lg" href="pricing.html" data-roll>See plans</a>
     </div>
-    <p class="small">Free for 3 lanes · No card · Export everything, always.</p>
+    <p class="small">Free for 3&nbsp;lanes&nbsp;<span aria-hidden="true">·</span> No&nbsp;card&nbsp;<span aria-hidden="true">·</span> Export everything,&nbsp;always.</p>
   </div>
 </section>
 </main>
@@ -791,7 +793,7 @@
 
     <div class="base">
       <p class="copy">© <span class="year">2026</span> Crestora. All rights reserved.</p>
-      <p class="love"><button class="heart" type="button" aria-label="Send some love"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19.6S4.4 15.1 4.4 9.6A4.2 4.2 0 0 1 12 7.2a4.2 4.2 0 0 1 7.6 2.4c0 5.5-7.6 10-7.6 10Z"/></svg></button><span>Made with love by Pranav</span></p>
+      <p class="love"><button class="heart" type="button" aria-label="Send some love" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19.6S4.4 15.1 4.4 9.6A4.2 4.2 0 0 1 12 7.2a4.2 4.2 0 0 1 7.6 2.4c0 5.5-7.6 10-7.6 10Z"/></svg></button><span>Made with love by Pranav</span></p>
     </div>
 
     <!-- the road: where the car is; holding it down puts your foot down -->

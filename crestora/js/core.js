@@ -83,28 +83,55 @@ export function scrollToTarget(target, { offset, immediate = false } = {}) {
 }
 
 // ---- the one toast: the footer's hint pill at the foot of the screen ----
-let toastEl = null, toastT = 0;
-export function toast(text, key = 'Demo') {
-  if (!toastEl) {
-    toastEl = document.createElement('div');
-    toastEl.className = 'toast';
-    toastEl.setAttribute('role', 'status');
-    toastEl.setAttribute('aria-live', 'polite');
+// It is a live region (role=status), and a screen reader only reads a change to a region it already knows: one that
+// arrives already filled is usually missed. So the regions are in place, empty, from the start (boot() calls
+// toastRegions): one on the page, and one inside each <dialog> (a modal dialog sits in the top layer and makes the page
+// behind it inert: while one is open the toast rides inside it). A message is written a frame after the region is
+// cleared, so even the same words twice are a change, and cleared once the toast has gone, so no stale line is left
+// for a reader to find.
+const toastEls = new Map();
+let toastT = 0, toastGen = 0;
+function toastRegion(host) {
+  let el = toastEls.get(host);
+  if (!el || !el.isConnected) {
+    el = document.createElement('div');
+    el.className = 'toast';
+    el.setAttribute('role', 'status');
+    el.setAttribute('aria-live', 'polite');
+    el.setAttribute('aria-atomic', 'true');
+    host.append(el);
+    toastEls.set(host, el);
   }
-  // a modal dialog sits in the top layer, above everything else: while one is open the toast rides inside it
-  const host = document.querySelector('dialog[open]') || document.body;
-  if (toastEl.parentElement !== host) host.append(toastEl);
+  return el;
+}
+function toastRegions() {
+  toastRegion(document.body);
+  for (const d of $$('dialog')) toastRegion(d);
+}
+export function toast(text, key = 'Demo') {
+  const el = toastRegion(document.querySelector('dialog[open]') || document.body);
+  for (const other of toastEls.values()) if (other !== el) { other.classList.remove('is-on'); other.replaceChildren(); }
   const msg = document.createElement('span');
   msg.textContent = text;
+  const parts = [msg];
   if (key) {
     const pill = document.createElement('span');
     pill.className = 'toast__key';
     pill.textContent = key;
-    toastEl.replaceChildren(pill, msg);
-  } else toastEl.replaceChildren(msg);
-  requestAnimationFrame(() => toastEl.classList.add('is-on'));
+    parts.unshift(pill);
+  }
+  const gen = ++toastGen;
+  el.replaceChildren();
+  requestAnimationFrame(() => {
+    if (gen !== toastGen) return;
+    el.replaceChildren(...parts);
+    el.classList.add('is-on');
+  });
   clearTimeout(toastT);
-  toastT = setTimeout(() => toastEl.classList.remove('is-on'), 3600);
+  toastT = setTimeout(() => {
+    el.classList.remove('is-on');
+    setTimeout(() => { if (gen === toastGen) el.replaceChildren(); }, 450);   // once it has faded
+  }, 3600);
 }
 
 // ---- storage that never throws (private windows, blocked storage); keys are prefixed crestora: ----
@@ -130,13 +157,19 @@ export const formatNumber = (v, { decimals = 0, prefix = '', suffix = '', groupi
 // data-decimals, data-prefix, data-suffix and data-grouping="false" (a year: 2021, not 2,021)
 const numberOpts = (el) => ({ decimals: parseInt(el.dataset.decimals || 0, 10), prefix: el.dataset.prefix || '', suffix: el.dataset.suffix || '', grouping: el.dataset.grouping !== 'false' });
 const isDigit = (ch) => ch >= '0' && ch <= '9';
+// A screen reader reads the number from a visually hidden copy of it (.sr), kept up to date on every roll: the columns
+// of 0–9 are hidden from it, and an aria-label on a plain span would be ignored (a generic has no name), so the number
+// would be lost. Where the caller hides the whole odometer and says the number itself (an aria-hidden odometer beside
+// its own .sr), the copy is hidden with it.
 export function odometer(el, value, opts = {}) {
   const text = formatNumber(value, opts);
-  el.setAttribute('aria-label', text);
   el.classList.add('odo');
-  if ((el._odo || '').length !== text.length) {
+  if ((el._odo || '').length !== text.length || el._odoSr?.parentElement !== el) {
     // build one column per digit (and a plain span for commas, points, signs), starting at 0
     el.textContent = '';
+    el._odoSr = document.createElement('span');
+    el._odoSr.className = 'sr';
+    el.append(el._odoSr);
     for (const ch of text) {
       const cell = document.createElement('span');
       cell.setAttribute('aria-hidden', 'true');
@@ -154,9 +187,10 @@ export function odometer(el, value, opts = {}) {
     }
     el.getBoundingClientRect(); // lay out at 0 so the columns roll from there
   }
+  el._odoSr.textContent = text;          // the number it is (or is about to roll to), as text
   el._odo = text;
   if (opts.hold) return;                 // built, held at 0 until the next call rolls it
-  const cells = [...el.children];
+  const cells = [...el.children].filter((c) => c !== el._odoSr);
   [...text].forEach((ch, i) => {
     const cell = cells[i];
     if (!cell || !cell.classList.contains('odo__d')) return;
@@ -183,6 +217,7 @@ export function boot() {
     gsap.ticker.add((t) => lenis.raf(t * 1000));
     gsap.ticker.lagSmoothing(0);
   }
+  toastRegions();
   header();
   anchors();
   rolls();
@@ -339,31 +374,49 @@ function header() {
     scenes.forEach((s) => io.observe(s));
   }
 
-  // dropdowns: open on hover (with a short grace) and on click/Enter; Escape closes and returns focus
+  // dropdowns: open on hover (with a short grace) and on click/Enter; Escape closes and returns focus.
+  // A mouse that opened one by pointing at it and then clicks its trigger (the natural move) keeps it open: only a
+  // second click, or moving away, closes it. A tap is a click (a finger has no hover). The markup has no aria-expanded
+  // (without scripts CSS opens a dropdown on hover and focus, and nothing could keep it true): it is set, and kept, here.
   for (const item of $$('.nav__item[data-menu]', bar)) {
     const btn = $('.nav__trigger', item);
-    let t = 0;
-    const open = (v) => { item.classList.toggle('is-open', v); btn.setAttribute('aria-expanded', String(v)); };
-    btn.addEventListener('click', () => open(!item.classList.contains('is-open')));
+    let t = 0, byHover = false;
+    const open = (v, hover = false) => { byHover = v && hover; item.classList.toggle('is-open', v); btn.setAttribute('aria-expanded', String(v)); };
+    btn.setAttribute('aria-expanded', 'false');
+    btn.addEventListener('click', (e) => {
+      const isOpen = item.classList.contains('is-open');
+      if (isOpen && byHover && e.detail > 0) { byHover = false; return; }
+      open(!isOpen);
+    });
     if (fine) {
-      item.addEventListener('pointerenter', () => { clearTimeout(t); open(true); });
-      item.addEventListener('pointerleave', () => { t = setTimeout(() => open(false), 160); });
+      item.addEventListener('pointerenter', (e) => { if (e.pointerType === 'touch') return; clearTimeout(t); if (!item.classList.contains('is-open')) open(true, true); });
+      item.addEventListener('pointerleave', (e) => { if (e.pointerType === 'touch') return; t = setTimeout(() => open(false), 160); });
     }
     item.addEventListener('keydown', (e) => { if (e.key === 'Escape') { open(false); btn.focus(); } });
     item.addEventListener('focusout', (e) => { if (!item.contains(e.relatedTarget)) open(false); });
   }
 
-  // the menu on small screens: a real dialog (focus kept inside, Escape, scroll locked)
-  const toggle = $('.header__burger', bar);
+  // the menu on small screens: a real dialog (focus kept inside, Escape, scroll locked). Its close control is the
+  // burger, in the bar above it, so the dialog is not aria-modal (a screen reader that honours that would hide the
+  // burger with the rest of the page); instead everything but the bar and the menu is made inert while it is open.
+  const toggle = $('button.header__burger', bar);
   const panel = $('.menu', bar.parentElement) || $('.menu');
   if (!toggle || !panel) return;
   const focusables = () => $$('a, button', panel).filter((el) => !el.closest('[hidden]'));
+  let stilled = [];
   const set = (v) => {
     bar.classList.toggle('is-open', v);
     panel.classList.toggle('is-open', v);
     toggle.setAttribute('aria-expanded', String(v));
     toggle.setAttribute('aria-label', v ? 'Close menu' : 'Open menu');
     panel.inert = !v;
+    if (v) {
+      stilled = [...document.body.children].filter((el) => !el.inert && !el.contains(bar) && !el.contains(panel) && !el.matches('script, style'));
+      for (const el of stilled) el.inert = true;
+    } else {
+      for (const el of stilled) el.inert = false;
+      stilled = [];
+    }
     if (v) { lockScroll(); setTimeout(() => focusables()[0]?.focus(), 60); } else unlockScroll();
   };
   panel.inert = true;
@@ -519,11 +572,18 @@ function paintNumber(el, text) {
     return u;
   }));
 }
+// (as with the odometer, a screen reader gets the final number as text, not the count in flight)
 export function countTo(el, to, { decimals = 0, prefix = '', suffix = '', grouping = true, duration = 1.8 } = {}) {
   const n = { v: 0 };
   const fmt = (v) => formatNumber(v, { decimals, prefix, suffix, grouping });
-  el.setAttribute('aria-label', fmt(to));
-  gsap.to(n, { v: to, duration, ease: 'power3.out', onUpdate: () => paintNumber(el, fmt(n.v)) });
+  const sr = document.createElement('span');
+  sr.className = 'sr';
+  sr.textContent = fmt(to);
+  const shown = document.createElement('span');
+  shown.setAttribute('aria-hidden', 'true');
+  paintNumber(shown, fmt(0));
+  el.replaceChildren(sr, shown);
+  gsap.to(n, { v: to, duration, ease: 'power3.out', onUpdate: () => paintNumber(shown, fmt(n.v)) });
 }
 
 // Numbers start when they are in view: wholly on screen, or with their top above the screen's lowest tenth. An

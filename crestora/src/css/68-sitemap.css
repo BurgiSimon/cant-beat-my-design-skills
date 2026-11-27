@@ -107,11 +107,11 @@
 .sm-item > a { justify-self: start; font: 400 17px/1.35 var(--font); color: var(--ink-soft); letter-spacing: -0.005em; }
 .sm-item > a[aria-current="page"] { color: #fff; }
 .sm-item > a:focus-visible { border-radius: 3px; }
-.sm-item__path { font: 12px/1.4 var(--font-mono); color: var(--ink-muted); opacity: 0.75; white-space: nowrap; }
+.sm-item__path { font: 12px/1.4 var(--font-mono); color: var(--ink-muted); white-space: nowrap; }
 .sm-item__desc { grid-column: 1 / -1; display: flex; align-items: baseline; gap: 10px; font-size: 13.5px; line-height: 1.5; color: var(--ink-muted); }
 .sm-item__subs { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
 .sm-item__subs a { display: inline-flex; align-items: center; height: 26px; padding: 0 10px; border-radius: 999px; font: 500 12px/1 var(--font); color: var(--ink-soft); box-shadow: inset 0 0 0 1px var(--line-soft); background: rgb(255 255 255 / 0.02); transition: color var(--dur), box-shadow var(--dur), background-color var(--dur); }
-.sm-item__subs a::before { content: "#"; margin-right: 4px; font-family: var(--font-mono); color: var(--ink-muted); }
+.sm-item__subs a::before { content: "#" / ""; margin-right: 4px; font-family: var(--font-mono); color: var(--ink-muted); }
 .sm-item__subs a:hover { color: #fff; box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.4); background: rgb(255 255 255 / 0.05); }
 /* a Field Note: the dot of the stage it's filed in */
 .sm-item--post .sm-item__desc::before { content: ""; flex: none; width: 7px; height: 7px; border-radius: 50%; background: var(--stage); box-shadow: 0 0 8px var(--stage); align-self: center; }

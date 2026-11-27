@@ -24,6 +24,7 @@ nav: product
       </div>
 
       <aside class="cl-sub panel panel--raised" aria-labelledby="cl-sub-title" data-reveal data-delay="0.2">
+        <span class="cl-sub__anchor" id="cl-sent"></span>
         <div class="cl-sub__head">
           <span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-mail"/></svg></span>
           <div>
@@ -31,7 +32,7 @@ nav: product
             <p class="small">One short email when a release lands, every other Friday. Nothing in between.</p>
           </div>
         </div>
-        <form class="cl-sub__form" action="{{ROOT}}changelog.html" method="get" data-form data-demo data-success="You’re on the list. v4.13 lands on 4 Dec. (Demo: nothing was sent.)" data-success-key="Subscribed">
+        <form class="cl-sub__form" action="{{ROOT}}changelog.html#cl-sent" method="get" data-form data-demo data-success="You’re on the list. v4.13 lands on 4 Dec. (Demo: nothing was sent.)" data-success-key="Subscribed">
           <div class="field">
             <label class="field__label" for="cl-email">Email</label>
             <div class="cl-sub__row">
@@ -41,6 +42,7 @@ nav: product
             <p class="field__error"></p>
           </div>
           <label class="check"><input type="checkbox" name="fixes" value="yes" checked /> Include the small fixes, not just the headlines</label>
+          <p class="cl-sub__sent" role="status">Thanks. This is a demo, so nothing was sent.</p>
         </form>
       </aside>
     </div>
@@ -381,7 +383,7 @@ nav: product
               <figure class="cl-shot mock" data-kind="new">
                 <div class="mock__bar"><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg>Review link · Kiln &amp; Co. spring drop</div>
                 <div class="cl-link">
-                  <p class="cl-link__url"><span class="mono">crestora.example/r/kiln-spring</span><span class="cl-link__copy" aria-hidden="true">Copy</span></p>
+                  <p class="cl-link__url"><span class="mono">crestora.example/<wbr><span class="cl-link__path">r/kiln-spring</span></span><span class="cl-link__copy" aria-hidden="true">Copy</span></p>
                   <ul class="cl-link__opts">
                     <li><span>Anyone with the link can leave notes</span><span class="switch" aria-checked="true" aria-hidden="true"></span></li>
                     <li><span>Expires after 7 days</span><span class="switch" aria-checked="true" aria-hidden="true"></span></li>

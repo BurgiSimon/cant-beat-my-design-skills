@@ -41,9 +41,16 @@ export default function init() {
   for (const form of $$('form[data-form]')) {
     form.noValidate = true;
     const fields = () => [...form.elements].filter((el) => el.matches('input, select, textarea'));
+    // A field is checked as it is left once it holds something (or has already been flagged), and again as it is
+    // corrected. A box or a round choice always "holds" its value, ticked or not: leaving one (tabbing through the
+    // form) says nothing until a send has flagged it. A round choice is checked with its whole group, which shares one
+    // message line, so picking any option clears the group's flag.
+    const choice = (el) => el.type === 'checkbox' || el.type === 'radio';
+    const group = (el) => (el.type === 'radio' && el.name ? fields().filter((f) => f.type === 'radio' && f.name === el.name) : [el]);
+    const recheck = (el) => { for (const f of group(el)) check(f); };
     for (const el of fields()) {
-      el.addEventListener('blur', () => { if (el.value || el.hasAttribute('aria-invalid')) check(el); });
-      el.addEventListener('input', () => { if (el.hasAttribute('aria-invalid')) check(el); });
+      el.addEventListener('blur', () => { if (el.hasAttribute('aria-invalid') || (!choice(el) && el.value)) recheck(el); });
+      el.addEventListener(choice(el) ? 'change' : 'input', () => { if (group(el).some((f) => f.hasAttribute('aria-invalid'))) recheck(el); });
     }
     form.addEventListener('submit', (e) => {
       e.preventDefault();

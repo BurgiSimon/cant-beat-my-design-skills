@@ -25,11 +25,11 @@
 <link rel="stylesheet" href="css/site.css?v={{VERSION}}" />
 <script>
   // Scripts will run: the page may hide what they are about to bring in. A repeat visit in this tab gets short
-  // intros; reduced motion (or ?reduced) gets none.
+  // intros; reduced motion (or ?reduced, or ?still: a still of the resting page) gets none.
   (function (h) {
     h.className = h.className.replace("no-js", "js");
     try { if (sessionStorage.getItem("crestora:seen")) h.classList.add("is-repeat"); } catch (e) {}
-    if (matchMedia("(prefers-reduced-motion: reduce)").matches || /[?&]reduced/.test(location.search)) h.classList.add("is-calm");
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches || /[?&](reduced|still)(?![^&=])/.test(location.search)) h.classList.add("is-calm");
     setTimeout(function () { h.classList.add("is-ready"); }, 6000); // if the scripts never get there, show everything anyway
   })(document.documentElement);
 </script>
@@ -110,7 +110,7 @@
     </a>
     <nav class="nav" aria-label="Main">
       <div class="nav__item" data-menu>
-        <button class="nav__trigger" type="button" aria-expanded="false" aria-controls="menu-product">Product<svg aria-hidden="true"><use href="#i-chev-down"/></svg></button>
+        <button class="nav__trigger" type="button" aria-controls="menu-product">Product<svg aria-hidden="true"><use href="#i-chev-down"/></svg></button>
         <div class="dropdown" id="menu-product" style="--cols:2">
           <a href="index.html#features"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-layers"/></svg></span><strong>Features</strong><small>Six lanes from spark to launch</small></a>
           <a href="integrations.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-plug"/></svg></span><strong>Integrations</strong><small>120+ tools merge into your lane</small></a>
@@ -122,7 +122,7 @@
       </div>
       <a class="nav__link" href="index.html#creators" data-roll>Creators</a>
       <div class="nav__item" data-menu>
-        <button class="nav__trigger is-current" type="button" aria-expanded="false" aria-controls="menu-resources">Resources<svg aria-hidden="true"><use href="#i-chev-down"/></svg></button>
+        <button class="nav__trigger is-current" type="button" aria-controls="menu-resources">Resources<svg aria-hidden="true"><use href="#i-chev-down"/></svg></button>
         <div class="dropdown" id="menu-resources" style="--cols:2">
           <a href="blog.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-pen"/></svg></span><strong>Field Notes</strong><small>Launch stories and craft notes</small></a>
           <a href="docs.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-book"/></svg></span><strong>Documentation</strong><small>Lanes, stages and every tool</small></a>
@@ -134,7 +134,7 @@
         </div>
       </div>
       <div class="nav__item" data-menu>
-        <button class="nav__trigger" type="button" aria-expanded="false" aria-controls="menu-company">Company<svg aria-hidden="true"><use href="#i-chev-down"/></svg></button>
+        <button class="nav__trigger" type="button" aria-controls="menu-company">Company<svg aria-hidden="true"><use href="#i-chev-down"/></svg></button>
         <div class="dropdown" id="menu-company" style="--cols:1">
           <a href="about.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-info"/></svg></span><strong>About</strong><small>Why we build roads for makers</small></a>
           <a href="careers.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-briefcase"/></svg></span><strong>Careers</strong><small>8 open roles, four hubs</small></a>
@@ -149,10 +149,12 @@
       <a class="header__signin" href="start.html#signin" data-roll>Sign in</a>
       <a class="btn btn--primary btn--sm" href="start.html" data-roll>Open a lane</a>
       <button class="header__burger" type="button" aria-expanded="false" aria-controls="menu" aria-label="Open menu"><span></span></button>
+      <!-- without scripts the menu can't open: the same burger takes you to every link, in the footer's columns -->
+      <a class="header__burger header__burger--link" href="#footer" aria-label="Menu: every link, at the foot of the page"><span></span></a>
     </div>
   </div>
 </header>
-<div class="menu" id="menu" role="dialog" aria-modal="true" aria-label="Menu">
+<div class="menu" id="menu" role="dialog" aria-label="Menu">
   <div class="menu__groups">
     <div class="menu__group">
       <h2>Product</h2>
@@ -239,7 +241,7 @@
           <h2 class="title-2" id="tu-paths-title" data-split>Pick a road, ride it through.</h2>
         </div>
         <div class="section-head__aside">
-          <p class="lede">Three paths, one for each kind of maker. Mark a lesson as done and its lane lights up; your progress stays in this browser, nowhere else.</p>
+          <p class="lede">Three paths, one for each kind of maker.<span class="tu-js"> Mark a lesson as done and its lane lights up; your progress stays in this browser, nowhere else.</span></p>
         </div>
       </header>
 
@@ -322,7 +324,7 @@
           <h2 class="title-2" id="tu-feature-title" data-split>Run a review that lands.</h2>
         </div>
         <div class="section-head__aside">
-          <p class="lede">Twelve minutes with Amara Okafor and Hye&#8209;jin Park on getting notes from a client that you can actually use. Pick a chapter to move the playhead.</p>
+          <p class="lede">Twelve minutes with Amara Okafor and Hye&#8209;jin Park on getting notes from a client that you can actually use.<span class="tu-js"> Pick a chapter to move the playhead.</span></p>
         </div>
       </header>
 
@@ -331,7 +333,7 @@
           <figure class="mock tu-player" data-tu-player data-ch="3" style="--t:0.3056" data-reveal>
             <div class="mock__bar">
               <span class="mark" aria-hidden="true"><span class="mark__sheen"></span></span>
-              <span class="tu-player__file">Night Bloom <span aria-hidden="true">/</span> Review Room</span>
+              <span class="tu-player__file">Night Bloom <span aria-hidden="true">/</span> <span class="tu-player__tool">Review Room</span></span>
               <span class="lane-chip tu-player__chip" data-stage="review">Review</span>
             </div>
             <div class="tu-poster">
@@ -372,11 +374,11 @@
           </ul>
           <h4 class="tu-label" id="tu-ch-label">Chapters</h4>
           <ol class="tu-chapters" aria-labelledby="tu-ch-label">
-            <li><button type="button" data-chapter="1" data-t="0"><span class="tu-chapters__n">01</span><span class="tu-chapters__t">Before you send the link<small>One cut, one question, the right people.</small></span><span class="tu-chapters__at">00:00</span></button></li>
-            <li><button type="button" data-chapter="2" data-t="110"><span class="tu-chapters__n">02</span><span class="tu-chapters__t">One line of direction<small>Say what kind of notes you need.</small></span><span class="tu-chapters__at">01:50</span></button></li>
-            <li><button type="button" data-chapter="3" data-t="220" aria-current="true"><span class="tu-chapters__n">03</span><span class="tu-chapters__t">Notes that sit on the frame<small>Pins on frame 203, not a PDF of opinions.</small></span><span class="tu-chapters__at">03:40</span></button></li>
-            <li><button type="button" data-chapter="4" data-t="390"><span class="tu-chapters__n">04</span><span class="tu-chapters__t">Replies, re-cuts and v7<small>Notes ride into the next version and close there.</small></span><span class="tu-chapters__at">06:30</span></button></li>
-            <li><button type="button" data-chapter="5" data-t="560"><span class="tu-chapters__n">05</span><span class="tu-chapters__t">Asking for the approval<small>One click, on the record, and the lane moves on.</small></span><span class="tu-chapters__at">09:20</span></button></li>
+            <li><button type="button" data-chapter="1" disabled data-t="0"><span class="tu-chapters__n">01</span><span class="tu-chapters__t">Before you send the link<small>One cut, one question, the right people.</small></span><span class="tu-chapters__at">00:00</span></button></li>
+            <li><button type="button" data-chapter="2" disabled data-t="110"><span class="tu-chapters__n">02</span><span class="tu-chapters__t">One line of direction<small>Say what kind of notes you need.</small></span><span class="tu-chapters__at">01:50</span></button></li>
+            <li><button type="button" data-chapter="3" disabled data-t="220" aria-current="true"><span class="tu-chapters__n">03</span><span class="tu-chapters__t">Notes that sit on the frame<small>Pins on frame 203, not a PDF of opinions.</small></span><span class="tu-chapters__at">03:40</span></button></li>
+            <li><button type="button" data-chapter="4" disabled data-t="390"><span class="tu-chapters__n">04</span><span class="tu-chapters__t">Replies, re-cuts and v7<small>Notes ride into the next version and close there.</small></span><span class="tu-chapters__at">06:30</span></button></li>
+            <li><button type="button" data-chapter="5" disabled data-t="560"><span class="tu-chapters__n">05</span><span class="tu-chapters__t">Asking for the approval<small>One click, on the record, and the lane moves on.</small></span><span class="tu-chapters__at">09:20</span></button></li>
           </ol>
           <div class="tu-feature__foot">
             <label class="check tu-done"><input type="checkbox" data-lesson="review-clients"> Mark as done</label>
@@ -387,11 +389,11 @@
         <div class="tu-transcript" data-reveal>
           <h3 class="tu-label">Transcript <span>from 03:40</span></h3>
           <ol class="tu-lines">
-            <li><button type="button" class="tu-lines__t" data-seek="220" aria-label="Jump to 03:40">03:40</button><p><b>Hye-jin</b> So Ruth, the festival’s programmer, opens the link. No account, no password. What does she see first?</p></li>
-            <li><button type="button" class="tu-lines__t" data-seek="228" aria-label="Jump to 03:48">03:48</button><p><b>Amara</b> The cut, and one line from me: notes on timing only, colour isn’t final. If you don’t say what you need, you get notes on everything.</p></li>
-            <li><button type="button" class="tu-lines__t" data-seek="246" aria-label="Jump to 04:06">04:06</button><p><b>Amara</b> Then she pauses, presses N and clicks right where it hurts. Frame 203: the petals close too early. It reads like the flower gives up.</p></li>
-            <li><button type="button" class="tu-lines__t" data-seek="265" aria-label="Jump to 04:25">04:25</button><p><b>Hye-jin</b> And when you upload v7, where does that note go?</p></li>
-            <li><button type="button" class="tu-lines__t" data-seek="270" aria-label="Jump to 04:30">04:30</button><p><b>Amara</b> It rides along with the frame. I re-cut, resolve it in v7, and Ruth sees it closed without either of us writing an email.</p></li>
+            <li><button type="button" class="tu-lines__t" disabled data-seek="220" aria-label="Jump to 03:40">03:40</button><p><b>Hye-jin</b> So Ruth, the festival’s programmer, opens the link. No account, no password. What does she see first?</p></li>
+            <li><button type="button" class="tu-lines__t" disabled data-seek="228" aria-label="Jump to 03:48">03:48</button><p><b>Amara</b> The cut, and one line from me: notes on timing only, colour isn’t final. If you don’t say what you need, you get notes on everything.</p></li>
+            <li><button type="button" class="tu-lines__t" disabled data-seek="246" aria-label="Jump to 04:06">04:06</button><p><b>Amara</b> Then she pauses, presses N and clicks right where it hurts. Frame 203: the petals close too early. It reads like the flower gives up.</p></li>
+            <li><button type="button" class="tu-lines__t" disabled data-seek="265" aria-label="Jump to 04:25">04:25</button><p><b>Hye-jin</b> And when you upload v7, where does that note go?</p></li>
+            <li><button type="button" class="tu-lines__t" disabled data-seek="270" aria-label="Jump to 04:30">04:30</button><p><b>Amara</b> It rides along with the frame. I re-cut, resolve it in v7, and Ruth sees it closed without either of us writing an email.</p></li>
           </ol>
         </div>
       </div>
@@ -407,7 +409,7 @@
           <h2 class="title-2" id="tu-lib-title" data-split>Twelve lessons, one road.</h2>
         </div>
         <div class="section-head__aside">
-          <p class="lede">None longer than a coffee. Filter by who you are, how far along you are and the stage you’re stuck in.</p>
+          <p class="lede">None longer than a coffee.<span class="tu-js"> Filter by who you are, how far along you are and the stage you’re stuck in.</span></p>
         </div>
       </header>
 
@@ -719,7 +721,7 @@
       <a class="btn btn--primary btn--lg" href="start.html" data-roll>Open your first lane</a>
       <a class="btn btn--lg" href="pricing.html" data-roll>See plans</a>
     </div>
-    <p class="small">Free for 3 lanes · No card · Export everything, always.</p>
+    <p class="small">Free for 3&nbsp;lanes&nbsp;<span aria-hidden="true">·</span> No&nbsp;card&nbsp;<span aria-hidden="true">·</span> Export everything,&nbsp;always.</p>
   </div>
 </section>
 </main>
@@ -801,7 +803,7 @@
 
     <div class="base">
       <p class="copy">© <span class="year">2026</span> Crestora. All rights reserved.</p>
-      <p class="love"><button class="heart" type="button" aria-label="Send some love"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19.6S4.4 15.1 4.4 9.6A4.2 4.2 0 0 1 12 7.2a4.2 4.2 0 0 1 7.6 2.4c0 5.5-7.6 10-7.6 10Z"/></svg></button><span>Made with love by Pranav</span></p>
+      <p class="love"><button class="heart" type="button" aria-label="Send some love" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19.6S4.4 15.1 4.4 9.6A4.2 4.2 0 0 1 12 7.2a4.2 4.2 0 0 1 7.6 2.4c0 5.5-7.6 10-7.6 10Z"/></svg></button><span>Made with love by Pranav</span></p>
     </div>
 
     <!-- the road: where the car is; holding it down puts your foot down -->

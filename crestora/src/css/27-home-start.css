@@ -63,8 +63,11 @@
 .home-start__input.is-swapping::placeholder { color: transparent; }
 .home-start__field .field__error:empty { display: none; }
 .home-start__go { height: 56px; margin-top: 6px; font-size: 16px; }
-.home-start__fine { color: var(--ink-muted); text-wrap: balance; }
-.home-start__fine span { margin: 0 0.35em; opacity: 0.6; }
+/* the fine print, as the hero sets it: its phrases never break, and where it can't keep to one line it breaks at its
+   second dot, which goes, never leaving a dot at the end of a line */
+.home-start__fine { color: var(--ink-muted); }
+.home-start__fine > span { white-space: nowrap; }
+.home-start__fine .home-start__sep { margin: 0 0.35em; opacity: 0.6; }
 .home-start__done { display: flex; align-items: center; gap: 10px; font-size: 14px; line-height: 1.5; color: var(--ink-soft); }
 .home-start__done[hidden] { display: none; }
 .home-start__done .icon { width: 16px; height: 16px; color: #fff; }
@@ -159,6 +162,11 @@
   .home-start__title { font-size: clamp(30px, 9vw, 44px); }
   /* the arc stays a low horizon, wider than the screen, rather than a narrow rainbow */
   .home-start__horizon { left: 50%; width: 260%; max-width: none; height: 110px; translate: -50% 0; }
+}
+/* the fine print's one line needs about 380 px */
+@media (max-width: 479.98px) {
+  .home-start__fine .home-start__sep--2 { display: none; }
+  .home-start__fine > span:last-child { display: block; margin-top: 4px; }
 }
 @media (max-width: 420px) {
   :is(.home-start, [data-page="start"]) .lane-card__names { font-size: 10.5px; letter-spacing: -0.01em; }

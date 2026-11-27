@@ -74,3 +74,20 @@
   .header__inner { justify-content: space-between; }
 }
 @media (min-width: 1024px) { .menu { display: none; } }
+
+/* ---- without scripts ---- */
+/* the bar is frosted from the start (nothing would frost it once the page moves); where the browser can tie it to the
+   scroll, it stays clear over the top of the page as it does with scripts */
+.no-js .header::before { opacity: 1; }
+@supports (animation-timeline: scroll()) {
+  .no-js .header::before { animation: header-frost linear both; animation-timeline: scroll(root); animation-range: 0px 16px; }
+}
+@keyframes header-frost { from { opacity: 0; } }
+/* a dropdown opens on hover and while focus is inside its item (its trigger, then its links) */
+.no-js .nav__item:is(:hover, :focus-within) .dropdown { opacity: 1; visibility: visible; translate: 0 0; transition: opacity 0.25s var(--ease-out), translate 0.35s var(--ease-out), visibility 0s; }
+.no-js .nav__item:is(:hover, :focus-within) .nav__trigger { color: #fff; background: rgb(255 255 255 / 0.05); }
+.no-js .nav__item:is(:hover, :focus-within) .nav__trigger svg { rotate: 180deg; }
+/* the burger can't open the menu: in its place, the same burger as a link to the footer's columns */
+@media (max-width: 1023.98px) {
+  .js .header__burger--link, .no-js button.header__burger { display: none; }
+}

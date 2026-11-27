@@ -5,7 +5,10 @@
 //  - The empty state says what was searched and pre-fills the request form's app name with it; when a lane chip is
 //    hiding an app that does exist in another lane, it says so and offers every lane instead.
 //  - Connect buttons in the dialogs say it's a demo; "/" jumps to the search field.
+//  - Details is a link to the app's #app-<slug> (without scripts the details are listed under the directory); with
+//    scripts the dialog module opens it, and a link to #app-<slug> opens that dialog on arrival.
 import { toast, scrollToTarget, landing, restingTop, $, $$ } from '../core.js';
+import { keepFocusInStrips } from './page-strips.js';
 
 export default function init() {
   const scope = $('.ig-dir');
@@ -14,6 +17,7 @@ export default function init() {
   const reqApp = $('#req-app');
   const reqWhat = $('#req-what');
   const cards = $$('.ig-card', scope);
+  keepFocusInStrips($('.ig-chips-wrap', scope));
 
   // ---- a card is one big target for its dialog ----
   for (const card of cards) {
@@ -46,6 +50,7 @@ export default function init() {
   };
   mark();
   centreCards();
+  openFromHash();
   addEventListener('hashchange', mark);
   addEventListener('popstate', mark);
   // once someone opens another card, the landing light has done its job
@@ -141,4 +146,13 @@ function centreCards() {
     if (!t.classList.contains('ig-card')) return undefined;
     return restingTop(t) + scrollY - Math.max(96, Math.round((innerHeight - t.offsetHeight) / 2));
   });
+}
+
+// integrations.html#app-framewright opens that app's details (once the dialog module has wired itself up)
+function openFromHash() {
+  const id = decodeURIComponent(location.hash.slice(1));
+  if (!/^app-[\w-]+$/.test(id) || !document.getElementById(id)) return;
+  const open = () => document.querySelector(`[data-dialog-open="${id}"]`)?.click();
+  if (document.readyState === 'complete') setTimeout(open, 300);
+  else addEventListener('load', () => setTimeout(open, 300), { once: true });
 }

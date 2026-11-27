@@ -542,9 +542,15 @@ export function createScene(canvas, { frame, calm = false }) {
     draw(dt, rate);
     raf = requestAnimationFrame(tick);
   }
-  function start() { if (calm) { draw(); return; } running = true; if (!raf) { last = performance.now(); raf = requestAnimationFrame(tick); } }
+  function start() { if (calm || paused) { draw(); return; } running = true; if (!raf) { last = performance.now(); raf = requestAnimationFrame(tick); } }
   // the page pauses it while the footer is off screen
   function stop() { running = false; cancelAnimationFrame(raf); raf = 0; }
+  // the reader can pause it (the footer's pause button): it rests on the frame it is on until they play it again
+  let paused = false;
+  function pause(on) {
+    paused = on;
+    if (on) { stop(); draw(); } else if (onScreen) start();
+  }
   document.addEventListener('visibilitychange', () => { visible = !document.hidden; if (visible && running && !raf) { last = performance.now(); raf = requestAnimationFrame(tick); } });
   addEventListener('resize', () => { if (!running && onScreen) draw(); });
   let onScreen = true;
@@ -558,8 +564,9 @@ export function createScene(canvas, { frame, calm = false }) {
   return {
     state,
     ready: carReady,
-    start, stop, draw, warm,
+    start, stop, draw, warm, pause,
     get running() { return running; },
+    get paused() { return paused; },
     set onScreen(v) { onScreen = v; },
     /** design px of a point on the page (css px, viewport) */
     toDesign(x, y) { const f = frame(); const r = canvas.getBoundingClientRect(); return { x: (x - r.left - f.x) / f.s, y: (y - r.top - f.y) / f.s }; },

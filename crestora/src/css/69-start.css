@@ -151,7 +151,11 @@
 .no-js [data-page="start"] .start-tabs, .no-js [data-page="start"] .start-signin__new { display: none; }
 .no-js [data-page="start"] .start-panel[hidden] { display: block; }
 .no-js [data-page="start"] .start-panel { margin-top: 0; }
-.no-js [data-page="start"] #signin { margin-top: 40px; padding-top: 32px; border-top: 1px solid var(--line-faint); }
+.no-js [data-page="start"] #signin { position: relative; margin-top: 40px; padding-top: 32px; border-top: 1px solid var(--line-faint); }
+/* the sign-in form comes back to #signin-sent and says what happened */
+[data-page="start"] .start-signin__anchor { position: absolute; top: 0; left: 0; width: 1px; height: 1px; }
+[data-page="start"] .start-signin__sent--nojs { display: none; }
+.no-js [data-page="start"] #signin:has(#signin-sent:target) .start-signin__sent--nojs { display: block; }
 
 /* ---- a tablet or a phone: one column (the words, the form, then the card) ---- */
 @media (max-width: 1099.98px) {

@@ -120,7 +120,7 @@ Classes (`03-components.css`): `.container`, `.container--narrow`, `.section`, `
 type `.display` (hero H1 only), `.title-1` (page H1), `.title-2` (section H2), `.title-3` (card/stage titles),
 `.title-4`, `.lede`, `.body-l`, `.body`, `.small`, `.mono`, `.ink-spectrum`, `.eyebrow`; `.section-head`
 (+ `__aside`, `--center`); buttons `.btn` (+ `--primary --lg --sm --block`), `.btn-row`, `.link-arrow`; surfaces
-`.panel`, `.panel--raised`, `[data-spotlight]`; `.chip` (+ `--live`), `.dot` (`--c`), `.streak`, `.icon`, `.icon--lg`,
+`.panel`, `.panel--raised`, `[data-spotlight]`; `.chip` (+ `--live`: a white status dot, or its stage's with `data-stage`), `.dot` (`--c`), `.streak`, `.icon`, `.icon--lg`,
 `.icon-box`; forms `.field __label __hint __error`, `.input` (input/select/textarea), `.check`, `.segmented`
 (+ `__thumb`); `.page-hero` (+ `__inner`, `__lanes`), `.breadcrumb`; `.prose`, `.toc`, `.with-toc`; `.accordion`
 (details/summary + `.accordion__body`); `.toast`; `.stage-rail` (`<div class="stage-rail" data-n="3"><i></i>×6</div>`: six dots on a hairline, the first n lit);

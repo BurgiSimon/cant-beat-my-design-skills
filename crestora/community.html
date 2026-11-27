@@ -25,11 +25,11 @@
 <link rel="stylesheet" href="css/site.css?v={{VERSION}}" />
 <script>
   // Scripts will run: the page may hide what they are about to bring in. A repeat visit in this tab gets short
-  // intros; reduced motion (or ?reduced) gets none.
+  // intros; reduced motion (or ?reduced, or ?still: a still of the resting page) gets none.
   (function (h) {
     h.className = h.className.replace("no-js", "js");
     try { if (sessionStorage.getItem("crestora:seen")) h.classList.add("is-repeat"); } catch (e) {}
-    if (matchMedia("(prefers-reduced-motion: reduce)").matches || /[?&]reduced/.test(location.search)) h.classList.add("is-calm");
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches || /[?&](reduced|still)(?![^&=])/.test(location.search)) h.classList.add("is-calm");
     setTimeout(function () { h.classList.add("is-ready"); }, 6000); // if the scripts never get there, show everything anyway
   })(document.documentElement);
 </script>
@@ -110,7 +110,7 @@
     </a>
     <nav class="nav" aria-label="Main">
       <div class="nav__item" data-menu>
-        <button class="nav__trigger" type="button" aria-expanded="false" aria-controls="menu-product">Product<svg aria-hidden="true"><use href="#i-chev-down"/></svg></button>
+        <button class="nav__trigger" type="button" aria-controls="menu-product">Product<svg aria-hidden="true"><use href="#i-chev-down"/></svg></button>
         <div class="dropdown" id="menu-product" style="--cols:2">
           <a href="index.html#features"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-layers"/></svg></span><strong>Features</strong><small>Six lanes from spark to launch</small></a>
           <a href="integrations.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-plug"/></svg></span><strong>Integrations</strong><small>120+ tools merge into your lane</small></a>
@@ -122,7 +122,7 @@
       </div>
       <a class="nav__link" href="index.html#creators" data-roll>Creators</a>
       <div class="nav__item" data-menu>
-        <button class="nav__trigger is-current" type="button" aria-expanded="false" aria-controls="menu-resources">Resources<svg aria-hidden="true"><use href="#i-chev-down"/></svg></button>
+        <button class="nav__trigger is-current" type="button" aria-controls="menu-resources">Resources<svg aria-hidden="true"><use href="#i-chev-down"/></svg></button>
         <div class="dropdown" id="menu-resources" style="--cols:2">
           <a href="blog.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-pen"/></svg></span><strong>Field Notes</strong><small>Launch stories and craft notes</small></a>
           <a href="docs.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-book"/></svg></span><strong>Documentation</strong><small>Lanes, stages and every tool</small></a>
@@ -134,7 +134,7 @@
         </div>
       </div>
       <div class="nav__item" data-menu>
-        <button class="nav__trigger" type="button" aria-expanded="false" aria-controls="menu-company">Company<svg aria-hidden="true"><use href="#i-chev-down"/></svg></button>
+        <button class="nav__trigger" type="button" aria-controls="menu-company">Company<svg aria-hidden="true"><use href="#i-chev-down"/></svg></button>
         <div class="dropdown" id="menu-company" style="--cols:1">
           <a href="about.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-info"/></svg></span><strong>About</strong><small>Why we build roads for makers</small></a>
           <a href="careers.html"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-briefcase"/></svg></span><strong>Careers</strong><small>8 open roles, four hubs</small></a>
@@ -149,10 +149,12 @@
       <a class="header__signin" href="start.html#signin" data-roll>Sign in</a>
       <a class="btn btn--primary btn--sm" href="start.html" data-roll>Open a lane</a>
       <button class="header__burger" type="button" aria-expanded="false" aria-controls="menu" aria-label="Open menu"><span></span></button>
+      <!-- without scripts the menu can't open: the same burger takes you to every link, in the footer's columns -->
+      <a class="header__burger header__burger--link" href="#footer" aria-label="Menu: every link, at the foot of the page"><span></span></a>
     </div>
   </div>
 </header>
-<div class="menu" id="menu" role="dialog" aria-modal="true" aria-label="Menu">
+<div class="menu" id="menu" role="dialog" aria-label="Menu">
   <div class="menu__groups">
     <div class="menu__group">
       <h2>Product</h2>
@@ -344,7 +346,7 @@
           </div>
           <p class="cm-meet__when" data-when data-tz="Europe/Lisbon" data-city="Lisbon"><time class="cm-meet__time" datetime="2026-12-02T19:00:00Z">19:00</time><span class="cm-meet__zone">Lisbon time</span><span class="cm-meet__there">Wed 2 Dec, 19:00–21:30</span></p>
           <p class="cm-meet__seats"><span>22 of 60 seats left</span><i style="--left:0.37" aria-hidden="true"></i></p>
-          <button class="btn btn--sm cm-meet__add" type="button" data-ics data-title="Creator Circle Lisbon: First-launch show-and-tell" data-start="2026-12-02T19:00:00Z" data-end="2026-12-02T21:30:00Z" data-location="Crestora Lisbon hub, Lisbon" data-description="Five first launches, five minutes each, then pastéis. Hosted by Joana Prates." aria-label="Add the Lisbon Circle on 2 December to your calendar"><svg aria-hidden="true"><use href="#i-calendar"/></svg>Add to calendar</button>
+          <button class="btn btn--sm cm-meet__add" type="button" data-ics data-title="Creator Circle Lisbon: First-launch show-and-tell" data-start="2026-12-02T19:00:00Z" data-end="2026-12-02T21:30:00Z" data-location="Crestora Lisbon hub, Lisbon" data-description="Five first launches, five minutes each, then pastéis. Hosted by Joana Prates." aria-label="Add to calendar: the Lisbon Circle on 2 December"><svg aria-hidden="true"><use href="#i-calendar"/></svg>Add to calendar</button>
         </li>
         <li class="cm-meet" id="circle-lagos">
           <p class="cm-meet__date" aria-hidden="true"><span data-part="day">3</span><span data-part="month">Dec</span><span data-part="weekday">Thu</span></p>
@@ -355,7 +357,7 @@
           </div>
           <p class="cm-meet__when" data-when data-tz="Africa/Lagos" data-city="Lagos"><time class="cm-meet__time" datetime="2026-12-03T17:30:00Z">18:30</time><span class="cm-meet__zone">Lagos time</span><span class="cm-meet__there">Thu 3 Dec, 18:30–21:00</span></p>
           <p class="cm-meet__seats is-low"><span>9 of 35 seats left</span><i style="--left:0.26" aria-hidden="true"></i></p>
-          <button class="btn btn--sm cm-meet__add" type="button" data-ics data-title="Creator Circle Lagos: Animation crit night" data-start="2026-12-03T17:30:00Z" data-end="2026-12-03T20:00:00Z" data-location="The Loom, Yaba, Lagos" data-description="Bring a shot that isn't working yet. Hosted by Amara Okafor." aria-label="Add the Lagos Circle on 3 December to your calendar"><svg aria-hidden="true"><use href="#i-calendar"/></svg>Add to calendar</button>
+          <button class="btn btn--sm cm-meet__add" type="button" data-ics data-title="Creator Circle Lagos: Animation crit night" data-start="2026-12-03T17:30:00Z" data-end="2026-12-03T20:00:00Z" data-location="The Loom, Yaba, Lagos" data-description="Bring a shot that isn't working yet. Hosted by Amara Okafor." aria-label="Add to calendar: the Lagos Circle on 3 December"><svg aria-hidden="true"><use href="#i-calendar"/></svg>Add to calendar</button>
         </li>
         <li class="cm-meet" id="circle-seoul">
           <p class="cm-meet__date" aria-hidden="true"><span data-part="day">5</span><span data-part="month">Dec</span><span data-part="weekday">Sat</span></p>
@@ -366,7 +368,7 @@
           </div>
           <p class="cm-meet__when" data-when data-tz="Asia/Seoul" data-city="Seoul"><time class="cm-meet__time" datetime="2026-12-05T06:00:00Z">15:00</time><span class="cm-meet__zone">Seoul time</span><span class="cm-meet__there">Sat 5 Dec, 15:00–17:30</span></p>
           <p class="cm-meet__seats"><span>31 of 50 seats left</span><i style="--left:0.62" aria-hidden="true"></i></p>
-          <button class="btn btn--sm cm-meet__add" type="button" data-ics data-title="Creator Circle Seoul: Small studios, big launches" data-start="2026-12-05T06:00:00Z" data-end="2026-12-05T08:30:00Z" data-location="Crestora Seoul hub, Seoul" data-description="How three-person studios plan a launch. Hosted by Ji-woo Han." aria-label="Add the Seoul Circle on 5 December to your calendar"><svg aria-hidden="true"><use href="#i-calendar"/></svg>Add to calendar</button>
+          <button class="btn btn--sm cm-meet__add" type="button" data-ics data-title="Creator Circle Seoul: Small studios, big launches" data-start="2026-12-05T06:00:00Z" data-end="2026-12-05T08:30:00Z" data-location="Crestora Seoul hub, Seoul" data-description="How three-person studios plan a launch. Hosted by Ji-woo Han." aria-label="Add to calendar: the Seoul Circle on 5 December"><svg aria-hidden="true"><use href="#i-calendar"/></svg>Add to calendar</button>
         </li>
         <li class="cm-meet" id="circle-toronto">
           <p class="cm-meet__date" aria-hidden="true"><span data-part="day">8</span><span data-part="month">Dec</span><span data-part="weekday">Tue</span></p>
@@ -377,7 +379,7 @@
           </div>
           <p class="cm-meet__when" data-when data-tz="America/Toronto" data-city="Toronto"><time class="cm-meet__time" datetime="2026-12-08T23:30:00Z">18:30</time><span class="cm-meet__zone">Toronto time</span><span class="cm-meet__there">Tue 8 Dec, 18:30–21:00</span></p>
           <p class="cm-meet__seats is-low"><span>6 of 40 seats left</span><i style="--left:0.15" aria-hidden="true"></i></p>
-          <button class="btn btn--sm cm-meet__add" type="button" data-ics data-title="Creator Circle Toronto: Ship-it supper for indie devs" data-start="2026-12-08T23:30:00Z" data-end="2026-12-09T02:00:00Z" data-location="Crestora Toronto hub, Toronto" data-description="Demo what you're shipping before the holidays. Hosted by Sam Adeyemi." aria-label="Add the Toronto Circle on 8 December to your calendar"><svg aria-hidden="true"><use href="#i-calendar"/></svg>Add to calendar</button>
+          <button class="btn btn--sm cm-meet__add" type="button" data-ics data-title="Creator Circle Toronto: Ship-it supper for indie devs" data-start="2026-12-08T23:30:00Z" data-end="2026-12-09T02:00:00Z" data-location="Crestora Toronto hub, Toronto" data-description="Demo what you're shipping before the holidays. Hosted by Sam Adeyemi." aria-label="Add to calendar: the Toronto Circle on 8 December"><svg aria-hidden="true"><use href="#i-calendar"/></svg>Add to calendar</button>
         </li>
         <li class="cm-meet" id="circle-nairobi">
           <p class="cm-meet__date" aria-hidden="true"><span data-part="day">11</span><span data-part="month">Dec</span><span data-part="weekday">Fri</span></p>
@@ -388,7 +390,7 @@
           </div>
           <p class="cm-meet__when" data-when data-tz="Africa/Nairobi" data-city="Nairobi"><time class="cm-meet__time" datetime="2026-12-11T14:30:00Z">17:30</time><span class="cm-meet__zone">Nairobi time</span><span class="cm-meet__there">Fri 11 Dec, 17:30–20:00</span></p>
           <p class="cm-meet__seats"><span>18 of 45 seats left</span><i style="--left:0.4" aria-hidden="true"></i></p>
-          <button class="btn btn--sm cm-meet__add" type="button" data-ics data-title="Creator Circle Nairobi: Tutorial jam" data-start="2026-12-11T14:30:00Z" data-end="2026-12-11T17:00:00Z" data-location="Crestora Nairobi hub, Nairobi" data-description="Record a five-minute lesson on how you work. Hosted by Wanjiru Kamau." aria-label="Add the Nairobi Circle on 11 December to your calendar"><svg aria-hidden="true"><use href="#i-calendar"/></svg>Add to calendar</button>
+          <button class="btn btn--sm cm-meet__add" type="button" data-ics data-title="Creator Circle Nairobi: Tutorial jam" data-start="2026-12-11T14:30:00Z" data-end="2026-12-11T17:00:00Z" data-location="Crestora Nairobi hub, Nairobi" data-description="Record a five-minute lesson on how you work. Hosted by Wanjiru Kamau." aria-label="Add to calendar: the Nairobi Circle on 11 December"><svg aria-hidden="true"><use href="#i-calendar"/></svg>Add to calendar</button>
         </li>
         <li class="cm-meet" id="circle-mexico-city">
           <p class="cm-meet__date" aria-hidden="true"><span data-part="day">12</span><span data-part="month">Dec</span><span data-part="weekday">Sat</span></p>
@@ -399,7 +401,7 @@
           </div>
           <p class="cm-meet__when" data-when data-tz="America/Mexico_City" data-city="Mexico City"><time class="cm-meet__time" datetime="2026-12-12T18:00:00Z">12:00</time><span class="cm-meet__zone">Mexico City time</span><span class="cm-meet__there">Sat 12 Dec, 12:00–14:30</span></p>
           <p class="cm-meet__seats"><span>12 of 30 seats left</span><i style="--left:0.4" aria-hidden="true"></i></p>
-          <button class="btn btn--sm cm-meet__add" type="button" data-ics data-title="Creator Circle Mexico City: Merch makers' table" data-start="2026-12-12T18:00:00Z" data-end="2026-12-12T20:30:00Z" data-location="Common Thread studio, Roma Norte, Mexico City" data-description="Samples, suppliers and pricing, over lunch. Hosted by Valeria Ortiz." aria-label="Add the Mexico City Circle on 12 December to your calendar"><svg aria-hidden="true"><use href="#i-calendar"/></svg>Add to calendar</button>
+          <button class="btn btn--sm cm-meet__add" type="button" data-ics data-title="Creator Circle Mexico City: Merch makers' table" data-start="2026-12-12T18:00:00Z" data-end="2026-12-12T20:30:00Z" data-location="Common Thread studio, Roma Norte, Mexico City" data-description="Samples, suppliers and pricing, over lunch. Hosted by Valeria Ortiz." aria-label="Add to calendar: the Mexico City Circle on 12 December"><svg aria-hidden="true"><use href="#i-calendar"/></svg>Add to calendar</button>
         </li>
         <li class="cm-meet" id="circle-berlin">
           <p class="cm-meet__date" aria-hidden="true"><span data-part="day">7</span><span data-part="month">Jan</span><span data-part="weekday">Thu</span></p>
@@ -410,7 +412,7 @@
           </div>
           <p class="cm-meet__when" data-when data-tz="Europe/Berlin" data-city="Berlin"><time class="cm-meet__time" datetime="2027-01-07T18:00:00Z">19:00</time><span class="cm-meet__zone">Berlin time</span><span class="cm-meet__there">Thu 7 Jan, 19:00–22:00</span></p>
           <p class="cm-meet__seats"><span>25 of 50 seats left</span><i style="--left:0.5" aria-hidden="true"></i></p>
-          <button class="btn btn--sm cm-meet__add" type="button" data-ics data-title="Creator Circle Berlin: Game demo playtest night" data-start="2027-01-07T18:00:00Z" data-end="2027-01-07T21:00:00Z" data-location="Lanternfish, Kreuzberg, Berlin" data-description="Bring a build; leave with twenty playtests. Hosted by Felix Brandt." aria-label="Add the Berlin Circle on 7 January to your calendar"><svg aria-hidden="true"><use href="#i-calendar"/></svg>Add to calendar</button>
+          <button class="btn btn--sm cm-meet__add" type="button" data-ics data-title="Creator Circle Berlin: Game demo playtest night" data-start="2027-01-07T18:00:00Z" data-end="2027-01-07T21:00:00Z" data-location="Lanternfish, Kreuzberg, Berlin" data-description="Bring a build; leave with twenty playtests. Hosted by Felix Brandt." aria-label="Add to calendar: the Berlin Circle on 7 January"><svg aria-hidden="true"><use href="#i-calendar"/></svg>Add to calendar</button>
         </li>
         <li class="cm-meet" id="circle-melbourne">
           <p class="cm-meet__date" aria-hidden="true"><span data-part="day">9</span><span data-part="month">Jan</span><span data-part="weekday">Sat</span></p>
@@ -421,7 +423,7 @@
           </div>
           <p class="cm-meet__when" data-when data-tz="Australia/Melbourne" data-city="Melbourne"><time class="cm-meet__time" datetime="2027-01-09T03:00:00Z">14:00</time><span class="cm-meet__zone">Melbourne time</span><span class="cm-meet__there">Sat 9 Jan, 14:00–16:30</span></p>
           <p class="cm-meet__seats"><span>20 of 40 seats left</span><i style="--left:0.5" aria-hidden="true"></i></p>
-          <button class="btn btn--sm cm-meet__add" type="button" data-ics data-title="Creator Circle Melbourne: Zine swap and Blueprint clinic" data-start="2027-01-09T03:00:00Z" data-end="2027-01-09T05:30:00Z" data-location="Atlas & Ink, Fitzroy, Melbourne" data-description="Swap a zine, plan your next one in a Blueprint. Hosted by Hannah Cole." aria-label="Add the Melbourne Circle on 9 January to your calendar"><svg aria-hidden="true"><use href="#i-calendar"/></svg>Add to calendar</button>
+          <button class="btn btn--sm cm-meet__add" type="button" data-ics data-title="Creator Circle Melbourne: Zine swap and Blueprint clinic" data-start="2027-01-09T03:00:00Z" data-end="2027-01-09T05:30:00Z" data-location="Atlas & Ink, Fitzroy, Melbourne" data-description="Swap a zine, plan your next one in a Blueprint. Hosted by Hannah Cole." aria-label="Add to calendar: the Melbourne Circle on 9 January"><svg aria-hidden="true"><use href="#i-calendar"/></svg>Add to calendar</button>
         </li>
       </ol>
 
@@ -749,7 +751,7 @@
       <a class="btn btn--primary btn--lg" href="start.html" data-roll>Open your first lane</a>
       <a class="btn btn--lg" href="pricing.html" data-roll>See plans</a>
     </div>
-    <p class="small">Free for 3 lanes · No card · Export everything, always.</p>
+    <p class="small">Free for 3&nbsp;lanes&nbsp;<span aria-hidden="true">·</span> No&nbsp;card&nbsp;<span aria-hidden="true">·</span> Export everything,&nbsp;always.</p>
   </div>
 </section>
 </main>
@@ -831,7 +833,7 @@
 
     <div class="base">
       <p class="copy">© <span class="year">2026</span> Crestora. All rights reserved.</p>
-      <p class="love"><button class="heart" type="button" aria-label="Send some love"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19.6S4.4 15.1 4.4 9.6A4.2 4.2 0 0 1 12 7.2a4.2 4.2 0 0 1 7.6 2.4c0 5.5-7.6 10-7.6 10Z"/></svg></button><span>Made with love by Pranav</span></p>
+      <p class="love"><button class="heart" type="button" aria-label="Send some love" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19.6S4.4 15.1 4.4 9.6A4.2 4.2 0 0 1 12 7.2a4.2 4.2 0 0 1 7.6 2.4c0 5.5-7.6 10-7.6 10Z"/></svg></button><span>Made with love by Pranav</span></p>
     </div>
 
     <!-- the road: where the car is; holding it down puts your foot down -->

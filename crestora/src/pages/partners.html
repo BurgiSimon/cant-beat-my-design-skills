@@ -133,8 +133,10 @@ nav: company
       </div>
 
       <div class="pt-ladder" data-ladder data-reveal>
-        <div class="pt-ladder__tabs" role="tablist" aria-label="Partner tiers">
-          <button class="pt-tab" type="button" role="tab" id="pt-tab-registered" aria-controls="tier-registered" aria-selected="true" data-tier="0">
+        <!-- without scripts every tier is listed below in full, so the tabs are only a picture of the ladder: hidden from
+             assistive tech and out of the tab order until page-partners.js turns them on -->
+        <div class="pt-ladder__tabs" role="tablist" aria-label="Partner tiers" aria-hidden="true">
+          <button class="pt-tab" type="button" role="tab" id="pt-tab-registered" aria-controls="tier-registered" aria-selected="true" tabindex="-1" data-tier="0">
             <span class="pt-tab__n">01</span>
             <span class="pt-tab__name">Registered</span>
             <span class="pt-tab__req">Open to anyone who applies</span>

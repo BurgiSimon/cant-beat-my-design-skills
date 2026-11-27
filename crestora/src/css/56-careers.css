@@ -103,7 +103,7 @@
 
 /* ---- the hiring process: four lanes on a four-week road ---- */
 [data-page="careers"] .cr-process { padding-top: 0; }
-[data-page="careers"] .cr-promise { display: inline-flex; align-items: center; gap: 14px; font-size: 15px; font-weight: 500; color: #fff; }
+[data-page="careers"] .cr-promise { display: inline-flex; align-items: center; gap: 14px; font-size: 15px; font-weight: 500; color: #fff; text-wrap: pretty; }
 [data-page="careers"] .cr-road { --cols: minmax(200px, 0.9fr) minmax(0, 2fr) minmax(0, 1.15fr); --gap: clamp(24px, 3vw, 48px); }
 [data-page="careers"] .cr-road__weeks { display: grid; grid-template-columns: var(--cols); gap: var(--gap); padding-bottom: 14px; border-bottom: 1px solid var(--line-soft); }
 [data-page="careers"] .cr-road__weeks > div { grid-column: 2; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
@@ -158,7 +158,7 @@
   [data-page="careers"] .cr-how__grid, [data-page="careers"] .cr-perks__grid { grid-template-columns: 1fr; }
   [data-page="careers"] .cr-how__item, [data-page="careers"] .cr-how__item:nth-child(3) { border-left: 0; padding: 28px 0; }
   [data-page="careers"] .cr-how__item + .cr-how__item { border-top: 1px solid var(--line-faint); }
-  [data-page="careers"] .cr-chips { flex-wrap: nowrap; overflow-x: auto; margin-inline: calc(var(--gutter) * -1); padding: 2px var(--gutter); scrollbar-width: none; }
+  [data-page="careers"] .cr-chips { flex-wrap: nowrap; overflow-x: auto; margin-inline: calc(var(--gutter) * -1); padding: 2px var(--gutter); scrollbar-width: none; scroll-padding-inline: var(--gutter); }
   [data-page="careers"] .cr-chips::-webkit-scrollbar { display: none; }
   [data-page="careers"] .cr-tools__end { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; }
   [data-page="careers"] .cr-loc { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 14px; }

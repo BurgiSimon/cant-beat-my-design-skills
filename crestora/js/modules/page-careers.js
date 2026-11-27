@@ -3,10 +3,12 @@
 // opens that role, and the hiring lanes light one by one
 // as they come into view (at rest, all lit, under reduced motion or without scripts).
 import { ScrollTrigger, $, $$ } from '../core.js';
+import { keepFocusInStrips } from './page-strips.js';
 
 export default function init({ calm }) {
   const page = $('[data-page="careers"]');
   if (!page) return;
+  keepFocusInStrips($('.cr-chips', page));
 
   // location → the hidden group's buttons (the filter listens for their clicks)
   const select = $('#cr-loc', page);

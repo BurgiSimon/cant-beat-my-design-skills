@@ -18,7 +18,7 @@ export default function init({ calm, still }) {
 
 function copyLinks() {
   for (const b of $$('[data-fn-copy]')) {
-    b.setAttribute('aria-label', 'Copy a link to this note');
+    b.setAttribute('aria-label', 'Copy link to this note');
     b.addEventListener('click', async () => {
       const ok = await copyText(`${location.origin}${location.pathname}`);
       toast(ok ? 'Link to this note copied' : 'Copy is blocked here', ok ? 'Copied' : 'Oops');

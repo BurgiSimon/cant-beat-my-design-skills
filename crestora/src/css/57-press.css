@@ -9,6 +9,9 @@
 [data-page="press"] .pr-fiction { margin-top: 20px; }
 /* buttons that need scripts (the SVG downloads) hide without them; the note that says so shows instead */
 .no-js [data-page="press"] .pr-js { display: none; }
+/* the swatches copy their hex with scripts (page-press.js turns them on); without, they are a colour list */
+.no-js [data-page="press"] .pr-swatch { cursor: default; }
+.no-js [data-page="press"] .pr-swatch__copy { display: none; }
 .js [data-page="press"] .pr-nojs { display: none; }
 
 /* ---- hero ---- */
@@ -168,14 +171,14 @@
 /* ---- product screens ---- */
 [data-page="press"] .pr-screens__grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; align-items: stretch; }
 [data-page="press"] .pr-shot { margin: 0; display: grid; grid-template-rows: 1fr auto; gap: 16px; }
-[data-page="press"] .pr-shot figcaption { font-size: 14.5px; line-height: 1.55; color: var(--ink-muted); }
+[data-page="press"] .pr-shot figcaption { font-size: 14.5px; line-height: 1.55; color: var(--ink-muted); text-wrap: pretty; }
 [data-page="press"] .pr-shot figcaption strong { color: #fff; font-weight: 600; }
 [data-page="press"] .pr-mock { display: flex; flex-direction: column; min-height: 400px; }
 [data-page="press"] .pr-mock .mock__bar { color: var(--ink-soft); }
 [data-page="press"] .pr-mock__bar-r { margin-left: auto; color: var(--ink-muted); font-size: 12px; }
 /* the lane */
-[data-page="press"] .pr-lanev { display: grid; align-content: start; gap: 16px; padding: 20px; }
-[data-page="press"] .pr-lanev__top { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+[data-page="press"] .pr-lanev { display: grid; grid-template-columns: minmax(0, 1fr); align-content: start; gap: 16px; padding: 20px; }
+[data-page="press"] .pr-lanev__top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 10px; }
 [data-page="press"] .pr-lanev__title { font: 400 17px/1.2 var(--font-brand); color: #fff; letter-spacing: -0.01em; white-space: nowrap; }
 [data-page="press"] .pr-lanev .lane-chip { height: 24px; font-size: 11.5px; }
 [data-page="press"] .pr-lanev__rows { display: grid; margin-top: 4px; border-top: 1px solid var(--line-faint); }
@@ -303,8 +306,8 @@
   [data-page="press"] .pr-flow { grid-template-columns: 1fr; gap: 16px; }
 }
 @media (max-width: 640px) {
-  [data-page="press"] .pr-jump { width: 100%; flex-wrap: nowrap; overflow-x: auto; margin-inline: 0; padding-inline: var(--gutter); scrollbar-width: none;
-    -webkit-mask: linear-gradient(90deg, #000 85%, transparent); mask: linear-gradient(90deg, #000 85%, transparent); }
+  [data-page="press"] .pr-jump { width: 100%; flex-wrap: nowrap; overflow-x: auto; margin-inline: 0; padding-inline: var(--gutter) 64px; scrollbar-width: none; scroll-padding-inline: var(--gutter) 64px;
+    -webkit-mask: linear-gradient(90deg, #000 calc(100% - 56px), transparent); mask: linear-gradient(90deg, #000 calc(100% - 56px), transparent); }
   [data-page="press"] .pr-tile__dl { width: 100%; gap: 6px; }
   [data-page="press"] .pr-tile__dl .btn { flex: 1 1 auto; padding: 0 10px; gap: 7px; }
   [data-page="press"] .pr-jump::-webkit-scrollbar { display: none; }
@@ -341,4 +344,10 @@
   [data-page="press"] .pr-founder { grid-template-columns: 1fr; }
   [data-page="press"] .pr-founder__top { grid-row: auto; flex-direction: row; align-items: center; }
   [data-page="press"] .pr-press__item { gap: 16px; padding: 24px 0; }
+}
+/* small phones: the lane mock's rows set a size smaller, so every item ("24 sparks · moodboard") keeps one line */
+@media (max-width: 379.98px) {
+  [data-page="press"] .pr-lanev { padding: 16px; }
+  [data-page="press"] .pr-lanev__rows li { grid-template-columns: 8px 56px minmax(0, 1fr) auto; gap: 8px; font-size: 11.5px; }
+  [data-page="press"] .pr-lanev__item.mono, [data-page="press"] .pr-lanev__when { font-size: 10.5px; }
 }

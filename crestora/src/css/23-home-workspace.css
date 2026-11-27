@@ -1,7 +1,9 @@
 /* Home #workspace: inside a lane. The app window is drawn at 1200 × 720 design px and every length inside it is a
-   multiple of --u (one design px), which is the frame's width / 1200, so the window is the same picture at 360 px and
-   at 2560 px (the footer's --fu, applied to a container instead of the screen). Hairlines stay 1 real px. Under
-   680 px the window keeps a readable --u and becomes a pane you pan sideways, with its tabs repeated above it.
+   multiple of --u (one design px), which is the frame's width / 1200, so the window scales as one picture (the
+   footer's --fu, applied to a container instead of the screen). Hairlines stay 1 real px. Scaled into a narrow frame
+   its type would drop below 8 px, so there it sheds what an app sheds on a small screen: under 1180 px the activity
+   rail, under 900 px the sidebar too. Under 680 px the lane keeps its design size (--u = 1 px) and becomes a pane you
+   pan sideways, with its tabs repeated above it at a size a thumb can use.
    home-workspace.js plays the story (state classes on .ws-mock: is-noticed, is-approved, is-logged, is-moved); the
    markup rests on its last frame. */
 
@@ -47,7 +49,7 @@
   background: rgb(255 255 255 / 0.035); box-shadow: inset 0 0 0 1px var(--line-faint); color: var(--ink-faint); font-size: calc(12 * var(--u));
 }
 .workspace .ws-bar__search .icon { width: calc(13 * var(--u)); height: calc(13 * var(--u)); }
-.workspace .ws-bar__search span { flex: 1; }
+.workspace .ws-bar__search span { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .workspace .ws-bar__search kbd { font-size: calc(10 * var(--u)); padding: calc(2 * var(--u)) calc(6 * var(--u)); border-radius: calc(5 * var(--u)); color: var(--ink-muted); }
 .workspace .ws-bar__end { justify-self: end; display: flex; align-items: center; gap: calc(10 * var(--u)); }
 .workspace .ws-bar__count { display: flex; align-items: center; gap: calc(7 * var(--u)); height: calc(26 * var(--u)); padding: 0 calc(10 * var(--u)); border-radius: 999px; font-size: calc(11.5 * var(--u)); color: var(--ink-soft); background: color-mix(in srgb, var(--stage) 8%, transparent); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--stage) 34%, transparent); }
@@ -67,7 +69,7 @@
 .workspace .ws-nav .icon { color: var(--ink-muted); }
 .workspace .ws-nav__n { margin-left: auto; min-width: calc(18 * var(--u)); height: calc(16 * var(--u)); padding: 0 calc(5 * var(--u)); border-radius: 999px; display: grid; place-items: center; font: 400 calc(8.5 * var(--u))/1 var(--font-brand); color: #fff; background: rgb(255 255 255 / 0.08); }
 .workspace .ws-side__label { display: flex; justify-content: space-between; margin: calc(18 * var(--u)) 0 calc(8 * var(--u)); padding: 0 calc(8 * var(--u)); font: 400 calc(9 * var(--u))/1 var(--font-brand); letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-muted); }
-.workspace .ws-lanes { display: grid; gap: calc(1 * var(--u)); }
+.workspace .ws-lanes { display: grid; grid-template-columns: minmax(0, 1fr); gap: calc(1 * var(--u)); } /* each row keeps to the sidebar: a long name ends in an ellipsis rather than pushing its stage past the edge */
 .workspace .ws-lanes li { display: flex; align-items: center; gap: calc(10 * var(--u)); height: calc(30 * var(--u)); padding: 0 calc(8 * var(--u)); border-radius: calc(7 * var(--u)); }
 .workspace .ws-lanes i { width: calc(7 * var(--u)); height: calc(7 * var(--u)); flex: none; border-radius: 50%; background: var(--stage); box-shadow: 0 0 calc(7 * var(--u)) var(--stage); }
 .workspace .ws-lanes span { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -109,8 +111,8 @@
 .workspace .ws-tabs.segmented button:hover { color: #fff; }
 .workspace .ws-tabs.segmented button:focus-visible { outline-offset: 1px; border-radius: calc(6.5 * var(--u)); }
 .workspace .ws-tabs .segmented__thumb { top: calc(3 * var(--u)); bottom: calc(3 * var(--u)); border-radius: calc(6.5 * var(--u)); background: rgb(255 255 255 / 0.1); box-shadow: inset 0 0 0 1px var(--line-soft); }
-/* before the tabs module has measured (and without scripts), the chosen tab carries the thumb's quieter light itself */
-.workspace .ws-tabs .segmented__thumb:is(:not([style]), [style*="width: 0px"]) ~ [aria-selected="true"], .no-js .workspace .ws-tabs [aria-selected="true"] { background: rgb(255 255 255 / 0.1); box-shadow: inset 0 0 0 1px var(--line-soft); color: #fff; }
+/* before the tabs module has measured, the chosen tab carries the thumb's quieter light itself */
+.workspace .ws-tabs .segmented__thumb:is(:not([style]), [style*="width: 0px"]) ~ [aria-selected="true"] { background: rgb(255 255 255 / 0.1); box-shadow: inset 0 0 0 1px var(--line-soft); color: #fff; }
 .workspace .ws-tools__meta { display: flex; align-items: center; gap: calc(14 * var(--u)); font-size: calc(11.5 * var(--u)); color: var(--ink-muted); }
 .workspace .ws-stack { display: flex; }
 .workspace .ws-stack .ws-av { --s: 22; box-shadow: 0 0 0 calc(2 * var(--u)) var(--bg-raised), 0 0 0 calc(3.2 * var(--u)) var(--stage); }
@@ -305,10 +307,9 @@
 
 /* the phone tabs: hidden until the window gets too small to tap */
 .workspace .ws-ptabs { display: none; }
-/* without scripts the window is a still picture: no phone tabs, and the window's own tabs are drawn but inert */
+/* without scripts the window is a still picture of the lane: no tabs that could not switch it, in it or above it */
 .no-js .workspace .ws-ptabs { display: none; }
-.no-js .workspace .ws-tabs { visibility: visible; }
-.no-js .workspace .ws-tabs button { pointer-events: none; }
+.no-js .workspace .ws-tabs { visibility: hidden; }
 
 /* ================= tablets: the features go two and one ================= */
 @media (max-width: 900px) {
@@ -318,7 +319,24 @@
   .workspace .ws-feature > :not(.icon-box) { grid-column: 2; }
 }
 
-/* ================= phones: a readable window you pan, with its tabs above ================= */
+/* ================= narrower frames: the window sheds its side panels rather than its type size ================= */
+/* laptops and tablets in landscape: the activity rail goes; the sidebar and the lane fill the frame */
+@media (min-width: 900px) and (max-width: 1179.98px) {
+  .workspace .ws-mock { --u: calc(100cqw / 936); grid-template-columns: calc(224 * var(--u)) calc(712 * var(--u)); width: calc(936 * var(--u)); }
+  .workspace .ws-rail { display: none; }
+  /* narrow enough that the crumbs keep their gap to it; its shortcut goes so the prompt keeps to one line */
+  .workspace .ws-bar__search { width: calc(228 * var(--u)); }
+  .workspace .ws-bar__search kbd { display: none; }
+}
+/* tablets in portrait: the lane alone fills the frame */
+@media (max-width: 899.98px) {
+  .workspace .ws-mock { --u: calc(100cqw / 712); grid-template-columns: calc(712 * var(--u)); width: calc(712 * var(--u)); }
+  .workspace .ws-side, .workspace .ws-rail { display: none; }
+  .workspace .ws-bar { grid-template-columns: minmax(0, 1fr) auto; }
+  .workspace .ws-bar__search { display: none; }
+}
+/* phones: the lane at its design size, a pane you pan (home-workspace.js opens it on Review and Launch, where the story
+   plays), with its tabs repeated above it at a size a thumb can use and the notice rising over the Review column */
 @media (max-width: 679.98px) {
   .workspace .ws-ptabs { display: inline-flex; margin-bottom: 16px; }
   .workspace .ws-tabs { visibility: hidden; }
@@ -329,7 +347,9 @@
     mask: linear-gradient(90deg, transparent, #000 var(--gutter), #000 calc(100% - var(--gutter)), transparent);
   }
   .workspace .ws-pane::-webkit-scrollbar { display: none; }
-  .workspace .ws-mock { --u: 0.62px; }
+  .workspace .ws-mock { --u: 1px; }
+  .workspace .ws-notice { left: calc((28 + 3 * 109.3333) * var(--u)); translate: 0 calc(16 * var(--u)); }
+  .workspace .ws-mock.is-noticed .ws-notice { translate: 0 0; }
   .workspace .ws-caption { align-items: flex-start; flex-direction: column; }
 }
 

@@ -21,6 +21,12 @@ function ladder(calm) {
   const nodes = $$('.pt-road__node', root);
   let current = 0;
   let lit = -1;      // how far the road is lit (-1: not yet, until it is first seen)
+  // a tier that is not chosen is inert at once, though it takes 0.45 s to fade out: Tab never lands in a panel that is
+  // about to turn hidden (which would drop focus to the page)
+  panels.forEach((p, i) => { if (p) p.inert = i !== current; });
+  // the tabs come out of hiding (without scripts they are a picture of the ladder above the full list)
+  root.querySelector('[role="tablist"]')?.removeAttribute('aria-hidden');
+  tabs.forEach((t, i) => { t.tabIndex = i === current ? 0 : -1; });
 
   // light stretches 0..k: new stretches draw in one after another, dropped ones retract from the far end
   const light = (k) => {
@@ -49,6 +55,7 @@ function ladder(calm) {
       t.setAttribute('aria-selected', String(on));
       t.tabIndex = on ? 0 : -1;
       panels[i]?.classList.toggle('is-on', on);
+      if (panels[i]) panels[i].inert = !on;
     });
     if (focus) tabs[k].focus();
     if (lit >= 0) light(k);

@@ -7,6 +7,7 @@
 // 31.4 units with the same hairline of stroke the site's wordmark carries. On dark, the C is chrome (the kit's
 // gradients) and the name white; on light, both are solid black.
 import { toast, whenVisible, $, $$ } from '../core.js';
+import { keepFocusInStrips } from './page-strips.js';
 
 const C = 'M48.62 11.9A26.5 26.5 0 1 0 48.62 41.1L40.9 36.5A16.05 16.05 0 1 1 40.9 16.5Z';
 // "Crestora" in Michroma, font units (2048 per em), baseline at 0, letter-spaced -0.006em
@@ -54,6 +55,9 @@ function download(kind, theme) {
 export default function init({ calm }) {
   const page = $('[data-page="press"]');
   if (!page) return;
+  // the swatches are disabled in the page (without scripts they copy nothing): turn them on
+  for (const b of $$('.pr-swatch', page)) b.disabled = false;
+  keepFocusInStrips($('.pr-jump', page));
 
   page.addEventListener('click', (e) => {
     const b = e.target.closest('[data-logo]');

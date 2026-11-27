@@ -9,8 +9,8 @@
 import { odometer, store, $$ } from '../core.js';
 import { placeThumb } from './tabs.js';
 
-// Keyboard: like the segmented tabs elsewhere, the switch is one stop in the Tab order (the chosen period); Left/Right
-// (and Home/End) move to the other period and choose it.
+// Keyboard: the switch is a group of toggle buttons, and it behaves as one: each period is a stop in the Tab order and
+// Enter or Space chooses it. Left/Right (and Home/End) also move to the other period and choose it.
 export default function init() {
   const switches = $$('[data-billing]');
   if (!switches.length) return;
@@ -20,7 +20,6 @@ export default function init() {
       for (const b of $$('[data-period]', s)) {
         const on = b.dataset.period === period;
         b.setAttribute('aria-pressed', String(on));
-        b.tabIndex = on ? 0 : -1;
       }
       placeThumb(s);
     }
@@ -46,7 +45,7 @@ export default function init() {
     });
   }
   // a stored value this switch doesn't offer (an old or hand-edited one) falls back to yearly, so one option is always
-  // chosen and the switch always has its stop in the Tab order
+  // chosen
   const saved = store.get('billing', 'yearly');
   set($$('[data-period]').some((b) => b.dataset.period === saved) ? saved : 'yearly', true);
   addEventListener('resize', () => switches.forEach(placeThumb));

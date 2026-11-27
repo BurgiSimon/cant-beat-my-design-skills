@@ -103,7 +103,8 @@
 [data-page="tutorials"] .tu-transcript { grid-area: 2 / 1; min-width: 0; }
 [data-page="tutorials"] .tu-player { margin: 0; }
 [data-page="tutorials"] .tu-player .mock__bar { gap: 12px; }
-[data-page="tutorials"] .tu-player__file span { opacity: 0.5; margin: 0 4px; }
+[data-page="tutorials"] .tu-player__file > span[aria-hidden] { opacity: 0.5; margin: 0 4px; }
+[data-page="tutorials"] .tu-player__tool { white-space: nowrap; }
 [data-page="tutorials"] .tu-player__chip { margin-left: auto; height: 24px; font-size: 12px; }
 
 [data-page="tutorials"] .tu-poster { position: relative; aspect-ratio: 16 / 9; overflow: hidden; isolation: isolate; background: radial-gradient(46% 62% at 51% 42%, rgb(58 109 255 / 0.12), rgb(255 122 217 / 0.05) 50%, transparent 75%), #020305; }
@@ -250,7 +251,10 @@
 .no-js [data-page="tutorials"] :is(.tu-stats__row--done, .tu-progress, .tu-done) { display: none; }
 .no-js [data-page="tutorials"] .tu-step input { display: none; }
 .no-js [data-page="tutorials"] .tu-step { grid-template-columns: 24px minmax(0, 1fr) auto; cursor: default; }
-.no-js [data-page="tutorials"] :is(.tu-chapters button, .tu-lines__t) { pointer-events: none; }
+/* (they are disabled in the page and page-tutorials.js turns them on, so without scripts they are out of the tab order) */
+.no-js [data-page="tutorials"] :is(.tu-chapters button, .tu-lines__t) { pointer-events: none; cursor: default; }
+.no-js [data-page="tutorials"] .tu-lines__t { padding-inline: 0; box-shadow: none; }
+.no-js [data-page="tutorials"] .tu-js { display: none; }
 
 [data-page="tutorials"] .tu-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(16px, 1.6vw, 24px); }
 [data-page="tutorials"] .tu-grid__item { min-width: 0; }
@@ -336,7 +340,8 @@
   [data-page="tutorials"] .tu-count { margin-left: 0; }
   [data-page="tutorials"] .tu-player__bar { flex-wrap: wrap; height: auto; padding: 12px 14px 14px; gap: 10px 14px; }
   [data-page="tutorials"] .tu-player__now { flex-basis: 100%; max-width: none; }
-  [data-page="tutorials"] .tu-player__file { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  [data-page="tutorials"] .tu-player__file { min-width: 0; line-height: 1.3; }
+  [data-page="tutorials"] .tu-player .mock__bar { height: auto; min-height: 40px; padding-block: 7px; }
   [data-page="tutorials"] .tu-poster__brief { display: none; }
   [data-page="tutorials"] .tu-poster__tag { left: 10px; top: 10px; font-size: 10px; }
   [data-page="tutorials"] .tu-pin { width: 22px; height: 22px; margin: -11px 0 0 -11px; }
@@ -349,7 +354,7 @@
   [data-page="tutorials"] .tu-lines p { display: block; font-size: 16px; }
   [data-page="tutorials"] .tu-lines b { margin-right: 6px; }
   /* the chips ride in one swipeable row each, edge to edge */
-  [data-page="tutorials"] .tu-chips { align-self: stretch; flex-wrap: nowrap; overflow-x: auto; margin-inline: calc(-1 * var(--gutter)); padding: 2px var(--gutter); scrollbar-width: none; }
+  [data-page="tutorials"] .tu-chips { align-self: stretch; flex-wrap: nowrap; overflow-x: auto; margin-inline: calc(-1 * var(--gutter)); padding: 2px var(--gutter); scrollbar-width: none; scroll-padding-inline: var(--gutter); }
   [data-page="tutorials"] .tu-chips::-webkit-scrollbar { display: none; }
   [data-page="tutorials"] .tu-chip { flex: none; }
   [data-page="tutorials"] .tu-bar__group { width: 100%; }

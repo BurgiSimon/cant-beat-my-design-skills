@@ -1,8 +1,10 @@
 /* Home #work: the mileage in Michroma odometers, then a wall of twelve launches. Every tile is a night poster drawn
-   from lane lines in the project's colours, with its maker, a mini six-lane bar (the time it spent in each stage) and
-   "Spark → launch in N days" (or, for a lane still on the road, the stage it is in now: Kiln's spring drop is in
-   Review). Chips filter the wall (the generic filter module); the tiles that stay glide to their new places and the
-   ones that leave fade out. Under 600 px the wall becomes a strip you swipe. */
+   from lane lines, with its maker, a mini six-lane bar (the time it spent in each stage) and "Spark → launch in N
+   days" (or, for a lane still on the road, the stage it is in now: Kiln's spring drop is in Review). A colour always
+   means a stage: a launch has ridden the whole flow, so its poster is white light and, at most, all six colours in
+   their order, under a white glow; only the lane still on the road wears one stage's colour, the stage it is in now.
+   Chips filter the wall (the generic filter module); the tiles that stay glide to their new places and the ones that
+   leave fade out. Under 600 px the wall becomes a strip you swipe. */
 
 .work .work-live { margin-top: 2px; }
 .work .work-live b { font: 400 11.5px/1 var(--font-brand); letter-spacing: 0.02em; color: #fff; margin-right: 2px; }
@@ -30,7 +32,7 @@
   font: 500 14px/1 var(--font); color: var(--ink-soft); background: rgb(255 255 255 / 0.03); box-shadow: inset 0 0 0 1px var(--line-soft);
   transition: color var(--dur) var(--ease-out), background-color var(--dur) var(--ease-out), box-shadow var(--dur) var(--ease-out);
 }
-.work .work-chip__n { font: 400 9.5px/1 var(--font-brand); color: var(--ink-faint); transition: color var(--dur) var(--ease-out); }
+.work .work-chip__n { font: 400 9.5px/1 var(--font-brand); color: var(--ink-muted); transition: color var(--dur) var(--ease-out); }
 @media (hover: hover) { .work .work-chip:hover { color: #fff; box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.34); } }
 .work .work-chip[aria-pressed="true"] { color: #000; background: #fff; box-shadow: none; }
 .work .work-chip[aria-pressed="true"] .work-chip__n { color: rgb(0 0 0 / 0.5); }
@@ -66,7 +68,7 @@
 /* the poster */
 .work .work-art {
   position: absolute; z-index: -1; inset: 0; overflow: hidden;
-  background: radial-gradient(72% 62% at 54% 38%, color-mix(in srgb, var(--stage) 17%, transparent), transparent 72%), #000;
+  background: radial-gradient(72% 62% at 54% 38%, var(--glow, rgb(255 255 255 / 0.055)), transparent 72%), #000;
 }
 .work .work-art::after {
   content: ""; position: absolute; inset: 0; pointer-events: none;
@@ -102,6 +104,7 @@
 /* a colour always means a stage: only a lane still on the road wears one, the stage it is in now */
 .work [data-now="review"] { --now: var(--review); }
 .work .work-tile[data-now] .work-kind::before { width: 6px; height: 6px; background: var(--now); box-shadow: 0 0 8px var(--now); }
+.work .work-tile[data-now] .work-art { --glow: color-mix(in srgb, var(--now) 17%, transparent); }
 
 /* who made it, and how long the road was */
 .work .work-info { display: grid; padding: 18px 20px 18px; }

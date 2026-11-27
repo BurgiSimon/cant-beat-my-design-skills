@@ -146,9 +146,12 @@ export default function init({ calm, still }) {
 
     // ---- the rail: click or Enter scrolls to a stage; arrow keys, Home and End move between the tabs ----
     const yOf = (k) => st.start + (T + ((k + 0.5) / 6) * (1 - T - TAIL)) * (st.end - st.start);
+    let gliding = false;
     const go = (y, smooth = true) => {
-      if (lenis) lenis.scrollTo(y, { duration: smooth ? 1.3 : 0, immediate: !smooth, easing: (t) => 1 - Math.pow(1 - t, 4) });
-      else scrollTo({ top: y, behavior: smooth ? 'smooth' : 'auto' });
+      if (lenis) {
+        gliding = smooth;
+        lenis.scrollTo(y, { duration: smooth ? 1.3 : 0, immediate: !smooth, easing: (t) => 1 - Math.pow(1 - t, 4), onComplete: () => { gliding = false; } });
+      } else scrollTo({ top: y, behavior: smooth ? 'smooth' : 'auto' });
     };
     const onClick = (e) => {
       const t = e.target.closest('[role="tab"]');
@@ -166,12 +169,30 @@ export default function init({ calm, still }) {
       tabs.forEach((x) => { x.tabIndex = x === t ? 0 : -1; });
       t.focus();
     };
-    const onLeave = (e) => { if (!rail.contains(e.relatedTarget)) sync(); };
+    // Focus leaving the rail while that glide still runs (Tab pressed again before it settles) stops it where it is:
+    // Lenis would otherwise keep steering the page to the stage over the browser's own scroll to the control that now
+    // has focus, and leave that control off screen. If the browser's scroll was overridden all the same, the control is
+    // brought into view.
+    const onLeave = (e) => {
+      if (rail.contains(e.relatedTarget)) return;
+      sync();
+      // (only for focus that went to another control: not a click on the page, nor the window losing focus)
+      if (!gliding || !lenis || !(e.relatedTarget instanceof Element)) return;
+      gliding = false;
+      if (!lenis.isStopped) { lenis.stop(); lenis.start(); }
+      requestAnimationFrame(() => {
+        const el = document.activeElement;
+        if (!alive || !el || el === document.body || rail.contains(el)) return;
+        const r = el.getBoundingClientRect();
+        if (r.bottom <= 0 || r.top >= innerHeight) el.scrollIntoView({ block: 'nearest' });
+      });
+    };
     // tabbing into the rail from outside the pin brings the whole stage on screen, at the stage the rail shows
     const onEnter = (e) => {
       if (rail.contains(e.relatedTarget) || st.isActive) return;
-      // after the browser's own scroll to the focused tab, which would otherwise cut the glide short
-      requestAnimationFrame(() => { if (alive && !st.isActive) go(cur < 0 ? st.start + 2 : yOf(selected)); });
+      // after the browser's own scroll to the focused tab, which would otherwise cut the glide short (and only if the
+      // focus is still in the rail by then)
+      requestAnimationFrame(() => { if (alive && !st.isActive && rail.contains(document.activeElement)) go(cur < 0 ? st.start + 2 : yOf(selected)); });
     };
     rail.addEventListener('click', onClick, true);
     rail.addEventListener('keydown', onKey, true);

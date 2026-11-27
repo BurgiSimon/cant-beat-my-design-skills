@@ -8,6 +8,7 @@
 // Without scripts every card shows and nothing is pressed; under reduced motion nothing glides or rolls.
 import { $, $$, gsap, odometer, store, whenVisible } from '../core.js';
 import { placeThumb } from './tabs.js';
+import { keepFocusInStrips } from './page-strips.js';
 
 const KEY = 'roadmap-votes';
 const fmt = (n) => n.toLocaleString('en-US');
@@ -15,6 +16,7 @@ const STAGE_NAMES = { spark: 'Spark', shape: 'Shape', make: 'Make', review: 'Rev
 
 export default function init({ calm }) {
   const board = $('[data-rm-board]');
+  keepFocusInStrips($('.rm-stages'));
   if (!board) return;
   const items = $$('.rm-item', board);
   const cols = $$('.rm-col', board);

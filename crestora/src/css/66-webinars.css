@@ -121,7 +121,8 @@
 [data-page="webinars"] .wb-vod:hover { box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.22); }
 [data-page="webinars"] .wb-vod:focus-visible { outline-offset: 3px; border-radius: var(--radius-lg); }
 [data-page="webinars"] :is(.wb-vod__art, .wb-dialog__art) { position: relative; display: block; aspect-ratio: 16 / 9; color: var(--stage); background: radial-gradient(55% 75% at 50% 50%, color-mix(in srgb, var(--stage) 14%, transparent), transparent 72%), #030406; }
-[data-page="webinars"] .wb-vod__art { border-bottom: 1px solid var(--line-faint); }
+/* the card's text comes first in the source (so the link reads its title first), the picture first on screen */
+[data-page="webinars"] .wb-vod__art { order: -1; border-bottom: 1px solid var(--line-faint); }
 [data-page="webinars"] :is(.wb-vod__play, .wb-dialog__play) {
   position: absolute; left: 50%; top: 50%; display: grid; place-items: center; width: 56px; height: 56px; margin: -28px 0 0 -28px; border-radius: 50%; color: #fff;
   background: rgb(0 0 0 / 0.42); box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.55); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
@@ -134,7 +135,7 @@
 [data-page="webinars"] .wb-vod__dur { position: absolute; right: 14px; bottom: 14px; display: inline-flex; align-items: center; gap: 5px; height: 26px; padding: 0 10px; border-radius: 999px; font: 500 12px/1 var(--font); color: var(--ink-soft); background: rgb(0 0 0 / 0.55); box-shadow: inset 0 0 0 1px var(--line-faint); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
 [data-page="webinars"] .wb-vod__dur b { font: 400 12.5px/1 var(--font-brand); color: #fff; }
 [data-page="webinars"] .wb-vod__body { flex: 1; display: grid; align-content: start; gap: 12px; padding: 20px 22px 22px; }
-[data-page="webinars"] .wb-vod__meta { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+[data-page="webinars"] .wb-vod__meta { order: -1; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
 [data-page="webinars"] .wb-vod__date { font-size: 13px; color: var(--ink-muted); white-space: nowrap; }
 [data-page="webinars"] .wb-vod__title { margin-top: 4px; font: 600 19px/1.3 var(--font); letter-spacing: -0.012em; color: #fff; }
 [data-page="webinars"] .wb-vod__hosts { display: flex; align-items: center; gap: 10px; margin-top: 2px; font-size: 13.5px; color: var(--ink-muted); }

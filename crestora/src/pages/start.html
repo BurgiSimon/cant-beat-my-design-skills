@@ -83,12 +83,13 @@ nav: start.html
 
         <!-- sign in: a magic link, never a password -->
         <div class="start-panel" id="signin" role="tabpanel" aria-labelledby="tab-signin" hidden>
+          <span class="start-signin__anchor" id="signin-sent"></span>
           <h2 class="start-panel__title">Sign in</h2>
           <div class="start-signin__intro">
             <p class="start-signin__hello">Welcome back.</p>
             <p class="body">Enter the email you ride with. We’ll send a one-time link that opens your lanes. It works once, for 15 minutes.</p>
           </div>
-          <form class="start-form" id="signin-form" action="{{ROOT}}start.html#signin" method="get" data-form data-demo data-success="Your sign-in link is on its way. (Demo: nothing was sent.)" data-success-key="Link">
+          <form class="start-form" id="signin-form" action="{{ROOT}}start.html#signin-sent" method="get" data-form data-demo data-success="Your sign-in link is on its way. (Demo: nothing was sent.)" data-success-key="Link">
             <div class="field">
               <label class="field__label" for="si-email">Email</label>
               <input class="input" id="si-email" name="email" type="email" required maxlength="120" autocomplete="email" inputmode="email" placeholder="you@studio.example" data-msg-required="Which email should we send the link to?" />
@@ -96,6 +97,8 @@ nav: start.html
             </div>
             <button class="btn btn--primary btn--lg btn--block" type="submit"><svg aria-hidden="true"><use href="#i-mail"/></svg>Email me a link</button>
             <p class="start-signin__sent" data-signin-sent role="status" hidden></p>
+            <p class="start-signin__sent start-signin__sent--nojs" role="status">Thanks. This is a demo, so no link was sent.</p>
+            <p class="start-form__note"><svg class="icon" aria-hidden="true"><use href="#i-info"/></svg>This is a demo: nothing you type here is stored or sent.</p>
           </form>
           <div class="start-signin__foot">
             <p class="start-signin__why"><span class="icon-box" aria-hidden="true"><svg class="icon"><use href="#i-key"/></svg></span><span>No passwords at Crestora. A fresh link each time is safer than a password you reuse, and there’s nothing to forget.</span></p>
