@@ -20,7 +20,8 @@ export async function init() {
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = THREE.PCFShadowMap;
   renderer.setPixelRatio(1);
-  const env = K.skyEnvironment(renderer, { top: '#ffffff', horizon: '#dde8ec', bottom: '#5d6a45' });
+  const sky = () => K.skyEnvironment(renderer, { top: '#ffffff', horizon: '#dde8ec', bottom: '#5d6a45' });
+  let env = sky();
   await breathe();
   let bufW = 0, bufH = 0;
   const Q = dpr(low ? 1.25 : 1.6);
@@ -90,6 +91,7 @@ export async function init() {
     K.displace(cap, (x, y, z) => noise3(x * 2, y * 2, z * 2) * 0.05);
     const turfMat = K.surfaceMaterial({ key: 'turf', c1: '#3b4010', c2: '#555c17', c3: '#272b08', moss: 1.3, mossUp: 0, seed: [9, 1, 3], mossA: '#2c3108', mossB: '#5a6116', pit: 0.2 });
     const turf = new THREE.Mesh(cap, turfMat); turf.position.set(0.95, 0.82, -0.05); turf.receiveShadow = true; root.add(turf);
+    turf.renderOrder = 1;   // after its shells: the moss covers it, so the depth test skips its stone shader there
     turf.add(K.mossShells(cap, { layers: low ? 8 : 12, thick: 0.05, density: [500, 140], fill: 0.85, moss: 1.3, mossUp: 0, seed: [9, 1, 3], mossA: '#1f2306', mossB: '#555d12', tip: '#929640' }));
     await breathe();
     const top = domeY(0.95, 0.82, -0.05, 1.25, 0.3, 0.75);
@@ -284,6 +286,12 @@ export async function init() {
   });
   function sync() { run.set(!calm && views.some((v) => v.visible)); }
   redraw = () => { if (calm) for (const v of views) draw(v, 0); };
+  // a lost context comes back without the sky's light (three cannot refill a render target): bake it again
+  renderer.domElement.addEventListener('webglcontextrestored', () => {
+    env = sky();
+    for (const v of views) v.scene.environment = env;
+    redraw();
+  });
   addEventListener('resize', () => { if (calm) for (const v of views) draw(v, 0); });
 
   // each picture in its own slices: the scene, its shaders (in parallel where the browser can), its first frame (with

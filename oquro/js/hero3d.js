@@ -220,6 +220,10 @@ export async function init() {
 
   // ---- fit: the ring sits on the anchor, whatever the screen ----
   let W = 1, H = 1;
+  // the canvas's box as of the last fit, kept in page space (it sits in flow in the hero, untransformed, and is fitted
+  // again whenever its size changes): the frame and the pointer read it without making the browser lay out again
+  const cbox = { left: 0, top: 0, width: 1, height: 1 }; let boxY = 0;
+  const rect = () => { cbox.top = boxY - scroll.y; return cbox; };
   // the cost follows the machine: start sharp and, while the frames run long, step down a rung at a time, never back
   // up: the pixel ratio to 1, then thinner moss and grass, then below 1, then a smaller shadow map. A rung that costs
   // detail waits for two slow spells in a row, and nothing counts until the intro has settled (shaders warming up).
@@ -247,6 +251,7 @@ export async function init() {
   function fit() {
     const r = canvas.getBoundingClientRect();
     W = Math.max(1, r.width); H = Math.max(1, r.height);
+    cbox.left = r.left; cbox.width = r.width; cbox.height = r.height; boxY = r.top + scrollY;
     renderer.setPixelRatio(Math.min(quality.dpr, Math.sqrt(3.2e6 / (W * H))));
     renderer.setSize(W, H, false);
     const a = anchor.getBoundingClientRect();
@@ -275,7 +280,7 @@ export async function init() {
   };
   let hovering = false;
   canvas.addEventListener('pointermove', (e) => {
-    const r = canvas.getBoundingClientRect(); const x = e.clientX - r.left, y = e.clientY - r.top;
+    const r = rect(); const x = e.clientX - r.left, y = e.clientY - r.top;
     if (wheel.dragging) {
       const a = angleAt(x, y); let da = a - wheel.last; da = Math.atan2(Math.sin(da), Math.cos(da));
       wheel.last = a; wheel.a += da; wheel.v = da * 60; wheel.turned += Math.abs(da);
@@ -324,7 +329,7 @@ export async function init() {
 
     // the plants lean away from the pointer
     if (pointer.active && fine) {
-      const r = canvas.getBoundingClientRect();
+      const r = rect();
       ndc.set(((pointer.x - r.left) / r.width) * 2 - 1, -((pointer.y - r.top) / r.height) * 2 + 1);
       ray.setFromCamera(ndc, camera);
       if (ray.ray.intersectPlane(groundPlane, pushWorld)) {
@@ -360,8 +365,7 @@ export async function init() {
       const m = new THREE.Matrix4(); const q = new THREE.Quaternion(); const sc = new THREE.Vector3(); const e = new THREE.Euler();
       let pw = null;
       if (pointer.active && fine) {
-        const r = canvas.getBoundingClientRect();
-        pw = toWorld(pointer.x, pointer.y, r, new THREE.Vector3());
+        pw = toWorld(pointer.x, pointer.y, rect(), new THREE.Vector3());
       }
       for (let i = 0; i < clumpsMesh.count; i++) {
         const c = clumpState[i];

@@ -165,8 +165,8 @@ body::before { /* without WebGL: the light sections' soft sheen */
 .nav__icon:hover, .nav__home:hover { background: var(--chip-h); }
 .nav :is(.nav__home, .nav__icon).is-current { background: var(--ink); color: #fff; }
 .nav.is-dark :is(.nav__home, .nav__icon).is-current { background: #f3f3f3; color: var(--ink); }
-.nav__icon[data-tip]::after { /* a small label under the icon */
-  content: attr(data-tip); position: absolute; top: calc(100% + 8px); left: 50%; padding: 5px 8px; border-radius: 6px; font-size: 11.5px; font-weight: 500; white-space: nowrap;
+.nav__icon[data-tip]::after { /* a small label under the icon (seen, not read: the link's name is its .sr text) */
+  content: attr(data-tip); content: attr(data-tip) / ""; position: absolute; top: calc(100% + 8px); left: 50%; padding: 5px 8px; border-radius: 6px; font-size: 11.5px; font-weight: 500; white-space: nowrap;
   background: var(--ink); color: #fff; transform: translate(-50%, -4px); opacity: 0; pointer-events: none; transition: opacity 0.3s var(--ease), transform 0.4s var(--ease);
 }
 .nav.is-dark .nav__icon[data-tip]::after { background: #f3f3f3; color: var(--ink); }

@@ -48,7 +48,7 @@ section { position: relative; }
 .layers__grid { display: grid; grid-template-columns: minmax(0, 650fr) minmax(0, 625fr); column-gap: 0; align-items: start; }
 .layers__left { padding-top: 0; }
 .layers__left .h2 { margin-top: -14px; max-width: 640px; }
-.acc { margin-top: 84px; margin-right: 0; }
+.acc { position: relative; margin-top: 84px; margin-right: 0; }
 .acc__item { position: relative; border-bottom: 1px solid rgb(0 0 0 / 0.08); }
 .acc__item::before { /* the band behind the open item, bleeding off the left edge of the screen */
   content: ""; position: absolute; z-index: -1; top: -1px; bottom: -1px; right: 0; left: calc(-1 * var(--pad) - max(0px, (100vw - var(--max)) / 2));
@@ -71,6 +71,14 @@ section { position: relative; }
 .no-js .acc__btn { cursor: default; padding-bottom: 20px; }
 .acc__bar { position: absolute; left: 0; right: 0; bottom: -1px; height: 1px; background: var(--ink); transform-origin: 0 50%; transform: scaleX(0); opacity: 0; }
 .acc__item.is-open .acc__bar { opacity: 0.55; }
+/* the accordion's pause button: a chip like the header's, over the list's top right, out of the reading line. No
+   display value: the hidden attribute keeps it away where nothing plays (no scripts, reduced motion). */
+.acc__auto {
+  position: absolute; right: 24px; bottom: calc(100% + 14px); width: 34px; height: 34px; border-radius: 8px; color: var(--ink);
+  background: rgb(0 0 0 / 0.065); transition: background-color 0.4s var(--ease);
+}
+.acc__auto:hover { background: rgb(0 0 0 / 0.11); }
+.acc__auto .i { margin-inline: auto; }
 
 /* --cf sizes the two cards. Mostly px, so browser zoom still enlarges them; at 1440 it is the shot's 10 design px. */
 .layers__stage { --cf: min(10px, 6.4px + 0.245vw); position: relative; aspect-ratio: 625 / 708; margin-top: -4px; }
@@ -104,6 +112,10 @@ section { position: relative; }
 .tab:hover { color: #fff; }
 .tab.is-on { background: #f3f3f3; color: var(--ink); }
 .no-js .tab:not(.is-on) { display: none; } /* their copy comes from the script */
+/* the tablist, and after it in the same row the pause button for its autoplay (a .tab too, so it looks like one) */
+.tabs__list { display: flex; flex: none; gap: inherit; }
+.tab.tabs__auto { width: 40px; padding: 0; }
+.tabs__auto .i { margin-inline: auto; }
 .protect__grid { display: grid; grid-template-columns: minmax(0, 838fr) minmax(0, 415fr); gap: 25px; margin-top: 76px; }
 .feature {
   position: relative; display: grid; grid-template-columns: minmax(0, 407fr) minmax(0, 383fr); gap: 20px; min-height: 518px; padding: 14px; border-radius: 12px; color: var(--ink); overflow: hidden;
@@ -157,14 +169,17 @@ section { position: relative; }
 .perf__card {
   --c0: #b5e3ee;
   position: relative; display: flex; flex-direction: column; padding: 14px 14px 18px; border-radius: 12px; color: #fff; overflow: hidden;
-  /* the bottom stays dark enough for the rows' small white type (4.5:1 or more) */
-  background: radial-gradient(90% 70% at 50% 100%, rgb(150 205 215 / 0.12), transparent 70%), linear-gradient(180deg, #1d3a43, #2b5561 55%, #2f5d69);
+  /* the shot's glow over the top and near-black edges; behind the rows' small white type it stays at 4.5:1 or more */
+  background:
+    radial-gradient(44% 20% at 50% 16%, rgb(125 170 184 / 0.6), transparent), radial-gradient(46% 30% at 50% 42%, rgb(110 160 175 / 0.4), transparent),
+    radial-gradient(72% 76% at 50% 42%, transparent 50%, rgb(5 12 14 / 0.78)),
+    radial-gradient(90% 70% at 50% 100%, rgb(150 205 215 / 0.12), transparent 70%), linear-gradient(180deg, #1d3a43, #2b5561 55%, #2f5d69);
   box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.1), 0 30px 50px -30px rgb(0 40 50 / 0.6);
 }
 .perf__card .chip { align-self: flex-start; height: 28px; padding: 0 11px; border-radius: 7px; font-size: 12px; }
 .perf__row { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding: 0 6px; font-size: 15px; color: rgb(255 255 255 / 0.92); }
 .perf__row b { font-size: 20px; font-weight: 600; color: #fff; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
-.perf__row--lead { margin-top: 34px; }
+.perf__row--lead { margin-top: 34px; color: #fff; } /* it sits on the glow: full white keeps it at 4.5:1 */
 .perf__row--lead b { font-size: 22px; }
 .perf__row + .perf__row { margin-top: 14px; padding-top: 14px; border-top: 1px solid rgb(255 255 255 / 0.12); }
 .perf__bars { display: flex; align-items: flex-end; gap: 3px; height: 74px; margin: 20px 6px 20px; }
@@ -236,13 +251,15 @@ section { position: relative; }
   .layers { padding: 96px 0; }
   .layers__grid { grid-template-columns: 1fr; row-gap: 56px; }
   .acc { margin-top: 48px; }
+  .acc__auto { right: 0; bottom: calc(100% + 10px); }
   .acc__item::before { right: calc(-1 * var(--pad)); }
   .layers__stage { --cf: clamp(5.6px, 1.6vw, 9px); width: min(100%, 560px); justify-self: center; }
   .protect { padding: 96px 0; }
   .protect__head { flex-direction: column-reverse; gap: 24px; }
   .protect__head .h2 { max-width: 610px; }
-  /* a scroller clips what overflows it, so pad it (and pull it back by as much) to keep the focus ring whole */
-  .tabs { margin: 34px -6px -6px; padding: 6px; overflow-x: auto; scrollbar-width: none; }
+  /* a scroller clips what overflows it, so pad it (and pull it back by as much) to keep the focus ring whole; it runs
+     to the screen's edges, so on a phone what overflows (the pause button) slides off the edge like any chip row */
+  .tabs { margin: 34px calc(-1 * var(--pad)) -6px; padding: 6px var(--pad); scroll-padding-inline: var(--pad); overflow-x: auto; scrollbar-width: none; }
   .tab { flex: none; }
   .protect__grid { grid-template-columns: 1fr; margin-top: 28px; }
   .feature__media { --fs: clamp(8px, 1.1vw, 9.6px); }
@@ -271,5 +288,6 @@ section { position: relative; }
   .foot__base { flex-direction: column; align-items: flex-start; }
   .tabs { gap: 6px; }
   .tab { height: 36px; padding: 0 10px; font-size: 12.5px; }
+  .tab.tabs__auto { width: 36px; }
   .monitor__cap span { font-size: 11px; }
 }

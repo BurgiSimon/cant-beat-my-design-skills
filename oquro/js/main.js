@@ -19,8 +19,10 @@ load('intro');
 load('water');
 load('hero3d');
 for (const name of ['reveals', 'live', 'layers', 'protect', 'monitor', 'field']) load(name);
-// the smaller 3D pictures are all below the fold: build them once the way in is done and the browser is idle
-(await import('./core.js')).once('intro:done', () => {
+// the smaller 3D pictures are all below the fold: build them once the way in is done and the hero's entrance (about
+// 2 s of it) has played, when the browser is idle
+const core = await import('./core.js');
+core.once('intro:done', () => {
   const go = () => load('scenes');
-  if ('requestIdleCallback' in window) requestIdleCallback(go, { timeout: 1500 }); else setTimeout(go, 300);
+  setTimeout(() => { if ('requestIdleCallback' in window) requestIdleCallback(go, { timeout: 1500 }); else go(); }, core.calm ? 0 : 2200);
 });

@@ -16,7 +16,7 @@
   position: absolute; left: 0; right: 0; top: calc(161 * var(--u)); margin: 0;
   display: flex; justify-content: center; /* centred even when wider than its box (phones) */
   font-family: var(--display); font-weight: 400; font-size: calc(365 * var(--u)); line-height: 0.86; letter-spacing: -0.02em;
-  color: var(--ink); text-align: center; white-space: nowrap; user-select: none;
+  color: var(--ink); text-align: center; white-space: nowrap; -webkit-user-select: none; user-select: none;
 }
 .hero__letters { display: inline-flex; transform: translateX(calc(5 * var(--u))) scaleX(0.92); margin-right: -0.02em; clip-path: inset(-40% -5% 0 -5%); } /* the shot's word sits a touch right of centre */
 .hero__letters > span { display: block; will-change: transform; }
@@ -24,7 +24,7 @@
 .hero__anchor { position: absolute; left: calc(722 * var(--u)); top: calc(610 * var(--u)); width: calc(555 * var(--u)); aspect-ratio: 1; transform: translate(-50%, -50%); pointer-events: none; }
 
 .hero__copy { position: absolute; left: calc(79 * var(--u)); top: calc(537 * var(--u)); width: min(calc(330 * var(--uu)), calc(350 * var(--u))); } /* never into the ring on a short screen */
-.hero__copy p { font-size: calc(15.4 * var(--uu)); line-height: 1.56; color: #737373; letter-spacing: -0.006em; }
+.hero__copy p { font-size: calc(15.4 * var(--uu)); line-height: 1.56; color: #666; letter-spacing: -0.006em; } /* 4.5:1 on the sheen too */
 .hero__copy .link-u { margin-top: calc(22 * var(--uu)); font-size: calc(15.5 * var(--uu)); }
 
 /* The card is drawn in em, so its type, like the copy's, never drops below --uu; it grows to the right, never past the screen's edge. */
