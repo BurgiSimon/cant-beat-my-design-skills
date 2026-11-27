@@ -3,9 +3,10 @@
 // wheel, a drag or the arrow keys move it. The card under the pointer (or the one with the keyboard's focus) is lit
 // and gets a trace in its site's own manner: mist that drifts and parts, a hole torn through the clouds onto a night
 // of ASCII, an orbit of light with a streak along its horizon, a reticle locking on through a streak of brake light, a
-// halo of coloured cells. A chosen card opens into its site: it grows to fill the screen and gives way to the colour
-// the site paints first, so the site's own entrance carries on from there. On a phone the cards are a strip that a
-// swipe moves from one to the next. Without this script the page is still a row of links.
+// halo of coloured cells, a vault dial over rippling water. A chosen card opens into its site: it grows to fill the
+// screen and gives way to the colour the site paints first, so the site's own entrance carries on from there. On a
+// phone the cards are a strip that a swipe moves from one to the next. Without this script the page is still a row
+// of links.
 
 const list = document.querySelector('.list');
 const rows = [...list.querySelectorAll('a')];            // one card per site, as the page has them
@@ -337,6 +338,51 @@ const TRACES = {
         const tail = g.createLinearGradient(hx, 0, hx + 170, 0);
         tail.addColorStop(0, `rgb(255 232 220 / ${0.95 * fade})`); tail.addColorStop(0.25, `rgb(255 150 110 / ${0.5 * fade})`); tail.addColorStop(1, 'rgb(255 90 54 / 0)');
         g.strokeStyle = tail; g.lineWidth = 1.6; g.beginPath(); g.moveTo(hx, hy); g.lineTo(hx + 170, hy); g.stroke();
+        g.restore();
+        return true;
+      },
+    };
+  })(),
+
+  // OQURO: the vault dial of its preloader closes round the pointer, its long ticks catching up one by one, and the
+  // pointer drops rings into the water under it, as the light sections of the page do. Lit with no pointer on it,
+  // the dial wanders.
+  oquro: (() => {
+    const at = { x: 0, y: 0, on: false, px: 0, py: 0, turn: 0 };
+    const DARK = '34 34 34';   // its still is pale water, so this one is drawn in OQURO's ink, not the picker's white
+    const rings = [];
+    return {
+      reset() { at.on = false; rings.length = 0; },
+      draw(r, o, on, dt) {
+        if (o < 0.01 && !rings.length) return false;
+        const want_ = on && inside(r, ptr) ? ptr : { x: r.left + r.width * (0.5 + 0.22 * Math.sin(clock * 0.39)), y: r.top + r.height * (0.3 + 0.1 * Math.sin(clock * 0.63)) };
+        if (!at.on) { at.x = at.px = want_.x; at.y = at.py = want_.y; at.on = true; }
+        const ease = 1 - Math.exp(-dt * 6);
+        at.x += (want_.x - at.x) * ease; at.y += (want_.y - at.y) * ease;
+        // a ring wherever the pointer has travelled far enough, and a slow one now and then
+        if (o > 0.5 && (Math.hypot(at.x - at.px, at.y - at.py) > 46 || rnd(Math.floor(clock * 2)) < dt * 1.2)) { rings.push({ x: at.x, y: at.y, t: 0 }); at.px = at.x; at.py = at.y; }
+        within(r);
+        for (let i = rings.length - 1; i >= 0; i--) {
+          const q = rings[i]; q.t += dt;
+          if (q.t > 1.8) { rings.splice(i, 1); continue; }
+          const k = q.t / 1.8;
+          g.strokeStyle = `rgb(${DARK} / ${0.32 * (1 - k) ** 2})`;
+          g.beginPath(); g.ellipse(q.x, q.y, 14 + k * 120, (14 + k * 120) * 0.42, 0, 0, Math.PI * 2); g.stroke();
+        }
+        // the dial: sixty ticks, every fifth long, closing round from the top as the card lights, turning slowly
+        const R = Math.min(64, r.width * 0.16);
+        at.turn += dt * (0.25 + 0.6 * (on ? 1 : 0));
+        const shown = Math.floor(60 * Math.min(1, o * 1.1));
+        for (let i = 0; i < shown; i++) {
+          const long = i % 5 === 0; const a = -Math.PI / 2 + (i / 60) * Math.PI * 2 + at.turn;
+          const r0 = R - (long ? 13 : 7); const r1 = R;
+          g.strokeStyle = `rgb(${DARK} / ${(long ? 0.9 : 0.45) * o})`;
+          g.beginPath(); g.moveTo(at.x + Math.cos(a) * r0, at.y + Math.sin(a) * r0); g.lineTo(at.x + Math.cos(a) * r1, at.y + Math.sin(a) * r1); g.stroke();
+        }
+        // and the mark in its middle: a hub with eight knobs
+        g.fillStyle = `rgb(${DARK} / ${0.9 * o})`;
+        g.beginPath(); g.arc(at.x, at.y, 5.5, 0, Math.PI * 2); g.fill();
+        for (let i = 0; i < 8; i++) { const a = (i / 8) * Math.PI * 2 - at.turn * 2; g.beginPath(); g.arc(at.x + Math.cos(a) * 11, at.y + Math.sin(a) * 11, 2, 0, Math.PI * 2); g.fill(); }
         g.restore();
         return true;
       },

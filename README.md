@@ -12,6 +12,7 @@ Websites built from a single design, each its own project, behind one picker.
 | **Vizen**, a helmet store's product page recreated from one shot, its rider raymarched in WebGL | [`/vizen/`](https://burgisimon.github.io/cant-beat-my-design-skills/vizen/) |
 | **UnoRouter**, an AI model router's hero recreated from one shot, in pixels, and grown into a full landing page | [`/unorouter/`](https://burgisimon.github.io/cant-beat-my-design-skills/unorouter/) |
 | **OFFFORM**, a sportswear shop recreated from a two-artboard shot and given a motion layer | [`/offform/`](https://burgisimon.github.io/cant-beat-my-design-skills/offform/) |
+| **OQURO**, a cyber-security page recreated from one shot, its 3D renders rebuilt as real-time 3D in code | [`/oquro/`](https://burgisimon.github.io/cant-beat-my-design-skills/oquro/) |
 
 ## The picker
 
@@ -23,10 +24,11 @@ The front page ([`picker/`](picker/)) is a line of cards, one per site, each wit
   streak sweeps along its horizon, as in its hero; on Vizen, the hero's reticle locks onto the pointer with a streak
   of brake light through it; on UnoRouter, a halo of cells round the pointer steps through its four colours the way
   its mark does; on OFFFORM, the hero's two rules cross at the pointer, its ring closes round it with a light running
-  it, and speed lines stream off behind a quick move.
+  it, and speed lines stream off behind a quick move; on OQURO, the vault dial of its preloader closes round the
+  pointer while rings spread through the water under it.
 - **Choose one** and the card grows to fill the screen, its still giving way to the colour that site paints
   first: Mist's bare violet sky, Nelson's white preloader, AsterPay's dark one, the black of Vizen and of UnoRouter,
-  OFFFORM's orange.
+  OFFFORM's orange, OQURO's pale grey.
   The site's own entrance then plays from there, so the move from picker to site has no seam.
 - While the cards fit the screen they stand in the middle. With more sites than fit, the line becomes
   endless: it drifts when left alone, and the wheel, a drag or the arrow keys move it.
@@ -127,6 +129,21 @@ of the home page, and the sections after it), measured against it at 1440px, the
 No build step either; copied into `dist/offform/` by `build.mjs`. The photographs are free-licence stand-ins graded
 to the shot (see [`offform/CREDITS.md`](offform/CREDITS.md)). See [`offform/README.md`](offform/README.md).
 
+## OQURO
+
+A seventh project lives in [`oquro/`](oquro/): a cyber-security landing page recreated from one shot, every section of
+it, with the shot's 3D renders (a mossy stone ring holding a vault door, a rocky outcrop, a laptop on a boulder, a
+chain link in sand) rebuilt as real-time 3D, entirely in code.
+
+| Part | What it is |
+| --- | --- |
+| Hero | The giant word with a three.js garden in front of it: procedural stone, moss grown by shell texturing, instanced grass, wheat and daisies in the wind, moss crumbling off the first letter. Drag the vault's wheel round and the door opens, and the threat card raises the alarm. Behind it all, animated pool caustics |
+| Sections | A security-camera figure drawn pixel by pixel, a statement lit as you read, an accordion and tabs that play through with live cards (radar, gauge, spark chart, timeline, threat matrix), a garden and a laptop in 3D, a performance card, a call to action over the vault in dots |
+| Motion | A vault-dial preloader into the hero, Lenis smooth scroll, GSAP scroll reveals and SplitText, magnetic buttons, tilting cards, a nav that adapts to each section |
+
+No build step: plain HTML, CSS and ES modules, copied into `dist/oquro/` by `build.mjs`. See
+[`oquro/README.md`](oquro/README.md).
+
 ## Develop
 
 Requires Node 20+. No dependencies to install.
@@ -162,6 +179,7 @@ asterpay/              separate project, no build step, published under /asterpa
 vizen/                 separate project, no build step, published under /vizen/ (its README and tools/ stay behind)
 unorouter/             separate project, no build step, published under /unorouter/ (its README and tools/ stay behind)
 offform/               separate project, no build step, published under /offform/ (its README, CREDITS and tools/ stay behind)
+oquro/                 separate project, no build step, published under /oquro/ (its README and tools/ stay behind)
 ```
 
 ## Deploy
@@ -198,7 +216,10 @@ GitHub Pages (Settings → Pages → Source: GitHub Actions).
 - OFFFORM: [Barlow Condensed](https://github.com/jpt/barlow), JetBrains Mono and Inter (SIL Open Font License,
   licences in `offform/assets/fonts/`); photographs from Unsplash and Pexels under their licences, credited in
   `offform/CREDITS.md`.
+- OQURO: [Anton](https://github.com/googlefonts/AntonFont), Inter and JetBrains Mono (SIL Open Font License, licences in
+  `oquro/assets/fonts/`); [three.js](https://threejs.org) (MIT), cut down to what it uses.
 - Mist, its customers, people, quotes and numbers are fictional. The investor line in the hero comes
   from the original design. AsterPay, its people, reviews and figures are fictional too, and so are Vizen and its
   helmets. UnoRouter's hero copy and figures come from its shot; its models list, prices, rankings and routing are
-  illustrative and simulated. OFFFORM, its products, prices, people and run club are fictional too.
+  illustrative and simulated. OFFFORM, its products, prices, people and run club are fictional too, and so are OQURO,
+  its numbers and its threats.
