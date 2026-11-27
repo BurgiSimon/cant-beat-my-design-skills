@@ -2,9 +2,10 @@
 // in the middle; where they do not, the line is endless: it drifts by itself when the page is left alone, and the
 // wheel, a drag or the arrow keys move it. The card under the pointer (or the one with the keyboard's focus) is lit
 // and gets a trace in its site's own manner: mist that drifts and parts, a hole torn through the clouds onto a night
-// of ASCII, an orbit of light with a streak along its horizon, a reticle locking on through a streak of brake light. A chosen card opens into its site: it grows to fill the screen and gives way to the colour the site
-// paints first, so the site's own entrance carries on from there. On a phone the cards are a strip that a swipe
-// moves from one to the next. Without this script the page is still a row of links.
+// of ASCII, an orbit of light with a streak along its horizon, a reticle locking on through a streak of brake light, a
+// halo of coloured cells. A chosen card opens into its site: it grows to fill the screen and gives way to the colour
+// the site paints first, so the site's own entrance carries on from there. On a phone the cards are a strip that a
+// swipe moves from one to the next. Without this script the page is still a row of links.
 
 const list = document.querySelector('.list');
 const rows = [...list.querySelectorAll('a')];            // one card per site, as the page has them
@@ -391,6 +392,41 @@ const TRACES = {
     };
   })(),
 };
+
+// UnoRouter: the pointer is a halo of cells on the site's 8 px grid, in rings that step yellow → orange → pink →
+// magenta outwards as its hero's art does, thinning to scattered pixels at the edge. Lit with no pointer on it, the
+// halo wanders.
+TRACES.unorouter = (() => {
+  const at = { x: 0, y: 0, on: false };
+  const HOT = ['255 203 0', '255 117 0', '255 34 131', '232 36 255'];
+  const C = 8;
+  return {
+    reset() { at.on = false; },
+    draw(r, o, on, dt) {
+      if (o < 0.01) return false;
+      const want_ = on && inside(r, ptr) ? ptr : { x: r.left + r.width * (0.5 + 0.22 * Math.sin(clock * 0.47)), y: r.top + r.height * (0.45 + 0.15 * Math.sin(clock * 0.73)) };
+      if (!at.on) { at.x = want_.x; at.y = want_.y; at.on = true; }
+      const ease = 1 - Math.exp(-dt * 7);
+      at.x += (want_.x - at.x) * ease; at.y += (want_.y - at.y) * ease;
+      const R = Math.min(120, r.width * 0.28) * o;
+      if (R < 4) return true;
+      within(r);
+      const tick = Math.floor(clock * 9);
+      for (let cy = Math.floor((at.y - R) / C); cy <= Math.ceil((at.y + R) / C); cy++) {
+        for (let cx = Math.floor((at.x - R) / C); cx <= Math.ceil((at.x + R) / C); cx++) {
+          const X = cx * C; const Y = cy * C; const d = Math.hypot(X + C / 2 - at.x, Y + C / 2 - at.y) / R;
+          if (d > 1) continue;
+          if (rnd(cx * 977 + cy * 131 + tick * 3) < d * d * 0.9) continue;      // scattered towards the edge
+          const k = mod(Math.floor(d * 4.5 - clock * 1.6), 4);
+          g.fillStyle = `rgb(${HOT[k]} / ${(0.95 * (1 - d * d) * o).toFixed(3)})`;
+          g.fillRect(X + 0.5, Y + 0.5, C - 1, C - 1);
+        }
+      }
+      g.restore();
+      return true;
+    },
+  };
+})();
 
 function within(r) { g.save(); g.beginPath(); g.roundRect(r.left, r.top, r.width, r.height, 14); g.clip(); }
 

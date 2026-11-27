@@ -5,13 +5,14 @@
  *   stills/<site>-tall.jpg   900×1600, for a screen held upright
  *   og.jpg                  1200×630, the picker itself, for link previews
  *
- *   node picker/tools/stills.mjs
+ *   node picker/tools/stills.mjs                    every site's stills, then og.jpg
+ *   node picker/tools/stills.mjs vizen unorouter    only the named sites' stills (og.jpg is always rendered)
  *
  * A still is the site's hero art with no type on it: the card sets its own name over it. Mist's is its own hero,
  * built and photographed with the header and the copy hidden; Nelson's is cut from its hero picture around the eye;
  * AsterPay's is its hero's light, rings and phones, the tall one cut from a wide render around the phones; Vizen's
- * is its rider alone, as its WebGL draws him (software WebGL will do, slowly), the tall one cut round him too.
- * Name sites to render only theirs (the share image is always rendered): node picker/tools/stills.mjs vizen
+ * is its rider alone, as its WebGL draws him (software WebGL will do, slowly), the tall one cut round him too;
+ * UnoRouter's is its mark of coloured cells on the dot grid, in the shot's own colours.
  * Needs Playwright with Chromium (npm i -g playwright && npx playwright install chromium); the site itself does not.
  */
 import { promises as fs } from "node:fs";
@@ -82,6 +83,17 @@ const asterpay = async (page, viewport) => {
   return tall ? { x: 1280 - 450, y: 0, width: 900, height: 1600 } : undefined;
 };
 
+// UnoRouter: its hero's art alone, centred and larger, on the dot grid (under reduced motion it is the shot's frame).
+const unorouter = async (page, viewport) => {
+  const tall = viewport.height > viewport.width;
+  await page.goto(`${site}/unorouter/`, { waitUntil: "load" });
+  await page.addStyleTag({ content: `.skip, .nav, .hero__copy, .art__hint { display: none !important; }
+    .hero { min-height: 100vh !important; padding: 0 !important; } .hero__inner { grid-template-columns: 1fr !important; }
+    .hero__art { justify-self: center !important; margin: ${tall ? "-22vh" : "-8vh"} 0 0 !important; width: ${tall ? "74vw" : "42vw"} !important; }` });
+  await page.evaluate(() => document.fonts.ready);
+  await page.waitForTimeout(500);
+};
+
 // Vizen: its rider alone, the hero's WebGL with the page taken off it. Held upright, cut from a wide render round him.
 const vizen = async (page, viewport) => {
   const tall = viewport.height > viewport.width;
@@ -98,7 +110,7 @@ const vizen = async (page, viewport) => {
 
 await fs.mkdir(path.join(ASSETS, "stills"), { recursive: true });
 console.log("stills:");
-for (const [name, go] of Object.entries({ mist, nelson, asterpay, vizen })) {
+for (const [name, go] of Object.entries({ mist, nelson, asterpay, vizen, unorouter })) {
   if (only.length && !only.includes(name)) continue;
   await shoot(WIDE, `stills/${name}-wide.jpg`, go);
   await shoot(TALL, `stills/${name}-tall.jpg`, go);

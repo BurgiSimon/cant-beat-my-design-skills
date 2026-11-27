@@ -10,6 +10,7 @@ Websites built from a single design, each its own project, behind one picker.
 | **Nelson**, a CRM landing page recreated 1:1 and given a motion layer | [`/nelson-crm/`](https://burgisimon.github.io/cant-beat-my-design-skills/nelson-crm/) |
 | **AsterPay**, a money app's hero recreated from one shot and grown into a full landing page | [`/asterpay/`](https://burgisimon.github.io/cant-beat-my-design-skills/asterpay/) |
 | **Vizen**, a helmet store's product page recreated from one shot, its rider raymarched in WebGL | [`/vizen/`](https://burgisimon.github.io/cant-beat-my-design-skills/vizen/) |
+| **UnoRouter**, an AI model router's hero recreated from one shot, in pixels, and grown into a full landing page | [`/unorouter/`](https://burgisimon.github.io/cant-beat-my-design-skills/unorouter/) |
 
 ## The picker
 
@@ -19,10 +20,11 @@ The front page ([`picker/`](picker/)) is a line of cards, one per site, each wit
   across the foot and part around the pointer; on Nelson, a hole tears open in the clouds onto a night of
   drifting ASCII, the way its hero tears its paper; on AsterPay, an orbit of light closes round the pointer and a
   streak sweeps along its horizon, as in its hero; on Vizen, the hero's reticle locks onto the pointer with a streak
-  of brake light through it.
+  of brake light through it; on UnoRouter, a halo of cells round the pointer steps through its four colours the way
+  its mark does.
 - **Choose one** and the card grows to fill the screen, its still giving way to the colour that site paints
-  first: Mist's bare violet sky, Nelson's white preloader, AsterPay's dark one, Vizen's black. The site's own entrance then plays from there, so
-  the move from picker to site has no seam.
+  first: Mist's bare violet sky, Nelson's white preloader, AsterPay's dark one, the black of Vizen and of UnoRouter.
+  The site's own entrance then plays from there, so the move from picker to site has no seam.
 - While the cards fit the screen they stand in the middle. With more sites than fit, the line becomes
   endless: it drifts when left alone, and the wheel, a drag or the arrow keys move it.
 - On a phone the cards are a strip you swipe; the one in the middle is lit.
@@ -31,8 +33,8 @@ The front page ([`picker/`](picker/)) is a line of cards, one per site, each wit
 
 To add a site: a link in `picker/index.html` with its own `data-id`, its `--still` and `--arrive` in
 `picker/picker.css`, and its stills from `node picker/tools/stills.mjs` (which renders every still and the
-share image, or only the named sites' stills: `node picker/tools/stills.mjs vizen`; it needs Playwright). A trace of
-its own in `picker/picker.js` is optional.
+share image, or only the named sites' stills: `node picker/tools/stills.mjs vizen unorouter`; it needs Playwright). A
+trace of its own in `picker/picker.js` is optional.
 
 ## Mist
 
@@ -93,12 +95,27 @@ WebGL2 shader, so the camera can go round him, the visor opens and the paint cha
 
 No build step either; copied into `dist/vizen/` by `build.mjs`. See [`vizen/README.md`](vizen/README.md).
 
+## UnoRouter
+
+A fifth project lives in [`unorouter/`](unorouter/): an AI model router's hero recreated from a single shot (measured
+against it at 1440 × 1080, down to the colour of each cell in its mark) and grown into a full landing page in the same
+pixel language.
+
+| Part | What it is |
+| --- | --- |
+| Hero | The shot, live: the mark as 52 × 48 cells whose colour bands flow from the shot's own frame, part round the pointer, ring out from a press and route requests down its bars and out through its rays; a dot-matrix headline that decodes; figures that count and a token count that runs |
+| Sections | A providers strip, a quickstart whose one changed line types itself and whose request streams back, a models explorer (search, filters, sorting, copy), a fallback simulator you can break, rankings in bars of cells, pricing, FAQ, and a key generator over the mark in the dark |
+| Motion | A boot log into the hero, a WebGL dot grid that wakes round the pointer, Lenis smooth scroll, GSAP scroll reveals, magnetic buttons, a favicon that cycles colours |
+
+No build step: plain HTML, CSS and ES modules, copied into `dist/unorouter/` by `build.mjs`. See
+[`unorouter/README.md`](unorouter/README.md).
+
 ## Develop
 
 Requires Node 20+. No dependencies to install.
 
 ```bash
-node build.mjs --serve        # http://localhost:4321 — the picker, /mist/, /nelson-crm/, /asterpay/ and /vizen/; rebuilds and live-reloads on change
+node build.mjs --serve        # http://localhost:4321 — the picker, /mist/, /nelson-crm/, /asterpay/, /vizen/ and /unorouter/; rebuilds and live-reloads on change
 node build.mjs                # production build into ./dist
 ```
 
@@ -126,6 +143,7 @@ src/                   Mist, published under /mist/ (its 404 page answers for th
 nelson-crm/            separate prebuilt project, published under /nelson-crm/
 asterpay/              separate project, no build step, published under /asterpay/ (its README and tools/ stay behind)
 vizen/                 separate project, no build step, published under /vizen/ (its README and tools/ stay behind)
+unorouter/             separate project, no build step, published under /unorouter/ (its README and tools/ stay behind)
 ```
 
 ## Deploy
@@ -157,6 +175,9 @@ GitHub Pages (Settings → Pages → Source: GitHub Actions).
   rather than committed; land outlines from [Natural Earth](https://www.naturalearthdata.com/) (public domain).
 - Vizen: [Inter Tight](https://github.com/rsms/inter) and [Roboto Mono](https://github.com/googlefonts/robotomono)
   (SIL Open Font License, licences in `vizen/assets/fonts/`).
+- UnoRouter: [Doto](https://github.com/oliverlalan/Doto) and [Geist Mono and Geist](https://github.com/vercel/geist-font)
+  (SIL Open Font License, licences in `unorouter/assets/fonts/`).
 - Mist, its customers, people, quotes and numbers are fictional. The investor line in the hero comes
   from the original design. AsterPay, its people, reviews and figures are fictional too, and so are Vizen and its
-  helmets.
+  helmets. UnoRouter's hero copy and figures come from its shot; its models list, prices, rankings and routing are
+  illustrative and simulated.

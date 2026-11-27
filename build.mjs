@@ -13,6 +13,7 @@
  *   nelson-crm/  →  /nelson-crm/  the prebuilt Nelson CRM project, runtime files only
  *   asterpay/    →  /asterpay/    the AsterPay project, as written (no build step; its README and tools stay behind)
  *   vizen/       →  /vizen/       the Vizen project, the same way
+ *   unorouter/   →  /unorouter/   the UnoRouter project, the same way
  * Mist used to live at the root, so each of its old page URLs gets a small redirect into /mist/.
  *
  * Mist pages live in src/pages/*.html and may include partials from src/partials with
@@ -22,7 +23,7 @@
  *
  * Tokens replaced in pages and static text files:
  *   {{SITE_URL}}  absolute URL of the page's own site, without trailing slash (env SITE_URL, + /mist for Mist,
- *                 + /asterpay for AsterPay, + /vizen for Vizen)
+ *                 + /asterpay for AsterPay, + /vizen for Vizen, + /unorouter for UnoRouter)
  *   {{BASE}}      URL path that site is served under, with trailing slash (env BASE_PATH, + mist/ for Mist)
  *   {{VERSION}}   content hash of that site's CSS + JS, for cache-busting
  *   {{YEAR}}      current year
@@ -44,6 +45,14 @@ const ASTERPAY = path.join(ROOT, "asterpay");
 const ASTERPAY_PRIVATE = new Set(["README.md", "tools"]); // kept in the repo, not published
 const VIZEN = path.join(ROOT, "vizen");
 const VIZEN_PRIVATE = new Set(["README.md", "tools"]); // kept in the repo, not published
+const UNOROUTER = path.join(ROOT, "unorouter");
+const UNOROUTER_PRIVATE = new Set(["README.md", "tools"]); // kept in the repo, not published
+// Sites with no build step, published as written under /<name>/ (their README and tools stay behind).
+const PLAIN_SITES = [
+  { dir: ASTERPAY, name: "asterpay", private: ASTERPAY_PRIVATE },
+  { dir: VIZEN, name: "vizen", private: VIZEN_PRIVATE },
+  { dir: UNOROUTER, name: "unorouter", private: UNOROUTER_PRIVATE },
+];
 
 const argv = process.argv.slice(2);
 const flag = (name) => argv.includes(name);
@@ -230,19 +239,19 @@ async function build() {
     }
   }
 
-  // ── AsterPay and Vizen, under /asterpay/ and /vizen/ ──
+  // ── AsterPay, Vizen and UnoRouter, under /asterpay/, /vizen/ and /unorouter/ ──
   // Plain files, published as they are; their pages get the tokens, with a version hash of their own CSS and JS.
-  for (const [name, dir, hidden] of [["asterpay", ASTERPAY, ASTERPAY_PRIVATE], ["vizen", VIZEN, VIZEN_PRIVATE]]) {
-    const files = (await listFiles(dir)).filter((f) => !hidden.has(path.relative(dir, f).split(path.sep)[0]));
+  for (const site of PLAIN_SITES) {
+    const files = (await listFiles(site.dir)).filter((f) => !site.private.has(path.relative(site.dir, f).split(path.sep)[0]));
     const code = (
       await Promise.all(files.filter((f) => /\.(css|js)$/.test(f) && !f.includes(`${path.sep}vendor${path.sep}`)).map((f) => fs.readFile(f, "utf8")))
     ).join("\n");
-    const siteTokens = { SITE_URL: `${SITE_URL}/${name}`, BASE: `${BASE}${name}/`, VERSION: hashOf(code), YEAR };
+    const tokens = { SITE_URL: `${SITE_URL}/${site.name}`, BASE: `${BASE}${site.name}/`, VERSION: hashOf(code), YEAR };
     for (const file of files) {
-      const dest = path.join(OUT, name, path.relative(dir, file));
+      const dest = path.join(OUT, site.name, path.relative(site.dir, file));
       await fs.mkdir(path.dirname(dest), { recursive: true });
-      if (file.endsWith(".html")) await fs.writeFile(dest, withLiveReload(replaceTokens(await fs.readFile(file, "utf8"), siteTokens)));
-      else if (TEXT_EXT.has(path.extname(file))) await fs.writeFile(dest, replaceTokens(await fs.readFile(file, "utf8"), siteTokens));
+      if (file.endsWith(".html")) await fs.writeFile(dest, withLiveReload(replaceTokens(await fs.readFile(file, "utf8"), tokens)));
+      else if (TEXT_EXT.has(path.extname(file))) await fs.writeFile(dest, replaceTokens(await fs.readFile(file, "utf8"), tokens));
       else await fs.copyFile(file, dest);
     }
   }
@@ -259,6 +268,7 @@ async function build() {
     `${SITE_URL}/nelson-crm/recreation.html`,
     `${SITE_URL}/asterpay/`,
     `${SITE_URL}/vizen/`,
+    `${SITE_URL}/unorouter/`,
   ];
   const sitemap =
     `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
@@ -269,7 +279,7 @@ async function build() {
   await fs.writeFile(path.join(OUT, ".nojekyll"), "");
 
   for (const w of warnings) console.warn(`  ⚠ ${w}`);
-  console.log(`✓ built the picker, ${pages.length} Mist pages, Nelson, AsterPay and Vizen → ${path.relative(ROOT, OUT) || OUT} in ${Date.now() - started}ms`);
+  console.log(`✓ built the picker, ${pages.length} Mist pages, Nelson, AsterPay, Vizen and UnoRouter → ${path.relative(ROOT, OUT) || OUT} in ${Date.now() - started}ms`);
 }
 
 const MIME = {
@@ -330,8 +340,7 @@ function serve() {
   };
   watch(SRC, { recursive: true }, rebuild);
   watch(PICKER, { recursive: true }, rebuild);
-  watch(ASTERPAY, { recursive: true }, rebuild);
-  watch(VIZEN, { recursive: true }, rebuild);
+  for (const site of PLAIN_SITES) watch(site.dir, { recursive: true }, rebuild);
 }
 
 await build();
