@@ -8,7 +8,8 @@
  *   node picker/tools/stills.mjs
  *
  * A still is the site's hero art with no type on it: the card sets its own name over it. Mist's is its own hero,
- * built and photographed with the header and the copy hidden; Nelson's is cut from its hero picture around the eye.
+ * built and photographed with the header and the copy hidden; Nelson's is cut from its hero picture around the eye;
+ * AsterPay's is its hero's light, rings and phones, the tall one cut from a wide render around the phones.
  * Needs Playwright with Chromium (npm i -g playwright && npx playwright install chromium); the site itself does not.
  */
 import { promises as fs } from "node:fs";
@@ -46,8 +47,8 @@ const site = `http://127.0.0.1:${server.address().port}`;
 const browser = await chromium.launch();
 const shoot = async (viewport, file, go) => {
   const page = await browser.newPage({ viewport, reducedMotion: "reduce" });
-  await go(page);
-  await page.screenshot({ path: path.join(ASSETS, file), type: "jpeg", quality: QUALITY });
+  const clip = await go(page, viewport); // a site may photograph a larger page and say which part to keep
+  await page.screenshot({ path: path.join(ASSETS, file), type: "jpeg", quality: QUALITY, ...(clip && { clip }) });
   await page.close();
   console.log(`  ${file}`);
 };
@@ -66,9 +67,23 @@ const nelson = async (page) => {
   await page.evaluate(() => new Promise((ok) => { const i = new Image(); i.onload = ok; i.src = getComputedStyle(document.body).backgroundImage.slice(5, -2); }));
 };
 
+// AsterPay: its hero (the light is WebGL, drawn once under reduced motion) with the header, the copy and the floating
+// figures taken off. Held upright, the composition is wider than it is tall, so the tall still is cut from a wide
+// render, around the phones.
+const asterpay = async (page, viewport) => {
+  const tall = viewport.height > viewport.width;
+  if (tall) await page.setViewportSize({ width: 2560, height: 1600 });
+  await page.goto(`${site}/asterpay/`, { waitUntil: "load" });
+  // the phones sit a little lower than on the page, so the card's name falls on their frames, not their figures
+  await page.addStyleTag({ content: ".skip, .nav, .hero__content, .ticks, .tape { visibility: hidden !important; } .phones { transform: translateY(15%); }" });
+  await page.evaluate(() => document.fonts.ready);
+  await page.waitForTimeout(600);
+  return tall ? { x: 1280 - 450, y: 0, width: 900, height: 1600 } : undefined;
+};
+
 await fs.mkdir(path.join(ASSETS, "stills"), { recursive: true });
 console.log("stills:");
-for (const [name, go] of Object.entries({ mist, nelson })) {
+for (const [name, go] of Object.entries({ mist, nelson, asterpay })) {
   await shoot(WIDE, `stills/${name}-wide.jpg`, go);
   await shoot(TALL, `stills/${name}-tall.jpg`, go);
 }
