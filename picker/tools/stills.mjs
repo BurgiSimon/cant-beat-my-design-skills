@@ -9,7 +9,8 @@
  *
  * A still is the site's hero art with no type on it: the card sets its own name over it. Mist's is its own hero,
  * built and photographed with the header and the copy hidden; Nelson's is cut from its hero picture around the eye;
- * AsterPay's is its hero's light, rings and phones, the tall one cut from a wide render around the phones.
+ * AsterPay's is its hero's light, rings and phones, the tall one cut from a wide render around the phones; OQURO's is
+ * its 3D garden (the stone ring, the vault, the mound) on the water, without its giant word, the tall one cut likewise.
  * Needs Playwright with Chromium (npm i -g playwright && npx playwright install chromium); the site itself does not.
  */
 import { promises as fs } from "node:fs";
@@ -83,7 +84,21 @@ const asterpay = async (page, viewport) => {
 
 await fs.mkdir(path.join(ASSETS, "stills"), { recursive: true });
 console.log("stills:");
-for (const [name, go] of Object.entries({ mist, nelson, asterpay })) {
+// OQURO: its hero under reduced motion (the 3D garden drawn once), with the header, the word, the copy and the threat
+// card taken off. Held upright it is cut from a wide render, around the ring.
+const oquro = async (page, viewport) => {
+  const tall = viewport.height > viewport.width;
+  if (tall) await page.setViewportSize({ width: 2200, height: 1600 });
+  await page.goto(`${site}/oquro/`, { waitUntil: "load" });
+  await page.addStyleTag({ content: ".skip, .nav, .hero__word, .hero__copy, .widget--threat { visibility: hidden !important; } .hero { height: 100vh !important; }" });
+  await page.evaluate(() => document.fonts.ready);
+  await page.evaluate(() => dispatchEvent(new Event("resize")));
+  await page.waitForFunction(() => document.querySelector(".hero")?.classList.contains("has-gl"), null, { timeout: 60000 });
+  await page.waitForTimeout(1500);
+  return tall ? { x: 1103 - 450, y: 0, width: 900, height: 1600 } : undefined;
+};
+
+for (const [name, go] of Object.entries({ mist, nelson, asterpay, oquro })) {
   await shoot(WIDE, `stills/${name}-wide.jpg`, go);
   await shoot(TALL, `stills/${name}-tall.jpg`, go);
 }

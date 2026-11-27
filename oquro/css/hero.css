@@ -1,0 +1,77 @@
+/* The hero, as the shot draws it at 1440 × 969. Every size and place is design px × --u, so the composition scales as
+   one picture; --uu is the same for small type and controls, but never so small they stop being legible. The 3D canvas
+   follows .hero__anchor (the ring's centre and size), so CSS alone decides the composition at every breakpoint. */
+
+.hero { position: relative; height: calc(969 * var(--u)); min-height: 560px; overflow: hidden; isolation: isolate; }
+.hero__stage { position: absolute; left: 50%; top: 0; width: calc(1440 * var(--u)); height: calc(969 * var(--u)); transform: translateX(-50%); }
+.hero__stage--ui { z-index: 2; pointer-events: none; }
+.hero__stage--ui > * { pointer-events: auto; }
+.hero__gl { position: absolute; inset: 0; z-index: 1; width: 100%; height: 100%; opacity: 0; transition: opacity 1s var(--ease); touch-action: pan-y; }
+.hero__gl.is-on { opacity: 1; }
+.hero__gl.is-grab { cursor: grab; }
+.hero__gl.is-grabbing { cursor: grabbing; }
+
+/* the giant word: line-height .86 makes the line box the cap box, so top is where the caps start */
+.hero__word {
+  position: absolute; left: 0; right: 0; top: calc(147 * var(--u)); margin: 0;
+  display: flex; justify-content: center; /* centred even when wider than its box (phones) */
+  font-family: var(--display); font-weight: 400; font-size: calc(377 * var(--u)); line-height: 0.86; letter-spacing: -0.02em;
+  color: var(--ink); text-align: center; white-space: nowrap; user-select: none;
+}
+.hero__letters { display: inline-flex; transform: scaleX(0.87); margin-right: -0.02em; clip-path: inset(-40% -5% 0 -5%); }
+.hero__letters > span { display: block; will-change: transform; }
+
+.hero__anchor { position: absolute; left: calc(722 * var(--u)); top: calc(610 * var(--u)); width: calc(555 * var(--u)); aspect-ratio: 1; transform: translate(-50%, -50%); pointer-events: none; }
+
+.hero__copy { position: absolute; left: calc(79 * var(--u)); top: calc(537 * var(--u)); width: min(calc(330 * var(--uu)), calc(350 * var(--u))); } /* never into the ring on a short screen */
+.hero__copy p { font-size: calc(15.4 * var(--uu)); line-height: 1.56; color: #737373; letter-spacing: -0.006em; }
+.hero__copy .link-u { margin-top: calc(22 * var(--uu)); font-size: calc(15.5 * var(--uu)); }
+
+.widget--threat { position: absolute; left: calc(1097 * var(--u)); top: calc(526 * var(--u)); width: calc(262 * var(--u)); height: calc(309 * var(--u)); font-size: calc(10 * var(--u)); }
+
+/* Without WebGL (or before it is up): the ring, the door and the mound in gradients. */
+.hero__fallback { position: absolute; inset: 0; transition: opacity 0.8s var(--ease); }
+.hero.has-gl .hero__fallback { opacity: 0; }
+.hero__fallback i { position: absolute; display: block; }
+.fb-ring {
+  left: calc(445 * var(--u)); top: calc(333 * var(--u)); width: calc(555 * var(--u)); height: calc(555 * var(--u)); border-radius: 50%;
+  background:
+    radial-gradient(circle at 50% 50%, transparent 31.5%, #8b8170 32%, #cbbfa6 36%, #ddd2bb 42%, #c9bca1 46%, #a1957d 49.6%, transparent 50%),
+    radial-gradient(circle at 35% 25%, rgb(110 135 45 / 0.6), transparent 30%);
+  -webkit-mask: radial-gradient(circle, transparent 31.5%, #000 32%); mask: radial-gradient(circle, transparent 31.5%, #000 32%);
+  filter: drop-shadow(0 20px 30px rgb(0 0 0 / 0.18));
+}
+.fb-door {
+  left: calc(598 * var(--u)); top: calc(517 * var(--u)); width: calc(249 * var(--u)); height: calc(249 * var(--u)); border-radius: 50%;
+  background: radial-gradient(circle at 50% 50%, #9aa59a 0 7%, #5f6b60 8% 10%, #7c897d 11% 60%, #5a655b 61% 66%, #87948a 67%);
+  box-shadow: inset 0 0 0 calc(8 * var(--u)) #657066, 0 10px 30px rgb(0 0 0 / 0.25);
+}
+.fb-mound {
+  left: calc(150 * var(--u)); right: calc(120 * var(--u)); top: calc(800 * var(--u)); height: calc(320 * var(--u)); border-radius: 50% 50% 0 0 / 60% 60% 0 0;
+  background: radial-gradient(70% 90% at 50% 10%, #6f8a2c, #3f5a1a 60%, #2c4012);
+}
+
+/* Before the intro has run, what it is about to bring in stays out. */
+.js:not(.is-ready):not(.is-calm) :is(.hero__letters > span, .hero__copy > *, .widget--threat, .nav > *) { opacity: 0; }
+
+/* ---------- phones and upright tablets: the picture becomes a column ---------- */
+@media (max-width: 760px), (orientation: portrait) and (max-width: 1100px) {
+  .hero { height: auto; min-height: 0; padding-top: 92px; padding-bottom: 28px; }
+  .hero__stage { position: relative; left: 0; width: 100%; height: auto; transform: none; }
+  .hero__stage:not(.hero__stage--ui) { height: calc(43vw + 92vw); overflow: hidden; }
+  .hero__gl { bottom: auto; height: calc(92px + 135vw); -webkit-mask-image: linear-gradient(#000 80%, transparent); mask-image: linear-gradient(#000 80%, transparent); }
+  .hero__stage--ui { margin-top: -6vw; padding: 0 20px; display: grid; gap: 28px; }
+  .hero__word { top: 0; font-size: 45vw; }
+  .hero__anchor { left: 50%; top: calc(36vw + 44vw); width: 86vw; }
+  .hero__copy { position: relative; left: 0; top: 0; width: auto; max-width: 420px; }
+  .hero__copy p { font-size: 16px; }
+  .hero__copy .link-u { font-size: 15.5px; }
+  .widget--threat { position: relative; left: 0; top: 0; width: min(100%, 320px); height: auto; aspect-ratio: 262 / 309; font-size: min(3.1vw, 12.2px); justify-self: end; }
+  .fb-ring { left: 7vw; top: 37vw; width: 86vw; height: 86vw; }
+  .fb-door { left: calc(50% - 19.3vw); top: calc(81vw - 19.3vw); width: 38.6vw; height: 38.6vw; }
+  .fb-mound { left: -10vw; right: -10vw; top: 104vw; height: 50vw; }
+}
+@media (orientation: portrait) and (min-width: 761px) and (max-width: 1100px) {
+  .hero__stage--ui { grid-template-columns: 1fr auto; align-items: end; padding: 0 var(--pad); }
+  .widget--threat { width: 300px; font-size: 11.5px; }
+}

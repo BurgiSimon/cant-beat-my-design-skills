@@ -9,6 +9,7 @@ Websites built from a single design, each its own project, behind one picker.
 | **Mist**, a marketing site for an AI workflow-automation product | [`/mist/`](https://burgisimon.github.io/cant-beat-my-design-skills/mist/) |
 | **Nelson**, a CRM landing page recreated 1:1 and given a motion layer | [`/nelson-crm/`](https://burgisimon.github.io/cant-beat-my-design-skills/nelson-crm/) |
 | **AsterPay**, a money app's hero recreated from one shot and grown into a full landing page | [`/asterpay/`](https://burgisimon.github.io/cant-beat-my-design-skills/asterpay/) |
+| **OQURO**, a cyber-security page recreated from one shot, its 3D renders rebuilt as real-time 3D in code | [`/oquro/`](https://burgisimon.github.io/cant-beat-my-design-skills/oquro/) |
 
 ## The picker
 
@@ -17,9 +18,10 @@ The front page ([`picker/`](picker/)) is a line of cards, one per site, each wit
 - **Point at a card** and it lights up with a trace in its site's own manner: on Mist, wisps of mist drift
   across the foot and part around the pointer; on Nelson, a hole tears open in the clouds onto a night of
   drifting ASCII, the way its hero tears its paper; on AsterPay, an orbit of light closes round the pointer and a
-  streak sweeps along its horizon, as in its hero.
+  streak sweeps along its horizon, as in its hero; on OQURO, the vault dial of its preloader closes round the pointer
+  while rings spread through the water under it.
 - **Choose one** and the card grows to fill the screen, its still giving way to the colour that site paints
-  first: Mist's bare violet sky, Nelson's white preloader, AsterPay's dark one. The site's own entrance then plays from there, so
+  first: Mist's bare violet sky, Nelson's white preloader, AsterPay's dark one, OQURO's pale grey one. The site's own entrance then plays from there, so
   the move from picker to site has no seam.
 - While the cards fit the screen they stand in the middle. With more sites than fit, the line becomes
   endless: it drifts when left alone, and the wheel, a drag or the arrow keys move it.
@@ -76,12 +78,27 @@ against it at 1440px) and grown into a full landing page in the same language.
 No build step: plain HTML, CSS and ES modules, copied into `dist/asterpay/` by `build.mjs`. See
 [`asterpay/README.md`](asterpay/README.md).
 
+## OQURO
+
+A fourth project lives in [`oquro/`](oquro/): a cyber-security landing page recreated from one shot, every section of
+it, with the shot's 3D renders (a mossy stone ring holding a vault door, a rocky outcrop, a laptop on a boulder, a
+chain link in sand) rebuilt as real-time 3D, entirely in code.
+
+| Part | What it is |
+| --- | --- |
+| Hero | The giant word with a three.js garden in front of it: procedural stone, moss grown by shell texturing, instanced grass, wheat and daisies in the wind, moss crumbling off the first letter. Drag the vault's wheel round and the door opens, and the threat card raises the alarm. Behind it all, animated pool caustics |
+| Sections | A security-camera figure drawn pixel by pixel, a statement lit as you read, an accordion and tabs that play through with live cards (radar, gauge, spark chart, timeline, threat matrix), a garden and a laptop in 3D, a performance card, a call to action over the vault in dots |
+| Motion | A vault-dial preloader into the hero, Lenis smooth scroll, GSAP scroll reveals and SplitText, magnetic buttons, tilting cards, a nav that adapts to each section |
+
+No build step: plain HTML, CSS and ES modules, copied into `dist/oquro/` by `build.mjs`. See
+[`oquro/README.md`](oquro/README.md).
+
 ## Develop
 
 Requires Node 20+. No dependencies to install.
 
 ```bash
-node build.mjs --serve        # http://localhost:4321 — the picker, /mist/, /nelson-crm/ and /asterpay/; rebuilds and live-reloads on change
+node build.mjs --serve        # http://localhost:4321 — the picker, /mist/, /nelson-crm/, /asterpay/ and /oquro/; rebuilds and live-reloads on change
 node build.mjs                # production build into ./dist
 ```
 
@@ -108,6 +125,7 @@ src/                   Mist, published under /mist/ (its 404 page answers for th
   static/              copied to the root of Mist (web manifest)
 nelson-crm/            separate prebuilt project, published under /nelson-crm/
 asterpay/              separate project, no build step, published under /asterpay/ (its README and tools/ stay behind)
+oquro/                 separate project, no build step, published under /oquro/ (its README and tools/ stay behind)
 ```
 
 ## Deploy
@@ -137,5 +155,7 @@ GitHub Pages (Settings → Pages → Source: GitHub Actions).
   mist added). Check its licence before using this site commercially.
 - AsterPay: [Satoshi](https://www.fontshare.com/fonts/satoshi) (ITF Free Font License), loaded from Fontshare's CDN
   rather than committed; land outlines from [Natural Earth](https://www.naturalearthdata.com/) (public domain).
+- OQURO: [Anton](https://github.com/googlefonts/AntonFont), Inter and JetBrains Mono (SIL Open Font License, licences in
+  `oquro/assets/fonts/`); [three.js](https://threejs.org) (MIT), cut down to what it uses.
 - Mist, its customers, people, quotes and numbers are fictional. The investor line in the hero comes
-  from the original design. AsterPay, its people, reviews and figures are fictional too.
+  from the original design. AsterPay, its people, reviews and figures are fictional too, and so are OQURO, its numbers and its threats.

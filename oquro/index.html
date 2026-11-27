@@ -1,0 +1,335 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>OQURO — Intelligent security for every layer of your business</title>
+  <meta name="description" content="Protect your business with intelligent security that detects threats, prevents attacks and keeps your digital infrastructure safe, around the clock." />
+  <meta name="theme-color" content="#f3f3f3" />
+  <meta name="color-scheme" content="light" />
+  <link rel="canonical" href="{{SITE_URL}}/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="{{SITE_URL}}/" />
+  <meta property="og:title" content="OQURO — Intelligent security for every layer" />
+  <meta property="og:description" content="Detect threats, prevent attacks and keep your digital infrastructure safe." />
+  <meta property="og:image" content="{{SITE_URL}}/assets/img/og.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
+  <link rel="preload" href="assets/fonts/anton-latin.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="assets/fonts/inter-latin-opsz.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="modulepreload" href="vendor/three.min.js" />
+  <link rel="stylesheet" href="vendor/lenis.css" />
+  <link rel="stylesheet" href="css/base.css?v={{VERSION}}" />
+  <link rel="stylesheet" href="css/hero.css?v={{VERSION}}" />
+  <link rel="stylesheet" href="css/widgets.css?v={{VERSION}}" />
+  <link rel="stylesheet" href="css/sections.css?v={{VERSION}}" />
+  <script>
+    // Scripts will run, so the page may hide what they are about to bring in. A repeat visit in this tab gets the short intro.
+    (function (h) {
+      h.className = h.className.replace("no-js", "js");
+      try { if (sessionStorage.getItem("oquro:seen")) h.classList.add("is-repeat"); } catch (e) {}
+      if (matchMedia("(prefers-reduced-motion: reduce)").matches || /[?&]reduced/.test(location.search)) h.classList.add("is-calm");
+      if (location.hash.length > 1) h.classList.add("is-repeat");
+      setTimeout(function () { h.classList.add("is-ready"); }, 8000); // if the scripts never get there, show the page anyway
+    })(document.documentElement);
+  </script>
+  <script defer src="vendor/gsap.min.js"></script>
+  <script defer src="vendor/ScrollTrigger.min.js"></script>
+  <script defer src="vendor/SplitText.min.js"></script>
+  <script defer src="vendor/lenis.min.js"></script>
+  <script type="module" src="js/main.js?v={{VERSION}}"></script>
+</head>
+<body>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <symbol id="i-home" viewBox="0 0 24 24"><path d="M3.6 10.3 12 3.4l8.4 6.9V19a1.6 1.6 0 0 1-1.6 1.6h-4.3v-5.3a1 1 0 0 0-1-1h-3a1 1 0 0 0-1 1v5.3H5.2A1.6 1.6 0 0 1 3.6 19v-8.7Z" fill="currentColor"/></symbol>
+      <symbol id="i-layout" viewBox="0 0 24 24"><rect x="3.5" y="6" width="11" height="12" rx="1.6" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M17.5 7v10M20.5 8.5v7" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></symbol>
+      <symbol id="i-box" viewBox="0 0 24 24"><path d="M4 9.2 6 5h12l2 4.2M4 9.2h16v8.3A1.5 1.5 0 0 1 18.5 19h-13A1.5 1.5 0 0 1 4 17.5V9.2Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M9.5 12.5h5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></symbol>
+      <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8.4" r="3.6" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M5 19.6c.8-3.4 3.6-5.3 7-5.3s6.2 1.9 7 5.3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
+      <symbol id="i-check" viewBox="0 0 24 24"><path d="m6.5 12.4 3.6 3.6 7.4-7.6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+      <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h13.5M13 6.5l5.5 5.5-5.5 5.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+      <symbol id="i-up-right" viewBox="0 0 24 24"><path d="M7 17 17 7M8.5 7H17v8.5" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+      <symbol id="i-spark" viewBox="0 0 24 24"><path d="M10 3.5c.5 3.9 2.6 6 6.5 6.5-3.9.5-6 2.6-6.5 6.5-.5-3.9-2.6-6-6.5-6.5 3.9-.5 6-2.6 6.5-6.5Z" fill="currentColor"/><path d="M18 14c.25 1.9 1.1 2.75 3 3-1.9.25-2.75 1.1-3 3-.25-1.9-1.1-2.75-3-3 1.9-.25 2.75-1.1 3-3Z" fill="currentColor"/></symbol>
+      <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 11v5M12 7.6v.1" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+      <symbol id="i-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="currentColor"/><path d="M12 7.2v6M12 16.4v.2" fill="none" stroke="#000" stroke-opacity=".75" stroke-width="2.4" stroke-linecap="round"/></symbol>
+      <symbol id="i-face" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.4" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="9.2" cy="10.6" r="1.35" fill="currentColor"/><circle cx="14.8" cy="10.6" r="1.35" fill="currentColor"/><path d="M8.8 15.6c1.9-1.3 4.5-1.3 6.4 0" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
+      <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3.2 19 6v5.6c0 4.3-2.9 7.9-7 9.2-4.1-1.3-7-4.9-7-9.2V6l7-2.8Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="m9 12 2.2 2.2L15.3 10" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+      <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="10.5" width="14" height="10" rx="2" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M8.3 10.5V8a3.7 3.7 0 0 1 7.4 0v2.5" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M12 14.4v2.2" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></symbol>
+      <symbol id="i-mark" viewBox="0 0 32 32"><circle cx="16" cy="16" r="6.6" fill="currentColor"/><g fill="currentColor"><circle cx="16" cy="3.4" r="2.4"/><circle cx="16" cy="28.6" r="2.4"/><circle cx="3.4" cy="16" r="2.4"/><circle cx="28.6" cy="16" r="2.4"/><circle cx="7.1" cy="7.1" r="2.4"/><circle cx="24.9" cy="24.9" r="2.4"/><circle cx="24.9" cy="7.1" r="2.4"/><circle cx="7.1" cy="24.9" r="2.4"/></g><g stroke="currentColor" stroke-width="2.2"><path d="M16 5.6v5M16 21.4v5M5.6 16h5M21.4 16h5M8.6 8.6l3.5 3.5M19.9 19.9l3.5 3.5M23.4 8.6l-3.5 3.5M12.1 19.9l-3.5 3.5"/></g><g fill="#fff" fill-opacity=".38"><circle cx="13.6" cy="14" r="1.1"/><circle cx="17.6" cy="13.2" r=".9"/><circle cx="15.6" cy="17.8" r="1"/><circle cx="18.8" cy="17" r=".7"/></g></symbol>
+    </defs>
+  </svg>
+
+  <a class="skip" href="#main">Skip to content</a>
+
+  <!-- First visit: a vault dial turns to its numbers, clicks open, and the page comes through. -->
+  <div class="intro" data-intro aria-hidden="true">
+    <div class="intro__dial">
+      <svg viewBox="0 0 200 200" class="intro__ticks" data-intro-ticks></svg>
+      <svg class="intro__mark"><use href="#i-mark"/></svg>
+    </div>
+    <p class="intro__count"><span data-intro-count>000</span><i>Securing</i></p>
+  </div>
+
+  <header class="nav" data-nav>
+    <nav class="nav__left" aria-label="Main">
+      <a class="nav__home is-current" href="#top" data-nav-link="top"><svg class="i"><use href="#i-home"/></svg><span>Home</span></a>
+      <a class="nav__icon" href="#platform" data-nav-link="platform" data-tip="Platform"><svg class="i"><use href="#i-layout"/></svg><span class="sr">Platform</span></a>
+      <a class="nav__icon" href="#features" data-nav-link="features" data-tip="Features"><svg class="i"><use href="#i-box"/></svg><span class="sr">Features</span></a>
+    </nav>
+    <a class="brand" href="#top" aria-label="OQURO, back to the top"><svg class="brand__mark"><use href="#i-mark"/></svg><span class="brand__word">OQURO</span></a>
+    <div class="nav__right">
+      <a class="nav__icon" href="#start" data-tip="Sign in"><svg class="i"><use href="#i-user"/></svg><span class="sr">Sign in</span></a>
+      <a class="btn btn--ink" href="#start" data-magnetic><span class="btn__label" data-roll>Get Started Free</span></a>
+    </div>
+    <span class="nav__progress" data-progress aria-hidden="true"></span>
+  </header>
+
+  <canvas class="water" data-water aria-hidden="true"></canvas>
+
+  <main id="main">
+    <!-- ───────── Hero ───────── -->
+    <section class="hero" id="top" data-theme="light" aria-labelledby="hero-title">
+      <div class="hero__stage" data-stage>
+        <h1 class="hero__word" id="hero-title" data-word><span class="sr">OQURO — intelligent cyber security</span><span class="hero__letters" aria-hidden="true"><span>O</span><span>Q</span><span>U</span><span>R</span><span>O</span></span></h1>
+        <i class="hero__anchor" data-anchor aria-hidden="true"></i>
+        <div class="hero__fallback" aria-hidden="true"><i class="fb-mound"></i><i class="fb-ring"></i><i class="fb-door"></i></div>
+      </div>
+      <canvas class="hero__gl" data-hero-gl aria-hidden="true"></canvas>
+      <div class="hero__stage hero__stage--ui">
+        <div class="hero__copy">
+          <p data-hero-copy>Protect your business with intelligent security solutions that detect threats, prevent attacks, and keep your digital infrastructure safe.</p>
+          <a class="link-u" href="#about" data-hero-link><span data-roll>Explore Platform</span></a>
+        </div>
+
+        <article class="widget widget--red widget--threat" data-tilt data-threat aria-label="Live alert: suspicious login, 2:45 AM, risk flagged">
+          <h3 class="widget__title">Threat Detected</h3>
+          <div class="radar" aria-hidden="true">
+            <svg viewBox="0 0 220 220" class="radar__svg">
+              <defs>
+                <radialGradient id="rad-core" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#fff"/><stop offset=".35" stop-color="#ffb3ad"/><stop offset="1" stop-color="#ff5a52" stop-opacity=".1"/></radialGradient>
+                <pattern id="rad-dots" width="3.2" height="3.2" patternUnits="userSpaceOnUse"><circle cx="1.6" cy="1.6" r=".75" fill="#ffd2cd"/></pattern>
+                <linearGradient id="rad-sweep" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ff8a80" stop-opacity="0"/><stop offset="1" stop-color="#ffb0a8" stop-opacity=".42"/></linearGradient>
+              </defs>
+              <g class="radar__ticks" data-radar-ticks></g>
+              <circle cx="110" cy="110" r="78" class="radar__ring"/>
+              <circle cx="110" cy="110" r="52" class="radar__ring radar__ring--dash"/>
+              <g class="radar__sweep" data-radar-sweep><path d="M110 110 L110 12 A98 98 0 0 1 179.3 40.7 Z" fill="url(#rad-sweep)"/></g>
+              <g class="radar__links" data-radar-links></g>
+              <g class="radar__nodes" data-radar-nodes></g>
+              <g class="radar__core">
+                <circle cx="110" cy="110" r="27" fill="url(#rad-core)" opacity=".5" class="radar__halo"/>
+                <circle cx="110" cy="110" r="19" fill="url(#rad-dots)" opacity=".9"/>
+                <circle cx="110" cy="110" r="19" class="radar__ring" opacity=".9"/>
+                <circle cx="110" cy="110" r="4.2" fill="#fff" class="radar__dot"/>
+              </g>
+            </svg>
+            <span class="chip chip--glass radar__risk" data-risk><svg class="i"><use href="#i-alert"/></svg>Risk</span>
+          </div>
+          <div class="widget__glass widget__glass--center">
+            <button class="widget__face" type="button" aria-label="Try the vault: spin its wheel" data-spin><svg class="i"><use href="#i-face"/></svg></button>
+            <strong data-threat-title>Suspicious Login</strong>
+            <span class="widget__time" data-clock="02:45">02:45 AM</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ───────── About ───────── -->
+    <section class="about" id="about" data-theme="dark" aria-labelledby="about-title">
+      <div class="wrap about__top">
+        <figure class="monitor" data-monitor>
+          <canvas class="monitor__canvas" data-monitor-canvas aria-hidden="true"></canvas>
+          <div class="monitor__matrix" data-matrix aria-hidden="true"></div>
+          <figcaption class="monitor__cap"><strong class="display" data-count-to="24/7">24/7</strong><span>Security Monitoring</span></figcaption>
+        </figure>
+        <div class="about__head">
+          <h2 class="h2" id="about-title" data-split>Building a safer digital future</h2>
+          <p class="about__lede" data-fade>Combining intelligent technology and proactive protection to keep your business, data, and digital infrastructure secure from evolving cyber threats</p>
+        </div>
+      </div>
+      <div class="wrap about__bottom">
+        <p class="statement" data-statement>At OQURO, we combine intelligent technology and proactive security <span>to protect businesses from evolving cyber threats.</span></p>
+        <figure class="intel" data-tilt>
+          <div class="intel__media"><canvas data-scene="chain" aria-hidden="true"></canvas><div class="intel__fallback" aria-hidden="true"></div></div>
+          <figcaption class="intel__cap"><svg class="i"><use href="#i-spark"/></svg>Powered Intelligence</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- ───────── Layers ───────── -->
+    <section class="layers" id="platform" data-theme="light" aria-labelledby="layers-title">
+      <div class="wrap layers__grid">
+        <div class="layers__left">
+          <h2 class="h2 h2--ink" id="layers-title" data-split>Security across every layer</h2>
+          <div class="acc" data-acc>
+            <div class="acc__item is-open">
+              <h3><button class="acc__btn" aria-expanded="true" aria-controls="acc-1" id="acc-1-btn">Network Security</button></h3>
+              <div class="acc__panel" id="acc-1" role="region" aria-labelledby="acc-1-btn"><p>Monitor network activity and prevent unauthorized access across your infrastructure.</p></div>
+              <i class="acc__bar" aria-hidden="true"></i>
+            </div>
+            <div class="acc__item">
+              <h3><button class="acc__btn" aria-expanded="false" aria-controls="acc-2" id="acc-2-btn">Cloud Security</button></h3>
+              <div class="acc__panel" id="acc-2" role="region" aria-labelledby="acc-2-btn" hidden><p>Protect workloads, storage and identities across every cloud you run on, from a single console.</p></div>
+              <i class="acc__bar" aria-hidden="true"></i>
+            </div>
+            <div class="acc__item">
+              <h3><button class="acc__btn" aria-expanded="false" aria-controls="acc-3" id="acc-3-btn">AI Threat Detection</button></h3>
+              <div class="acc__panel" id="acc-3" role="region" aria-labelledby="acc-3-btn" hidden><p>Models trained on billions of signals spot unusual behaviour before it turns into an attack.</p></div>
+              <i class="acc__bar" aria-hidden="true"></i>
+            </div>
+            <div class="acc__item">
+              <h3><button class="acc__btn" aria-expanded="false" aria-controls="acc-4" id="acc-4-btn">Data Protection</button></h3>
+              <div class="acc__panel" id="acc-4" role="region" aria-labelledby="acc-4-btn" hidden><p>Encrypt, classify and back up sensitive data automatically, wherever it lives.</p></div>
+              <i class="acc__bar" aria-hidden="true"></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="layers__stage" data-layers-stage>
+          <div class="layers__media"><canvas data-scene="garden" aria-hidden="true"></canvas><div class="garden__fallback" aria-hidden="true"></div></div>
+          <!-- Two live cards per layer; the accordion swaps them. -->
+          <div class="layers__cards" data-layer-cards aria-live="polite">
+            <article class="widget widget--green widget--a" data-tilt data-card="a">
+              <h3 class="widget__title" data-f="title">Firewall Protection</h3>
+              <div class="gauge" data-gauge aria-hidden="true"></div>
+              <p class="widget__big"><strong data-f="big">1,284</strong><span data-f="bigLabel">Blocked Requests</span></p>
+              <div class="widget__glass">
+                <p class="widget__row"><span data-f="row1">Login Attempts</span><b data-f="row1v">36</b></p>
+                <span class="chip chip--glass chip--sm"><span data-f="chip">Secured</span><svg class="i"><use href="#i-info"/></svg></span>
+              </div>
+            </article>
+            <article class="widget widget--purple widget--b" data-tilt data-card="b">
+              <h3 class="widget__title" data-f="title">Network Security</h3>
+              <div class="spark" aria-hidden="true"><svg viewBox="0 0 200 90" preserveAspectRatio="none" data-spark></svg></div>
+              <div class="widget__glass">
+                <p class="widget__row"><span data-f="row1">Connected Devices</span><b data-f="row1v">24</b></p>
+                <p class="widget__row"><span data-f="row2">Threats Blocked</span><b data-f="row2v">128</b></p>
+                <span class="chip chip--glass chip--sm"><span data-f="chip" data-clock="02:45">02:45 AM</span><svg class="i"><use href="#i-info"/></svg></span>
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ───────── Everything you need ───────── -->
+    <section class="protect" id="features" data-theme="dark" aria-labelledby="protect-title">
+      <div class="wrap protect__head">
+        <p class="protect__lede" data-fade>Monitor threats in real time, automate security responses, and use AI-powered intelligence to keep your business protected.</p>
+        <h2 class="h2" id="protect-title" data-split>Everything you need to stay protected</h2>
+      </div>
+      <div class="wrap">
+        <div class="tabs" role="tablist" aria-label="Capabilities" data-tabs>
+          <button class="tab is-on" role="tab" id="tab-live" aria-selected="true" aria-controls="panel-protect" data-tab="live">Live Monitoring</button>
+          <button class="tab" role="tab" id="tab-ai" aria-selected="false" aria-controls="panel-protect" tabindex="-1" data-tab="ai">AI Intelligence</button>
+          <button class="tab" role="tab" id="tab-auto" aria-selected="false" aria-controls="panel-protect" tabindex="-1" data-tab="auto">Auto Response</button>
+        </div>
+        <div class="protect__grid" id="panel-protect" role="tabpanel" aria-labelledby="tab-live" data-panel>
+          <article class="feature">
+            <div class="feature__text">
+              <span class="tag" data-p="tag">Live Network Activity</span>
+              <h3 class="feature__title" data-p="title">Real-Time Network Activity</h3>
+              <p class="feature__body" data-p="body">Monitor incoming and outgoing traffic across your network in real time.</p>
+            </div>
+            <div class="feature__media">
+              <canvas data-scene="laptop" aria-hidden="true"></canvas>
+              <div class="laptop__fallback" aria-hidden="true"></div>
+              <div class="netact" data-netact>
+                <div class="netact__head"><strong data-p="mediaTitle">Network Activity</strong><span class="netact__pill" data-p="mediaPill">#Finance-DB-01</span></div>
+                <div class="timeline" data-timeline aria-hidden="true">
+                  <div class="timeline__track" data-timeline-track></div>
+                  <span class="timeline__flag" data-timeline-flag><span data-p="flag">Threat Identified</span></span>
+                </div>
+              </div>
+            </div>
+          </article>
+          <article class="glasscard">
+            <div class="panel panel--dark">
+              <div class="panel__head"><strong data-p="aTitle">Threat Detection Matrix</strong><button class="alert-btn" type="button" data-alert>Alert</button></div>
+              <div class="matrix" data-matrix-cols aria-hidden="true"></div>
+              <p class="panel__foot"><b data-p="aValue" data-roller>12</b><i></i><span data-p="aLabel">Flagged Events</span></p>
+            </div>
+            <div class="panel panel--glass">
+              <div class="panel__head"><strong data-p="bTitle">Network Traffic Overview</strong></div>
+              <div class="dotgrid" data-dotgrid aria-hidden="true"></div>
+              <p class="panel__foot"><b data-p="bValue">1.8 GB</b><i></i><span data-p="bLabel">Network Traffic</span></p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ───────── Ahead of threats ───────── -->
+    <section class="ahead" id="ahead" data-theme="light" aria-labelledby="ahead-title">
+      <div class="wrap ahead__head">
+        <h2 class="h2 h2--ink" id="ahead-title" data-split>Security that moves ahead of threats</h2>
+        <p class="ahead__lede" data-fade>From identifying hidden threats to preventing potential attacks, OQURO keeps your business secure at every step.</p>
+      </div>
+      <div class="wrap ahead__body">
+        <ul class="checks" data-checks>
+          <li><svg class="i"><use href="#i-check"/></svg><strong>24/7 Protection</strong></li>
+          <li><svg class="i"><use href="#i-check"/></svg><strong>Scalable Security</strong></li>
+          <li><svg class="i"><use href="#i-check"/></svg><strong>Automated Response</strong></li>
+          <li><svg class="i"><use href="#i-check"/></svg><strong>Compliance Ready</strong></li>
+        </ul>
+
+        <div class="perf" data-perf>
+          <span class="perf__line perf__line--h" aria-hidden="true"></span><span class="perf__line perf__line--h perf__line--b" aria-hidden="true"></span>
+          <span class="perf__line perf__line--v" aria-hidden="true"></span><span class="perf__line perf__line--v perf__line--r" aria-hidden="true"></span>
+          <article class="perf__card" data-tilt>
+            <span class="chip chip--glass">Security Performance</span>
+            <p class="perf__row perf__row--lead"><span>Threat Detection Rate</span><b data-count="99.9" data-dec="1" data-suffix="%">99.9%</b></p>
+            <div class="perf__bars" data-perf-bars aria-hidden="true"></div>
+            <p class="perf__row"><span>Mean Time to Respond</span><b data-count="0.8" data-dec="1" data-suffix="s">0.8s</b></p>
+            <p class="perf__row"><span>Platform Uptime</span><b data-count="99.99" data-dec="2" data-suffix="%">99.99%</b></p>
+            <p class="perf__row"><span>False Positives</span><b data-count="0.02" data-dec="2" data-suffix="%">0.02%</b></p>
+          </article>
+        </div>
+
+        <dl class="stats">
+          <div><dt>Threats stopped every day</dt><dd class="display" data-count="2.4" data-dec="1" data-suffix="M">2.4M</dd></div>
+          <div><dt>Businesses protected</dt><dd class="display" data-count="12000" data-dec="0" data-suffix="+">12,000+</dd></div>
+          <div><dt>Countries with live sensors</dt><dd class="display" data-count="64" data-dec="0">64</dd></div>
+        </dl>
+      </div>
+    </section>
+
+    <!-- ───────── Call to action ───────── -->
+    <section class="cta" id="start" data-theme="dark" aria-labelledby="cta-title">
+      <canvas class="cta__field" data-vault-field aria-hidden="true"></canvas>
+      <div class="wrap cta__inner">
+        <p class="eyebrow"><span class="live-dot" aria-hidden="true"></span><span data-live-count>2,418,903</span> threats stopped today</p>
+        <h2 class="h2 cta__title" id="cta-title" data-split>Lock it down. Grow without fear.</h2>
+        <p class="cta__lede" data-fade>Start free in minutes. No hardware, no agents to babysit — just protection that is on from the first login.</p>
+        <form class="cta__form" data-cta-form novalidate>
+          <label class="sr" for="cta-email">Work email</label>
+          <input id="cta-email" type="email" name="email" autocomplete="email" placeholder="Work email" required />
+          <button class="btn btn--light" type="submit" data-magnetic><span class="btn__label" data-roll>Get Started Free</span><svg class="i"><use href="#i-arrow"/></svg></button>
+          <p class="cta__msg" role="status" data-cta-msg></p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot" data-theme="light">
+    <div class="wrap foot__grid">
+      <div class="foot__brand">
+        <a class="brand brand--foot" href="#top" aria-label="OQURO, back to the top"><svg class="brand__mark"><use href="#i-mark"/></svg><span class="brand__word">OQURO</span></a>
+        <p>Intelligent security for every layer of your business.</p>
+        <p class="foot__status"><span class="live-dot" aria-hidden="true"></span>All systems operational · <span data-local-time>--:--</span> local</p>
+      </div>
+      <nav class="foot__col" aria-label="Platform"><h3>Platform</h3><a href="#platform">Network Security</a><a href="#platform">Cloud Security</a><a href="#platform">AI Threat Detection</a><a href="#platform">Data Protection</a></nav>
+      <nav class="foot__col" aria-label="Features"><h3>Features</h3><a href="#features">Live Monitoring</a><a href="#features">AI Intelligence</a><a href="#features">Auto Response</a><a href="#ahead">Performance</a></nav>
+      <nav class="foot__col" aria-label="Company"><h3>Company</h3><a href="#about">About</a><a href="#start">Get started</a><a href="../">More sites</a></nav>
+    </div>
+    <p class="foot__word" aria-hidden="true" data-foot-word>OQURO</p>
+    <div class="wrap foot__base">
+      <p>© {{YEAR}} OQURO. A design study — the company, its numbers and its threats are fictional.</p>
+      <button class="link-u" type="button" data-to-top><span data-roll>Back to top</span></button>
+    </div>
+  </footer>
+  <div class="cursor" data-cursor aria-hidden="true"><span data-cursor-label></span></div>
+</body>
+</html>

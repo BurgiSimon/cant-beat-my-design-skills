@@ -12,6 +12,7 @@
  *   src/         →  /mist/        the Mist site (its 404.html goes to the root: Pages has one per site)
  *   nelson-crm/  →  /nelson-crm/  the prebuilt Nelson CRM project, runtime files only
  *   asterpay/    →  /asterpay/    the AsterPay project, as written (no build step; its README and tools stay behind)
+ *   oquro/       →  /oquro/       the OQURO project, the same way
  * Mist used to live at the root, so each of its old page URLs gets a small redirect into /mist/.
  *
  * Mist pages live in src/pages/*.html and may include partials from src/partials with
@@ -21,7 +22,7 @@
  *
  * Tokens replaced in pages and static text files:
  *   {{SITE_URL}}  absolute URL of the page's own site, without trailing slash (env SITE_URL, + /mist for Mist,
- *                 + /asterpay for AsterPay)
+ *                 + /asterpay for AsterPay, + /oquro for OQURO)
  *   {{BASE}}      URL path that site is served under, with trailing slash (env BASE_PATH, + mist/ for Mist)
  *   {{VERSION}}   content hash of that site's CSS + JS, for cache-busting
  *   {{YEAR}}      current year
@@ -40,7 +41,8 @@ const MIST = "mist"; // the folder Mist is published under
 const NELSON = path.join(ROOT, "nelson-crm");
 const NELSON_PUBLIC = ["index.html", "recreation.html", "assets", "fonts", "vendor"];
 const ASTERPAY = path.join(ROOT, "asterpay");
-const ASTERPAY_PRIVATE = new Set(["README.md", "tools"]); // kept in the repo, not published
+const OQURO = path.join(ROOT, "oquro");
+const PLAIN_PRIVATE = new Set(["README.md", "tools"]); // kept in the repo, not published (AsterPay, OQURO)
 
 const argv = process.argv.slice(2);
 const flag = (name) => argv.includes(name);
@@ -227,19 +229,21 @@ async function build() {
     }
   }
 
-  // ── AsterPay, under /asterpay/ ──
-  // Plain files, published as they are; its pages get the tokens, with a version hash of its CSS and JS.
-  const asterFiles = (await listFiles(ASTERPAY)).filter((f) => !ASTERPAY_PRIVATE.has(path.relative(ASTERPAY, f).split(path.sep)[0]));
-  const asterCode = (
-    await Promise.all(asterFiles.filter((f) => /\.(css|js)$/.test(f) && !f.includes(`${path.sep}vendor${path.sep}`)).map((f) => fs.readFile(f, "utf8")))
-  ).join("\n");
-  const asterTokens = { SITE_URL: `${SITE_URL}/asterpay`, BASE: `${BASE}asterpay/`, VERSION: hashOf(asterCode), YEAR };
-  for (const file of asterFiles) {
-    const dest = path.join(OUT, "asterpay", path.relative(ASTERPAY, file));
-    await fs.mkdir(path.dirname(dest), { recursive: true });
-    if (file.endsWith(".html")) await fs.writeFile(dest, withLiveReload(replaceTokens(await fs.readFile(file, "utf8"), asterTokens)));
-    else if (TEXT_EXT.has(path.extname(file))) await fs.writeFile(dest, replaceTokens(await fs.readFile(file, "utf8"), asterTokens));
-    else await fs.copyFile(file, dest);
+  // ── AsterPay and OQURO, under /asterpay/ and /oquro/ ──
+  // Plain files, published as they are; their pages get the tokens, with a version hash of their own CSS and JS.
+  for (const [dir, name] of [[ASTERPAY, "asterpay"], [OQURO, "oquro"]]) {
+    const files = (await listFiles(dir)).filter((f) => !PLAIN_PRIVATE.has(path.relative(dir, f).split(path.sep)[0]));
+    const code = (
+      await Promise.all(files.filter((f) => /\.(css|js)$/.test(f) && !f.includes(`${path.sep}vendor${path.sep}`)).map((f) => fs.readFile(f, "utf8")))
+    ).join("\n");
+    const tokens = { SITE_URL: `${SITE_URL}/${name}`, BASE: `${BASE}${name}/`, VERSION: hashOf(code), YEAR };
+    for (const file of files) {
+      const dest = path.join(OUT, name, path.relative(dir, file));
+      await fs.mkdir(path.dirname(dest), { recursive: true });
+      if (file.endsWith(".html")) await fs.writeFile(dest, withLiveReload(replaceTokens(await fs.readFile(file, "utf8"), tokens)));
+      else if (TEXT_EXT.has(path.extname(file))) await fs.writeFile(dest, replaceTokens(await fs.readFile(file, "utf8"), tokens));
+      else await fs.copyFile(file, dest);
+    }
   }
 
   // Sitemap + robots
@@ -253,6 +257,7 @@ async function build() {
     `${SITE_URL}/nelson-crm/`,
     `${SITE_URL}/nelson-crm/recreation.html`,
     `${SITE_URL}/asterpay/`,
+    `${SITE_URL}/oquro/`,
   ];
   const sitemap =
     `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
@@ -263,7 +268,7 @@ async function build() {
   await fs.writeFile(path.join(OUT, ".nojekyll"), "");
 
   for (const w of warnings) console.warn(`  ⚠ ${w}`);
-  console.log(`✓ built the picker, ${pages.length} Mist pages, Nelson and AsterPay → ${path.relative(ROOT, OUT) || OUT} in ${Date.now() - started}ms`);
+  console.log(`✓ built the picker, ${pages.length} Mist pages, Nelson, AsterPay and OQURO → ${path.relative(ROOT, OUT) || OUT} in ${Date.now() - started}ms`);
 }
 
 const MIME = {
@@ -325,6 +330,7 @@ function serve() {
   watch(SRC, { recursive: true }, rebuild);
   watch(PICKER, { recursive: true }, rebuild);
   watch(ASTERPAY, { recursive: true }, rebuild);
+  watch(OQURO, { recursive: true }, rebuild);
 }
 
 await build();
