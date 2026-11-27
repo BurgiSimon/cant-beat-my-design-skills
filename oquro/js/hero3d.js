@@ -47,14 +47,14 @@ export async function init() {
   // ---- the ring ----
   const ringG = K.ringGeometry({ outer: 1, inner: 0.63, depth: 0.36, corner: 0.17, segments: low ? 180 : 260, profile: low ? 56 : 80 });
   K.displace(ringG, (x, y, z) => noise3(x * 1.3, y * 1.3, z * 1.3) * 0.014 + noise3(x * 4.2 + 3, y * 4.2, z * 4.2) * 0.009 + noise3(x * 12, y * 12, z * 12) * 0.004);
-  const RING_MOSS = { moss: -0.1, mossUp: 1.35, mossY: 0.3, mossScale: 2.0, mossDir: [0.1, 1, 0.4], seed: [1.3, 0.2, 0.7] };
+  const RING_MOSS = { moss: -0.06, mossUp: 1.1, mossY: 0.25, mossScale: 2.3, mossDir: [0.1, 1, 0.4], seed: [1.3, 0.2, 0.7] };
   const stone = K.surfaceMaterial({
-    key: 'ring', c1: '#a08a5c', c2: '#e2cb9e', c3: '#5f4d2c', pore: 34, pit: 0.85, bump: 0.016, tone: 2.0,
+    key: 'ring', c1: '#988a70', c2: '#ddd1b6', c3: '#5c5040', pore: 34, pit: 0.85, bump: 0.016, tone: 2.0,
     ...RING_MOSS, mossA: '#2a2e05', mossB: '#6c7116',
   });
   const ring = new THREE.Mesh(ringG, stone); ring.castShadow = true; ring.receiveShadow = true;
   const ringGroup = new THREE.Group(); ringGroup.add(ring); world.add(ringGroup);
-  ringGroup.rotation.set(0.05, -0.2, 0.02);
+  ringGroup.rotation.set(0.05, -0.1, 0.02);
   const ringMoss = K.mossShells(ringG, {
     layers: low ? 12 : 18, thick: 0.034, density: [260, 260 * ringG.userData.perimeter / 5.1], fill: 0.7, ...RING_MOSS,
     mossA: '#22260a', mossB: '#646c14', tip: '#a6a845',
@@ -147,10 +147,10 @@ export async function init() {
 
   await breathe();
   // ---- rocks along the foot ----
-  const rockMat = K.surfaceMaterial({ key: 'rock', c1: '#857d6c', c2: '#c4b9a3', c3: '#4f4635', pore: 14, pit: 0.5, bump: 0.02, tone: 1.6, moss: -0.1, mossUp: 1.0, mossScale: 2.0, seed: [2, 7, 1], mossA: '#2a3610', mossB: '#6f8429' });
+  const rockMat = K.surfaceMaterial({ key: 'rock', c1: '#8c8270', c2: '#cfc4ad', c3: '#5a5040', pore: 26, pit: 0.35, bump: 0.02, tone: 1.6, moss: -0.25, mossUp: 1.2, mossScale: 2.0, seed: [2, 7, 1], mossA: '#2a3610', mossB: '#6f8429' });
   const rocks = [];
-  for (const [x, z, s, seed, rot] of [[-1.5, 0.78, 0.2, 2, 0.4], [0.42, 0.72, 0.27, 5, -0.3], [1.22, 0.66, 0.22, 8, 0.9], [-0.6, 0.86, 0.12, 3, 1.4], [0.92, 0.5, 0.1, 6, 0.2]]) {
-    const g = K.rockGeometry({ seed, sx: 1.25, sy: 0.75, sz: 0.95, detail: low ? 4 : 5 });
+  for (const [x, z, s, seed, rot] of [[-1.45, 0.8, 0.2, 2, 0.4], [0.3, 0.78, 0.26, 5, -0.3], [0.72, 0.72, 0.17, 4, 1.1], [1.25, 0.66, 0.2, 8, 0.9], [-0.62, 0.9, 0.13, 3, 1.4]]) {
+    const g = K.rockGeometry({ seed, sx: 1.2, sy: 1.0, sz: 0.95, detail: low ? 4 : 5, rough: 0.28 });
     const rk = new THREE.Mesh(g, rockMat); rk.scale.setScalar(s); rk.position.set(x, moundY(x, z) - s * 0.08, z); rk.rotation.y = rot;
     rk.castShadow = true; rk.receiveShadow = true; world.add(rk); rocks.push(rk);
   }
@@ -291,7 +291,7 @@ export async function init() {
     // parallax towards the pointer, and a slow breath
     const tx = fine && pointer.active ? pointer.nx : 0, ty = fine && pointer.active ? pointer.ny : 0;
     look.x = damp(look.x, tx, 2.5, dt); look.y = damp(look.y, ty, 2.5, dt);
-    ringGroup.rotation.y = -0.2 + look.x * 0.12 + Math.sin(t * 0.35) * 0.02;
+    ringGroup.rotation.y = -0.1 + look.x * 0.12 + Math.sin(t * 0.35) * 0.02;
     ringGroup.rotation.x = 0.05 + look.y * 0.05;
     world.rotation.y = look.x * 0.03;
     // scroll: the scene sinks and the ring tips back a touch

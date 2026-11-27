@@ -14,7 +14,8 @@
   background: radial-gradient(60% 50% at var(--gx, 30%) var(--gy, 0%), rgb(255 255 255 / 0.16), transparent 70%);
   mix-blend-mode: soft-light; opacity: var(--glow, 0.8);
 }
-.widget--red { --c0: #ff6a5f; --c1: #b3302b; --c2: #5c1716; --c3: #250909; }
+.widget--red { --c0: #ff6a5f; --c1: #a82522; --c2: #4c100f; --c3: #1a0505; }
+.widget--threat { box-shadow: inset 0 0 0 0.1em rgb(255 255 255 / 0.12), 0 0 0 0.15em rgb(20 10 10 / 0.55), 0 2.4em 4em -1.6em rgb(0 0 0 / 0.45); }
 .widget--green { --c0: #4ee26a; --c1: #179a33; --c2: #0a5a1b; --c3: #062e0e; }
 .widget--purple { --c0: #f0a6ff; --c1: #b351e6; --c2: #5f1d8f; --c3: #2a0b42; }
 .widget--blue { --c0: #8fd2ff; --c1: #2d86d6; --c2: #134a86; --c3: #08213e; }

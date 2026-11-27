@@ -35,7 +35,7 @@ export async function init() {
   };
   const rockMat = (o = {}) => K.surfaceMaterial({ key: 'rock2', c1: '#8a8475', c2: '#d2cab6', c3: '#5a5241', pore: 22, pit: 0.3, bump: 0.018, tone: 1.2, moss: 0.05, mossUp: 1.3, mossScale: 1.8, seed: [4, 2, 9], mossA: '#2a2e07', mossB: '#5f6a16', ...o });
   const addRock = (parent, { x, y, z, s, sx = 1.2, sy = 0.8, sz = 1, seed = 1, ry = 0, rx = 0, mat, moss = true }) => {
-    const g = K.rockGeometry({ seed, sx, sy, sz, detail: low ? 4 : 5, rough: 0.2 });
+    const g = K.rockGeometry({ seed, sx, sy, sz, detail: (low ? 4 : 5) + (s > 0.6 ? 1 : 0), rough: 0.2 });   // big ones closer to the camera get more faces
     const m = new THREE.Mesh(g, mat); m.position.set(x, y, z); m.scale.setScalar(s); m.rotation.set(rx, ry, 0);
     m.castShadow = true; m.receiveShadow = true; parent.add(m);
     if (moss) m.add(K.mossShells(g, { layers: low ? 8 : 12, thick: 0.06, density: [150, 150], fill: 0.7, moss: 0.05, mossUp: 1.3, mossScale: 1.8, seed: [4, 2, 9], mossA: '#22260a', mossB: '#5f6814', tip: '#a3a443' }));

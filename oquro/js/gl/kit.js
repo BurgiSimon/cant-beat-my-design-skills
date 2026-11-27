@@ -83,7 +83,8 @@ vField = vec4(fbm3(vObj * uTone), snoise(vObj * 1.7 + 4.0), mossMask(vObj, vWN),
 varying vec3 vObj; varying vec3 vWN; varying vec4 vField;
 uniform vec3 uC1, uC2, uC3, uMossA, uMossB; uniform float uPore, uPit, uGrain, uBump, uStreak;
 ${GLSL_NOISE}
-${GLSL_BUMP}`)
+${GLSL_BUMP}
+${GLSL_MOSS}`)
       .replace('#include <color_fragment>', `#include <color_fragment>
 float sTone = vField.x;
 float sGrain = snoise(vObj * 31.0) * 0.6 + snoise(vObj * 77.0) * 0.4;
@@ -95,7 +96,7 @@ sCol *= 0.93 + 0.09 * sGrain * uGrain;
 sCol = mix(sCol, uC3, sPit * uPit);
 sCol = mix(sCol, uC3, smoothstep(0.35, 0.9, vField.y) * 0.35);
 sCol *= 1.0 + sStreak * uStreak * 0.12;
-float sMoss = vField.z;
+float sMoss = uMoss > -0.9 ? mossMask(vObj, normalize(vWN)) : 0.0;   // per pixel: no facets on a coarse mesh
 vec3 sMossCol = mix(uMossA, uMossB, smoothstep(-0.4, 0.7, vField.w));
 diffuseColor.rgb = mix(sCol, sMossCol * 0.6, sMoss);
 float sH = (-sPit * 0.9 + sGrain * 0.22 * uGrain + sTone * 0.35 + sStreak * uStreak * 0.3) * (1.0 - sMoss * 0.7);`)
@@ -494,7 +495,7 @@ export function vaultDoor({ metal, moss = true } = {}) {
   const door = new THREE.Group(); group.add(door);
   const MOSS = { moss: -0.42, mossUp: 0.5, mossY: 0.62, mossDir: [-0.6, 1, 0.3], mossScale: 2.6, seed: [3, 1, 2] };
   const m = metal || surfaceMaterial({
-    key: 'steel', c1: '#5f6852', c2: '#8a9077', c3: '#4a4632', metalness: 0.55, roughness: 0.5, pore: 9, pit: 0.3, grain: 0.6, bump: 0.005, tone: 1.6, streak: 0.35,
+    key: 'steel', c1: '#6c7563', c2: '#9ca291', c3: '#4f4c3a', metalness: 0.55, roughness: 0.5, pore: 9, pit: 0.3, grain: 0.6, bump: 0.005, tone: 1.6, streak: 0.35,
     ...MOSS, mossA: '#2a3510', mossB: '#6f8128',
   });
   const bright = surfaceMaterial({ key: 'steel2', c1: '#8a928a', c2: '#c3c9c0', c3: '#5a5e55', metalness: 0.78, roughness: 0.36, pore: 12, pit: 0.2, grain: 0.5, bump: 0.004, tone: 2.2, streak: 0.6, moss: -1 });

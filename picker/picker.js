@@ -347,12 +347,13 @@ const TRACES = {
   // the dial wanders.
   oquro: (() => {
     const at = { x: 0, y: 0, on: false, px: 0, py: 0, turn: 0 };
+    const DARK = '34 34 34';   // its still is pale water, so this one is drawn in OQURO's ink, not the picker's white
     const rings = [];
     return {
       reset() { at.on = false; rings.length = 0; },
       draw(r, o, on, dt) {
         if (o < 0.01 && !rings.length) return false;
-        const want_ = on && inside(r, ptr) ? ptr : { x: r.left + r.width * (0.5 + 0.22 * Math.sin(clock * 0.39)), y: r.top + r.height * (0.5 + 0.15 * Math.sin(clock * 0.63)) };
+        const want_ = on && inside(r, ptr) ? ptr : { x: r.left + r.width * (0.5 + 0.22 * Math.sin(clock * 0.39)), y: r.top + r.height * (0.3 + 0.1 * Math.sin(clock * 0.63)) };
         if (!at.on) { at.x = at.px = want_.x; at.y = at.py = want_.y; at.on = true; }
         const ease = 1 - Math.exp(-dt * 6);
         at.x += (want_.x - at.x) * ease; at.y += (want_.y - at.y) * ease;
@@ -363,7 +364,7 @@ const TRACES = {
           const q = rings[i]; q.t += dt;
           if (q.t > 1.8) { rings.splice(i, 1); continue; }
           const k = q.t / 1.8;
-          g.strokeStyle = `rgb(${INK} / ${0.4 * (1 - k) ** 2})`;
+          g.strokeStyle = `rgb(${DARK} / ${0.32 * (1 - k) ** 2})`;
           g.beginPath(); g.ellipse(q.x, q.y, 14 + k * 120, (14 + k * 120) * 0.42, 0, 0, Math.PI * 2); g.stroke();
         }
         // the dial: sixty ticks, every fifth long, closing round from the top as the card lights, turning slowly
@@ -373,11 +374,11 @@ const TRACES = {
         for (let i = 0; i < shown; i++) {
           const long = i % 5 === 0; const a = -Math.PI / 2 + (i / 60) * Math.PI * 2 + at.turn;
           const r0 = R - (long ? 13 : 7); const r1 = R;
-          g.strokeStyle = `rgb(${INK} / ${(long ? 0.9 : 0.45) * o})`;
+          g.strokeStyle = `rgb(${DARK} / ${(long ? 0.9 : 0.45) * o})`;
           g.beginPath(); g.moveTo(at.x + Math.cos(a) * r0, at.y + Math.sin(a) * r0); g.lineTo(at.x + Math.cos(a) * r1, at.y + Math.sin(a) * r1); g.stroke();
         }
         // and the mark in its middle: a hub with eight knobs
-        g.fillStyle = `rgb(${INK} / ${0.9 * o})`;
+        g.fillStyle = `rgb(${DARK} / ${0.9 * o})`;
         g.beginPath(); g.arc(at.x, at.y, 5.5, 0, Math.PI * 2); g.fill();
         for (let i = 0; i < 8; i++) { const a = (i / 8) * Math.PI * 2 - at.turn * 2; g.beginPath(); g.arc(at.x + Math.cos(a) * 11, at.y + Math.sin(a) * 11, 2, 0, Math.PI * 2); g.fill(); }
         g.restore();

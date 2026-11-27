@@ -104,9 +104,8 @@ export async function init() {
   // ---- the footer word, letter by letter, and letters that lift under the pointer ----
   const fw = document.querySelector('[data-foot-word]');
   if (fw) {
-    const inner = document.createElement('span');
-    inner.innerHTML = [...fw.textContent].map((c) => `<span class="ch">${c}</span>`).join('');
-    fw.replaceChildren(inner);
+    const inner = fw.firstElementChild;
+    inner.innerHTML = [...inner.textContent].map((c) => `<span class="ch">${c}</span>`).join('');
     const chars = inner.querySelectorAll('.ch');
     gsap.from(chars, { yPercent: 100, duration: 1.4, ease: 'expo.out', stagger: 0.07, scrollTrigger: { trigger: fw, start: 'top 95%', once: true } });
     fw.style.overflow = 'hidden';
