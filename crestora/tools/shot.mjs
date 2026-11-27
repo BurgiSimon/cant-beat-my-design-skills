@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 /**
- * Photographs a Crestora page from the dev server (node build.mjs --serve 4321) and reports what's wrong with it:
- * console errors, page errors, failed requests, and anything wider than the screen.
+ * Photographs a Crestora page and reports what's wrong with it: console errors, page errors, failed requests, and
+ * anything wider than the screen. It serves crestora/ itself (on a free port), so it never races a rebuild; run
+ * node crestora/tools/pages.mjs first so the page is assembled.
  *
  *   node crestora/tools/shot.mjs <page> [options]
  *     <page>          e.g. pricing.html, blog/leave-the-light-on.html, index.html
@@ -15,7 +16,26 @@
  * Software WebGL is slow: pages with canvases take a few seconds. Needs Playwright (preinstalled here).
  */
 import { createRequire } from "node:module";
+import { promises as fs } from "node:fs";
+import http from "node:http";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 const { chromium } = createRequire(import.meta.url)("playwright");
+
+const SITE = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+const TYPES = { ".html": "text/html; charset=utf-8", ".css": "text/css", ".js": "text/javascript", ".svg": "image/svg+xml", ".png": "image/png", ".jpg": "image/jpeg", ".webp": "image/webp", ".woff2": "font/woff2", ".json": "application/json", ".ics": "text/calendar", ".xml": "application/xml" };
+const server = http.createServer(async (req, res) => {
+  let file = path.join(SITE, decodeURIComponent(new URL(req.url, "http://x").pathname));
+  if (!file.startsWith(SITE)) return res.writeHead(403).end();
+  if (file.endsWith(path.sep)) file = path.join(file, "index.html");
+  try {
+    let body = await fs.readFile(file);
+    if (file.endsWith(".html")) body = Buffer.from(body.toString().replace(/\{\{SITE_URL\}\}/g, `http://127.0.0.1:${server.address().port}`).replace(/\{\{VERSION\}\}/g, "dev"));
+    res.writeHead(200, { "Content-Type": TYPES[path.extname(file)] || "application/octet-stream", "Cache-Control": "no-store" }).end(body);
+  } catch { res.writeHead(404).end(); }
+});
+await new Promise((ok) => server.listen(0, "127.0.0.1", ok));
+const ORIGIN = `http://127.0.0.1:${server.address().port}`;
 
 const argv = process.argv.slice(2);
 const opt = (k, d) => { const i = argv.indexOf(`--${k}`); return i >= 0 && argv[i + 1] && !argv[i + 1].startsWith("--") ? argv[i + 1] : d; };
@@ -34,7 +54,7 @@ p.on("pageerror", (e) => problems.push(`pageerror: ${e.message}`));
 p.on("response", (r) => { if (r.status() >= 400) problems.push(`${r.status()}: ${r.url()}`); });
 p.on("requestfailed", (r) => problems.push(`failed: ${r.url()} ${r.failure()?.errorText || ""}`));
 
-await p.goto(`http://localhost:4321/crestora/${page}`, { waitUntil: "load" });
+await p.goto(`${ORIGIN}/${page}`, { waitUntil: "load" });
 await p.evaluate(() => document.fonts.ready);
 await p.waitForTimeout(400);
 
@@ -76,3 +96,4 @@ if (el) {
 console.log(`${out}  (${page} @ ${W}×${H}${flag("reduced") ? ", reduced" : ""}, page height ${height}px)`);
 console.log(problems.length ? problems.map((x) => `  ✗ ${x}`).join("\n") : "  ✓ no errors, no overflow");
 await browser.close();
+server.close();
