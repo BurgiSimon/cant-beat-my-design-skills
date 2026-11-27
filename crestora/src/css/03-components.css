@@ -152,8 +152,8 @@ select.input { appearance: none; padding-right: 40px; background-image: url("dat
 .prose > * + * { margin-top: 1.1em; }
 .prose h2 { font: 400 clamp(22px, 2vw, 28px)/1.25 var(--font-brand); color: #fff; margin-top: 2.2em; letter-spacing: -0.01em; scroll-margin-top: calc(var(--header-h) + 24px); }
 .prose h3 { font: 600 19px/1.35 var(--font); color: #fff; margin-top: 1.8em; scroll-margin-top: calc(var(--header-h) + 24px); }
-.prose a { color: #fff; text-decoration: underline; text-decoration-color: rgb(255 255 255 / 0.35); text-underline-offset: 3px; transition: text-decoration-color var(--dur); }
-.prose a:hover { text-decoration-color: var(--cyan); }
+.prose a, .link { color: #fff; text-decoration: underline; text-decoration-color: rgb(255 255 255 / 0.35); text-underline-offset: 3px; transition: text-decoration-color var(--dur); }
+.prose a:hover, .link:hover { text-decoration-color: var(--cyan); }
 .prose ul, .prose ol { padding-left: 1.3em; }
 .prose ul { list-style: none; }
 .prose ul li { position: relative; }
@@ -176,7 +176,7 @@ select.input { appearance: none; padding-right: 40px; background-image: url("dat
 .toc__title { font: 400 11px/1 var(--font-brand); letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-muted); margin-bottom: 12px; }
 .toc a { display: block; padding: 6px 0 6px 14px; color: var(--ink-muted); border-left: 1px solid var(--line-faint); transition: color var(--dur), border-color var(--dur); }
 .toc a:hover { color: #fff; }
-.toc a[aria-current="true"] { color: #fff; border-image: var(--rainbow) 1; border-left-width: 1px; }
+.toc a[aria-current="true"] { color: #fff; border-image: linear-gradient(180deg, var(--spectrum)) 1; border-left-width: 1px; }
 .with-toc { display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: clamp(40px, 6vw, 96px); align-items: start; }
 @media (max-width: 960px) { .with-toc { grid-template-columns: 1fr; } .toc { position: static; } }
 
@@ -189,11 +189,11 @@ select.input { appearance: none; padding-right: 40px; background-image: url("dat
 .accordion details[open] summary::after { rotate: 135deg; }
 .accordion .accordion__body { padding: 0 48px 24px 0; color: var(--ink-soft); line-height: 1.65; }
 
-/* a toast for forms and copy buttons */
-/* the toast: the footer's "Hold to accelerate" pill, at the foot of the screen */
+/* the toast, for forms and copy buttons: the footer's "Hold to accelerate" pill, at the foot of the screen. Fixed at
+   left: 50%, it would shrink-wrap to half the screen; max-content keeps a sentence on one line until it must wrap. */
 .toast {
   position: fixed; z-index: 60; left: 50%; bottom: max(24px, env(safe-area-inset-bottom)); translate: -50% 16px; scale: 0.94; opacity: 0;
-  display: flex; align-items: center; gap: 10px; max-width: calc(100vw - 32px); padding: 6px 14px 6px 6px; border-radius: 999px;
+  display: flex; align-items: center; gap: 10px; width: max-content; max-width: calc(100vw - 32px); padding: 6px 14px 6px 6px; border-radius: 999px;
   font: 500 13.5px/1.3 var(--font); color: #fff; pointer-events: none;
   background: rgb(10 12 18 / 0.72); box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.16);
   -webkit-backdrop-filter: blur(12px) saturate(1.3); backdrop-filter: blur(12px) saturate(1.3);
@@ -226,10 +226,13 @@ select.input { appearance: none; padding-right: 40px; background-image: url("dat
 .lane-chip::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--stage); box-shadow: 0 0 8px var(--stage); }
 /* odometer digits: Michroma numerals, each digit a column that rolls (core.js builds them from data-odometer) */
 .odo { display: inline-flex; font-family: var(--font-brand); font-variant-numeric: tabular-nums; white-space: nowrap; }
-.odo__d { position: relative; display: inline-block; width: 0.82em; height: 1.15em; overflow: hidden; text-align: center; }
+/* Michroma's digits are 0.95em wide: the cells are that, and never shrink inside a flex row */
+.odo__d { position: relative; display: inline-block; flex: none; width: 0.95em; height: 1.15em; overflow: hidden; text-align: center; }
 .odo__d > span { position: absolute; left: 0; right: 0; top: 0; display: flex; flex-direction: column; transition: transform 0.9s var(--ease-out); }
 .odo__d > span > span { height: 1.15em; line-height: 1.15em; }
-.odo__s { display: inline-block; height: 1.15em; line-height: 1.15em; }
+.odo__s { display: inline-block; flex: none; height: 1.15em; line-height: 1.15em; }
+.odo__u { font-family: var(--font); font-weight: 400; margin-left: 0.06em; }   /* units (%) in Inter: Michroma's reads "o/o" */
+.check > span { min-width: 0; }   /* a label's text (with any inline link) goes in one span, so it wraps as one */
 /* an app window drawn in the kit: night surface, hairline, a hairline title bar (no traffic lights) */
 .mock { position: relative; border-radius: var(--radius-lg); background: var(--bg-raised); box-shadow: inset 0 0 0 1px var(--line-soft), 0 50px 120px -50px #000; overflow: hidden; }
 .mock__bar { display: flex; align-items: center; gap: 10px; height: 40px; padding: 0 14px; border-bottom: 1px solid var(--line-faint); font: 500 12.5px/1 var(--font); color: var(--ink-muted); }

@@ -1,22 +1,38 @@
 // A .toc of links to headings follows the reading (aria-current="true" on the section in view); headings with
 // data-copy-link get a small button that copies a link to them.
-import { toast, $$ } from '../core.js';
+import { toast, lenis, $$ } from '../core.js';
 import { copyText } from './copy.js';
 
+// The section being read is the last heading above the reading line (45% down the screen). It is worked out from the
+// scroll itself, once a frame at most, so a jump that skips a heading (a link, Home, End) never leaves it stale.
 export default function init() {
+  const tocs = [];
   for (const toc of $$('.toc')) {
     const links = $$('a[href^="#"]', toc);
     const targets = links.map((a) => document.getElementById(decodeURIComponent(a.hash.slice(1)))).filter(Boolean);
-    if (!targets.length) continue;
-    const set = (id) => { for (const a of links) a.toggleAttribute('aria-current', a.hash.slice(1) === id); for (const a of links) if (a.hasAttribute('aria-current')) a.setAttribute('aria-current', 'true'); };
-    const seen = new Map();
-    const io = new IntersectionObserver((entries) => {
-      for (const e of entries) seen.set(e.target.id, e.isIntersecting ? e.boundingClientRect.top : null);
-      const visible = targets.filter((t) => seen.get(t.id) !== null && seen.get(t.id) !== undefined);
-      const current = visible[0] || targets.filter((t) => t.getBoundingClientRect().top < innerHeight * 0.3).pop() || targets[0];
-      set(current.id);
-    }, { rootMargin: '-80px 0px -55% 0px' });
-    targets.forEach((t) => io.observe(t));
+    if (targets.length) tocs.push({ links, targets, id: null });
+  }
+  if (tocs.length) {
+    let queued = false;
+    const update = () => {
+      queued = false;
+      const line = innerHeight * 0.45;
+      for (const t of tocs) {
+        const current = t.targets.filter((el) => el.getBoundingClientRect().top < line).pop() || t.targets[0];
+        if (current.id === t.id) continue;
+        t.id = current.id;
+        for (const a of t.links) {
+          if (decodeURIComponent(a.hash.slice(1)) === current.id) a.setAttribute('aria-current', 'true');
+          else a.removeAttribute('aria-current');
+        }
+      }
+    };
+    const queue = () => { if (!queued) { queued = true; requestAnimationFrame(update); } };
+    if (lenis) lenis.on('scroll', queue);
+    addEventListener('scroll', queue, { passive: true });
+    addEventListener('resize', queue);
+    addEventListener('load', queue);
+    update();
   }
   for (const h of $$('[data-copy-link]')) {
     if (!h.id) continue;

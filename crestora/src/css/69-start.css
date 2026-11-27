@@ -167,7 +167,3 @@
   [data-page="start"] .lane-card__foot { flex-wrap: wrap; }
   [data-page="start"] .start-card__tags { margin-left: 54px; }
 }
-
-/* the toast is fixed at left: 50%, so on a phone it shrink-wraps to half the screen and a sentence wraps into a tall
-   bubble; sized to its text (it keeps the kit's max-width) it stays one pill. (Requested for the kit itself.) */
-[data-page="start"] .toast { width: max-content; }

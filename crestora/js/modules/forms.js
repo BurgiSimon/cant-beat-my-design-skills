@@ -5,7 +5,7 @@
 import { toast, $$ } from '../core.js';
 
 const MESSAGES = {
-  valueMissing: (el) => el.dataset.msgRequired || `${label(el)} is needed.`,
+  valueMissing: (el) => el.dataset.msgRequired || (el.type === 'checkbox' ? 'Please tick this to continue.' : el.type === 'radio' ? 'Please choose one.' : `${label(el)} is needed.`),
   typeMismatch: (el) => (el.type === 'email' ? 'That email doesn’t look right.' : `Check ${label(el).toLowerCase()}.`),
   tooShort: (el) => `A little longer, please (at least ${el.minLength} characters).`,
   patternMismatch: (el) => el.dataset.msgPattern || `Check ${label(el).toLowerCase()}.`,
@@ -27,11 +27,13 @@ function check(el) {
   if (kind) {
     el.setAttribute('aria-invalid', 'true');
     err.textContent = MESSAGES[kind](el);
+    err._owner = el;
     el.setAttribute('aria-describedby', [...new Set([...(el.getAttribute('aria-describedby') || '').split(' ').filter(Boolean), err.id])].join(' '));
     return false;
   }
   el.removeAttribute('aria-invalid');
-  err.textContent = '';
+  // a group of checkboxes shares one message line: only the field that wrote it clears it
+  if (!err._owner || err._owner === el) { err.textContent = ''; err._owner = null; }
   return true;
 }
 

@@ -4,7 +4,10 @@
 .header { position: fixed; z-index: 50; inset: 0 0 auto; height: var(--header-h); transition: translate 0.5s var(--ease-out), background-color 0.4s var(--ease-out), box-shadow 0.4s var(--ease-out); }
 .header::before { content: ""; position: absolute; inset: 0; z-index: -1; opacity: 0; background: rgb(0 0 0 / 0.6); -webkit-backdrop-filter: blur(16px) saturate(1.4); backdrop-filter: blur(16px) saturate(1.4); box-shadow: inset 0 -1px 0 var(--line-faint); transition: opacity 0.4s var(--ease-out); }
 .header.is-scrolled::before, .header.is-open::before { opacity: 1; }
+/* hidden while reading down: the bar slides up and its hairline (at its foot) stays on as a reading bar at the top
+   edge; away over the night scenes (the home finale, the footer): all of it goes */
 .header.is-hidden { translate: 0 -100%; }
+.header.is-away:not(.is-open):not(:focus-within) { translate: 0 calc(-100% - 2px); }
 .header::after { content: ""; position: absolute; left: 0; bottom: -1px; height: 1px; width: 100%; transform-origin: 0 50%; transform: scaleX(var(--progress, 0)); background: var(--rainbow); opacity: 0.85; pointer-events: none; }
 .header__inner { height: 100%; display: flex; align-items: center; gap: 24px; }
 

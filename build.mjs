@@ -271,6 +271,10 @@ async function build() {
 
   // Sitemap + robots
   const today = new Date().toISOString().slice(0, 10);
+  const crestoraPages = (await listFiles(CRESTORA))
+    .map((f) => path.relative(CRESTORA, f).split(path.sep).join("/"))
+    .filter((r) => r.endsWith(".html") && r !== "index.html" && !CRESTORA_PRIVATE.has(r.split("/")[0]))
+    .sort();
   const urls = [
     `${SITE_URL}/`,
     ...pages
@@ -285,6 +289,7 @@ async function build() {
     `${SITE_URL}/offform/`,
     `${SITE_URL}/oquro/`,
     `${SITE_URL}/crestora/`,
+    ...crestoraPages.map((r) => `${SITE_URL}/crestora/${r}`),
   ];
   const sitemap =
     `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +

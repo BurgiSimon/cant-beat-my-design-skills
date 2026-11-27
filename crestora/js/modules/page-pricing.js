@@ -3,8 +3,7 @@
 //  - Screen-reader prices ([data-say-monthly]/[data-say-yearly]) follow the period the switch is on.
 //  - The comparison table's lens: a hairline column that glides to the plan under the pointer or focus, and back to
 //    Studio when it leaves.
-//  - Deep links (#grants, #compare) land where they point with smooth scrolling on.
-import { odometer, store, scrollToTarget, lenis, $, $$ } from '../core.js';
+import { odometer, store, $, $$ } from '../core.js';
 
 const SEAT = { monthly: 20, yearly: 16 };
 const money = (n) => `$${n.toLocaleString('en-US')}`;
@@ -53,9 +52,6 @@ export default function init({ calm }) {
 
   // ---- the comparison table's lens ----
   lens();
-
-  // ---- deep links ----
-  landAgain();
 }
 
 function lens() {
@@ -94,14 +90,4 @@ function lens() {
   addEventListener('resize', () => place(col, true));
   document.fonts?.ready.then(() => place(col, true));
   addEventListener('load', () => place(col, true));
-}
-
-// With smooth scrolling on, the browser jumps to the #id before Lenis starts, so the shared landing scroll (core.js,
-// on load) measures from a stale position and stops short. Once it has run, land again from where we are.
-function landAgain() {
-  const id = decodeURIComponent(location.hash.slice(1));
-  const target = id && document.getElementById(id);
-  if (!target) return;
-  const land = () => setTimeout(() => { if (lenis) scrollToTarget(target, { immediate: true }); }, 140);
-  if (document.readyState === 'complete') land(); else addEventListener('load', land, { once: true });
 }

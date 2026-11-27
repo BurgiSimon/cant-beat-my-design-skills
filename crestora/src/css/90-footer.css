@@ -56,7 +56,8 @@
 .footer .col a[aria-current="page"] { color: #fff; }
 .footer .col a:focus-visible { border-radius: 3px; }
 
-.footer .rule { position: relative; height: 1px; background: var(--line); overflow: visible; }
+/* the glint's glow may rise above and below the line, never run past its ends (or the screen's edge) */
+.footer .rule { position: relative; height: 1px; background: var(--line); overflow: visible; clip-path: inset(-6px 0); }
 /* a glint of the road's light that runs along the rule, and waits under the pointer when it is near */
 .footer .rule__glint {
   position: absolute; top: -1px; left: 0; width: 220px; height: 3px; translate: calc(var(--gx, -400px) - 50%) 0;

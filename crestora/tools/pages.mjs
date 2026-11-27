@@ -105,7 +105,16 @@ export async function assemble() {
       `<body data-page="${fill("{{PAGE}}")}" data-modules="${esc(meta.modules || "")}">\n${fill(header).trim()}\n\n${fill(body).trim()}\n\n${fill(footer).trim()}\n</body>\n</html>\n`;
     await write(path.join(SITE, rel), html);
   }
-  console.log(`✓ crestora: ${pages.length} pages, ${cssFiles.length} css files → css/site.css in ${Date.now() - started}ms`);
+  // sitemap.xml: every page ({{SITE_URL}} is filled in by build.mjs)
+  const urls = pages
+    .map((f) => path.relative(path.join(SRC, "pages"), f).split(path.sep).join("/"))
+    .map((r) => (r === "index.html" ? "" : r))
+    .sort((a, b) => (a === "" ? -1 : b === "" ? 1 : a.localeCompare(b)));
+  await write(
+    path.join(SITE, "sitemap.xml"),
+    `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.map((u) => `  <url><loc>{{SITE_URL}}/${u}</loc></url>`).join("\n")}\n</urlset>\n`,
+  );
+  console.log(`✓ crestora: ${pages.length} pages, ${cssFiles.length} css files → css/site.css, sitemap.xml in ${Date.now() - started}ms`);
 }
 
 await assemble();

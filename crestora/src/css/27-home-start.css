@@ -161,7 +161,3 @@
 @media (max-width: 420px) {
   :is(.home-start, [data-page="start"]) .lane-card__names { font-size: 10.5px; letter-spacing: -0.01em; }
 }
-
-/* the finale's toast is a full sentence: on a phone the kit's toast (fixed at left: 50%) shrink-wraps to half the
-   screen; sized to its text it stays one pill. (Requested for the kit itself.) */
-[data-page="index"] .toast { width: max-content; }

@@ -3,6 +3,8 @@
 // The type assembles over it: the mark turns in, the name rises letter by letter, the columns come in one after the
 // other and the rule draws itself across. A repeat visit in the same tab gets a shorter version.
 
+import { remembers } from '../core.js';
+
 const root = document.documentElement;
 
 function split(el) {
@@ -24,7 +26,8 @@ export async function intro(scene, foot) {
   const gsap = window.gsap;
   const done = () => {
     foot.classList.add('is-armed');
-    try { sessionStorage.setItem('crestora:seen', '1'); } catch (e) {}
+    // the cookie page lists this under Preferences: with those off, every page gets the full opening
+    if (remembers()) try { sessionStorage.setItem('crestora:seen', '1'); } catch (e) {}
   };
   if (!gsap) {
     if (scene) { Object.assign(scene.state, { fade: 1, reveal: 1.2, exposure: 1, dust: 1 }); scene.ready.then(() => scene.start()); }

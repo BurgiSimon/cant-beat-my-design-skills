@@ -1,6 +1,7 @@
 // [role=tablist] with [role=tab][aria-controls] tabs: click, arrow keys, Home/End. Panels are hidden/unhidden.
 // data-tabs-store="key" remembers the choice; data-tabs-sync="name" keeps every tablist with that name in step (the
-// API page's language tabs). Inside a .segmented, its thumb slides to the chosen tab.
+// API page's language tabs). Inside a .segmented, its thumb slides to the chosen tab. A tablist with data-tabs-manual is
+// left alone: its page drives it (the home flow's rail follows the scroll).
 import { store, $$ } from '../core.js';
 
 export function placeThumb(seg) {
@@ -36,7 +37,7 @@ function select(list, tab, { focus = false, sync = true } = {}) {
 }
 
 export default function init() {
-  for (const list of $$('[role="tablist"]')) {
+  for (const list of $$('[role="tablist"]:not([data-tabs-manual])')) {
     const tabs = $$('[role="tab"]', list);
     if (!tabs.length) continue;
     const saved = list.dataset.tabsStore ? store.get(list.dataset.tabsStore) : null;

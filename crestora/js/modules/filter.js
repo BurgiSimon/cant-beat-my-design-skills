@@ -8,7 +8,11 @@
 //     <p data-filter-empty hidden>Nothing matches.</p>
 //   </div>
 // Several groups combine (an item must match every group). Without a scope, the whole page is one scope.
-import { gsap, calm, $$ } from '../core.js';
+import { gsap, ScrollTrigger, calm, $$ } from '../core.js';
+
+// filtering moves everything below the list: the page's scroll triggers are measured again once the items settle
+let refreshT = 0;
+const refresh = () => { clearTimeout(refreshT); refreshT = setTimeout(() => ScrollTrigger?.refresh(), 700); };
 
 export default function init() {
   const scopes = $$('[data-filter-scope]');
@@ -27,7 +31,7 @@ function setup(scope) {
   const noun = count?.dataset.filterNoun || 'item';
   const text = new Map(items.map((it) => [it, `${it.textContent} ${it.dataset.tags || ''}`.toLowerCase()]));
 
-  const apply = (animate = true) => {
+  const apply = (animate = true, first = false) => {
     const wanted = groups.map((g) => g.querySelector('[data-filter][aria-pressed="true"]')?.dataset.filter || 'all');
     const q = (search?.value || '').trim().toLowerCase();
     const before = animate && gsap && !calm ? new Map(items.map((it) => [it, it.getBoundingClientRect()])) : null;
@@ -50,6 +54,7 @@ function setup(scope) {
       }
     }
     scope.dispatchEvent(new CustomEvent('filter:change', { detail: { shown, query: q, wanted } }));
+    if (!first) refresh();
   };
 
   for (const g of groups) {
@@ -62,5 +67,5 @@ function setup(scope) {
   }
   search?.addEventListener('input', () => apply(false));
   scope.filterApply = apply;
-  apply(false);
+  apply(false, true);
 }

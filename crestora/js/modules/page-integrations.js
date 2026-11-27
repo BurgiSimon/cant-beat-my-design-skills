@@ -24,17 +24,9 @@ export default function init() {
   }
 
   // ---- Connect: a demo ----
-  // (a modal dialog sits in the top layer, above the page's toast: the toast rides inside the dialog while it is open)
+  // (the kit's toast rides inside an open dialog, so it shows above the modal)
   document.addEventListener('click', (e) => {
-    const btn = e.target.closest('[data-ig-connect]');
-    if (!btn) return;
-    toast('Connecting is off here.', 'Demo');
-    const pill = document.querySelector('.toast');
-    const dialog = btn.closest('dialog');
-    if (pill && dialog?.open && pill.parentElement !== dialog) {
-      dialog.append(pill);
-      dialog.addEventListener('close', () => document.body.append(pill), { once: true });
-    }
+    if (e.target.closest('[data-ig-connect]')) toast('Connecting is off here.', 'Demo');
   });
 
   // ---- deep links: #framewright lands on the card and lights it ----
@@ -105,8 +97,8 @@ export default function init() {
   });
 }
 
-// Deep links with smooth scrolling on: the browser jumps to the #id before Lenis starts, so the shared landing scroll
-// (core.js, on load) measures from a stale position and stops short. Once it has run, land again from where we are.
+// Deep links: the shared landing (core.js, on load) puts the #id under the header; a directory card is better in the
+// middle of the screen, where the eye is, so once that has run it lands again there.
 function landAgain() {
   const id = decodeURIComponent(location.hash.slice(1));
   const target = id && document.getElementById(id);

@@ -7,12 +7,15 @@ const still = params.has('still');                       // a still of the resti
 
 boot();
 
+// fetched together, started in the order the page lists them
 const names = (document.body.dataset.modules || '').split(/\s+/).filter(Boolean);
-for (const name of names) {
-  import(`./modules/${name}.js`)
-    .then((m) => m.default?.({ calm, still }))
-    .catch((e) => console.error(`[crestora] module ${name}`, e));
-}
+const loads = names.map((name) => import(`./modules/${name}.js`).catch((e) => { console.error(`[crestora] module ${name}`, e); return null; }));
+(async () => {
+  for (const [i, load] of loads.entries()) {
+    const m = await load;
+    try { m?.default?.({ calm, still }); } catch (e) { console.error(`[crestora] module ${names[i]}`, e); }
+  }
+})();
 
 // The footer (its WebGL night, the car's picture) loads once it is within a screen and a half, so a long page's first
 // paint is its own; a launch from the page (crestora:launch) loads it at once.

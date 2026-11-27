@@ -54,8 +54,10 @@ export function toast(text, key = 'Demo') {
     toastEl.className = 'toast';
     toastEl.setAttribute('role', 'status');
     toastEl.setAttribute('aria-live', 'polite');
-    document.body.append(toastEl);
   }
+  // a modal dialog sits in the top layer, above everything else: while one is open the toast rides inside it
+  const host = document.querySelector('dialog[open]') || document.body;
+  if (toastEl.parentElement !== host) host.append(toastEl);
   toastEl.innerHTML = `${key ? `<span class="toast__key">${key}</span>` : ''}<span></span>`;
   toastEl.lastChild.textContent = text;
   requestAnimationFrame(() => toastEl.classList.add('is-on'));
@@ -64,17 +66,27 @@ export function toast(text, key = 'Demo') {
 }
 
 // ---- storage that never throws (private windows, blocked storage); keys are prefixed crestora: ----
+// The cookie page's Preferences switch (crestora:cookies → { preferences: false }) is honoured here, once for every
+// module: with it off, nothing but that choice itself is remembered.
+export const remembers = () => {
+  try { return JSON.parse(localStorage.getItem('crestora:cookies'))?.preferences !== false; } catch { return true; }
+};
 export const store = {
   get(key, fallback = null) {
     try { const v = localStorage.getItem(`crestora:${key}`); return v === null ? fallback : JSON.parse(v); } catch { return fallback; }
   },
-  set(key, value) { try { localStorage.setItem(`crestora:${key}`, JSON.stringify(value)); } catch {} },
+  set(key, value) {
+    if (key !== 'cookies' && !remembers()) return;
+    try { localStorage.setItem(`crestora:${key}`, JSON.stringify(value)); } catch {}
+  },
   clear(key) { try { localStorage.removeItem(`crestora:${key}`); } catch {} },
 };
 
 // ---- odometer: Michroma digits in fixed cells, each a column of 0–9 that rolls to its value ----
-export const formatNumber = (v, { decimals = 0, prefix = '', suffix = '' } = {}) =>
-  `${prefix}${Number(v).toLocaleString('en-US', { minimumFractionDigits: decimals, maximumFractionDigits: decimals })}${suffix}`;
+export const formatNumber = (v, { decimals = 0, prefix = '', suffix = '', grouping = true } = {}) =>
+  `${prefix}${Number(v).toLocaleString('en-US', { minimumFractionDigits: decimals, maximumFractionDigits: decimals, useGrouping: grouping })}${suffix}`;
+// data-decimals, data-prefix, data-suffix and data-grouping="false" (a year: 2021, not 2,021)
+const numberOpts = (el) => ({ decimals: parseInt(el.dataset.decimals || 0, 10), prefix: el.dataset.prefix || '', suffix: el.dataset.suffix || '', grouping: el.dataset.grouping !== 'false' });
 const isDigit = (ch) => ch >= '0' && ch <= '9';
 export function odometer(el, value, opts = {}) {
   const text = formatNumber(value, opts);
@@ -92,7 +104,8 @@ export function odometer(el, value, opts = {}) {
         for (let i = 0; i <= 9; i++) { const n = document.createElement('span'); n.textContent = String(i); col.append(n); }
         cell.append(col);
       } else {
-        cell.className = 'odo__s';
+        // Michroma draws % as "o/o": units are set in Inter
+        cell.className = ch === '%' ? 'odo__s odo__u' : 'odo__s';
         cell.textContent = ch;
       }
       el.append(cell);
@@ -138,10 +151,20 @@ export function boot() {
   odometers();
   marquees();
   if (fine) { magnetic(); tilt(); spotlight(); }
-  // deep links land where they point once the layout (fonts, images) has settled
-  if (location.hash.length > 1) addEventListener('load', () => { const t = document.getElementById(decodeURIComponent(location.hash.slice(1))); if (t) scrollToTarget(t, { immediate: true }); }, { once: true });
+  // deep links land where they point once the layout (fonts, images) has settled. The browser has already jumped to
+  // the #id natively, before Lenis knew; so the target is measured absolutely and Lenis is told where the page is.
+  if (location.hash.length > 1) addEventListener('load', () => land(decodeURIComponent(location.hash.slice(1))), { once: true });
   addEventListener('load', () => ScrollTrigger?.refresh());
   document.fonts?.ready.then(() => ScrollTrigger?.refresh());
+}
+
+function land(id) {
+  const t = document.getElementById(id);
+  if (!t) return;
+  ScrollTrigger?.refresh();
+  const y = Math.max(0, t.getBoundingClientRect().top + scrollY - 84);
+  if (lenis) lenis.scrollTo(y, { immediate: true, force: true });
+  else scrollTo(0, y);
 }
 
 // ---- the header: frosted once the page moves, out of the way while reading down, a progress line, a menu ----
@@ -163,7 +186,19 @@ function header() {
   };
   if (lenis) lenis.on('scroll', onScroll); else addEventListener('scroll', onScroll, { passive: true });
   onScroll();
-  bar.addEventListener('focusin', () => bar.classList.remove('is-hidden'));
+  bar.addEventListener('focusin', () => bar.classList.remove('is-hidden', 'is-away'));
+
+  // the night at the foot of every page (and the home finale) is a full screen of its own: the bar steps out of it
+  const scenes = $$('#start, .footer');
+  if (scenes.length) {
+    const inView = new Set();
+    const io = new IntersectionObserver((entries) => {
+      for (const e of entries) e.isIntersecting ? inView.add(e.target) : inView.delete(e.target);
+      const away = inView.size > 0 && !bar.contains(document.activeElement) && !bar.classList.contains('is-open');
+      bar.classList.toggle('is-away', away);
+    }, { rootMargin: '0px 0px -55% 0px' });   // once the scene reaches the top 45% of the screen
+    scenes.forEach((s) => io.observe(s));
+  }
 
   // dropdowns: open on hover (with a short grace) and on click/Enter; Escape closes and returns focus
   for (const item of $$('.nav__item[data-menu]', bar)) {
@@ -270,28 +305,38 @@ function reveals() {
   root.classList.add('is-ready');
 }
 
+// Lines are measured in the real font: split once the fonts are in (they're preloaded, so this is a frame or two).
+// Until then the heading is held hidden, so it never shows unsplit and then jumps.
 function splits() {
   if (!SplitText) return;
-  for (const el of $$('[data-split]')) {
-    const split = new SplitText(el, { type: 'lines', mask: 'lines', linesClass: 'split-line' });
-    gsap.set(split.lines, { yPercent: 110 });
-    ScrollTrigger.create({
-      trigger: el, start: 'top 88%', once: true,
-      onEnter: () => gsap.to(split.lines, { yPercent: 0, duration: 1.25, ease: 'expo.out', stagger: 0.08, delay: parseFloat(el.dataset.delay || 0), onComplete: () => split.revert() }),
-    });
-  }
+  const els = $$('[data-split]');
+  if (!els.length) return;
+  gsap.set(els, { autoAlpha: 0 });
+  const go = () => { gsap.set(els, { autoAlpha: 1 }); els.forEach(split); };
+  let done = false;
+  const once = () => { if (!done) { done = true; go(); } };
+  (document.fonts?.ready || Promise.resolve()).then(once);
+  setTimeout(once, 1500);   // a font that never arrives doesn't hold a heading back for long
+}
+function split(el) {
+  const s = new SplitText(el, { type: 'lines', mask: 'lines', linesClass: 'split-line' });
+  gsap.set(s.lines, { yPercent: 110 });
+  ScrollTrigger.create({
+    trigger: el, start: 'top 88%', once: true,
+    onEnter: () => gsap.to(s.lines, { yPercent: 0, duration: 1.25, ease: 'expo.out', stagger: 0.08, delay: parseFloat(el.dataset.delay || 0), onComplete: () => s.revert() }),
+  });
 }
 
-export function countTo(el, to, { decimals = 0, prefix = '', suffix = '', duration = 1.8 } = {}) {
+export function countTo(el, to, { decimals = 0, prefix = '', suffix = '', grouping = true, duration = 1.8 } = {}) {
   const n = { v: 0 };
-  const fmt = (v) => `${prefix}${v.toLocaleString('en-US', { minimumFractionDigits: decimals, maximumFractionDigits: decimals })}${suffix}`;
+  const fmt = (v) => formatNumber(v, { decimals, prefix, suffix, grouping });
   el.setAttribute('aria-label', fmt(to));
   gsap.to(n, { v: to, duration, ease: 'power3.out', onUpdate: () => { el.textContent = fmt(n.v); } });
 }
 function counters() {
   for (const el of $$('[data-count]')) {
     const to = parseFloat(el.dataset.count);
-    const opts = { decimals: parseInt(el.dataset.decimals || 0, 10), prefix: el.dataset.prefix || '', suffix: el.dataset.suffix || '' };
+    const opts = numberOpts(el);
     ScrollTrigger.create({ trigger: el, start: 'top 90%', once: true, onEnter: () => countTo(el, to, opts) });
   }
 }
@@ -300,7 +345,7 @@ function counters() {
 function odometers() {
   for (const el of $$('[data-odometer]')) {
     const to = parseFloat(el.dataset.odometer);
-    const opts = { decimals: parseInt(el.dataset.decimals || 0, 10), prefix: el.dataset.prefix || '', suffix: el.dataset.suffix || '' };
+    const opts = numberOpts(el);
     // built now, every column at 0 (the number's own shape), and rolled up when seen
     odometer(el, to, { ...opts, hold: true });
     ScrollTrigger.create({ trigger: el, start: 'top 90%', once: true, onEnter: () => odometer(el, to, opts) });

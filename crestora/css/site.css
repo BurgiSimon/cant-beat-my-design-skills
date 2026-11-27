@@ -293,8 +293,8 @@ select.input { appearance: none; padding-right: 40px; background-image: url("dat
 .prose > * + * { margin-top: 1.1em; }
 .prose h2 { font: 400 clamp(22px, 2vw, 28px)/1.25 var(--font-brand); color: #fff; margin-top: 2.2em; letter-spacing: -0.01em; scroll-margin-top: calc(var(--header-h) + 24px); }
 .prose h3 { font: 600 19px/1.35 var(--font); color: #fff; margin-top: 1.8em; scroll-margin-top: calc(var(--header-h) + 24px); }
-.prose a { color: #fff; text-decoration: underline; text-decoration-color: rgb(255 255 255 / 0.35); text-underline-offset: 3px; transition: text-decoration-color var(--dur); }
-.prose a:hover { text-decoration-color: var(--cyan); }
+.prose a, .link { color: #fff; text-decoration: underline; text-decoration-color: rgb(255 255 255 / 0.35); text-underline-offset: 3px; transition: text-decoration-color var(--dur); }
+.prose a:hover, .link:hover { text-decoration-color: var(--cyan); }
 .prose ul, .prose ol { padding-left: 1.3em; }
 .prose ul { list-style: none; }
 .prose ul li { position: relative; }
@@ -317,7 +317,7 @@ select.input { appearance: none; padding-right: 40px; background-image: url("dat
 .toc__title { font: 400 11px/1 var(--font-brand); letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-muted); margin-bottom: 12px; }
 .toc a { display: block; padding: 6px 0 6px 14px; color: var(--ink-muted); border-left: 1px solid var(--line-faint); transition: color var(--dur), border-color var(--dur); }
 .toc a:hover { color: #fff; }
-.toc a[aria-current="true"] { color: #fff; border-image: var(--rainbow) 1; border-left-width: 1px; }
+.toc a[aria-current="true"] { color: #fff; border-image: linear-gradient(180deg, var(--spectrum)) 1; border-left-width: 1px; }
 .with-toc { display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: clamp(40px, 6vw, 96px); align-items: start; }
 @media (max-width: 960px) { .with-toc { grid-template-columns: 1fr; } .toc { position: static; } }
 
@@ -330,11 +330,11 @@ select.input { appearance: none; padding-right: 40px; background-image: url("dat
 .accordion details[open] summary::after { rotate: 135deg; }
 .accordion .accordion__body { padding: 0 48px 24px 0; color: var(--ink-soft); line-height: 1.65; }
 
-/* a toast for forms and copy buttons */
-/* the toast: the footer's "Hold to accelerate" pill, at the foot of the screen */
+/* the toast, for forms and copy buttons: the footer's "Hold to accelerate" pill, at the foot of the screen. Fixed at
+   left: 50%, it would shrink-wrap to half the screen; max-content keeps a sentence on one line until it must wrap. */
 .toast {
   position: fixed; z-index: 60; left: 50%; bottom: max(24px, env(safe-area-inset-bottom)); translate: -50% 16px; scale: 0.94; opacity: 0;
-  display: flex; align-items: center; gap: 10px; max-width: calc(100vw - 32px); padding: 6px 14px 6px 6px; border-radius: 999px;
+  display: flex; align-items: center; gap: 10px; width: max-content; max-width: calc(100vw - 32px); padding: 6px 14px 6px 6px; border-radius: 999px;
   font: 500 13.5px/1.3 var(--font); color: #fff; pointer-events: none;
   background: rgb(10 12 18 / 0.72); box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.16);
   -webkit-backdrop-filter: blur(12px) saturate(1.3); backdrop-filter: blur(12px) saturate(1.3);
@@ -367,10 +367,13 @@ select.input { appearance: none; padding-right: 40px; background-image: url("dat
 .lane-chip::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--stage); box-shadow: 0 0 8px var(--stage); }
 /* odometer digits: Michroma numerals, each digit a column that rolls (core.js builds them from data-odometer) */
 .odo { display: inline-flex; font-family: var(--font-brand); font-variant-numeric: tabular-nums; white-space: nowrap; }
-.odo__d { position: relative; display: inline-block; width: 0.82em; height: 1.15em; overflow: hidden; text-align: center; }
+/* Michroma's digits are 0.95em wide: the cells are that, and never shrink inside a flex row */
+.odo__d { position: relative; display: inline-block; flex: none; width: 0.95em; height: 1.15em; overflow: hidden; text-align: center; }
 .odo__d > span { position: absolute; left: 0; right: 0; top: 0; display: flex; flex-direction: column; transition: transform 0.9s var(--ease-out); }
 .odo__d > span > span { height: 1.15em; line-height: 1.15em; }
-.odo__s { display: inline-block; height: 1.15em; line-height: 1.15em; }
+.odo__s { display: inline-block; flex: none; height: 1.15em; line-height: 1.15em; }
+.odo__u { font-family: var(--font); font-weight: 400; margin-left: 0.06em; }   /* units (%) in Inter: Michroma's reads "o/o" */
+.check > span { min-width: 0; }   /* a label's text (with any inline link) goes in one span, so it wraps as one */
 /* an app window drawn in the kit: night surface, hairline, a hairline title bar (no traffic lights) */
 .mock { position: relative; border-radius: var(--radius-lg); background: var(--bg-raised); box-shadow: inset 0 0 0 1px var(--line-soft), 0 50px 120px -50px #000; overflow: hidden; }
 .mock__bar { display: flex; align-items: center; gap: 10px; height: 40px; padding: 0 14px; border-bottom: 1px solid var(--line-faint); font: 500 12.5px/1 var(--font); color: var(--ink-muted); }
@@ -426,7 +429,10 @@ kbd { display: inline-block; min-width: 1.6em; padding: 0.1em 0.45em; border-rad
 .header { position: fixed; z-index: 50; inset: 0 0 auto; height: var(--header-h); transition: translate 0.5s var(--ease-out), background-color 0.4s var(--ease-out), box-shadow 0.4s var(--ease-out); }
 .header::before { content: ""; position: absolute; inset: 0; z-index: -1; opacity: 0; background: rgb(0 0 0 / 0.6); -webkit-backdrop-filter: blur(16px) saturate(1.4); backdrop-filter: blur(16px) saturate(1.4); box-shadow: inset 0 -1px 0 var(--line-faint); transition: opacity 0.4s var(--ease-out); }
 .header.is-scrolled::before, .header.is-open::before { opacity: 1; }
+/* hidden while reading down: the bar slides up and its hairline (at its foot) stays on as a reading bar at the top
+   edge; away over the night scenes (the home finale, the footer): all of it goes */
 .header.is-hidden { translate: 0 -100%; }
+.header.is-away:not(.is-open):not(:focus-within) { translate: 0 calc(-100% - 2px); }
 .header::after { content: ""; position: absolute; left: 0; bottom: -1px; height: 1px; width: 100%; transform-origin: 0 50%; transform: scaleX(var(--progress, 0)); background: var(--rainbow); opacity: 0.85; pointer-events: none; }
 .header__inner { height: 100%; display: flex; align-items: center; gap: 24px; }
 
@@ -1851,10 +1857,6 @@ kbd { display: inline-block; min-width: 1.6em; padding: 0.1em 0.45em; border-rad
 @media (max-width: 420px) {
   :is(.home-start, [data-page="start"]) .lane-card__names { font-size: 10.5px; letter-spacing: -0.01em; }
 }
-
-/* the finale's toast is a full sentence: on a phone the kit's toast (fixed at left: 50%) shrink-wraps to half the
-   screen; sized to its text it stays one pill. (Requested for the kit itself.) */
-[data-page="index"] .toast { width: max-content; }
 
 /* ── 50-integrations.css ── */
 /* integrations.html: the on-ramps. Cut from the footer's frame: black night, hairlines, the 44 px boxes (each app's
@@ -7087,10 +7089,6 @@ kbd { display: inline-block; min-width: 1.6em; padding: 0.1em 0.45em; border-rad
   [data-page="start"] .start-card__tags { margin-left: 54px; }
 }
 
-/* the toast is fixed at left: 50%, so on a phone it shrink-wraps to half the screen and a sentence wraps into a tall
-   bubble; sized to its text (it keeps the kit's max-width) it stays one pill. (Requested for the kit itself.) */
-[data-page="start"] .toast { width: max-content; }
-
 /* ── 90-footer.css ── */
 /* The footer: the shot, as the last section of every page. On a landscape screen it is the shot itself, 1597 × 985
    design px fitted to the screen (1 design px is --fu) and set on the section's bottom edge; the night inside it (stars,
@@ -7150,7 +7148,8 @@ kbd { display: inline-block; min-width: 1.6em; padding: 0.1em 0.45em; border-rad
 .footer .col a[aria-current="page"] { color: #fff; }
 .footer .col a:focus-visible { border-radius: 3px; }
 
-.footer .rule { position: relative; height: 1px; background: var(--line); overflow: visible; }
+/* the glint's glow may rise above and below the line, never run past its ends (or the screen's edge) */
+.footer .rule { position: relative; height: 1px; background: var(--line); overflow: visible; clip-path: inset(-6px 0); }
 /* a glint of the road's light that runs along the rule, and waits under the pointer when it is near */
 .footer .rule__glint {
   position: absolute; top: -1px; left: 0; width: 220px; height: 3px; translate: calc(var(--gx, -400px) - 50%) 0;

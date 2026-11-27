@@ -25,9 +25,8 @@ export default function init({ calm, still }) {
   const blocks = [...section.querySelectorAll('.home-flow__block')];
   const riders = [section.querySelector('.home-flow__ride'), ...blocks.map((b) => b.querySelector('.home-flow__card'))];
 
-  // The rail is a tablist driven by the scroll. tabs.js (on this page for the workspace) claims every tablist when it
-  // starts and hides the panels it doesn't select; undo that whenever it does, and keep its handlers out (ours run
-  // first, in the capture phase, and stop there).
+  // The rail is a tablist driven by the scroll (data-tabs-manual keeps the generic tabs.js off it); the blocks it names
+  // all stay shown.
   let cur = -1, selected = 0, landed = false;
   function sync() {
     for (const b of blocks) b.hidden = false;
@@ -38,7 +37,6 @@ export default function init({ calm, still }) {
       t.classList.toggle('is-done', i < cur);
     });
   }
-  rail.addEventListener('tabs:change', (e) => { if (e.target === rail) sync(); });
   sync();
 
   if (calm || still || !gsap || !ScrollTrigger) return;
