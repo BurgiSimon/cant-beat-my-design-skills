@@ -9,6 +9,8 @@ Websites built from a single design, each its own project, behind one picker.
 | **Mist**, a marketing site for an AI workflow-automation product | [`/mist/`](https://burgisimon.github.io/cant-beat-my-design-skills/mist/) |
 | **Nelson**, a CRM landing page recreated 1:1 and given a motion layer | [`/nelson-crm/`](https://burgisimon.github.io/cant-beat-my-design-skills/nelson-crm/) |
 | **AsterPay**, a money app's hero recreated from one shot and grown into a full landing page | [`/asterpay/`](https://burgisimon.github.io/cant-beat-my-design-skills/asterpay/) |
+| **Vizen**, a helmet store's product page recreated from one shot, its rider raymarched in WebGL | [`/vizen/`](https://burgisimon.github.io/cant-beat-my-design-skills/vizen/) |
+| **UnoRouter**, an AI model router's hero recreated from one shot, in pixels, and grown into a full landing page | [`/unorouter/`](https://burgisimon.github.io/cant-beat-my-design-skills/unorouter/) |
 | **OFFFORM**, a sportswear shop recreated from a two-artboard shot and given a motion layer | [`/offform/`](https://burgisimon.github.io/cant-beat-my-design-skills/offform/) |
 
 ## The picker
@@ -18,11 +20,14 @@ The front page ([`picker/`](picker/)) is a line of cards, one per site, each wit
 - **Point at a card** and it lights up with a trace in its site's own manner: on Mist, wisps of mist drift
   across the foot and part around the pointer; on Nelson, a hole tears open in the clouds onto a night of
   drifting ASCII, the way its hero tears its paper; on AsterPay, an orbit of light closes round the pointer and a
-  streak sweeps along its horizon, as in its hero; on OFFFORM, the hero's two rules cross at the pointer, its ring
-  closes round it with a light running it, and speed lines stream off behind a quick move.
+  streak sweeps along its horizon, as in its hero; on Vizen, the hero's reticle locks onto the pointer with a streak
+  of brake light through it; on UnoRouter, a halo of cells round the pointer steps through its four colours the way
+  its mark does; on OFFFORM, the hero's two rules cross at the pointer, its ring closes round it with a light running
+  it, and speed lines stream off behind a quick move.
 - **Choose one** and the card grows to fill the screen, its still giving way to the colour that site paints
-  first: Mist's bare violet sky, Nelson's white preloader, AsterPay's dark one, OFFFORM's orange. The site's own
-  entrance then plays from there, so the move from picker to site has no seam.
+  first: Mist's bare violet sky, Nelson's white preloader, AsterPay's dark one, the black of Vizen and of UnoRouter,
+  OFFFORM's orange.
+  The site's own entrance then plays from there, so the move from picker to site has no seam.
 - While the cards fit the screen they stand in the middle. With more sites than fit, the line becomes
   endless: it drifts when left alone, and the wheel, a drag or the arrow keys move it.
 - On a phone the cards are a strip you swipe; the one in the middle is lit.
@@ -31,8 +36,8 @@ The front page ([`picker/`](picker/)) is a line of cards, one per site, each wit
 
 To add a site: a link in `picker/index.html` with its own `data-id`, its `--still` and `--arrive` in
 `picker/picker.css`, and its stills from `node picker/tools/stills.mjs` (which renders every still and the
-share image, or only the sites named, e.g. `node picker/tools/stills.mjs offform`; it needs Playwright). A trace of
-its own in `picker/picker.js` is optional.
+share image, or only the named sites' stills: `node picker/tools/stills.mjs vizen offform`; it needs Playwright). A
+trace of its own in `picker/picker.js` is optional.
 
 ## Mist
 
@@ -79,27 +84,55 @@ against it at 1440px) and grown into a full landing page in the same language.
 No build step: plain HTML, CSS and ES modules, copied into `dist/asterpay/` by `build.mjs`. See
 [`asterpay/README.md`](asterpay/README.md).
 
+## Vizen
+
+A fourth project lives in [`vizen/`](vizen/): a helmet store's product page recreated from one shot (measured against
+it at 1440 × 960) and grown into a full page. The shot's rider is a photograph; here he is a model, raymarched in one
+WebGL2 shader, so the camera can go round him, the visor opens and the paint changes.
+
+| Part | What it is |
+| --- | --- |
+| Hero | The shot, live: the rider in WebGL with the photograph's ghosting and the brake light's streak; the views, arrows and a drag turn him, a click opens the visor, a colour is scanned onto the shell; sizes, quantity, an accordion, a cart the helmet flies into |
+| Sections | An anatomy where the helmet lifts off his shoulders and turns to each part under leader lines from its 3D points, a wind tunnel drawn in ASCII round the helmet's own silhouette, the Vault of paints as turntables, about, a footer whose wordmark draws itself |
+| Motion | A preloader whose reticle becomes the product frame and a rider who develops out of ASCII, Lenis smooth scroll, GSAP scroll reveals and SplitText, rolling digits, scrambled labels |
+
+No build step either; copied into `dist/vizen/` by `build.mjs`. See [`vizen/README.md`](vizen/README.md).
+
+## UnoRouter
+
+A fifth project lives in [`unorouter/`](unorouter/): an AI model router's hero recreated from a single shot (measured
+against it at 1440 × 1080, down to the colour of each cell in its mark) and grown into a full landing page in the same
+pixel language.
+
+| Part | What it is |
+| --- | --- |
+| Hero | The shot, live: the mark as 52 × 48 cells whose colour bands flow from the shot's own frame, part round the pointer, ring out from a press and route requests down its bars and out through its rays; a dot-matrix headline that decodes; figures that count and a token count that runs |
+| Sections | A providers strip, a quickstart whose one changed line types itself and whose request streams back, a models explorer (search, filters, sorting, copy), a fallback simulator you can break, rankings in bars of cells, pricing, FAQ, and a key generator over the mark in the dark |
+| Motion | A boot log into the hero, a WebGL dot grid that wakes round the pointer, Lenis smooth scroll, GSAP scroll reveals, magnetic buttons, a favicon that cycles colours |
+
+No build step: plain HTML, CSS and ES modules, copied into `dist/unorouter/` by `build.mjs`. See
+[`unorouter/README.md`](unorouter/README.md).
+
 ## OFFFORM
 
-A fourth project lives in [`offform/`](offform/): a sportswear shop recreated from one shot of two artboards (the top
+A sixth project lives in [`offform/`](offform/): a sportswear shop recreated from one shot of two artboards (the top
 of the home page, and the sections after it), measured against it at 1440px, then carried on in the same language.
 
 | Part | What it is |
 | --- | --- |
 | From the shot | Announcement, header, the orange hero with its ring and rules, the manifesto, the band with its 2026 badge, the latest edit (tabs and a product rail), After Hours, Find your own pace |
 | Grown from it | A research dept. with a motion study drawn in type, a run club, a newsletter and a footer with the wordmark |
-| Motion | A preloader that counts the collection in and hands its number to the hero; both hero photographs in raw WebGL (a streak entrance, a smear along the sprinter's run as you move, the man beside him standing still); Lenis, GSAP scroll reveals and SplitText; a draggable rail with in-place colour swatches and quick add to a bag; a torch on After Hours; an ASCII runner with motion-capture markers and chronophotographic echoes |
+| Motion | A preloader that counts the collection in and hands its number to the hero; both hero photographs in raw WebGL (a streak entrance, a smear along the sprinter's run as you move, the man beside her standing still); Lenis, GSAP scroll reveals and SplitText; a draggable rail with in-place colour swatches and quick add to a bag; a torch on After Hours; an ASCII runner with motion-capture markers and chronophotographic echoes |
 
-No build step: plain HTML, CSS and ES modules, copied into `dist/offform/` by `build.mjs`. The photographs are
-free-licence stand-ins graded to the shot (see [`offform/CREDITS.md`](offform/CREDITS.md)). See
-[`offform/README.md`](offform/README.md).
+No build step either; copied into `dist/offform/` by `build.mjs`. The photographs are free-licence stand-ins graded
+to the shot (see [`offform/CREDITS.md`](offform/CREDITS.md)). See [`offform/README.md`](offform/README.md).
 
 ## Develop
 
 Requires Node 20+. No dependencies to install.
 
 ```bash
-node build.mjs --serve        # http://localhost:4321 — the picker, /mist/, /nelson-crm/, /asterpay/ and /offform/; rebuilds and live-reloads on change
+node build.mjs --serve        # http://localhost:4321 — the picker and every site under it; rebuilds and live-reloads on change
 node build.mjs                # production build into ./dist
 ```
 
@@ -126,6 +159,8 @@ src/                   Mist, published under /mist/ (its 404 page answers for th
   static/              copied to the root of Mist (web manifest)
 nelson-crm/            separate prebuilt project, published under /nelson-crm/
 asterpay/              separate project, no build step, published under /asterpay/ (its README and tools/ stay behind)
+vizen/                 separate project, no build step, published under /vizen/ (its README and tools/ stay behind)
+unorouter/             separate project, no build step, published under /unorouter/ (its README and tools/ stay behind)
 offform/               separate project, no build step, published under /offform/ (its README, CREDITS and tools/ stay behind)
 ```
 
@@ -156,9 +191,14 @@ GitHub Pages (Settings → Pages → Source: GitHub Actions).
   mist added). Check its licence before using this site commercially.
 - AsterPay: [Satoshi](https://www.fontshare.com/fonts/satoshi) (ITF Free Font License), loaded from Fontshare's CDN
   rather than committed; land outlines from [Natural Earth](https://www.naturalearthdata.com/) (public domain).
+- Vizen: [Inter Tight](https://github.com/rsms/inter) and [Roboto Mono](https://github.com/googlefonts/robotomono)
+  (SIL Open Font License, licences in `vizen/assets/fonts/`).
+- UnoRouter: [Doto](https://github.com/oliverlalan/Doto) and [Geist Mono and Geist](https://github.com/vercel/geist-font)
+  (SIL Open Font License, licences in `unorouter/assets/fonts/`).
 - OFFFORM: [Barlow Condensed](https://github.com/jpt/barlow), JetBrains Mono and Inter (SIL Open Font License,
   licences in `offform/assets/fonts/`); photographs from Unsplash and Pexels under their licences, credited in
   `offform/CREDITS.md`.
 - Mist, its customers, people, quotes and numbers are fictional. The investor line in the hero comes
-  from the original design. AsterPay, its people, reviews and figures are fictional too, and so are OFFFORM, its
-  products, prices and run club.
+  from the original design. AsterPay, its people, reviews and figures are fictional too, and so are Vizen and its
+  helmets. UnoRouter's hero copy and figures come from its shot; its models list, prices, rankings and routing are
+  illustrative and simulated. OFFFORM, its products, prices, people and run club are fictional too.

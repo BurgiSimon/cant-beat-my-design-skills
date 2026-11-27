@@ -5,13 +5,15 @@
  *   stills/<site>-tall.jpg   900×1600, for a screen held upright
  *   og.jpg                  1200×630, the picker itself, for link previews
  *
- *   node picker/tools/stills.mjs              every site's stills, and the share image
- *   node picker/tools/stills.mjs offform      only the sites named (and the share image)
+ *   node picker/tools/stills.mjs                    every site's stills, then og.jpg
+ *   node picker/tools/stills.mjs vizen unorouter    only the named sites' stills (og.jpg is always rendered)
  *
  * A still is the site's hero art with no type on it: the card sets its own name over it. Mist's is its own hero,
  * built and photographed with the header and the copy hidden; Nelson's is cut from its hero picture around the eye;
- * AsterPay's is its hero's light, rings and phones, the tall one cut from a wide render around the phones; OFFFORM's is
- * its hero's two photographs, rules and ring, the tall one cut from a wide render around the sprinter.
+ * AsterPay's is its hero's light, rings and phones, the tall one cut from a wide render around the phones; Vizen's
+ * is its rider alone, as its WebGL draws him (software WebGL will do, slowly), the tall one cut round him too;
+ * UnoRouter's is its mark of coloured cells on the dot grid, in the shot's own colours; OFFFORM's is its hero's two
+ * photographs, rules and ring, the tall one cut from a wide render around the sprinter.
  * Needs Playwright with Chromium (npm i -g playwright && npx playwright install chromium); the site itself does not.
  */
 import { promises as fs } from "node:fs";
@@ -37,16 +39,15 @@ const TYPES = { ".html": "text/html", ".css": "text/css", ".js": "text/javascrip
 const server = http.createServer(async (req, res) => {
   let file = path.join(out, decodeURIComponent(new URL(req.url, "http://x").pathname));
   if (file.endsWith(path.sep)) file = path.join(file, "index.html");
-  try {
-    res.writeHead(200, { "Content-Type": TYPES[path.extname(file)] || "application/octet-stream" }).end(await fs.readFile(file));
-  } catch {
-    res.writeHead(404).end();
-  }
+  let body;
+  try { body = await fs.readFile(file); } catch { res.writeHead(404).end(); return; }
+  res.writeHead(200, { "Content-Type": TYPES[path.extname(file)] || "application/octet-stream" }).end(body);
 });
 await new Promise((ok) => server.listen(0, "127.0.0.1", ok));
 const site = `http://127.0.0.1:${server.address().port}`;
 
-const browser = await chromium.launch();
+const browser = await chromium.launch({ args: ["--use-gl=angle", "--use-angle=swiftshader", "--enable-unsafe-swiftshader", "--ignore-gpu-blocklist"] });
+const only = process.argv.slice(2);
 const shoot = async (viewport, file, go) => {
   const page = await browser.newPage({ viewport, reducedMotion: "reduce" });
   const clip = await go(page, viewport); // a site may photograph a larger page and say which part to keep
@@ -83,8 +84,33 @@ const asterpay = async (page, viewport) => {
   return tall ? { x: 1280 - 450, y: 0, width: 900, height: 1600 } : undefined;
 };
 
+// UnoRouter: its hero's art alone, centred and larger, on the dot grid (under reduced motion it is the shot's frame).
+const unorouter = async (page, viewport) => {
+  const tall = viewport.height > viewport.width;
+  await page.goto(`${site}/unorouter/`, { waitUntil: "load" });
+  await page.addStyleTag({ content: `.skip, .nav, .hero__copy, .art__hint { display: none !important; }
+    .hero { min-height: 100vh !important; padding: 0 !important; } .hero__inner { grid-template-columns: 1fr !important; }
+    .hero__art { justify-self: center !important; margin: ${tall ? "-22vh" : "-8vh"} 0 0 !important; width: ${tall ? "74vw" : "42vw"} !important; }` });
+  await page.evaluate(() => document.fonts.ready);
+  await page.waitForTimeout(500);
+};
+
+// Vizen: its rider alone, the hero's WebGL with the page taken off it. Held upright, cut from a wide render round him.
+const vizen = async (page, viewport) => {
+  const tall = viewport.height > viewport.width;
+  if (tall) await page.setViewportSize({ width: 2560, height: 1600 });
+  await page.goto(`${site}/vizen/`, { waitUntil: "load" });
+  await page.waitForFunction(() => document.documentElement.classList.contains("has-gl"), null, { timeout: 240000 });
+  await page.addStyleTag({ content: ".nav, main, footer, .cursor, .loader { visibility: hidden !important; }" });
+  await page.waitForTimeout(3000);
+  if (!tall) return undefined;
+  const u = Math.min(2560 / 1440, 1600 / 960);
+  const cx = 1280 + (732 - 720) * u + 60;   // a little behind the helmet, so the name sits on the shoulders
+  return { x: Math.round(cx - 450), y: 0, width: 900, height: 1600 };
+};
+
 // OFFFORM: its hero (both photographs, the rules and the ring) with the header and every word taken off. Held
-// upright, the tall still is cut from a wide render around the sprinter.
+// upright, the tall still is cut from a wider, larger render around the sprinter.
 const offform = async (page, viewport) => {
   const tall = viewport.height > viewport.width;
   if (tall) await page.setViewportSize({ width: 3168, height: 1600 });
@@ -96,11 +122,10 @@ const offform = async (page, viewport) => {
   return tall ? { x: 640 - 450, y: 0, width: 900, height: 1600 } : undefined;
 };
 
-const SITES = { mist, nelson, asterpay, offform };
-const only = process.argv.slice(2);
 await fs.mkdir(path.join(ASSETS, "stills"), { recursive: true });
 console.log("stills:");
-for (const [name, go] of Object.entries(SITES).filter(([n]) => !only.length || only.includes(n))) {
+for (const [name, go] of Object.entries({ mist, nelson, asterpay, vizen, unorouter, offform })) {
+  if (only.length && !only.includes(name)) continue;
   await shoot(WIDE, `stills/${name}-wide.jpg`, go);
   await shoot(TALL, `stills/${name}-tall.jpg`, go);
 }

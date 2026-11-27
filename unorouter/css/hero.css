@@ -1,0 +1,90 @@
+/* The hero, as the shot has it at 1440 × 1080: copy on the left, the mark as a field of cells on the right, both
+   centred under the header. Smaller screens keep the proportions down to a tablet, then stack. */
+
+.hero { position: relative; display: flex; align-items: center; min-height: max(100svh, 720px); padding: calc(var(--nav-top) + var(--nav-h)) 0 37px; }
+.hero__inner { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 40px; width: min(var(--wrap), 100% - 2 * var(--gutter)); margin-inline: auto; }
+
+.hero__copy { position: relative; z-index: 1; padding-left: 1px; }
+.hero__prompt { margin-bottom: 11.5px; }
+.hero__prompt .prompt__gt { margin-right: 2px; }
+.hero__prompt b { font-weight: 500; }
+.hero__title { font: 800 38px/40.5px var(--font-pixel); letter-spacing: 0; color: var(--ink); }
+.hero__title .line { display: block; white-space: nowrap; }
+.hero__lede { max-width: 390px; margin-top: 17px; font-size: 13.7px; line-height: 22.5px; letter-spacing: 0; color: var(--ink-2); }
+.hero__ctas { display: flex; gap: 10px; margin-top: 26px; }
+.hero__ctas .btn { height: 47px; }
+.hero__ctas .btn { min-width: 145px; }
+
+.stats { display: grid; grid-template-columns: repeat(4, 141px); margin-top: 35px; }
+.stat dt { font-size: 11px; line-height: 12px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-3); white-space: nowrap; }
+.stat dt .live-dot { margin-right: 7px; width: 5px; height: 5px; }
+.stat__num { margin-top: 10.5px; font: 800 22px/24px var(--font-pixel); color: var(--ink); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.stat__sub { margin-top: 8px; font-size: 12px; line-height: 14px; letter-spacing: 0; color: var(--ink-3); }
+.hero__note { margin-top: 20.5px; font-size: 11px; line-height: 14px; letter-spacing: 0; color: var(--ink-4); }
+
+/* The art: 52 × 48 cells at 8 px, right-aligned in the frame. */
+.hero__art { position: relative; width: 416px; aspect-ratio: 52 / 48; justify-self: end; margin-right: -1px; }
+.art, .art__still { position: absolute; inset: 0; width: 100%; height: 100%; }
+.art { cursor: crosshair; touch-action: pan-y; }
+.has-art .art__still { opacity: 0; }
+.art__still { /* the shot's own colours, one pixel per cell, cut into cells by a mask */
+  image-rendering: pixelated; transition: opacity 0.3s;
+  -webkit-mask: linear-gradient(90deg, #000 87.5%, transparent 0) 0 0 / calc(100% / 52) 100%, linear-gradient(#000 87.5%, transparent 0) 0 0 / 100% calc(100% / 48);
+  -webkit-mask-composite: source-in;
+  mask: linear-gradient(90deg, #000 87.5%, transparent 0) 0 0 / calc(100% / 52) 100%, linear-gradient(#000 87.5%, transparent 0) 0 0 / 100% calc(100% / 48);
+  mask-composite: intersect;
+}
+.art__hint {
+  position: absolute; right: 0; bottom: -34px; font-size: 11px; letter-spacing: 0.04em; color: var(--ink-4); opacity: 0;
+  transition: opacity 0.6s var(--ease); pointer-events: none; white-space: nowrap;
+}
+.art__hint span { color: var(--ink-3); }
+.has-art .hero__art:hover .art__hint { opacity: 1; }
+
+/* The tokens figure is live: point at it for the exact count. */
+.stat { position: relative; }
+.stat--live dt { transition: color 0.2s; }
+.stat__live {
+  position: absolute; left: -9px; bottom: calc(100% + 10px); padding: 7px 9px; border: 1px solid var(--line); background: #000;
+  font-size: 11px; line-height: 1; color: var(--ink); white-space: nowrap; font-variant-numeric: tabular-nums;
+  opacity: 0; transform: translateY(4px); transition: opacity 0.2s var(--ease), transform 0.3s var(--ease); pointer-events: none;
+}
+.stat__live i { font-style: normal; color: var(--ink-3); }
+.stat__live::after { content: ""; position: absolute; left: 10px; top: 100%; width: 5px; height: 5px; background: var(--line); }
+.stat--live.is-live .stat__live { opacity: 1; transform: none; }
+.stat--live.is-live dt { color: var(--ink); }
+.stat--live.is-ping .live-dot { animation: ping 0.6s steps(3) 1, pulse 2.2s var(--ease) 0.6s infinite; }
+@keyframes ping { 0% { background: #fff; transform: scale(1.8); } 100% { background: var(--green); transform: none; } }
+
+/* What the intro animates starts hidden while scripts run (and is put back if they never get there). */
+.js:not(.is-calm):not(.is-ready) .hero__prompt,
+.js:not(.is-calm):not(.is-ready) .hero__title,
+.js:not(.is-calm):not(.is-ready) .hero__lede,
+.js:not(.is-calm):not(.is-ready) .hero__ctas,
+.js:not(.is-calm):not(.is-ready) .stats,
+.js:not(.is-calm):not(.is-ready) .hero__note,
+.js:not(.is-calm):not(.is-ready) .nav__bar { opacity: 0; }
+
+/* ---------- Narrower ---------- */
+@media (max-width: 1200px) {
+  .hero__art { width: clamp(300px, 34vw, 416px); }
+  .stats { grid-template-columns: repeat(4, minmax(0, 120px)); }
+}
+@media (max-width: 1024px) {
+  .hero__title { font-size: 32px; line-height: 35px; }
+}
+@media (max-width: 860px) {
+  .hero { min-height: 0; padding-top: calc(var(--nav-top) + var(--nav-h) + 56px); padding-bottom: 64px; }
+  .hero__inner { grid-template-columns: 1fr; gap: 56px; }
+  .hero__art { order: -1; justify-self: center; width: min(360px, 72vw); margin: 0; }
+  .art__hint { left: 0; right: 0; text-align: center; }
+  .stats { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+}
+@media (max-width: 560px) {
+  .hero__title { font-size: clamp(24px, 7.4vw, 32px); line-height: 1.12; }
+  .hero__title .line { white-space: normal; }
+  .hero__lede { font-size: 13.5px; }
+  .hero__ctas { flex-wrap: wrap; }
+  .hero__ctas .btn { flex: 1 1 140px; }
+  .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 24px; }
+}
