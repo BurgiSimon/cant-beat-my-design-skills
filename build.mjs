@@ -13,6 +13,7 @@
  *   nelson-crm/  →  /nelson-crm/  the prebuilt Nelson CRM project, runtime files only
  *   asterpay/    →  /asterpay/    the AsterPay project, as written (no build step; its README and tools stay behind)
  *   unorouter/   →  /unorouter/   the UnoRouter project, as written (no build step; its README and tools stay behind)
+ *   vizen/       →  /vizen/       the Vizen project, the same way
  * Mist used to live at the root, so each of its old page URLs gets a small redirect into /mist/.
  *
  * Mist pages live in src/pages/*.html and may include partials from src/partials with
@@ -22,7 +23,7 @@
  *
  * Tokens replaced in pages and static text files:
  *   {{SITE_URL}}  absolute URL of the page's own site, without trailing slash (env SITE_URL, + /mist for Mist,
- *                 + /asterpay for AsterPay, + /unorouter for UnoRouter)
+ *                 + /asterpay for AsterPay, + /vizen for Vizen, + /unorouter for UnoRouter)
  *   {{BASE}}      URL path that site is served under, with trailing slash (env BASE_PATH, + mist/ for Mist)
  *   {{VERSION}}   content hash of that site's CSS + JS, for cache-busting
  *   {{YEAR}}      current year
@@ -42,10 +43,15 @@ const NELSON = path.join(ROOT, "nelson-crm");
 const NELSON_PUBLIC = ["index.html", "recreation.html", "assets", "fonts", "vendor"];
 const ASTERPAY = path.join(ROOT, "asterpay");
 const ASTERPAY_PRIVATE = new Set(["README.md", "tools"]); // kept in the repo, not published
-// Sites with no build step, published as written under /<folder>/ (their README and tools stay behind).
+const VIZEN = path.join(ROOT, "vizen");
+const VIZEN_PRIVATE = new Set(["README.md", "tools"]); // kept in the repo, not published
+const UNOROUTER = path.join(ROOT, "unorouter");
+const UNOROUTER_PRIVATE = new Set(["README.md", "tools"]); // kept in the repo, not published
+// Sites with no build step, published as written under /<name>/ (their README and tools stay behind).
 const PLAIN_SITES = [
   { dir: ASTERPAY, name: "asterpay", private: ASTERPAY_PRIVATE },
-  { dir: path.join(ROOT, "unorouter"), name: "unorouter", private: new Set(["README.md", "tools"]) },
+  { dir: VIZEN, name: "vizen", private: VIZEN_PRIVATE },
+  { dir: UNOROUTER, name: "unorouter", private: UNOROUTER_PRIVATE },
 ];
 
 const argv = process.argv.slice(2);
@@ -233,7 +239,7 @@ async function build() {
     }
   }
 
-  // ── AsterPay under /asterpay/, UnoRouter under /unorouter/ ──
+  // ── AsterPay, Vizen and UnoRouter, under /asterpay/, /vizen/ and /unorouter/ ──
   // Plain files, published as they are; their pages get the tokens, with a version hash of their own CSS and JS.
   for (const site of PLAIN_SITES) {
     const files = (await listFiles(site.dir)).filter((f) => !site.private.has(path.relative(site.dir, f).split(path.sep)[0]));
@@ -261,6 +267,7 @@ async function build() {
     `${SITE_URL}/nelson-crm/`,
     `${SITE_URL}/nelson-crm/recreation.html`,
     `${SITE_URL}/asterpay/`,
+    `${SITE_URL}/vizen/`,
     `${SITE_URL}/unorouter/`,
   ];
   const sitemap =
@@ -272,7 +279,7 @@ async function build() {
   await fs.writeFile(path.join(OUT, ".nojekyll"), "");
 
   for (const w of warnings) console.warn(`  ⚠ ${w}`);
-  console.log(`✓ built the picker, ${pages.length} Mist pages, Nelson, AsterPay and UnoRouter → ${path.relative(ROOT, OUT) || OUT} in ${Date.now() - started}ms`);
+  console.log(`✓ built the picker, ${pages.length} Mist pages, Nelson, AsterPay, Vizen and UnoRouter → ${path.relative(ROOT, OUT) || OUT} in ${Date.now() - started}ms`);
 }
 
 const MIME = {

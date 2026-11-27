@@ -5,13 +5,14 @@
  *   stills/<site>-tall.jpg   900×1600, for a screen held upright
  *   og.jpg                  1200×630, the picker itself, for link previews
  *
- *   node picker/tools/stills.mjs                 every site's stills, then og.jpg
- *   node picker/tools/stills.mjs unorouter       only the named sites' stills (then og.jpg)
+ *   node picker/tools/stills.mjs                    every site's stills, then og.jpg
+ *   node picker/tools/stills.mjs vizen unorouter    only the named sites' stills (og.jpg is always rendered)
  *
  * A still is the site's hero art with no type on it: the card sets its own name over it. Mist's is its own hero,
  * built and photographed with the header and the copy hidden; Nelson's is cut from its hero picture around the eye;
- * AsterPay's is its hero's light, rings and phones, the tall one cut from a wide render around the phones; UnoRouter's
- * is its mark of coloured cells on the dot grid, in the shot's own colours.
+ * AsterPay's is its hero's light, rings and phones, the tall one cut from a wide render around the phones; Vizen's
+ * is its rider alone, as its WebGL draws him (software WebGL will do, slowly), the tall one cut round him too;
+ * UnoRouter's is its mark of coloured cells on the dot grid, in the shot's own colours.
  * Needs Playwright with Chromium (npm i -g playwright && npx playwright install chromium); the site itself does not.
  */
 import { promises as fs } from "node:fs";
@@ -34,20 +35,18 @@ const QUALITY = 80;
 const out = await fs.mkdtemp(path.join(os.tmpdir(), "picker-stills-"));
 execFileSync(process.execPath, [path.join(ROOT, "build.mjs"), "--out", out], { stdio: "inherit" });
 const TYPES = { ".html": "text/html", ".css": "text/css", ".js": "text/javascript", ".woff2": "font/woff2", ".webp": "image/webp", ".jpg": "image/jpeg", ".png": "image/png", ".svg": "image/svg+xml" };
-const ONLY = new Set(process.argv.slice(2)); // site names to render; none means all
 const server = http.createServer(async (req, res) => {
   let file = path.join(out, decodeURIComponent(new URL(req.url, "http://x").pathname));
   if (file.endsWith(path.sep)) file = path.join(file, "index.html");
-  try {
-    res.writeHead(200, { "Content-Type": TYPES[path.extname(file)] || "application/octet-stream" }).end(await fs.readFile(file));
-  } catch {
-    res.writeHead(404).end();
-  }
+  let body;
+  try { body = await fs.readFile(file); } catch { res.writeHead(404).end(); return; }
+  res.writeHead(200, { "Content-Type": TYPES[path.extname(file)] || "application/octet-stream" }).end(body);
 });
 await new Promise((ok) => server.listen(0, "127.0.0.1", ok));
 const site = `http://127.0.0.1:${server.address().port}`;
 
-const browser = await chromium.launch();
+const browser = await chromium.launch({ args: ["--use-gl=angle", "--use-angle=swiftshader", "--enable-unsafe-swiftshader", "--ignore-gpu-blocklist"] });
+const only = process.argv.slice(2);
 const shoot = async (viewport, file, go) => {
   const page = await browser.newPage({ viewport, reducedMotion: "reduce" });
   const clip = await go(page, viewport); // a site may photograph a larger page and say which part to keep
@@ -95,10 +94,24 @@ const unorouter = async (page, viewport) => {
   await page.waitForTimeout(500);
 };
 
+// Vizen: its rider alone, the hero's WebGL with the page taken off it. Held upright, cut from a wide render round him.
+const vizen = async (page, viewport) => {
+  const tall = viewport.height > viewport.width;
+  if (tall) await page.setViewportSize({ width: 2560, height: 1600 });
+  await page.goto(`${site}/vizen/`, { waitUntil: "load" });
+  await page.waitForFunction(() => document.documentElement.classList.contains("has-gl"), null, { timeout: 240000 });
+  await page.addStyleTag({ content: ".nav, main, footer, .cursor, .loader { visibility: hidden !important; }" });
+  await page.waitForTimeout(3000);
+  if (!tall) return undefined;
+  const u = Math.min(2560 / 1440, 1600 / 960);
+  const cx = 1280 + (732 - 720) * u + 60;   // a little behind the helmet, so the name sits on the shoulders
+  return { x: Math.round(cx - 450), y: 0, width: 900, height: 1600 };
+};
+
 await fs.mkdir(path.join(ASSETS, "stills"), { recursive: true });
 console.log("stills:");
-for (const [name, go] of Object.entries({ mist, nelson, asterpay, unorouter })) {
-  if (ONLY.size && !ONLY.has(name)) continue;
+for (const [name, go] of Object.entries({ mist, nelson, asterpay, vizen, unorouter })) {
+  if (only.length && !only.includes(name)) continue;
   await shoot(WIDE, `stills/${name}-wide.jpg`, go);
   await shoot(TALL, `stills/${name}-tall.jpg`, go);
 }
