@@ -1,0 +1,444 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>UnoRouter — One API key for every AI model, free ones included</title>
+  <meta name="description" content="259+ models from 46+ providers through one OpenAI-compatible key. Same key, same speed, same price." />
+  <meta name="theme-color" content="#000000" />
+  <meta name="color-scheme" content="dark" />
+  <link rel="canonical" href="{{SITE_URL}}/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="{{SITE_URL}}/" />
+  <meta property="og:title" content="UnoRouter — One API key for every AI model" />
+  <meta property="og:description" content="259+ models from 46+ providers through one OpenAI-compatible key. Free ones included." />
+  <meta property="og:image" content="{{SITE_URL}}/assets/img/og.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
+  <link rel="preload" href="assets/fonts/doto-latin.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="assets/fonts/geist-mono-latin.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="stylesheet" href="vendor/lenis.css" />
+  <link rel="stylesheet" href="css/base.css?v={{VERSION}}" />
+  <link rel="stylesheet" href="css/hero.css?v={{VERSION}}" />
+  <link rel="stylesheet" href="css/sections.css?v={{VERSION}}" />
+  <script>
+    // Scripts will run, so the page may hide what they are about to animate. A repeat visit in this tab, or a deep link,
+    // skips the boot screen.
+    (function (h) {
+      h.className = h.className.replace("no-js", "js");
+      try { if (sessionStorage.getItem("unorouter:booted")) h.classList.add("is-repeat"); } catch (e) {}
+      if (matchMedia("(prefers-reduced-motion: reduce)").matches || /[?&]reduced/.test(location.search)) h.classList.add("is-calm");
+      if (location.hash.length > 1) h.classList.add("is-repeat");
+      setTimeout(function () { h.classList.add("is-ready"); }, 6000); // if the scripts never get there, show the page anyway
+    })(document.documentElement);
+  </script>
+  <script defer src="vendor/gsap.min.js"></script>
+  <script defer src="vendor/ScrollTrigger.min.js"></script>
+  <script defer src="vendor/lenis.min.js"></script>
+  <script type="module" src="js/main.js?v={{VERSION}}"></script>
+</head>
+<body>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <!-- The mark: the hero's art in one colour, on its 52 × 48 grid of cells -->
+      <symbol id="mark" viewBox="0 0 52 48"><path fill="currentColor" d="M0 0h6v16h-6zM10 0h6v16h-6zM36 0h6v16h-6zM46 0h6v16h-6zM0 20h16v6h-16zM36 20h16v6h-16zM8 29h2v1h-2zM42 29h2v1h-2zM7 30h3v1h-3zM18 30h2v1h-2zM32 30h2v1h-2zM42 30h3v1h-3zM5 31h6v1h-6zM17 31h4v1h-4zM31 31h4v1h-4zM41 31h6v1h-6zM3 32h9v3h-9zM17 32h6v1h-6zM29 32h6v1h-6zM40 32h9v3h-9zM16 33h8v1h-8zM28 33h8v1h-8zM16 34h7v1h-7zM29 34h7v1h-7zM4 35h7v1h-7zM15 35h7v1h-7zM30 35h7v1h-7zM41 35h7v1h-7zM5 36h4v1h-4zM14 36h8v1h-8zM30 36h8v1h-8zM43 36h4v1h-4zM5 37h2v1h-2zM14 37h7v1h-7zM31 37h7v1h-7zM45 37h2v1h-2zM13 38h8v1h-8zM31 38h8v1h-8zM13 39h7v1h-7zM32 39h7v1h-7zM12 40h8v1h-8zM23 40h6v8h-6zM32 40h8v1h-8zM12 41h7v1h-7zM33 41h7v1h-7zM11 42h7v1h-7zM34 42h7v1h-7zM10 43h8v1h-8zM34 43h8v1h-8zM11 44h6v1h-6zM35 44h6v1h-6zM13 45h4v1h-4zM35 45h4v1h-4zM15 46h1v1h-1zM36 46h1v1h-1z"/></symbol>
+      <symbol id="i-copy" viewBox="0 0 16 16"><path d="M5 5V2h9v9h-3M2 5h9v9H2z" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="miter"/></symbol>
+      <symbol id="i-check" viewBox="0 0 16 16"><path d="M3 8.5 6.5 12 13 4.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="square"/></symbol>
+      <symbol id="i-search" viewBox="0 0 16 16"><path d="M7 12A5 5 0 1 0 7 2a5 5 0 0 0 0 10Zm3.6-1.4L14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="square"/></symbol>
+      <symbol id="i-plus" viewBox="0 0 16 16"><path d="M8 2v12M2 8h12" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="square"/></symbol>
+    </defs>
+  </svg>
+
+  <a class="skip" href="#main">Skip to content</a>
+
+  <!-- Boot screen: first visit only; the scripts take it away -->
+  <div class="boot" aria-hidden="true">
+    <pre class="boot__log"></pre>
+  </div>
+
+  <!-- The dot grid the whole page sits on: WebGL where it can, CSS dots where it cannot -->
+  <canvas class="dots" aria-hidden="true"></canvas>
+
+  <header class="nav" data-nav>
+    <div class="nav__bar">
+      <a class="nav__brand" href="#top" aria-label="UnoRouter, back to top">
+        <svg class="nav__mark" aria-hidden="true"><use href="#mark" /></svg>
+        <span class="nav__word">UnoRouter</span>
+      </a>
+      <nav class="nav__links" aria-label="Primary">
+        <a href="#models" class="is-current" data-scramble>Models</a>
+        <a href="#rankings" data-scramble>Rankings</a>
+        <a href="#pricing" data-scramble>Pricing</a>
+        <a href="#docs" data-scramble>Docs</a>
+      </nav>
+      <div class="nav__actions">
+        <a class="nav__cell" href="#key" data-scramble>Log in</a>
+        <a class="nav__cell nav__cell--key" href="#key"><span data-scramble>Get API key</span> <span class="nav__chev" aria-hidden="true">&gt;</span></a>
+        <button class="nav__burger" type="button" aria-expanded="false" aria-controls="menu" aria-label="Open menu"><i></i><i></i></button>
+      </div>
+      <span class="nav__progress" aria-hidden="true"></span>
+    </div>
+    <div class="menu" id="menu" hidden>
+      <nav aria-label="Mobile">
+        <a href="#models"><span>01</span>Models</a>
+        <a href="#rankings"><span>02</span>Rankings</a>
+        <a href="#pricing"><span>03</span>Pricing</a>
+        <a href="#docs"><span>04</span>Docs</a>
+        <a href="#key"><span>05</span>Log in</a>
+      </nav>
+      <a class="btn btn--light btn--block" href="#key">Get API key <span class="accent" aria-hidden="true">&gt;</span></a>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- ───────────────────────── Hero ───────────────────────── -->
+    <section class="hero" id="top" aria-labelledby="hero-title">
+      <div class="hero__inner">
+        <div class="hero__copy">
+          <p class="prompt hero__prompt"><span class="prompt__gt">&gt;</span> <b>unorouter</b> <span class="prompt__dim">/ unified api</span> <span class="caret" aria-hidden="true"></span></p>
+          <h1 class="hero__title" id="hero-title">
+            <span class="line" data-decode>One API key for</span>
+            <span class="line" data-decode>every AI model,</span>
+            <span class="line accent" data-decode>free ones included</span>
+          </h1>
+          <p class="hero__lede">259+ models from 46+ providers through one OpenAI-compatible key. Same key, same speed, same price.</p>
+          <div class="hero__ctas">
+            <a class="btn btn--light" href="#key" data-magnetic><span data-scramble>Get started</span></a>
+            <a class="btn btn--line" href="#models" data-magnetic><span data-scramble>View models</span></a>
+          </div>
+          <dl class="stats">
+            <div class="stat">
+              <dt>Models</dt>
+              <dd class="stat__num" data-count="253">253</dd>
+              <dd class="stat__sub">Routable</dd>
+            </div>
+            <div class="stat">
+              <dt>Providers</dt>
+              <dd class="stat__num" data-count="45" data-suffix="+">45+</dd>
+              <dd class="stat__sub">Upstreams</dd>
+            </div>
+            <div class="stat">
+              <dt>Free</dt>
+              <dd class="stat__num" data-count="114">114</dd>
+              <dd class="stat__sub">No cost</dd>
+            </div>
+            <div class="stat stat--live">
+              <dt><span class="live-dot" aria-hidden="true"></span>Tokens</dt>
+              <dd class="stat__num" data-tokens="2036">2,036T</dd>
+              <dd class="stat__sub">Served</dd>
+            </div>
+          </dl>
+          <p class="hero__note">Figures from UnoRouter’s stats panel, 24 Nov 2026.</p>
+        </div>
+
+        <div class="hero__art">
+          <!-- The mark as a field of coloured cells. The canvas draws it live; the SVG is what shows without it. -->
+          <img class="art__still" src="assets/img/mark-still.png" width="52" height="48" alt="" />
+          <canvas class="art" role="img" aria-label="The UnoRouter mark, drawn in shifting orange, pink, magenta and yellow pixels"></canvas>
+          <p class="art__hint" aria-hidden="true"><span>click</span> to route a request</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ───────────────────────── Providers ───────────────────────── -->
+    <section class="strip" aria-label="Providers routed through UnoRouter">
+      <p class="strip__label"><span class="live-dot" aria-hidden="true"></span>Routing to</p>
+      <div class="strip__track" data-marquee>
+        <ul class="strip__list">
+          <li>OpenAI</li><li>Anthropic</li><li>Google</li><li>Meta</li><li>Mistral</li><li>DeepSeek</li><li>Qwen</li><li>xAI</li><li>Moonshot</li><li>Cohere</li><li>Z.ai</li><li>NVIDIA</li><li>Groq</li><li>Together</li><li>Fireworks</li><li>Cerebras</li><li>DeepInfra</li><li>Perplexity</li><li>AI21</li><li>Nous</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ───────────────────────── Quickstart ───────────────────────── -->
+    <section class="section docs" id="docs" aria-labelledby="docs-title">
+      <div class="wrap docs__grid">
+        <div class="docs__copy">
+          <p class="prompt"><span class="prompt__gt">&gt;</span> <b>docs</b> <span class="prompt__dim">/ quickstart</span></p>
+          <h2 class="title" id="docs-title" data-decode>Change one line.</h2>
+          <p class="lede">Keep the OpenAI SDK you already use. Point it at UnoRouter, then call any model by its name. Streaming, tools, JSON mode and vision come along.</p>
+          <ol class="steps">
+            <li class="steps__item is-on" data-step="0"><span class="steps__n">01</span><span><b>Get a key</b> One key for every provider. No accounts with each of them.</span></li>
+            <li class="steps__item" data-step="1"><span class="steps__n">02</span><span><b>Swap the base URL</b> <code>api.unorouter.ai/v1</code>, nothing else.</span></li>
+            <li class="steps__item" data-step="2"><span class="steps__n">03</span><span><b>Call any model</b> <code>provider/model</code>, or <code>:free</code> for the no-cost ones.</span></li>
+          </ol>
+        </div>
+
+        <div class="term" data-term>
+          <div class="term__bar">
+            <div class="tabs" role="tablist" aria-label="Language">
+              <button role="tab" type="button" aria-selected="true" aria-controls="code-panel" id="tab-py" data-lang="py">python</button>
+              <button role="tab" type="button" aria-selected="false" aria-controls="code-panel" id="tab-ts" data-lang="ts" tabindex="-1">typescript</button>
+              <button role="tab" type="button" aria-selected="false" aria-controls="code-panel" id="tab-sh" data-lang="sh" tabindex="-1">curl</button>
+            </div>
+            <button class="term__copy" type="button" data-copy-code aria-label="Copy code"><svg aria-hidden="true"><use href="#i-copy" /></svg><span>copy</span></button>
+          </div>
+          <div class="term__code" id="code-panel" role="tabpanel" aria-labelledby="tab-py" tabindex="0">
+<pre><code data-code><span class="k">from</span> openai <span class="k">import</span> OpenAI
+
+client = OpenAI(
+<span class="diff diff--out">    base_url=<span class="s">"https://api.openai.com/v1"</span>,</span><span class="diff diff--in">    base_url=<span class="s">"https://api.unorouter.ai/v1"</span>,</span>    api_key=<span class="s">"uno-sk-…"</span>,
+)
+
+reply = client.chat.completions.create(
+    model=<span class="s m" data-model-slot>"deepseek/deepseek-v3.2:free"</span>,
+    messages=[{<span class="s">"role"</span>: <span class="s">"user"</span>, <span class="s">"content"</span>: <span class="s">"Say hi in five words."</span>}],
+    stream=<span class="k">True</span>,
+)</code></pre>
+          </div>
+          <div class="term__run">
+            <div class="term__models" role="radiogroup" aria-label="Model to call">
+              <button type="button" role="radio" aria-checked="true" data-model="deepseek/deepseek-v3.2:free">deepseek-v3.2<em>:free</em></button>
+              <button type="button" role="radio" aria-checked="false" data-model="openai/gpt-5" tabindex="-1">gpt-5</button>
+              <button type="button" role="radio" aria-checked="false" data-model="google/gemini-2.5-flash" tabindex="-1">gemini-2.5-flash</button>
+              <button type="button" role="radio" aria-checked="false" data-model="meta-llama/llama-4-maverick:free" tabindex="-1">llama-4<em>:free</em></button>
+            </div>
+            <button class="btn btn--accent btn--sm" type="button" data-run><span data-scramble>Run</span> <kbd aria-hidden="true">⏎</kbd></button>
+          </div>
+          <div class="term__out" aria-live="polite">
+            <p class="term__line"><span class="prompt__gt">$</span> <span data-out-cmd>python hello.py</span></p>
+            <p class="term__reply" data-out-reply><span class="term__muted">press run to send a request</span></p>
+            <p class="term__meta" data-out-meta></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ───────────────────────── Models ───────────────────────── -->
+    <section class="section models" id="models" aria-labelledby="models-title">
+      <div class="wrap">
+        <div class="head">
+          <div>
+            <p class="prompt"><span class="prompt__gt">&gt;</span> <b>models</b> <span class="prompt__dim">/ 253 routable</span></p>
+            <h2 class="title" id="models-title" data-decode>Every model, one name away.</h2>
+          </div>
+          <p class="lede head__aside">Prices are the provider’s own, per million tokens. The <span class="tag tag--free">free</span> ones cost nothing and use the same key.</p>
+        </div>
+
+        <div class="explorer" data-explorer>
+          <div class="explorer__bar">
+            <label class="search">
+              <svg aria-hidden="true"><use href="#i-search" /></svg>
+              <span class="visually-hidden">Search models</span>
+              <input type="search" placeholder="Search models, providers…" autocomplete="off" spellcheck="false" data-search />
+              <kbd aria-hidden="true">/</kbd>
+            </label>
+            <div class="chips" role="group" aria-label="Filter">
+              <button type="button" class="chip" aria-pressed="true" data-filter="all">All</button>
+              <button type="button" class="chip" aria-pressed="false" data-filter="free">Free</button>
+              <button type="button" class="chip" aria-pressed="false" data-filter="reasoning">Reasoning</button>
+              <button type="button" class="chip" aria-pressed="false" data-filter="vision">Vision</button>
+              <button type="button" class="chip" aria-pressed="false" data-filter="code">Code</button>
+            </div>
+          </div>
+          <div class="table" role="table" aria-label="Models" aria-describedby="models-count">
+            <div class="table__head" role="rowgroup">
+              <div class="row row--head" role="row">
+                <span role="columnheader">Model</span>
+                <span role="columnheader">Context</span>
+                <span role="columnheader"><button type="button" class="sort" data-sort="in" aria-label="Sort by input price">Input <i aria-hidden="true"></i></button></span>
+                <span role="columnheader"><button type="button" class="sort" data-sort="out" aria-label="Sort by output price">Output <i aria-hidden="true"></i></button></span>
+                <span role="columnheader"><button type="button" class="sort" data-sort="tps" aria-label="Sort by speed">Speed <i aria-hidden="true"></i></button></span>
+              </div>
+            </div>
+            <div class="table__body" role="rowgroup" data-rows>
+              <!-- Without the script: a few rows, as the page ships -->
+              <div class="row" role="row"><span role="cell"><b>deepseek/deepseek-v3.2:free</b><small>DeepSeek</small></span><span role="cell">164K</span><span role="cell"><span class="tag tag--free">free</span></span><span role="cell"><span class="tag tag--free">free</span></span><span role="cell">62 t/s</span></div>
+              <div class="row" role="row"><span role="cell"><b>openai/gpt-5</b><small>OpenAI</small></span><span role="cell">400K</span><span role="cell">$1.25</span><span role="cell">$10.00</span><span role="cell">88 t/s</span></div>
+              <div class="row" role="row"><span role="cell"><b>google/gemini-2.5-flash</b><small>Google</small></span><span role="cell">1M</span><span role="cell">$0.30</span><span role="cell">$2.50</span><span role="cell">184 t/s</span></div>
+            </div>
+          </div>
+          <div class="explorer__foot">
+            <p id="models-count" class="explorer__count" aria-live="polite" data-count-label>Showing 3 of 253</p>
+            <p class="explorer__hint"><kbd>click</kbd> a row to copy its id</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ───────────────────────── Routing ───────────────────────── -->
+    <section class="section routing" id="routing" aria-labelledby="routing-title">
+      <div class="wrap">
+        <div class="head">
+          <div>
+            <p class="prompt"><span class="prompt__gt">&gt;</span> <b>routing</b> <span class="prompt__dim">/ fallbacks</span></p>
+            <h2 class="title" id="routing-title" data-decode>Providers fail. Your app doesn’t.</h2>
+          </div>
+          <p class="lede head__aside">Every request goes to the fastest healthy upstream. When one stalls or errors, the next takes it, mid-flight. <b class="w">Switch a provider off</b> and watch.</p>
+        </div>
+        <div class="router" data-router>
+          <canvas class="router__canvas" aria-hidden="true"></canvas>
+          <div class="router__nodes">
+            <div class="router__app"><span class="router__label">your app</span><code>POST /v1/chat</code></div>
+            <div class="router__hub"><svg aria-hidden="true"><use href="#mark" /></svg><span class="router__label">unorouter</span></div>
+            <ul class="router__ups" aria-label="Upstream providers">
+              <li><button type="button" class="up" aria-pressed="true" data-up="0"><span class="up__dot"></span><span class="up__name">openai</span><span class="up__ms" data-ms>212ms</span></button></li>
+              <li><button type="button" class="up" aria-pressed="true" data-up="1"><span class="up__dot"></span><span class="up__name">anthropic</span><span class="up__ms" data-ms>248ms</span></button></li>
+              <li><button type="button" class="up" aria-pressed="true" data-up="2"><span class="up__dot"></span><span class="up__name">google</span><span class="up__ms" data-ms>176ms</span></button></li>
+              <li><button type="button" class="up" aria-pressed="true" data-up="3"><span class="up__dot"></span><span class="up__name">deepinfra</span><span class="up__ms" data-ms>231ms</span></button></li>
+              <li><button type="button" class="up" aria-pressed="true" data-up="4"><span class="up__dot"></span><span class="up__name">groq</span><span class="up__ms" data-ms>94ms</span></button></li>
+            </ul>
+          </div>
+          <div class="router__foot">
+            <dl class="router__stats">
+              <div><dt>Served</dt><dd data-r-served>0</dd></div>
+              <div><dt>Rerouted</dt><dd data-r-rerouted>0</dd></div>
+              <div><dt>Failed</dt><dd data-r-failed>0</dd></div>
+              <div><dt>Overhead p50</dt><dd>18 ms</dd></div>
+            </dl>
+            <ol class="router__log" aria-label="Routing log" data-r-log></ol>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ───────────────────────── Rankings ───────────────────────── -->
+    <section class="section rankings" id="rankings" aria-labelledby="rankings-title">
+      <div class="wrap">
+        <div class="head">
+          <div>
+            <p class="prompt"><span class="prompt__gt">&gt;</span> <b>rankings</b> <span class="prompt__dim">/ by tokens served</span></p>
+            <h2 class="title" id="rankings-title" data-decode>What everyone’s routing.</h2>
+          </div>
+          <div class="head__aside">
+            <p class="lede">Token share across all UnoRouter traffic. Refreshed hourly.</p>
+            <div class="seg" role="radiogroup" aria-label="Period" data-period>
+              <button type="button" role="radio" aria-checked="false" data-p="day" tabindex="-1">Today</button>
+              <button type="button" role="radio" aria-checked="true" data-p="week">Week</button>
+              <button type="button" role="radio" aria-checked="false" data-p="month" tabindex="-1">Month</button>
+            </div>
+          </div>
+        </div>
+        <ol class="board" data-board aria-label="Top models by tokens served">
+          <li class="board__row"><span class="board__rank">01</span><span class="board__name"><b>x-ai/grok-code-fast-1</b><small>xAI</small></span><span class="board__bar"><i style="--w:1"></i></span><span class="board__val">1.21T</span></li>
+          <li class="board__row"><span class="board__rank">02</span><span class="board__name"><b>anthropic/claude-sonnet-4.5</b><small>Anthropic</small></span><span class="board__bar"><i style="--w:0.53"></i></span><span class="board__val">640B</span></li>
+          <li class="board__row"><span class="board__rank">03</span><span class="board__name"><b>google/gemini-2.5-flash</b><small>Google</small></span><span class="board__bar"><i style="--w:0.34"></i></span><span class="board__val">412B</span></li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ───────────────────────── Pricing ───────────────────────── -->
+    <section class="section pricing" id="pricing" aria-labelledby="pricing-title">
+      <div class="wrap">
+        <div class="head head--center">
+          <p class="prompt"><span class="prompt__gt">&gt;</span> <b>pricing</b> <span class="prompt__dim">/ no markup</span></p>
+          <h2 class="title" id="pricing-title" data-decode>Same price as going direct.</h2>
+          <p class="lede">You pay what the provider charges for the tokens. Free models stay free. A small fee applies only when you top up credits.</p>
+        </div>
+        <div class="plans">
+          <article class="plan">
+            <header class="plan__head"><h3>Free</h3><p class="plan__price"><span data-decode>$0</span><small>/ forever</small></p></header>
+            <p class="plan__lede">Every <code>:free</code> model, on the same key you’ll keep.</p>
+            <ul class="plan__list">
+              <li>114 free models</li><li>20 requests / minute</li><li>200 requests / day</li><li>Community support</li>
+            </ul>
+            <a class="btn btn--line btn--block" href="#key" data-magnetic><span data-scramble>Start free</span></a>
+          </article>
+          <article class="plan plan--main">
+            <span class="plan__flag">most teams</span>
+            <header class="plan__head"><h3>Pay as you go</h3><p class="plan__price"><span data-decode>Provider</span><small>/ token price</small></p></header>
+            <p class="plan__lede">All 253 models. Credits never expire. No minimums.</p>
+            <ul class="plan__list">
+              <li>No markup on tokens</li><li>Automatic fallbacks</li><li>Usage by key, model and app</li><li>Spend limits and alerts</li>
+            </ul>
+            <a class="btn btn--light btn--block" href="#key" data-magnetic><span data-scramble>Get API key</span> <span class="accent" aria-hidden="true">&gt;</span></a>
+          </article>
+          <article class="plan">
+            <header class="plan__head"><h3>Enterprise</h3><p class="plan__price"><span data-decode>Custom</span><small>/ volume</small></p></header>
+            <p class="plan__lede">For teams routing billions of tokens a day.</p>
+            <ul class="plan__list">
+              <li>Volume discounts</li><li>99.9% uptime SLA</li><li>SSO, SCIM and audit logs</li><li>Zero data retention routes</li>
+            </ul>
+            <a class="btn btn--line btn--block" href="#key" data-magnetic><span data-scramble>Talk to us</span></a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ───────────────────────── FAQ ───────────────────────── -->
+    <section class="section faq" id="faq" aria-labelledby="faq-title">
+      <div class="wrap faq__grid">
+        <div>
+          <p class="prompt"><span class="prompt__gt">&gt;</span> <b>faq</b> <span class="prompt__dim">/ 6 entries</span></p>
+          <h2 class="title" id="faq-title" data-decode>Questions, answered.</h2>
+        </div>
+        <div class="faq__list">
+          <details class="qa" open>
+            <summary><span class="qa__n">01</span>Is it really the same price?<svg aria-hidden="true"><use href="#i-plus" /></svg></summary>
+            <div class="qa__a"><p>Yes. Token prices match each provider’s own list price. We earn a small fee when you buy credits, never on the tokens themselves.</p></div>
+          </details>
+          <details class="qa">
+            <summary><span class="qa__n">02</span>How are free models free?<svg aria-hidden="true"><use href="#i-plus" /></svg></summary>
+            <div class="qa__a"><p>Providers offer them to let people try their models. They are rate-limited and may queue at peak times, but they use the same key and the same API as everything else.</p></div>
+          </details>
+          <details class="qa">
+            <summary><span class="qa__n">03</span>Does it add latency?<svg aria-hidden="true"><use href="#i-plus" /></svg></summary>
+            <div class="qa__a"><p>About 18 ms at the median, from edge routing in 14 regions. Streaming starts as soon as the upstream sends its first token.</p></div>
+          </details>
+          <details class="qa">
+            <summary><span class="qa__n">04</span>Which SDKs work?<svg aria-hidden="true"><use href="#i-plus" /></svg></summary>
+            <div class="qa__a"><p>Anything that speaks the OpenAI API: the official Python and TypeScript SDKs, LangChain, the Vercel AI SDK, LiteLLM, or plain HTTP.</p></div>
+          </details>
+          <details class="qa">
+            <summary><span class="qa__n">05</span>What happens to my prompts?<svg aria-hidden="true"><use href="#i-plus" /></svg></summary>
+            <div class="qa__a"><p>We don’t store prompts or completions by default. You can restrict a key to providers with zero data retention, per request or per key.</p></div>
+          </details>
+          <details class="qa">
+            <summary><span class="qa__n">06</span>Can I bring my own provider keys?<svg aria-hidden="true"><use href="#i-plus" /></svg></summary>
+            <div class="qa__a"><p>Yes. Add them in the dashboard and UnoRouter uses your rate limits and your discounts first, then falls back to ours.</p></div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ───────────────────────── CTA ───────────────────────── -->
+    <section class="cta" id="key" aria-labelledby="cta-title">
+      <canvas class="cta__field" aria-hidden="true"></canvas>
+      <div class="wrap cta__inner">
+        <p class="prompt"><span class="prompt__gt">&gt;</span> <b>unorouter</b> <span class="prompt__dim">/ keys / new</span> <span class="caret" aria-hidden="true"></span></p>
+        <h2 class="cta__title" id="cta-title"><span class="line" data-decode>One key.</span> <span class="line accent" data-decode>Every model.</span></h2>
+        <div class="keygen" data-keygen>
+          <div class="keygen__line">
+            <span class="prompt__gt" aria-hidden="true">$</span>
+            <output class="keygen__key" data-key aria-live="polite">uno keys create --name my-app</output>
+            <button class="keygen__copy" type="button" data-key-copy hidden aria-label="Copy key"><svg aria-hidden="true"><use href="#i-copy" /></svg></button>
+          </div>
+          <div class="keygen__actions">
+            <button class="btn btn--light" type="button" data-key-make data-magnetic><span data-scramble>Generate a key</span> <span class="accent" aria-hidden="true">&gt;</span></button>
+            <a class="btn btn--line" href="#docs" data-magnetic><span data-scramble>Read the docs</span></a>
+          </div>
+          <p class="keygen__note">A demo key, made in your browser. It won’t call anything.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <div class="wrap">
+      <div class="foot__top">
+        <a class="nav__brand foot__brand" href="#top" aria-label="UnoRouter, back to top">
+          <svg class="nav__mark" aria-hidden="true"><use href="#mark" /></svg>
+          <span class="nav__word">UnoRouter</span>
+        </a>
+        <p class="foot__status"><span class="live-dot" aria-hidden="true"></span>All systems normal <span class="prompt__dim">· 99.99% · 90 days</span></p>
+      </div>
+      <div class="foot__cols">
+        <nav aria-label="Product"><h3>Product</h3><a href="#models">Models</a><a href="#rankings">Rankings</a><a href="#pricing">Pricing</a><a href="#routing">Fallbacks</a></nav>
+        <nav aria-label="Developers"><h3>Developers</h3><a href="#docs">Quickstart</a><a href="#docs">API reference</a><a href="#docs">SDKs</a><a href="#faq">FAQ</a></nav>
+        <nav aria-label="Company"><h3>Company</h3><a href="#top">About</a><a href="#top">Blog</a><a href="#top">Careers</a><a href="#top">Contact</a></nav>
+        <nav aria-label="Legal"><h3>Legal</h3><a href="#top">Privacy</a><a href="#top">Terms</a><a href="#top">Security</a><a href="#top">Status</a></nav>
+      </div>
+      <p class="foot__word" aria-hidden="true">UNOROUTER</p>
+      <div class="foot__base">
+        <p>© {{YEAR}} UnoRouter. A design study.</p>
+        <p class="foot__clock"><span data-clock>00:00:00</span> UTC <span class="prompt__dim">· edge: fra1</span></p>
+        <a class="foot__back" href="../">← All sites</a>
+      </div>
+    </div>
+  </footer>
+
+  <div class="toast" role="status" aria-live="polite" data-toast></div>
+</body>
+</html>

@@ -2,9 +2,10 @@
 // in the middle; where they do not, the line is endless: it drifts by itself when the page is left alone, and the
 // wheel, a drag or the arrow keys move it. The card under the pointer (or the one with the keyboard's focus) is lit
 // and gets a trace in its site's own manner: mist that drifts and parts, a hole torn through the clouds onto a night
-// of ASCII, an orbit of light with a streak along its horizon, a fan of light streaming back. A chosen card opens into its site: it grows to fill the screen and gives way to the colour the site
-// paints first, so the site's own entrance carries on from there. On a phone the cards are a strip that a swipe
-// moves from one to the next. Without this script the page is still a row of links.
+// of ASCII, an orbit of light with a streak along its horizon, a reticle locking on through a streak of brake light, a
+// halo of coloured cells, a fan of light streaming back. A chosen card opens into its site: it grows to fill the screen and gives way to the colour
+// the site paints first, so the site's own entrance carries on from there. On a phone the cards are a strip that a
+// swipe moves from one to the next. Without this script the page is still a row of links.
 
 const list = document.querySelector('.list');
 const rows = [...list.querySelectorAll('a')];            // one card per site, as the page has them
@@ -342,48 +343,132 @@ const TRACES = {
     };
   })(),
 
-  // Crestora: the pointer is the car. A fan of lanes in the road's spectrum streams back from it to the card's right
-  // edge, opening as it goes, with dashes running along them the way the road's light runs past the car. Lit with
-  // no pointer on it, the car wanders.
-  crestora: (() => {
+  // Vizen: the hero's reticle locks onto the pointer, its four rulers springing out as the card lights, and the
+  // brake light's yellow streak runs through it, as the hero's does behind the helmet; an azimuth reads out beside
+  // it. Lit with no pointer on it, the reticle scans the card.
+  vizen: (() => {
     const at = { x: 0, y: 0, on: false };
-    const BANDS = ['58 109 255', '35 211 255', '32 214 155', '255 177 61', '255 59 59', '255 122 217'];
+    const YEL = '252 233 27';
     return {
       reset() { at.on = false; },
       draw(r, o, on, dt) {
         if (o < 0.01) return false;
-        const want_ = on && inside(r, ptr) ? ptr : { x: r.left + r.width * (0.36 + 0.14 * Math.sin(clock * 0.47)), y: r.top + r.height * (0.56 + 0.12 * Math.sin(clock * 0.73)) };
+        const want_ = on && inside(r, ptr) ? ptr : { x: r.left + r.width * (0.5 + 0.26 * Math.sin(clock * 0.39)), y: r.top + r.height * (0.4 + 0.12 * Math.sin(clock * 0.63)) };
         if (!at.on) { at.x = want_.x; at.y = want_.y; at.on = true; }
-        const ease = 1 - Math.exp(-dt * 6);
+        const ease = 1 - Math.exp(-dt * 9);
         at.x += (want_.x - at.x) * ease; at.y += (want_.y - at.y) * ease;
         within(r);
-        const N = 30; const len = r.right + 12 - at.x; const spread = r.height * 0.5 * o;
-        for (let i = 0; i < N; i++) {
-          const f = i / (N - 1) - 0.5;                                    // across the fan, top to bottom
-          const c = BANDS[Math.min(BANDS.length - 1, Math.floor((f + 0.5) * BANDS.length))];
-          const y1 = at.y + f * spread; const bend = f * spread * 0.35;
-          // a lane: from the car, easing out to its place at the card's edge
-          const path = (t) => [at.x + len * t, at.y + (y1 - at.y) * (1 - (1 - t) ** 2) - bend * t * (1 - t)];
-          const fade = g.createLinearGradient(at.x, 0, r.right, 0);
-          fade.addColorStop(0, `rgb(${c} / 0)`); fade.addColorStop(0.12, `rgb(${c} / ${0.55 * o})`); fade.addColorStop(1, `rgb(${c} / ${0.25 * o})`);
-          g.strokeStyle = fade; g.lineWidth = 1; g.beginPath();
-          for (let k = 0; k <= 24; k++) { const [x, y] = path(k / 24); if (k) g.lineTo(x, y); else g.moveTo(x, y); }
-          g.stroke();
-          // its dashes, running back and growing as they go (as if coming nearer)
-          for (let d = 0; d < 3; d++) {
-            const t = mod(clock * (0.35 + 0.25 * rnd(i + 400)) + rnd(i * 3 + d + 500) , 1);
-            const [x, y] = path(t); const [x2, y2] = path(Math.min(1, t + 0.02 + 0.06 * t));
-            g.strokeStyle = `rgb(255 255 255 / ${0.85 * o * Math.min(1, t * 6)})`; g.lineWidth = 1.2;
-            g.beginPath(); g.moveTo(x, y); g.lineTo(x2, y2); g.stroke();
+        // the streak: brightest at the reticle, long and thin, breathing
+        const b = o * (0.75 + 0.25 * Math.sin(clock * 2.1));
+        for (const [w, a] of [[14, 0.06], [6, 0.14], [2, 0.5], [1, 0.95]]) {
+          const grad = g.createLinearGradient(r.left, 0, r.right, 0);
+          const c = clamp((at.x - r.left) / r.width, 0.02, 0.98);
+          grad.addColorStop(0, `rgb(${YEL} / 0)`); grad.addColorStop(c, `rgb(${YEL} / ${a * b})`); grad.addColorStop(1, `rgb(${YEL} / 0)`);
+          g.fillStyle = grad; g.fillRect(r.left, at.y - w / 2, r.width, w);
+        }
+        // the reticle: a box, a cross through it, four rulers with a tick at each end and in the middle
+        const s = 5; const gap = 10 + 14 * o; const len = 34 * o;
+        g.strokeStyle = `rgb(${INK} / ${0.9 * o})`; g.lineWidth = 1.2;
+        g.strokeRect(at.x - s, at.y - s, 2 * s, 2 * s);
+        g.beginPath();
+        g.moveTo(at.x - s - 4, at.y); g.lineTo(at.x + s + 4, at.y); g.moveTo(at.x, at.y - s - 4); g.lineTo(at.x, at.y + s + 4);
+        for (const [dx, dy] of [[-1, 0], [1, 0], [0, -1], [0, 1]]) {
+          const x0 = at.x + dx * gap, y0 = at.y + dy * gap, x1 = at.x + dx * (gap + len), y1 = at.y + dy * (gap + len);
+          g.moveTo(x0, y0); g.lineTo(x1, y1);
+          for (const k of [0, 0.5, 1]) {
+            const tx = x0 + (x1 - x0) * k, ty = y0 + (y1 - y0) * k;
+            if (dx) { g.moveTo(tx, ty - 3.5); g.lineTo(tx, ty + 3.5); } else { g.moveTo(tx - 3.5, ty); g.lineTo(tx + 3.5, ty); }
           }
         }
-        g.lineWidth = 1;
+        g.stroke();
+        // the read-out
+        g.font = '500 10px "JetBrains Mono Variable", ui-monospace, monospace'; g.textAlign = 'left'; g.textBaseline = 'alphabetic';
+        g.fillStyle = `rgb(${INK} / ${0.8 * o})`;
+        const az = Math.round(mod(((at.x - r.left) / r.width) * 360 + 180, 360));
+        g.fillText(`AZ ${String(az).padStart(3, '0')}°`, at.x + gap + 4, at.y - gap - 4);
         g.restore();
         return true;
       },
     };
   })(),
 };
+
+// UnoRouter: the pointer is a halo of cells on the site's 8 px grid, in rings that step yellow → orange → pink →
+// magenta outwards as its hero's art does, thinning to scattered pixels at the edge. Lit with no pointer on it, the
+// halo wanders.
+TRACES.unorouter = (() => {
+  const at = { x: 0, y: 0, on: false };
+  const HOT = ['255 203 0', '255 117 0', '255 34 131', '232 36 255'];
+  const C = 8;
+  return {
+    reset() { at.on = false; },
+    draw(r, o, on, dt) {
+      if (o < 0.01) return false;
+      const want_ = on && inside(r, ptr) ? ptr : { x: r.left + r.width * (0.5 + 0.22 * Math.sin(clock * 0.47)), y: r.top + r.height * (0.45 + 0.15 * Math.sin(clock * 0.73)) };
+      if (!at.on) { at.x = want_.x; at.y = want_.y; at.on = true; }
+      const ease = 1 - Math.exp(-dt * 7);
+      at.x += (want_.x - at.x) * ease; at.y += (want_.y - at.y) * ease;
+      const R = Math.min(120, r.width * 0.28) * o;
+      if (R < 4) return true;
+      within(r);
+      const tick = Math.floor(clock * 9);
+      for (let cy = Math.floor((at.y - R) / C); cy <= Math.ceil((at.y + R) / C); cy++) {
+        for (let cx = Math.floor((at.x - R) / C); cx <= Math.ceil((at.x + R) / C); cx++) {
+          const X = cx * C; const Y = cy * C; const d = Math.hypot(X + C / 2 - at.x, Y + C / 2 - at.y) / R;
+          if (d > 1) continue;
+          if (rnd(cx * 977 + cy * 131 + tick * 3) < d * d * 0.9) continue;      // scattered towards the edge
+          const k = mod(Math.floor(d * 4.5 - clock * 1.6), 4);
+          g.fillStyle = `rgb(${HOT[k]} / ${(0.95 * (1 - d * d) * o).toFixed(3)})`;
+          g.fillRect(X + 0.5, Y + 0.5, C - 1, C - 1);
+        }
+      }
+      g.restore();
+      return true;
+    },
+  };
+})();
+
+// Crestora: the pointer is the car. A fan of lanes in the road's spectrum streams back from it to the card's right
+// edge, opening as it goes, with dashes running along them the way the road's light runs past the car. Lit with
+// no pointer on it, the car wanders.
+TRACES.crestora = (() => {
+  const at = { x: 0, y: 0, on: false };
+  const BANDS = ['58 109 255', '35 211 255', '32 214 155', '255 177 61', '255 59 59', '255 122 217'];
+  return {
+    reset() { at.on = false; },
+    draw(r, o, on, dt) {
+      if (o < 0.01) return false;
+      const want_ = on && inside(r, ptr) ? ptr : { x: r.left + r.width * (0.36 + 0.14 * Math.sin(clock * 0.47)), y: r.top + r.height * (0.56 + 0.12 * Math.sin(clock * 0.73)) };
+      if (!at.on) { at.x = want_.x; at.y = want_.y; at.on = true; }
+      const ease = 1 - Math.exp(-dt * 6);
+      at.x += (want_.x - at.x) * ease; at.y += (want_.y - at.y) * ease;
+      within(r);
+      const N = 30; const len = r.right + 12 - at.x; const spread = r.height * 0.5 * o;
+      for (let i = 0; i < N; i++) {
+        const f = i / (N - 1) - 0.5;                                    // across the fan, top to bottom
+        const c = BANDS[Math.min(BANDS.length - 1, Math.floor((f + 0.5) * BANDS.length))];
+        const y1 = at.y + f * spread; const bend = f * spread * 0.35;
+        // a lane: from the car, easing out to its place at the card's edge
+        const path = (t) => [at.x + len * t, at.y + (y1 - at.y) * (1 - (1 - t) ** 2) - bend * t * (1 - t)];
+        const fade = g.createLinearGradient(at.x, 0, r.right, 0);
+        fade.addColorStop(0, `rgb(${c} / 0)`); fade.addColorStop(0.12, `rgb(${c} / ${0.55 * o})`); fade.addColorStop(1, `rgb(${c} / ${0.25 * o})`);
+        g.strokeStyle = fade; g.lineWidth = 1; g.beginPath();
+        for (let k = 0; k <= 24; k++) { const [x, y] = path(k / 24); if (k) g.lineTo(x, y); else g.moveTo(x, y); }
+        g.stroke();
+        // its dashes, running back and growing as they go (as if coming nearer)
+        for (let d = 0; d < 3; d++) {
+          const t = mod(clock * (0.35 + 0.25 * rnd(i + 400)) + rnd(i * 3 + d + 500) , 1);
+          const [x, y] = path(t); const [x2, y2] = path(Math.min(1, t + 0.02 + 0.06 * t));
+          g.strokeStyle = `rgb(255 255 255 / ${0.85 * o * Math.min(1, t * 6)})`; g.lineWidth = 1.2;
+          g.beginPath(); g.moveTo(x, y); g.lineTo(x2, y2); g.stroke();
+        }
+      }
+      g.lineWidth = 1;
+      g.restore();
+      return true;
+    },
+  };
+})();
 
 function within(r) { g.save(); g.beginPath(); g.roundRect(r.left, r.top, r.width, r.height, 14); g.clip(); }
 
