@@ -61,6 +61,7 @@ export async function init() {
       .to([svg, intro.querySelector('.intro__mark'), intro.querySelector('.intro__count')], { opacity: 0, scale: 0.85, duration: 0.4, ease: 'power2.in' }, 0.45)
       .to(intro, { clipPath: 'inset(0 0 100% 0)', duration: 1.0, ease: 'expo.inOut' }, 0.6);
     await new Promise((r) => setTimeout(r, 900));
+    intro.classList.add('is-leaving');   // still on screen while it lifts, though the page is now ready
     unlock();
     markReady();
     out.eventCallback('onComplete', () => intro.remove());

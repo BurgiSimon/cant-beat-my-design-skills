@@ -28,6 +28,7 @@ export function emit(name, data) {
     try { fn(data); } catch (e) { console.error('[oquro]', name, e); }
   }
 }
+export const last = (name) => seen.get(name);
 export function once(name, fn) {
   if (seen.has(name)) { fn(seen.get(name)); return () => {}; }
   const off = on(name, (d) => { off(); fn(d); });
@@ -76,7 +77,7 @@ export function scrollToTarget(target, { offset = 0, immediate = false } = {}) {
   const el = typeof target === 'string' ? document.querySelector(target) : target;
   if (lenis) { lenis.scrollTo(el ?? 0, { offset, duration: 1.6, easing: (t) => 1 - Math.pow(1 - t, 4), immediate }); return; }
   const y = el && el !== 0 ? el.getBoundingClientRect().top + scrollY + offset : 0;
-  scrollTo({ top: y, behavior: calm || immediate ? 'auto' : 'smooth' });
+  scrollTo({ top: y, behavior: calm || immediate ? 'instant' : 'smooth' });
 }
 
 // ---- ready: the DOM and the fonts (or 2.5 s, whichever comes first) ----
@@ -90,7 +91,7 @@ export function whenVisible(el, fn, rootMargin = '120px') {
   if (!el) return () => {};
   let inView = false;
   const tell = () => fn(inView && !document.hidden);
-  const io = new IntersectionObserver(([en]) => { inView = en.isIntersecting; tell(); }, { rootMargin });
+  const io = new IntersectionObserver((es) => { inView = es[es.length - 1].isIntersecting; tell(); }, { rootMargin });
   io.observe(el);
   document.addEventListener('visibilitychange', tell);
   return () => { io.disconnect(); document.removeEventListener('visibilitychange', tell); };

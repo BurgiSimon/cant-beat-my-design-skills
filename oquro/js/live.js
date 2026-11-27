@@ -2,7 +2,7 @@
 // the matrix and the traffic grid, the performance bars, the dot display, the live counters and the local time.
 // Each runs only while it is on screen.
 
-import { calm, on, emit, whenVisible, loop, fmt, ScrollTrigger } from './core.js';
+import { calm, on, once, emit, whenVisible, loop, fmt, ScrollTrigger } from './core.js';
 import * as V from './viz.js';
 
 function running(el, tick) {
@@ -37,8 +37,17 @@ export function init() {
       title.textContent = 'Suspicious Login'; time.textContent = V.clock(clockMin);
       risk.lastChild.textContent = 'Risk';
     });
-    // the face in the card spins the wheel for those who can't drag it
-    card.querySelector('[data-spin]')?.addEventListener('click', () => emit('vault:spin'));
+    // the face in the card spins the wheel for those who can't drag it. Where there is no wheel to turn (no WebGL,
+    // or reduced motion), it raises the alarm itself.
+    let wheel = !calm;
+    once('hero:gl', (d) => { wheel = !!d && !calm; });
+    let busy = false;
+    card.querySelector('[data-spin]')?.addEventListener('click', () => {
+      if (wheel) { emit('vault:spin'); return; }
+      if (busy) return;
+      busy = true; emit('vault:open');
+      setTimeout(() => { emit('vault:close'); busy = false; }, 4200);
+    });
   }
 
   // ---- the features panel: timeline, matrix, traffic ----
@@ -49,10 +58,11 @@ export function init() {
     const dg = V.dotgrid(panel.querySelector('[data-dotgrid]'));
     running(panel, (dt) => { tl.tick(dt); mx.tick(dt); dg.tick(dt); });
     const alert = panel.querySelector('[data-alert]');
+    let shown = false; whenVisible(panel, (v) => { shown = v; });
     const ping = () => { if (!alert) return; alert.classList.remove('is-ping'); void alert.offsetWidth; alert.classList.add('is-ping'); };
     alert?.addEventListener('click', () => { ping(); mx.heat(); dg.jump(); setTimeout(() => mx.calm(), 2400); });
     on('tab', ({ index }) => { tl.start(14 * 60 + 27 + index * 41); dg.jump(); });
-    if (!calm) setInterval(() => { if (!document.hidden) ping(); }, 5200);
+    if (!calm) setInterval(() => { if (shown) ping(); }, 5200);
   }
 
   // ---- performance bars, grown when they come into view ----
@@ -61,7 +71,7 @@ export function init() {
     const b = V.bars(pb);
     if (calm) b.grow();
     else {
-      const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setTimeout(() => b.grow(), 250); io.disconnect(); } }, { threshold: 0.4 });
+      const io = new IntersectionObserver((es) => { if (es.some((e) => e.isIntersecting)) { setTimeout(() => b.grow(), 250); io.disconnect(); } }, { threshold: 0.4 });
       io.observe(pb);
       running(pb, (dt) => b.tick(dt));
     }

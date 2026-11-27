@@ -32,14 +32,16 @@ export function init() {
     for (const el of document.querySelectorAll('[data-tilt]')) {
       const st = { rx: 0, ry: 0, tx: 0, ty: 0, gx: 30, gy: 0, tgx: 30, tgy: 0, on: false, raf: 0 };
       const max = el.classList.contains('intel') || el.classList.contains('perf__card') ? 6 : 10;
+      const setRX = gsap.quickSetter(el, 'rotationX', 'deg'); const setRY = gsap.quickSetter(el, 'rotationY', 'deg');
+      gsap.set(el, { transformPerspective: 900 });
       const step = () => {
         st.rx = damp(st.rx, st.tx, 8, 1 / 60); st.ry = damp(st.ry, st.ty, 8, 1 / 60);
         st.gx = damp(st.gx, st.tgx, 8, 1 / 60); st.gy = damp(st.gy, st.tgy, 8, 1 / 60);
-        el.style.transform = `perspective(900px) rotateX(${st.rx.toFixed(3)}deg) rotateY(${st.ry.toFixed(3)}deg)`;
+        const done = !st.on && Math.abs(st.rx) + Math.abs(st.ry) <= 0.02;
+        setRX(done ? 0 : st.rx); setRY(done ? 0 : st.ry);
         el.style.setProperty('--gx', `${st.gx.toFixed(1)}%`); el.style.setProperty('--gy', `${st.gy.toFixed(1)}%`);
         el.style.setProperty('--glow', st.on ? 1 : 0.8);
-        if (st.on || Math.abs(st.rx) + Math.abs(st.ry) > 0.02) st.raf = requestAnimationFrame(step);
-        else { el.style.transform = ''; st.raf = 0; }
+        st.raf = done ? 0 : requestAnimationFrame(step);
       };
       el.addEventListener('pointermove', (e) => {
         const r = el.getBoundingClientRect();

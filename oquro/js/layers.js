@@ -50,8 +50,8 @@ export function init() {
     card.classList.add(`widget--${data.tone}`);
   };
 
-  function open(i, { user = false } = {}) {
-    if (i === current && !user) return;
+  function open(i) {
+    if (i === current) { wait = 0; return; }
     const prev = current; current = i; wait = 0;
     items.forEach((it, k) => {
       const on = k === i;
@@ -86,7 +86,7 @@ export function init() {
 
   items.forEach((it, i) => {
     const btn = it.querySelector('.acc__btn');
-    btn.addEventListener('click', () => open(i, { user: true }));
+    btn.addEventListener('click', () => open(i));
     btn.addEventListener('keydown', (e) => {
       const k = { ArrowDown: 1, ArrowUp: -1 }[e.key];
       if (!k) return;

@@ -7,7 +7,7 @@ const load = async (name, arg) => {
     return await m.init?.(arg);
   } catch (e) {
     console.error(`[oquro] ${name}:`, e);
-    if (name === 'intro') (await import('./core.js')).markReady(); // the page must still open
+    if (name === 'intro') { const c = await import('./core.js'); c.unlock(); c.markReady(); c.emit('hero:rise'); } // the page must still open
     return undefined;
   }
 };

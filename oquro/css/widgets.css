@@ -75,7 +75,7 @@
 .spark .grid { stroke: rgb(255 255 255 / 0.12); stroke-width: 0.6; stroke-dasharray: 1 2.5; }
 .spark .l1 { fill: none; stroke: rgb(255 255 255 / 0.9); stroke-width: 1.3; stroke-dasharray: 1.2 2.6; stroke-linecap: round; vector-effect: non-scaling-stroke; }
 .spark .l2 { fill: none; stroke: rgb(255 255 255 / 0.55); stroke-width: 1.1; vector-effect: non-scaling-stroke; }
-.spark .area { fill: url(#spark-fill); opacity: 0.6; }
+.spark .area { opacity: 0.6; }
 .spark .cross { stroke: rgb(255 255 255 / 0.7); stroke-width: 0.8; vector-effect: non-scaling-stroke; }
 .spark .knob { fill: #fff; filter: drop-shadow(0 0 4px rgb(255 255 255 / 0.9)); }
 .widget--b .widget__glass { top: 16.4em; }

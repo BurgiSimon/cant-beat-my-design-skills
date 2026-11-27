@@ -5,6 +5,7 @@
 import { calm, gsap, ScrollTrigger, SplitText, ready, fmt, clamp, on } from './core.js';
 
 export async function init() {
+  if (!calm && gsap && ScrollTrigger) document.documentElement.classList.add('has-reveals');   // only now are the fades hidden
   await ready;
   const fades = [...document.querySelectorAll('[data-fade]')];
   if (calm || !gsap || !ScrollTrigger) { fades.forEach((f) => f.classList.add('is-in')); return; }

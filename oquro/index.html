@@ -74,7 +74,7 @@
 
   <header class="nav" data-nav>
     <nav class="nav__left" aria-label="Main">
-      <a class="nav__home is-current" href="#top" data-nav-link="top"><svg class="i"><use href="#i-home"/></svg><span>Home</span></a>
+      <a class="nav__home is-current" href="#top" data-nav-link="top" aria-current="location"><svg class="i"><use href="#i-home"/></svg><span>Home</span></a>
       <a class="nav__icon" href="#platform" data-nav-link="platform" data-tip="Platform"><svg class="i"><use href="#i-layout"/></svg><span class="sr">Platform</span></a>
       <a class="nav__icon" href="#features" data-nav-link="features" data-tip="Features"><svg class="i"><use href="#i-box"/></svg><span class="sr">Features</span></a>
     </nav>
@@ -103,8 +103,8 @@
           <a class="link-u" href="#about" data-hero-link><span data-roll>Explore Platform</span></a>
         </div>
 
-        <article class="widget widget--red widget--threat" data-tilt data-threat aria-label="Live alert: suspicious login, 2:45 AM, risk flagged">
-          <h3 class="widget__title">Threat Detected</h3>
+        <article class="widget widget--red widget--threat" data-tilt data-threat aria-labelledby="threat-h">
+          <h3 class="widget__title" id="threat-h">Threat Detected</h3>
           <div class="radar" aria-hidden="true">
             <svg viewBox="0 0 220 220" class="radar__svg">
               <defs>
@@ -190,7 +190,7 @@
         <div class="layers__stage" data-layers-stage>
           <div class="layers__media"><canvas data-scene="garden" aria-hidden="true"></canvas><div class="garden__fallback" aria-hidden="true"></div></div>
           <!-- Two live cards per layer; the accordion swaps them. -->
-          <div class="layers__cards" data-layer-cards aria-live="polite">
+          <div class="layers__cards" data-layer-cards>
             <article class="widget widget--green widget--a" data-tilt data-card="a">
               <h3 class="widget__title" data-f="title">Firewall Protection</h3>
               <div class="gauge" data-gauge aria-hidden="true"></div>

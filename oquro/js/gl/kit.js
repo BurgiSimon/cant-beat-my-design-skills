@@ -70,12 +70,17 @@ export function surfaceMaterial(o = {}) {
 varying vec3 vObj; varying vec3 vWN; varying vec4 vField; uniform vec3 uSeed; uniform float uScale; uniform float uTone;
 ${GLSL_NOISE}
 ${GLSL_MOSS}`)
-      .replace('#include <begin_vertex>', `#include <begin_vertex>\nvObj = position * uScale + uSeed;\n#ifdef USE_INSTANCING\nvObj += instanceMatrix[3].xyz * 1.7;\n#endif`)
+      // (three runs defaultnormal_vertex before begin_vertex: the normal first, then the fields that need both)
       .replace('#include <defaultnormal_vertex>', `#include <defaultnormal_vertex>
 #ifdef USE_INSTANCING
 vWN = normalize(mat3(modelMatrix) * mat3(instanceMatrix) * objectNormal);
 #else
 vWN = normalize(mat3(modelMatrix) * objectNormal);
+#endif`)
+      .replace('#include <begin_vertex>', `#include <begin_vertex>
+vObj = position * uScale + uSeed;
+#ifdef USE_INSTANCING
+vObj += instanceMatrix[3].xyz * 1.7;
 #endif
 vField = vec4(fbm3(vObj * uTone), snoise(vObj * 1.7 + 4.0), mossMask(vObj, vWN), snoise(vObj * 7.0 + 2.0));`);
     sh.fragmentShader = sh.fragmentShader
@@ -457,6 +462,7 @@ export function rockGeometry({ detail = 5, seed = 1, sx = 1, sy = 0.7, sz = 0.9,
     pos.setXYZ(i, x * r * sx, Math.max(y * r * sy, -0.35 * sy), z * r * sz);
   }
   g.computeVertexNormals();
+  weldNormals(g);   // an icosahedron's faces share no vertices: without this every face is flat
   // a planar uv for the moss cells, from above
   const uv = [];
   for (let i = 0; i < pos.count; i++) uv.push(pos.getX(i) * 0.5 + 0.5, pos.getZ(i) * 0.5 + 0.5 + pos.getY(i) * 0.3);

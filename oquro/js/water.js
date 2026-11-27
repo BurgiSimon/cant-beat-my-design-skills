@@ -30,7 +30,8 @@ void main(){
     if (r.w <= 0.0 || age < 0.0 || age > 3.0) continue;
     vec2 d = css - r.xy; float dist = length(d);
     float front = age * 260.0;
-    float ring = exp(-pow((dist - front) / 70.0, 2.0));
+    float q = (dist - front) / 70.0;
+    float ring = exp(-q * q);
     off += normalize(d + 0.001) * sin((dist - front) * 0.09) * ring * (1.0 - age / 3.0) * r.w;
   }
   vec2 uv = (css + vec2(0.0, uScroll * 0.35)) / 640.0;

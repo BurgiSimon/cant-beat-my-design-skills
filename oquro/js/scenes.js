@@ -2,7 +2,7 @@
 // sand. One renderer draws them all, off screen, and each picture is copied into its own canvas, so the page holds
 // one extra WebGL context however many pictures it has. Each draws only while on screen.
 
-import { calm, gl, dpr, on, whenVisible, loop, damp, clamp, seeded, pointer, fine } from './core.js';
+import { calm, gl, dpr, on, last, whenVisible, loop, damp, clamp, seeded, fine } from './core.js';
 
 export async function init() {
   const hosts = [...document.querySelectorAll('canvas[data-scene]')];
@@ -60,6 +60,8 @@ export async function init() {
   const domeY = (cx, cy, cz, rx, ry, rz) => (x, z) => { const nx = (x - cx) / rx, nz = (z - cz) / rz; const q = 1 - nx * nx - nz * nz; return q <= 0 ? -9 : cy + ry * Math.sqrt(q); };
 
   const views = [];
+  // a change that should show at once even when nothing is looping (reduced motion)
+  let redraw = () => {};
 
   // ───────── the garden: a mossy outcrop against the sky, with a camera for each layer ─────────
   function garden() {
@@ -104,8 +106,9 @@ export async function init() {
       [[0.3, 1.5, 2.6], [1.0, 0.95, -0.1], 28],
       [[-0.35, 0.3, 2.4], [0.6, 0.25, 0.8], 30],
     ];
-    let shot = 0; const cur = { p: new THREE.Vector3(...shots[0][0]), t: new THREE.Vector3(...shots[0][1]), f: shots[0][2] };
-    on('layer', ({ index }) => { shot = index; });
+    let shot = last('layer')?.index ?? 0;
+    const cur = { p: new THREE.Vector3(...shots[shot][0]), t: new THREE.Vector3(...shots[shot][1]), f: shots[shot][2] };
+    on('layer', ({ index }) => { shot = index; redraw(); });
     const tp = new THREE.Vector3(), tt = new THREE.Vector3();
     return {
       scene, camera,
@@ -152,8 +155,8 @@ export async function init() {
     // grass round the foot and on the rock
         tuft(root, rnd, { x0: -1.6, x1: 1.6, z0: -0.2, z1: 1.3, y: (x, z) => -0.95 + noise3(x * 2, 0, z * 2) * 0.04, n: low ? 700 : 1400, h: [0.1, 0.3], leaves: 34, daisies: 10, wheat: 8 });
     // screen content per tab
-    let tab = 'live'; let st = 0;
-    on('tab', ({ key }) => { tab = key; st = 0; });
+    let tab = last('tab')?.key ?? 'live'; let st = calm ? 1 : 0;
+    on('tab', ({ key }) => { tab = key; st = calm ? 1 : 0; paint(st); redraw(); });
     const { ctx: g, canvas: cv, tex } = scr;
     function paint(t) {
       const W = cv.width, H = cv.height;
@@ -263,9 +266,12 @@ export async function init() {
     v.hover.x = damp(v.hover.x, v.hover.tx, 3, dt); v.hover.y = damp(v.hover.y, v.hover.ty, 3, dt);
     v.update(dt, t, v.w / v.h, v.hover);
     renderer.setViewport(0, 0, v.w, v.h); renderer.setScissor(0, 0, v.w, v.h); renderer.setScissorTest(true);
-    const pw = shared.uPush.value.w; shared.uPush.value.w = 0;
+    // the plants here sway on this loop's clock, not the hero's (which stops once it is scrolled away), and the
+    // hero's pointer does not reach them
+    const pw = shared.uPush.value.w, pt = shared.uTime.value;
+    shared.uPush.value.w = 0; shared.uTime.value = t;
     renderer.render(v.scene, v.camera);
-    shared.uPush.value.w = pw;
+    shared.uPush.value.w = pw; shared.uTime.value = pt;
     v.ctx.clearRect(0, 0, v.w, v.h);
     v.ctx.drawImage(renderer.domElement, 0, bufH - v.h, v.w, v.h, 0, 0, v.w, v.h);
     v.box.classList.add('has-gl');
@@ -275,6 +281,7 @@ export async function init() {
     for (const v of views) if (v.visible) draw(v, dt);
   });
   function sync() { run.set(!calm && views.some((v) => v.visible)); }
+  redraw = () => { if (calm) for (const v of views) draw(v, 0); };
   // first frames now, so nothing waits for a scroll to have a picture
   for (const v of views) { renderer.compile(v.scene, v.camera); draw(v, 0.016); }
   addEventListener('resize', () => { if (calm) for (const v of views) draw(v, 0); });

@@ -49,7 +49,7 @@ export async function init() {
   K.displace(ringG, (x, y, z) => noise3(x * 1.3, y * 1.3, z * 1.3) * 0.014 + noise3(x * 4.2 + 3, y * 4.2, z * 4.2) * 0.009 + noise3(x * 12, y * 12, z * 12) * 0.004);
   const RING_MOSS = { moss: -0.06, mossUp: 1.1, mossY: 0.25, mossScale: 2.3, mossDir: [0.1, 1, 0.4], seed: [1.3, 0.2, 0.7] };
   const stone = K.surfaceMaterial({
-    key: 'ring', c1: '#988a70', c2: '#ddd1b6', c3: '#5c5040', pore: 34, pit: 0.85, bump: 0.016, tone: 2.0,
+    key: 'ring', c1: '#74664d', c2: '#ab9b7c', c3: '#4f4334', pore: 34, pit: 0.85, bump: 0.016, tone: 2.0,
     ...RING_MOSS, mossA: '#2a2e05', mossB: '#6c7116',
   });
   const ring = new THREE.Mesh(ringG, stone); ring.castShadow = true; ring.receiveShadow = true;
@@ -271,7 +271,7 @@ export async function init() {
   canvas.addEventListener('pointerup', release); canvas.addEventListener('pointercancel', release);
   canvas.addEventListener('pointerleave', () => { if (!wheel.dragging && hovering) { hovering = false; canvas.classList.remove('is-grab'); emit('cursor', null); } });
   // without a drag (keyboard, touch, or just curiosity): the face in the threat card gives the wheel a turn
-  on('vault:spin', () => { wheel.v += 14; wheel.turned += 7.5; });
+  if (!calm) on('vault:spin', () => { wheel.v += 14; wheel.turned += 7.5; });
 
   // ---- scroll and pointer ----
   const look = { x: 0, y: 0 };
@@ -370,16 +370,16 @@ export async function init() {
 
   // ---- run ----
   const run = loop(frame);
-  let visible = true;
-  whenVisible(hero, (v) => { visible = v; run.set(v && !calm); if (v && calm) frame(0.016); }, '0px');
-  const ro = new ResizeObserver(() => { fit(); if (calm || !run.on) frame(0); });
-  ro.observe(canvas);
-  addEventListener('resize', () => { fit(); if (calm || !run.on) frame(0); });
   fit();
-  // warm the shaders up before the first frame is shown (in parallel where the browser can)
+  // warm the shaders up before the first frame is shown (in parallel where the browser can); only then may the
+  // loop start, or its first frame would compile them all at once and stall the intro
   await breathe();
   if (renderer.compileAsync && renderer.extensions.has('KHR_parallel_shader_compile')) await renderer.compileAsync(scene, camera);
   else renderer.compile(scene, camera);
+  whenVisible(hero, (v) => { run.set(v && !calm); if (v && calm) frame(0.016); }, '0px');
+  const ro = new ResizeObserver(() => { fit(); if (calm || !run.on) frame(0); });
+  ro.observe(canvas);
+  addEventListener('resize', () => { fit(); if (calm || !run.on) frame(0); });
   frame(0.016);
   hero.classList.add('has-gl');
   canvas.classList.add('is-on');

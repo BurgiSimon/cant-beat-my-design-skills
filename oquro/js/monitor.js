@@ -116,7 +116,7 @@ export function init() {
   let acc = 0;
   const run = loop((dt) => {
     t += dt; acc += dt;
-    if (t > glitchAt) { glitchAt = t + 2.5 + Math.random() * 4; glitchY = Math.random() * H * 0.8; glitchH = (8 + Math.random() * 30) * S; glitchDx = (Math.random() - 0.5) * 40 * S; setTimeout(() => { glitchH = 0; }, 110); }
+    if (t > glitchAt) { glitchAt = t + 2.5 + Math.random() * 4; glitchY = Math.random() * H * 0.8; glitchH = (8 + Math.random() * 30) * S; glitchDx = Math.round((Math.random() - 0.5) * 40 * S); setTimeout(() => { glitchH = 0; }, 110); }
     if (acc < 1 / 12) return; acc = 0;
     draw();
   });

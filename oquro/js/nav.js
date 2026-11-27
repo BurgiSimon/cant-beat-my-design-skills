@@ -30,7 +30,10 @@ export function init() {
       if (r.top <= probe && r.bottom > probe) {
         nav.classList.toggle('is-dark', s.dataset.theme === 'dark');
         const o = owner[s.id];
-        if (o && o !== current) { current = o; links.forEach((l) => l.classList.toggle('is-current', l.dataset.navLink === o)); }
+        if (o && o !== current) {
+          current = o;
+          links.forEach((l) => { const on = l.dataset.navLink === o; l.classList.toggle('is-current', on); if (on) l.setAttribute('aria-current', 'location'); else l.removeAttribute('aria-current'); });
+        }
         break;
       }
     }

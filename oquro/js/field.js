@@ -14,7 +14,7 @@ export function init() {
     W = r.width; H = r.height; canvas.width = Math.round(W * D); canvas.height = Math.round(H * D);
     step = W < 700 ? 11 : 14;
   };
-  resize(); new ResizeObserver(resize).observe(canvas);
+  resize(); new ResizeObserver(() => { resize(); draw(); }).observe(canvas);
   const ptr = { x: -1e4, y: -1e4, k: 0, tk: 0 };
   if (fine && !calm) {
     sec.addEventListener('pointermove', (e) => { const r = canvas.getBoundingClientRect(); ptr.x = e.clientX - r.left; ptr.y = e.clientY - r.top; ptr.tk = 1; });
