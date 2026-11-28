@@ -4,12 +4,37 @@
 
 import { calm, gl, dpr, on, last, whenVisible, loop, damp, clamp, seeded, fine } from './core.js';
 
-export async function init() {
+// asked for as soon as this module is here (main.js fetches it after starting the hero, which loads the kit too), so
+// that starting the build takes no turn of its own
+const kit = gl ? import('./gl/kit.js') : null;
+kit?.catch(() => {});   // (a failure is reported when init awaits it)
+
+export async function init({ hurry: rush = false } = {}) {
   const hosts = [...document.querySelectorAll('canvas[data-scene]')];
   if (!hosts.length || !gl) return;
-  const K = await import('./gl/kit.js');
+  const K = await kit;
   const { THREE, shared, noise3 } = K;
   const low = gl.tier < 2;
+  // the build hands the main thread back between its slices, so frames and scrolling keep running. A timer, as in
+  // hero3d, lets a frame in between; scheduler.yield's turn would come first and run slices back to back for 100 ms
+  // and more. How late each turn comes back is what the frames and the rest of the page took meanwhile (not these
+  // slices): on a slow CPU about a frame or two, a few hundred ms now and then. One late turn is a hitch (a collection,
+  // a task of another module's); most of the last few over half a second late mean frames that slow (a software GPU, or
+  // the tab put away), where waiting only starves the build: the rest is built in one go, as without slices (all of it
+  // when main.js says so)
+  let hurry = rush;
+  const waits = [];
+  const late = (t0, ms = 0) => {
+    waits.push(performance.now() - t0 - ms);
+    const w = waits.slice(-5).sort((a, b) => a - b);
+    if (w.length >= 3 && w[(w.length - 1) >> 1] > 500) hurry = true;
+  };
+  const breathe = async () => {
+    if (hurry) return;
+    const t0 = performance.now();
+    await new Promise((r) => setTimeout(r, 0));
+    late(t0);
+  };
 
   const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
   renderer.setClearColor(0x000000, 0);
@@ -18,7 +43,9 @@ export async function init() {
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = THREE.PCFShadowMap;
   renderer.setPixelRatio(1);
-  const env = K.skyEnvironment(renderer, { top: '#ffffff', horizon: '#dde8ec', bottom: '#5d6a45' });
+  const sky = () => K.skyEnvironment(renderer, { top: '#ffffff', horizon: '#dde8ec', bottom: '#5d6a45' });
+  let env = sky();
+  await breathe();
   let bufW = 0, bufH = 0;
   const Q = dpr(low ? 1.25 : 1.6);
 
@@ -64,7 +91,7 @@ export async function init() {
   let redraw = () => {};
 
   // ───────── the garden: a mossy outcrop against the sky, with a camera for each layer ─────────
-  function garden() {
+  async function garden() {
     const rnd = seeded(77);
     const scene = new THREE.Scene(); lights(scene, { size: 3.5 });
     const camera = new THREE.PerspectiveCamera(30, 1, 0.1, 50);
@@ -80,14 +107,16 @@ export async function init() {
       { x: 0.55, y: 0.05, z: 0.55, s: 0.38, sx: 1.0, sy: 1.1, seed: 13, ry: 2.2 },
       { x: 1.3, y: 0.2, z: 0.4, s: 0.42, sx: 1.2, sy: 1.0, seed: 17, ry: 0.6 },
     ];
-    for (const r of rocks) addRock(root, { ...r, mat: rm });
+    for (const r of rocks) { addRock(root, { ...r, mat: rm }); await breathe(); }
     // a cap of turf over the shelf
     const cap = new THREE.SphereGeometry(1, 96, 48, 0, Math.PI * 2, 0, Math.PI * 0.5);
     cap.scale(1.25, 0.3, 0.75);
     K.displace(cap, (x, y, z) => noise3(x * 2, y * 2, z * 2) * 0.05);
     const turfMat = K.surfaceMaterial({ key: 'turf', c1: '#3b4010', c2: '#555c17', c3: '#272b08', moss: 1.3, mossUp: 0, seed: [9, 1, 3], mossA: '#2c3108', mossB: '#5a6116', pit: 0.2 });
     const turf = new THREE.Mesh(cap, turfMat); turf.position.set(0.95, 0.82, -0.05); turf.receiveShadow = true; root.add(turf);
+    turf.renderOrder = 1;   // after its shells: the moss covers it, so the depth test skips its stone shader there
     turf.add(K.mossShells(cap, { layers: low ? 8 : 12, thick: 0.05, density: [500, 140], fill: 0.85, moss: 1.3, mossUp: 0, seed: [9, 1, 3], mossA: '#1f2306', mossB: '#555d12', tip: '#929640' }));
+    await breathe();
     const top = domeY(0.95, 0.82, -0.05, 1.25, 0.3, 0.75);
     tuft(root, rnd, { x0: -0.3, x1: 2.2, z0: -0.8, z1: 0.7, y: top, n: low ? 900 : 1800, h: [0.08, 0.22], wheat: 26, daisies: 14, leaves: 40 });
     // a lower ledge on the left
@@ -115,7 +144,7 @@ export async function init() {
       update(dt, t, aspect, hover) {
         const [p, tg, f] = shots[shot];
         tp.set(...p); tt.set(...tg);
-        const k = calm ? 1 : 1 - Math.exp(-2.2 * dt);
+        const k = calm || !dt ? 1 : 1 - Math.exp(-2.2 * dt);   // a still (dt 0) shows the layer's own view
         cur.p.lerp(tp, k); cur.t.lerp(tt, k); cur.f += (f - cur.f) * k;
         camera.position.copy(cur.p);
         camera.position.x += Math.sin(t * 0.25) * 0.06 + hover.x * 0.15; camera.position.y += hover.y * -0.1;
@@ -127,17 +156,17 @@ export async function init() {
   }
 
   // ───────── the laptop on its mossy rock ─────────
-  function laptop() {
+  function laptop(canvas) {
     const rnd = seeded(31);
     const scene = new THREE.Scene(); lights(scene, { size: 2.2, dir: [-0.4, 0.8, 0.6] });
     const camera = new THREE.PerspectiveCamera(32, 1, 0.1, 40);
     const root = new THREE.Group(); scene.add(root);
     const rm = rockMat({ c1: '#8a8576', c2: '#d4ccba' });
-    addRock(root, { x: -0.55, y: -0.2, z: -0.4, s: 0.78, sx: 0.95, sy: 1.35, sz: 0.85, seed: 21, ry: 0.4, mat: rm });
-    addRock(root, { x: 0.2, y: -0.62, z: 0.0, s: 0.62, sx: 1.4, sy: 0.75, seed: 23, ry: -0.6, mat: rm });
+    addRock(root, { x: -0.75, y: -0.52, z: -0.75, s: 0.78, sx: 0.95, sy: 1.35, sz: 0.85, seed: 21, ry: 0.4, mat: rm });
+    addRock(root, { x: 0.05, y: -0.7, z: 0.45, s: 0.62, sx: 1.4, sy: 0.75, seed: 23, ry: -0.6, mat: rm });
     addRock(root, { x: -1.0, y: -0.85, z: 0.3, s: 0.4, sx: 1.2, sy: 0.8, seed: 25, ry: 1.1, mat: rm });
     // the laptop, open on the flat rock
-    const lap = new THREE.Group(); lap.position.set(0.25, -0.2, 0.15); lap.rotation.set(-0.04, -0.32, 0.03); lap.scale.setScalar(0.85); root.add(lap);
+    const lap = new THREE.Group(); lap.position.set(-0.02, -0.16, 0.5); lap.rotation.set(-0.04, -0.32, 0.03); lap.scale.setScalar(0.92); root.add(lap);
     const alu = new THREE.MeshStandardMaterial({ color: 0x55585e, metalness: 0.8, roughness: 0.35 });
     const dark = new THREE.MeshStandardMaterial({ color: 0x17181a, metalness: 0.3, roughness: 0.6 });
     const base = new THREE.Mesh(new THREE.BoxGeometry(1.0, 0.04, 0.68), alu); base.castShadow = true; base.receiveShadow = true; lap.add(base);
@@ -153,7 +182,7 @@ export async function init() {
     screen.position.set(0, 0.335, 0.002); hinge.add(screen);
     hinge.rotation.x = -0.32;
     // grass round the foot and on the rock
-        tuft(root, rnd, { x0: -1.6, x1: 1.6, z0: -0.2, z1: 1.3, y: (x, z) => -0.95 + noise3(x * 2, 0, z * 2) * 0.04, n: low ? 700 : 1400, h: [0.1, 0.3], leaves: 34, daisies: 10, wheat: 8 });
+    tuft(root, rnd, { x0: -1.6, x1: 1.6, z0: -0.2, z1: 1.3, y: (x, z) => -0.95 + noise3(x * 2, 0, z * 2) * 0.04, n: low ? 700 : 1400, h: [0.1, 0.3], leaves: 34, daisies: 10, wheat: 8 });
     // screen content per tab
     let tab = last('tab')?.key ?? 'live'; let st = calm ? 1 : 0;
     on('tab', ({ key }) => { tab = key; st = calm ? 1 : 0; paint(st); redraw(); });
@@ -189,44 +218,59 @@ export async function init() {
       tex.needsUpdate = true;
     }
     paint(0);
+    // the glass panel over the picture's foot: the laptop is framed in the room above it, smaller where the panel
+    // takes more of the picture (phones); measured again whenever the picture changes shape
+    const glass = canvas.parentElement.querySelector('.netact');
+    let room = 0.54, shape = 0;
+    // fonts still on their way (reduced motion gets here before they are in): paint the screen again once they are
+    if (document.fonts && document.fonts.status !== 'loaded') document.fonts.ready.then(() => { paint(st); redraw(); });
     let acc = 0;
     return {
       scene, camera,
       update(dt, t, aspect, hover) {
         st += dt; acc += dt;
         if (acc > 1 / 20) { acc = 0; paint(t); }
-        camera.fov = 32; camera.aspect = aspect; camera.updateProjectionMatrix();
-        camera.position.set(0.2 + hover.x * 0.25 + Math.sin(t * 0.3) * 0.05, 0.5 - hover.y * 0.15, 4.9);
-        camera.lookAt(-0.05, -0.35, 0);
+        else if (!dt && st < 1) { st = 1; paint(t); }   // a still shows the tab's screen as it settles
+        if (aspect !== shape) { shape = aspect; room = glass?.offsetParent ? glass.offsetTop / glass.offsetParent.clientHeight : 0.54; }
+        const k = Math.min(1, room / 0.54);
+        camera.fov = (2 * Math.atan(0.2867 / k) * 180) / Math.PI; camera.aspect = aspect; camera.updateProjectionMatrix();   // 32 degrees with room enough
+        camera.position.set(0.2 + hover.x * 0.25 + Math.sin(t * 0.3) * 0.05, 1.9 - hover.y * 0.15, 4.6);
+        camera.lookAt(-0.05, -0.02, 0.2);
         // the laptop's view offset: frame it in the upper part, above the glass card
-        camera.setViewOffset(1000, 1000 / aspect, 0, (1000 / aspect) * 0.16, 1000, 1000 / aspect);
+        camera.setViewOffset(1000, 1000 / aspect, 0, (1000 / aspect) * (0.5 - 0.34 * k), 1000, 1000 / aspect);
       },
     };
   }
 
   // ───────── a chain link half sunk in sand, moss in its gaps ─────────
-  function chain() {
+  async function chain() {
     const scene = new THREE.Scene(); lights(scene, { size: 1.6, dir: [-0.6, 0.9, 0.3], sun: 3.4, hemi: 0.7 });
     const camera = new THREE.PerspectiveCamera(28, 1, 0.1, 30);
-    const sandG = new THREE.PlaneGeometry(4, 4, 200, 200); sandG.rotateX(-Math.PI / 2);
+    const sandG = new THREE.PlaneGeometry(4, 4, 140, 140); sandG.rotateX(-Math.PI / 2);
     const pos = sandG.attributes.position;
     for (let i = 0; i < pos.count; i++) {
       const x = pos.getX(i), z = pos.getZ(i);
       // ripples, a few footprints of wind, and a rim pushed up round the link
-      const d = Math.hypot(x / 1.05, z / 0.62);
+      const d = Math.hypot(x / 1.0, z / 0.36);
       const rim = Math.exp(-Math.pow((d - 0.78) / 0.12, 2)) * 0.035;
       pos.setY(i, noise3(x * 1.6, 0, z * 1.6) * 0.04 + Math.sin(x * 7 + noise3(x, 1, z) * 2) * 0.006 + rim);
     }
     sandG.computeVertexNormals();
     const sand = new THREE.Mesh(sandG, K.surfaceMaterial({ key: 'sand', c1: '#cbbd9e', c2: '#ece2cc', c3: '#a8987a', pore: 70, pit: 0.25, bump: 0.01, tone: 2.5, grain: 1.6, moss: -1 }));
     sand.receiveShadow = true; scene.add(sand);
-    const linkG = K.chainLinkGeometry({ len: 1.5, r: 0.36, tube: 0.11 });
-    const link = new THREE.Mesh(linkG, K.surfaceMaterial({ key: 'iron', c1: '#3a2f27', c2: '#5b4a3a', c3: '#22190f', metalness: 0.45, roughness: 0.62, pore: 18, pit: 0.6, bump: 0.02, tone: 3, moss: -0.12, mossUp: 1.2, mossScale: 3.2, seed: [1, 9, 4], mossA: '#2a3608', mossB: '#6a8a20' }));
+    await breathe();
+    // a long, slim link of near-black iron, the moss only in patches
+    const linkG = K.chainLinkGeometry({ len: 1.4, r: 0.2, tube: 0.08 });
+    const iron = (moss) => K.surfaceMaterial({ key: 'iron', c1: '#2a221c', c2: '#40342a', c3: '#1a130c', metalness: 0.45, roughness: 0.62, pore: 18, pit: 0.6, bump: 0.02, tone: 3, moss, mossUp: 1.2, mossScale: 3.2, seed: [1, 9, 4], mossA: '#2a3608', mossB: '#6a8a20' });
+    const link = new THREE.Mesh(linkG, iron(-0.4));
     link.rotation.x = -Math.PI / 2; link.position.y = 0.01; link.castShadow = true; link.receiveShadow = true; scene.add(link);
-    link.add(K.mossShells(linkG, { layers: 10, thick: 0.04, density: [420, 50], fill: 0.8, moss: -0.12, mossUp: 1.2, mossScale: 3.2, seed: [1, 9, 4], mossA: '#22300a', mossB: '#6a8a20', tip: '#b4c25a' }));
-    // sprigs of green in the hole
-    const rnd = seeded(3);
-    scene.add(K.plantField(bladeG, grassMat, 26, (i, r) => ({ x: (r() - 0.5) * 0.6, y: 0, z: (r() - 0.5) * 0.14, h: 0.05 + r() * 0.07, w: 1.2, bend: 0.6 + r() * 0.6 }), rnd));
+    link.add(K.mossShells(linkG, { layers: 10, thick: 0.04, density: [420, 50], fill: 0.8, moss: -0.4, mossUp: 1.2, mossScale: 3.2, seed: [1, 9, 4], mossA: '#22300a', mossB: '#6a8a20', tip: '#b4c25a' }));
+    // the next link, bare: only its end shows, curling up out of the sand in the hole by the far bar. Stood on end
+    // across the link, then leant well over to the side so that from above its end reads as a crescent
+    const next = new THREE.Mesh(K.chainLinkGeometry({ len: 1.0, r: 0.14, tube: 0.07 }), iron(-1));
+    next.quaternion.setFromEuler(new THREE.Euler(Math.PI / 2, 0, Math.PI / 2 + 1.2, 'ZYX')).premultiply(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1, 0, 0), -0.1));
+    next.position.set(0.1, -0.02, -0.08).addScaledVector(new THREE.Vector3(1, 0, 0).applyQuaternion(next.quaternion), -0.36);   // its end's centre there
+    next.castShadow = true; next.receiveShadow = true; scene.add(next);
     return {
       scene, camera,
       update(dt, t, aspect, hover) {
@@ -238,29 +282,13 @@ export async function init() {
     };
   }
 
-  const makers = { garden, laptop, chain };
-  for (const canvas of hosts) {
-    const make = makers[canvas.dataset.scene];
-    if (!make) continue;
-    const v = make();
-    const ctx = canvas.getContext('2d');
-    const hover = { x: 0, y: 0, tx: 0, ty: 0 };
-    const box = canvas.parentElement;
-    if (fine && !calm) {
-      box.addEventListener('pointermove', (e) => { const r = box.getBoundingClientRect(); hover.tx = ((e.clientX - r.left) / r.width) * 2 - 1; hover.ty = ((e.clientY - r.top) / r.height) * 2 - 1; });
-      box.addEventListener('pointerleave', () => { hover.tx = hover.ty = 0; });
-    }
-    views.push({ ...v, canvas, ctx, hover, visible: calm, w: 0, h: 0, box });
-    if (!calm) whenVisible(box, (on) => { const vw = views.find((x) => x.canvas === canvas); vw.visible = on; sync(); });
-  }
-
   function size(v) {
     const r = v.canvas.getBoundingClientRect();
     const w = Math.max(1, Math.round(r.width * Q)), h = Math.max(1, Math.round(r.height * Q));
     if (w !== v.w || h !== v.h) { v.w = w; v.h = h; v.canvas.width = w; v.canvas.height = h; }
     if (w > bufW || h > bufH) { bufW = Math.max(bufW, w); bufH = Math.max(bufH, h); renderer.setSize(bufW, bufH, false); }
   }
-  let t = 0;
+  let t = 0, ticks = 0;
   function draw(v, dt) {
     size(v);
     v.hover.x = damp(v.hover.x, v.hover.tx, 3, dt); v.hover.y = damp(v.hover.y, v.hover.ty, 3, dt);
@@ -277,13 +305,59 @@ export async function init() {
     v.box.classList.add('has-gl');
   }
   const run = loop((dt) => {
-    t += dt;
+    t += dt; ticks++;
     for (const v of views) if (v.visible) draw(v, dt);
   });
   function sync() { run.set(!calm && views.some((v) => v.visible)); }
-  redraw = () => { if (calm) for (const v of views) draw(v, 0); };
-  // first frames now, so nothing waits for a scroll to have a picture
-  for (const v of views) { renderer.compile(v.scene, v.camera); draw(v, 0.016); }
+  // under reduced motion at once; otherwise a still (dt 0) unless the loop draws within two frames (it may be paused)
+  let asked = 0;
+  redraw = () => {
+    if (calm) { for (const v of views) draw(v, 0); return; }
+    const n = ticks;
+    cancelAnimationFrame(asked);
+    asked = requestAnimationFrame(() => { asked = requestAnimationFrame(() => { if (ticks === n) for (const v of views) if (v.visible) draw(v, 0); }); });
+  };
+  // a lost context comes back without the sky's light (three cannot refill a render target): bake it again
+  renderer.domElement.addEventListener('webglcontextrestored', () => {
+    env = sky();
+    for (const v of views) v.scene.environment = env;
+    redraw();
+  });
   addEventListener('resize', () => { if (calm) for (const v of views) draw(v, 0); });
-  document.fonts?.ready.then(() => { for (const v of views) if (!run.on) draw(v, 0); });
+
+  // each picture in its own slices: the scene, its shaders (in parallel where the browser can), its first frame (with
+  // the shadow pass's shaders), so nothing waits for a scroll to have a picture. It joins the loop once it has one.
+  const makers = { garden, laptop, chain };
+  const parallel = renderer.compileAsync && renderer.extensions.has('KHR_parallel_shader_compile');
+  // the driver's compile can take its time; only a starved check (its polls are timers too) stops the wait, and the
+  // first draw then waits for the link instead
+  const compile = async (v) => {
+    if (!parallel || hurry) { renderer.compile(v.scene, v.camera); return; }
+    let done = false;
+    const job = renderer.compileAsync(v.scene, v.camera).then(() => { done = true; });
+    while (!done && !hurry) {
+      const t0 = performance.now();
+      await Promise.race([job, new Promise((r) => setTimeout(r, 100))]);
+      if (!done) late(t0, 100);
+    }
+  };
+  for (const canvas of hosts) {
+    const make = makers[canvas.dataset.scene];
+    if (!make) continue;
+    await breathe();
+    const v = await make(canvas);
+    await breathe();
+    await compile(v);
+    await breathe();
+    const hover = { x: 0, y: 0, tx: 0, ty: 0 };
+    const box = canvas.parentElement;
+    if (fine && !calm) {
+      box.addEventListener('pointermove', (e) => { const r = box.getBoundingClientRect(); hover.tx = ((e.clientX - r.left) / r.width) * 2 - 1; hover.ty = ((e.clientY - r.top) / r.height) * 2 - 1; });
+      box.addEventListener('pointerleave', () => { hover.tx = hover.ty = 0; });
+    }
+    const view = { ...v, canvas, ctx: canvas.getContext('2d'), hover, visible: calm, w: 0, h: 0, box };
+    draw(view, 0.016);
+    views.push(view);
+    if (!calm) whenVisible(box, (on) => { view.visible = on; sync(); });
+  }
 }

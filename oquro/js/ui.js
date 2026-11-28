@@ -1,8 +1,8 @@
 // Small things everywhere: labels that roll on hover, buttons that lean towards the pointer, cards that tilt with a
 // light sliding over them, a cursor label over things you can drag, anchors that glide (and move focus), the sign-up
-// form, back to top.
+// form, back to top, and the switch that pauses the page's motion.
 
-import { gsap, calm, fine, lenis, on, scrollToTarget, damp } from './core.js';
+import { gsap, calm, fine, lenis, on, scrollToTarget, damp, motion, setPaused } from './core.js';
 
 export function init() {
   // Rolling labels: the word, and a copy under it that takes its place on hover.
@@ -13,6 +13,19 @@ export function init() {
     const a = document.createElement('span'); a.textContent = text;
     const b = document.createElement('span'); b.textContent = text; b.setAttribute('aria-hidden', 'true');
     inner.append(a, b); el.append(inner);
+  }
+
+  // Pause motion: two switches for the one state (core.js), in step. One is first in the tab order after the skip link,
+  // shown only when focused; one sits by Back to top. Their label is what pressing does (no aria-pressed: a toggle's
+  // name must not change, and "Play motion, pressed" would mislead). Reduced motion has nothing to pause: they stay hidden
+  if (!calm) {
+    const sw = [...document.querySelectorAll('[data-motion]')];
+    const label = () => {
+      const text = motion.paused ? 'Play motion' : 'Pause motion';
+      for (const b of sw) { const roll = b.querySelectorAll('.roll__in > span'); for (const t of roll.length ? roll : [b]) t.textContent = text; }
+    };
+    for (const b of sw) { b.addEventListener('click', () => setPaused(!motion.paused)); b.hidden = false; }
+    label(); on('motion', label);
   }
 
   if (fine && !calm && gsap) {
@@ -82,25 +95,34 @@ export function init() {
     }
   });
 
-  // The sign-up: honest about being a design study.
+  // The sign-up: honest about being a design study. An error describes the field while it stands. The button is never
+  // disabled (that would drop its focus to the page): a flag stops a second send.
   const form = document.querySelector('[data-cta-form]');
   if (form) {
     const input = form.querySelector('input'); const msg = form.querySelector('[data-cta-msg]'); const btn = form.querySelector('button');
+    let busy = false;
+    const valid = () => { input.removeAttribute('aria-invalid'); input.removeAttribute('aria-describedby'); };
+    input.addEventListener('input', () => {
+      if (!msg.classList.contains('is-err')) return;
+      valid(); msg.textContent = ''; msg.classList.remove('is-err');
+    });
     form.addEventListener('submit', (e) => {
       e.preventDefault();
+      if (busy) return;
       msg.classList.remove('is-ok', 'is-err');
       const v = input.value.trim();
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) {
         msg.textContent = 'That doesn’t look like an email address yet.'; msg.classList.add('is-err');
-        input.setAttribute('aria-invalid', 'true'); input.focus();
+        input.setAttribute('aria-invalid', 'true'); input.setAttribute('aria-describedby', msg.id);
+        if (document.activeElement !== input) input.focus();
         form.animate?.([{ transform: 'translateX(0)' }, { transform: 'translateX(-6px)' }, { transform: 'translateX(6px)' }, { transform: 'translateX(0)' }], { duration: 320 });
         return;
       }
-      input.removeAttribute('aria-invalid');
-      btn.disabled = true;
+      valid();
+      busy = true; btn.setAttribute('aria-disabled', 'true');
       msg.textContent = 'Securing your workspace…';
       setTimeout(() => {
-        btn.disabled = false; input.value = '';
+        busy = false; btn.removeAttribute('aria-disabled'); input.value = '';
         msg.textContent = `You’re in. OQURO is a design study, so no email is coming to ${v.replace(/</g, '')}, but your vault would be ready.`;
         msg.classList.add('is-ok');
       }, 900);

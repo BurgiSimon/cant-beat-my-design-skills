@@ -97,19 +97,82 @@ export function whenVisible(el, fn, rootMargin = '120px') {
   return () => { io.disconnect(); document.removeEventListener('visibilitychange', tell); };
 }
 
-// ---- a loop that only runs while asked to (on the GSAP ticker when there is one) ----
+// ---- motion: the page-wide pause (WCAG 2.2.2), remembered across visits. Under reduced motion nothing moves, so there
+// is nothing to pause. The head script in index.html sets .is-paused before first paint (CSS loops hold from the start);
+// this is the state the scripts read, and setPaused() is how the page's switches change it ----
+const KEY = 'oquro:motion';
+let stored = null;
+try { stored = localStorage.getItem(KEY); } catch (e) { /* storage blocked */ }
+export const motion = { paused: !calm && stored === 'paused' };
+root.classList.toggle('is-paused', motion.paused);
+const loops = new Set();
+export function setPaused(v) {
+  v = !!v && !calm;
+  if (v === motion.paused) return;
+  motion.paused = v;
+  root.classList.toggle('is-paused', v);
+  try { if (v) localStorage.setItem(KEY, 'paused'); else localStorage.removeItem(KEY); } catch (e) { /* not remembered */ }
+  for (const l of loops) l.sync();
+  emit('motion', motion);
+}
+// a still frame (dt 0) for the loops that are wanted but held by the pause: one that is wanted again (back on screen,
+// the tab shown again) and, after a resize, all of them, since a canvas a resize cleared would stay blank. A frame
+// later, after the modules' own resize handlers and observers have run
+const stills = new Set(); let stillAsk = 0;
+function askStill(l) {
+  stills.add(l);
+  if (!stillAsk) stillAsk = requestAnimationFrame(() => { stillAsk = requestAnimationFrame(() => {
+    stillAsk = 0;
+    for (const s of stills) { try { s.still(); } catch (e) { console.error('[oquro] still', e); } }
+    stills.clear();
+  }); });
+}
+addEventListener('resize', () => { if (motion.paused) for (const l of loops) if (l.wanted()) askStill(l); });
+
+// ---- a loop that only runs while asked to and motion isn't paused (on the GSAP ticker when there is one). on says
+// whether it is wanted; paused, it holds its last frame ----
 export function loop(fn) {
-  let on = false; let last = 0; let raf = 0;
+  let on = false; let running = false; let last = 0; let raf = 0;
   const tick = (t) => { const now = t * 1000; const dt = Math.min(0.05, last ? (now - last) / 1000 : 0.016); last = now; fn(dt, now / 1000); };
-  const rafTick = (t) => { tick(t / 1000); if (on) raf = requestAnimationFrame(rafTick); };
+  const rafTick = (t) => { tick(t / 1000); if (running) raf = requestAnimationFrame(rafTick); };
+  const l = {
+    sync() {
+      const v = on && !motion.paused;
+      if (v === running) return;
+      running = v; if (v) last = 0;   // started again: a fresh dt, not the length of the gap
+      if (gsap) { if (v) gsap.ticker.add(tick); else gsap.ticker.remove(tick); }
+      else if (v) raf = requestAnimationFrame(rafTick); else cancelAnimationFrame(raf);
+    },
+    wanted: () => on,
+    still() { if (on && !running) fn(0, last / 1000); },
+  };
+  loops.add(l);
   return {
     set(v) {
       if (v === on) return;
-      on = v; last = 0;
-      if (gsap) { if (on) gsap.ticker.add(tick); else gsap.ticker.remove(tick); }
-      else if (on) raf = requestAnimationFrame(rafTick); else cancelAnimationFrame(raf);
+      on = v; l.sync();
+      if (on && motion.paused) askStill(l);
     },
     get on() { return on; },
+  };
+}
+
+// ---- a widget that plays through on its own: it holds while a mouse is over its section or focus is in it, and stops
+// for good once someone picks something or presses its pause button ([data-autoplay], aria-pressed). held() is asked
+// each frame; stop() is for a pick; reset() clears the widget's progress whenever it stops or starts again. ----
+export function autoplay(section, reset) {
+  const btn = section.querySelector('[data-autoplay]');
+  let hovered = false; let stopped = false;
+  const set = (v) => {
+    stopped = v; reset();
+    if (btn) { btn.setAttribute('aria-pressed', String(v)); btn.querySelector('use')?.setAttribute('href', v ? '#i-play' : '#i-pause'); }
+  };
+  section.addEventListener('pointerenter', (e) => { if (e.pointerType === 'mouse') hovered = true; });
+  section.addEventListener('pointerleave', (e) => { if (e.pointerType === 'mouse') hovered = false; });
+  if (btn) { btn.hidden = false; btn.addEventListener('click', () => { set(!stopped); hovered = false; }); } // play means now
+  return {
+    held: () => stopped || hovered || (section.contains(document.activeElement) && document.activeElement !== btn),
+    stop: () => { if (!stopped) set(true); },
   };
 }
 

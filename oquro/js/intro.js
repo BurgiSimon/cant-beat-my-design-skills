@@ -1,8 +1,9 @@
 // The way in. First visit: a vault dial turns while the page loads, counting to 100; it clicks, the screen lifts
 // away, and the hero assembles: the letters rise out of the baseline, the ring and its garden grow up out of the mound,
-// the copy and the threat card arrive, the header drops in. A repeat visit (or a deep link) skips the dial.
+// the copy and the threat card arrive, the header drops in. A repeat visit (or a deep link) skips the dial. With
+// motion paused (core.js) the page arrives as it rests, once the fonts are in; hero3d starts the ring risen.
 
-import { root, calm, gsap, gl, lock, unlock, ready, markReady, emit, once, scrollToTarget } from './core.js';
+import { root, calm, motion, gsap, gl, lock, unlock, ready, markReady, emit, on, once, scrollToTarget } from './core.js';
 
 export async function init() {
   const intro = document.querySelector('[data-intro]');
@@ -10,8 +11,17 @@ export async function init() {
   const copy = document.querySelectorAll('.hero__copy > *');
   const card = document.querySelector('.widget--threat');
   const navBits = document.querySelectorAll('.nav > *:not(.nav__progress)');
+  clearTimeout(window.__oquroReady); // the fallback in index.html: from here the intro shows the page (every wait in it ends)
   if (calm || !gsap) { markReady(); emit('hero:rise'); return; }
+  // it fired first: the page is already showing at rest, and may be scrolled and read, so leave it as it is
+  if (root.classList.contains('is-ready')) { intro?.remove(); markReady(); emit('hero:rise'); return; }
   const repeat = root.classList.contains('is-repeat');
+  const arrive = () => {
+    markReady();
+    intro?.remove();
+    if (location.hash.length > 1) { const t = document.querySelector(location.hash); if (t) setTimeout(() => scrollToTarget(t, { immediate: true }), 50); }
+  };
+  if (motion.paused) { await ready; arrive(); emit('hero:rise'); return; }
 
   // the hero's resting state is hidden by CSS until ready; GSAP takes over from here
   gsap.set(letters, { yPercent: 105 });
@@ -39,6 +49,7 @@ export async function init() {
     once('hero:gl', () => { glReady = true; });
     setTimeout(() => { glReady = true; }, 4500); // a slow machine still gets in; the ring rises when it is ready
     const spin = gsap.to(svg, { rotate: 360, duration: 6, ease: 'none', repeat: -1 });
+    const offMotion = on('motion', (m) => { if (m.paused) spin.pause(); else spin.resume(); });   // paused while it loads
     gsap.from([svg, intro.querySelector('.intro__mark')], { scale: 0.8, opacity: 0, duration: 0.8, ease: 'expo.out', stagger: 0.1 });
     await new Promise((res) => {
       const t = gsap.to(p, {
@@ -54,26 +65,26 @@ export async function init() {
       void t;
     });
     // click: the dial snaps a notch, the mark turns, the screen lifts
-    spin.kill();
+    spin.kill(); offMotion();
     const out = gsap.timeline();
     out.to(svg, { rotate: '+=48', duration: 0.5, ease: 'back.out(3)' })
       .to(intro.querySelector('.intro__mark'), { rotate: 135, scale: 1.25, duration: 0.6, ease: 'expo.inOut' }, 0)
       .to([svg, intro.querySelector('.intro__mark'), intro.querySelector('.intro__count')], { opacity: 0, scale: 0.85, duration: 0.4, ease: 'power2.in' }, 0.45)
       .to(intro, { clipPath: 'inset(0 0 100% 0)', duration: 1.0, ease: 'expo.inOut' }, 0.6);
-    await new Promise((r) => setTimeout(r, 900));
+    if (motion.paused) out.progress(1);   // paused while it loaded: straight in
+    else await new Promise((r) => setTimeout(r, 900));
     intro.classList.add('is-leaving');   // still on screen while it lifts, though the page is now ready
     unlock();
     markReady();
-    out.eventCallback('onComplete', () => intro.remove());
+    if (out.progress() === 1) intro.remove(); else out.eventCallback('onComplete', () => intro.remove());
   } else {
     await ready;
-    markReady();
-    intro?.remove();
-    if (location.hash.length > 1) { const t = document.querySelector(location.hash); if (t) setTimeout(() => scrollToTarget(t, { immediate: true }), 50); }
+    arrive();
   }
 
-  // the hero assembles
+  // the hero assembles (or, paused by now, is simply there)
   emit('hero:rise');
+  if (motion.paused) { gsap.set([...letters, ...copy, card, ...navBits], { clearProps: 'transform,opacity' }); return; }
   const tl = gsap.timeline({ defaults: { ease: 'expo.out' } });
   tl.to(letters, { yPercent: 0, duration: 1.5, stagger: 0.07 }, 0)
     .to(navBits, { y: 0, opacity: 1, duration: 1.1, stagger: 0.06 }, 0.25)

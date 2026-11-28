@@ -51,12 +51,15 @@ export async function init() {
     ScrollTrigger.create({ trigger: st, start: 'top 85%', end: 'bottom 50%', scrub: 0.6, onUpdate: (self) => paint(self.progress) });
   }
 
-  // ---- counters ----
+  // ---- counters: only the seen copy counts; screen readers get the real number all along, and it is all that is
+  // left once the count is done ----
+  const sr = (text) => { const s = document.createElement('span'); s.className = 'sr'; s.textContent = text; return s; };
   for (const el of document.querySelectorAll('[data-count]')) {
     const to = parseFloat(el.dataset.count); const dec = +el.dataset.dec || 0; const suf = el.dataset.suffix || '';
-    const o = { v: 0 };
-    el.textContent = `${fmt(0, dec)}${suf}`;
-    gsap.to(o, { v: to, duration: 2.2, ease: 'expo.out', scrollTrigger: { trigger: el, start: 'top 90%', once: true }, onUpdate: () => { el.textContent = `${fmt(o.v, dec)}${suf}`; } });
+    const real = el.textContent.trim(); const o = { v: 0 };
+    const seen = document.createElement('span'); seen.setAttribute('aria-hidden', 'true'); seen.textContent = `${fmt(0, dec)}${suf}`;
+    el.replaceChildren(sr(real), seen);
+    gsap.to(o, { v: to, duration: 2.2, ease: 'expo.out', scrollTrigger: { trigger: el, start: 'top 90%', once: true }, onUpdate: () => { seen.textContent = `${fmt(o.v, dec)}${suf}`; }, onComplete: () => { el.textContent = real; } });
   }
 
   // ---- 24/7: the digits run before they settle ----
@@ -64,10 +67,11 @@ export async function init() {
   if (tf) {
     const final = tf.textContent; let frames = 0;
     ScrollTrigger.create({ trigger: tf, start: 'top 90%', once: true, onEnter() {
+      const real = sr(final); tf.before(real); tf.setAttribute('aria-hidden', 'true'); // the random digits aren't read
       const id = setInterval(() => {
         frames++;
         tf.textContent = frames > 16 ? final : `${Math.floor(Math.random() * 90 + 10)}/${Math.floor(Math.random() * 9 + 1)}`;
-        if (frames > 16) clearInterval(id);
+        if (frames > 16) { clearInterval(id); real.remove(); tf.removeAttribute('aria-hidden'); }
       }, 55);
     } });
   }
@@ -97,7 +101,7 @@ export async function init() {
   lift(document.querySelector('.intel'), '.about__bottom');
   lift(document.querySelectorAll('.stats > div'), '.stats', { y: 30, rotateX: 0 });
   lift(document.querySelectorAll('.tabs .tab'), '.tabs', { y: 16, rotateX: 0, stagger: 0.07 });
-  lift(document.querySelectorAll('.acc__item'), '.acc', { y: 24, rotateX: 0, stagger: 0.08 });
+  lift(document.querySelectorAll('.acc__auto, .acc__item'), '.acc', { y: 24, rotateX: 0, stagger: 0.08 });
 
   // ---- parallax: the about card and the garden drift against the scroll ----
   gsap.to('.monitor__canvas', { yPercent: 8, scale: 1.08, ease: 'none', scrollTrigger: { trigger: '.monitor', start: 'top bottom', end: 'bottom top', scrub: true } });

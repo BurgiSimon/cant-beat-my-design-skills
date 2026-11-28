@@ -2,8 +2,15 @@
 // the matrix and the traffic grid, the performance bars, the dot display, the live counters and the local time.
 // Each runs only while it is on screen.
 
-import { calm, on, once, emit, whenVisible, loop, fmt, ScrollTrigger } from './core.js';
+import { calm, motion, on, once, emit, whenVisible, loop, fmt, ScrollTrigger } from './core.js';
 import * as V from './viz.js';
+
+// A status line for screen readers: emptied first, so the same words said twice are heard twice.
+function say(el, text) {
+  if (!el) return;
+  el.textContent = '';
+  setTimeout(() => { el.textContent = text; }, 120);
+}
 
 function running(el, tick) {
   const run = loop(tick);
@@ -20,6 +27,7 @@ export function init() {
     const title = card.querySelector('[data-threat-title]');
     const time = card.querySelector('.widget__time');
     const risk = card.querySelector('[data-risk]');
+    const status = card.querySelector('[data-threat-status]'); // the card's text can't be live (its clock ticks), so this tells
     let clockMin = 2 * 60 + 45; let acc = 0;
     running(card, (dt) => {
       rd.tick(dt);
@@ -30,20 +38,22 @@ export function init() {
       card.classList.add('is-alarm');
       title.textContent = 'Vault Tampering'; time.textContent = 'Just now';
       risk.lastChild.textContent = 'High';
+      say(status, 'Alarm: vault tampering detected, high risk.');
       card.animate?.([{ transform: 'translateX(0)' }, { transform: 'translateX(-4px)' }, { transform: 'translateX(4px)' }, { transform: 'translateX(-2px)' }, { transform: 'translateX(0)' }], { duration: 380, easing: 'ease-out', composite: 'add' });
     });
     on('vault:close', () => {
       card.classList.remove('is-alarm');
       title.textContent = 'Suspicious Login'; time.textContent = V.clock(clockMin);
       risk.lastChild.textContent = 'Risk';
+      say(status, 'Alarm cleared.');
     });
     // the face in the card spins the wheel for those who can't drag it. Where there is no wheel to turn (no WebGL,
-    // or reduced motion), it raises the alarm itself.
+    // or reduced motion), or it can't turn now (motion paused), it raises the alarm itself.
     let wheel = !calm;
     once('hero:gl', (d) => { wheel = !!d && !calm; });
     let busy = false;
     card.querySelector('[data-spin]')?.addEventListener('click', () => {
-      if (wheel) { emit('vault:spin'); return; }
+      if (wheel && !motion.paused) { emit('vault:spin'); return; }
       if (busy) return;
       busy = true; emit('vault:open');
       setTimeout(() => { emit('vault:close'); busy = false; }, 4200);
@@ -60,9 +70,13 @@ export function init() {
     const alert = panel.querySelector('[data-alert]');
     let shown = false; whenVisible(panel, (v) => { shown = v; });
     const ping = () => { if (!alert) return; alert.classList.remove('is-ping'); void alert.offsetWidth; alert.classList.add('is-ping'); };
-    alert?.addEventListener('click', () => { ping(); mx.heat(); dg.jump(); setTimeout(() => mx.calm(), 2400); });
+    const told = panel.querySelector('[data-alert-status]'); const what = panel.querySelector('[data-p="aTitle"]');
+    alert?.addEventListener('click', () => {
+      ping(); mx.heat(); dg.jump(); setTimeout(() => mx.calm(), 2400);
+      say(told, `Alert raised on the ${what ? what.textContent : 'matrix'}.`); // what it does is drawn
+    });
     on('tab', ({ index }) => { tl.start(14 * 60 + 27 + index * 41); dg.jump(); });
-    if (!calm) setInterval(() => { if (shown) ping(); }, 5200);
+    if (!calm) setInterval(() => { if (shown && !motion.paused) ping(); }, 5200);
   }
 
   // ---- performance bars, grown when they come into view ----
@@ -90,7 +104,7 @@ export function init() {
     if (!calm) running(lc, (() => { let acc = 0; return (dt) => { acc += dt; if (acc > 0.35) { acc = 0; n += 3 + Math.floor(Math.random() * 18); lc.textContent = fmt(n); } }; })());
   }
 
-  // ---- local time in the footer ----
+  // ---- local time in the footer (information, not motion: it keeps time while motion is paused) ----
   const lt = document.querySelector('[data-local-time]');
   if (lt) {
     const set = () => { lt.textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); };

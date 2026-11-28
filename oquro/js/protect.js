@@ -1,8 +1,8 @@
 // Everything you need: three tabs (roving tabindex, arrow keys) that play through on their own while on screen, the
-// active one filling as it waits. A change fades the copy and the panels out and back with the new numbers, and tells
-// the laptop's screen (scenes.js) which to show.
+// active one filling as it waits, until someone picks one or presses pause. A change fades the copy and the panels out
+// and back with the new numbers, and tells the laptop's screen (scenes.js) which to show.
 
-import { calm, emit, whenVisible, loop } from './core.js';
+import { calm, emit, whenVisible, loop, autoplay } from './core.js';
 
 const TABS = {
   live: {
@@ -29,7 +29,7 @@ export function init() {
   if (!list || !panel) return;
   const tabs = [...list.querySelectorAll('[role="tab"]')];
   const fields = [...panel.querySelectorAll('[data-p]')];
-  let current = 0; let wait = 0; let paused = false; let timer = 0;
+  let current = 0; let wait = 0; let timer = 0;
 
   function select(i, { focus = false } = {}) {
     if (i === current) return;
@@ -50,25 +50,22 @@ export function init() {
     timer = setTimeout(() => { apply(); requestAnimationFrame(() => panel.classList.remove('is-swapping')); }, 420);
   }
 
+  // a tab someone picked stays picked
+  const play = calm ? null : autoplay(list.closest('section'), () => { wait = 0; tabs.forEach((t) => t.style.setProperty('--p', 0)); });
   tabs.forEach((t, i) => {
-    t.addEventListener('click', () => select(i));
+    t.addEventListener('click', () => { play?.stop(); select(i); });
     t.addEventListener('keydown', (e) => {
       const k = { ArrowRight: 1, ArrowLeft: -1, Home: -Infinity, End: Infinity }[e.key];
       if (k === undefined) return;
-      e.preventDefault();
+      e.preventDefault(); play?.stop();
       const n = k === -Infinity ? 0 : k === Infinity ? tabs.length - 1 : (i + k + tabs.length) % tabs.length;
       select(n, { focus: true });
     });
   });
-  const section = list.closest('section');
-  section.addEventListener('pointerenter', () => { paused = true; });
-  section.addEventListener('pointerleave', () => { paused = false; });
-  section.addEventListener('focusin', () => { paused = true; });
-  section.addEventListener('focusout', () => { paused = false; });
 
-  if (calm) return;
+  if (!play) return;
   const run = loop((dt) => {
-    if (paused) return;
+    if (play.held()) return;
     wait += dt;
     tabs[current].style.setProperty('--p', Math.min(1, wait / DWELL).toFixed(4));
     if (wait >= DWELL) select((current + 1) % tabs.length);
