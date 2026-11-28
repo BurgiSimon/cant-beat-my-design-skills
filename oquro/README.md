@@ -59,8 +59,9 @@ picture into its own canvas, so the page holds two WebGL contexts (plus the wate
   hold from the start; in both the switch is hidden. In code: `motion.paused`, `setPaused()` and the `motion` event
   in `core.js`; every endless loop goes through its `loop()`, which honours it.
 - The 3D is built in slices, handing the main thread back between them, and its shaders compile in parallel where the
-  browser can, so the intro keeps turning. Where frames are too slow for that (a weak or software GPU), the small
-  scenes are built in one go instead. Every canvas and loop runs only while on screen and the tab is visible.
+  browser can, so the intro keeps turning. The small scenes wait until the hero is built and has risen; where frames
+  are too slow for slices (a software GPU, or frames over 200 ms apart), they are built in one go instead, a software
+  GPU's as soon as the hero's first frame is out. Every canvas and loop runs only while on screen and the tab is visible.
 - Keyboard-complete: skip link, then the Pause motion switch (shown when focused), a focus ring everywhere, an
   accordion and tabs with their ARIA and arrow keys (each holds while the pointer or focus is in it, and has its own
   pause button), and the vault can be opened without dragging (the face in the threat card; with motion paused it
@@ -70,6 +71,9 @@ picture into its own canvas, so the page holds two WebGL contexts (plus the wate
   to the screen) on landscape screens, with the copy and the threat card stepping into a row beneath it in short,
   narrow windows (761-1000 × 501-640 px, where a desktop zoomed to 150-200 % lands, so their text grows with zoom),
   and a column on phones and upright tablets; the 3D follows a CSS anchor, so CSS alone decides the composition.
+  Past 1440 × 969 the copy and the threat card keep the shot's type size, as the nav does, so browser zoom still
+  enlarges them on big screens; dense landscape windows up to 1300 × 820 (where a 1440p screen at 200 % lands) get a
+  slightly higher type floor.
 
 ## Credits
 

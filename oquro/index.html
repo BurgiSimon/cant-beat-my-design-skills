@@ -191,6 +191,10 @@
               <i class="acc__bar" aria-hidden="true"></i>
             </div>
           </div>
+          <script>
+            // With scripts the [hidden] panels stay shut (only .no-js shows them), so each button says so from here on, even if layers.js never runs
+            document.querySelectorAll("[data-acc] .acc__btn").forEach(function (b) { b.setAttribute("aria-expanded", String(!document.getElementById(b.getAttribute("aria-controls")).hidden)); });
+          </script>
         </div>
 
         <div class="layers__stage" data-layers-stage>

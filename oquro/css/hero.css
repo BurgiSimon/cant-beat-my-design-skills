@@ -1,8 +1,17 @@
 /* The hero, as the shot draws it at 1440 × 969. Every size and place is design px × --u, so the composition scales as
-   one picture; --uu is the same for small type and controls, but never so small they stop being legible. The 3D canvas
-   follows .hero__anchor (the ring's centre and size), so CSS alone decides the composition at every breakpoint. */
+   one picture; --ut is the same for the copy's and the card's type, but never so small it stops being legible. The 3D
+   canvas follows .hero__anchor (the ring's centre and size), so CSS alone decides the composition at every breakpoint. */
 
 .hero { position: relative; height: calc(969 * var(--u)); min-height: 560px; overflow: hidden; isolation: isolate; }
+/* --ut is --uu, but no bigger than the shot's (where the nav's px type already is), so a screen past 1440 × 969
+   doesn't start the type inflated and browser zoom still has room to enlarge it. */
+.hero { --ut: min(max(var(--uu), var(--ut-min, 0px)), 1px); }
+/* A dense, small landscape window is usually a 1440p or 1600p screen zoomed to 200 %, and a CSS px there is physically
+   small anyway: its floor is higher, so that zoom nearly doubles the type. (Phones, upright or on their side, keep
+   theirs.) A short window of the kind has little room under the copy: there the floor stays below the meadow. */
+@media (min-resolution: 1.9dppx) and (orientation: landscape) and (min-width: 761px) and (max-width: 1300px) and (min-height: 501px) and (max-height: 820px) {
+  .hero { --ut-min: min(0.92px, calc(1.6 * var(--u))); }
+}
 .hero__stage { position: absolute; left: 50%; top: 0; width: calc(1440 * var(--u)); height: calc(969 * var(--u)); transform: translateX(-50%); }
 .hero__stage--ui { z-index: 2; pointer-events: none; }
 .hero__stage--ui > * { pointer-events: auto; }
@@ -23,24 +32,26 @@
 
 .hero__anchor { position: absolute; left: calc(722 * var(--u)); top: calc(610 * var(--u)); width: calc(555 * var(--u)); aspect-ratio: 1; transform: translate(-50%, -50%); pointer-events: none; }
 
-.hero__copy { position: absolute; left: calc(79 * var(--u)); top: calc(537 * var(--u)); width: min(calc(330 * var(--uu)), calc(350 * var(--u))); } /* never into the ring on a short screen */
-.hero__copy p { font-size: calc(15.4 * var(--uu)); line-height: 1.56; color: #666; letter-spacing: -0.006em; } /* 4.5:1 on the sheen too */
-.hero__copy .link-u { margin-top: calc(22 * var(--uu)); font-size: calc(15.5 * var(--uu)); }
+.hero__copy { position: absolute; left: calc(79 * var(--u)); top: calc(537 * var(--u)); width: min(calc(330 * var(--ut)), calc(350 * var(--u))); } /* never into the ring on a short screen */
+.hero__copy p { font-size: calc(15.4 * var(--ut)); line-height: 1.56; color: #666; letter-spacing: -0.006em; } /* 4.5:1 on the sheen too */
+.hero__copy .link-u { margin-top: calc(22 * var(--ut)); font-size: calc(15.5 * var(--ut)); }
 
-/* The card is drawn in em, so its type, like the copy's, holds at --uu. It hangs from its right edge, in line with the
+/* The card is drawn in em, so its type, like the copy's, holds at --ut. It hangs from its right edge, in line with the
    nav's button, and rises off the hero's foot when it must: a floored card grows left and up, into the room beside the
    ring. Where that room runs out (short laptop windows) it goes below the floor rather than into the ring, under the
-   word or into the hero's last 8%; under 7px it would rather leave the button's line. None of this bites at the shot's
-   size. (.widget makes it position: relative; at the stage's top left, left and top place it all the same.) */
+   word or into the hero's last 8%; under 7px it would rather leave the button's line. Past the shot's size, where its
+   type stops growing, it keeps its foot where the shot has it, on the meadow, rather than float above it. None of this
+   bites at the shot's size. (.widget makes it position: relative; at the stage's top left, left and top place it all
+   the same.) */
 .widget--threat {
   --hh: max(calc(969 * var(--u)), 560px); /* the hero's height */
   position: absolute; left: max(calc(999.5 * var(--u) + 16px), calc(1359 * var(--u) - 26.2em)); width: 26.2em; height: 30.9em;
-  top: max(calc(475 * var(--u) + 12px), min(calc(526 * var(--u)), calc(var(--hh) - 100 * var(--u) - 30.9em)));
-  font-size: max(7px, min(calc(10 * var(--uu)), calc((359.5 * var(--u) - 16px) / 26.2), calc((0.92 * var(--hh) - 475 * var(--u) - 12px) / 30.9)));
+  top: max(calc(475 * var(--u) + 12px), min(max(calc(526 * var(--u)), calc(835 * var(--u) - 30.9em)), calc(var(--hh) - 100 * var(--u) - 30.9em)));
+  font-size: max(7px, min(calc(10 * var(--ut)), calc((359.5 * var(--u) - 16px) / 26.2), calc((0.92 * var(--hh) - 475 * var(--u) - 12px) / 30.9)));
 }
 /* a phone on its side has no such room: there the card keeps its size and grows right, short of the screen's edge */
 @media (orientation: landscape) and (max-height: 500px) {
-  .widget--threat { left: calc(1097 * var(--u)); top: calc(526 * var(--u)); font-size: min(calc(10 * var(--uu)), calc((50vw - 377 * var(--u) - 16px) / 26.2)); }
+  .widget--threat { left: calc(1097 * var(--u)); top: calc(526 * var(--u)); font-size: min(calc(10 * var(--ut)), calc((50vw - 377 * var(--u) - 16px) / 26.2)); }
 }
 
 /* Without WebGL (or before it is up): the ring, the door and the mound in gradients. */

@@ -253,14 +253,19 @@ section { position: relative; }
   .stats { grid-column: 1 / -1; justify-self: stretch; width: auto; grid-template-columns: repeat(3, 1fr); }
   .stats div { border-bottom: 0; border-top: 1px solid rgb(0 0 0 / 0.09); padding: 18px 0 0; }
 }
-/* The layers stack before the rest: in a column under about 420px the cards either hide the garden or drop under 7px.
-   A 1920 screen zoomed to 200% lands here too, so their type still grows about 1.8x. */
+/* The layers and the protect grid stack before the rest: in a column under about 420px the layer cards either hide the
+   garden or drop under 7px, and the glass card's panel titles have to shrink to keep to one line. Desktops zoomed to
+   150-200% land here, so their type still grows with the zoom (at 1920 and 200%: the layer cards about 1.8x, the glass
+   card and the timeline 2x). The grid keeps its 76px gap: the head beside it is still a row here. */
 @media (max-width: 1000px) {
   .layers__grid { grid-template-columns: 1fr; row-gap: 56px; }
   .acc { margin-top: 48px; }
   .acc__auto { right: 0; bottom: calc(100% + 10px); }
   .acc__item::before { right: calc(-1 * var(--pad)); }
   .layers__stage { --cf: clamp(5.6px, 1.6vw, 9px); width: min(100%, 560px); justify-self: center; }
+  .protect__grid { grid-template-columns: 1fr; }
+  .feature__media { --fs: clamp(8px, 1.1vw, 9.6px); }
+  .glasscard { font-size: clamp(7px, 2.1vw, 10px); }
 }
 @media (max-width: 900px) {
   .about { padding: 96px 0; }
@@ -282,9 +287,7 @@ section { position: relative; }
   }
   .tabs:has(> .tabs__auto[hidden]) .tabs__list { margin-right: calc(-1 * var(--pad)); }
   .tab { flex: none; }
-  .protect__grid { grid-template-columns: 1fr; margin-top: 28px; }
-  .feature__media { --fs: clamp(8px, 1.1vw, 9.6px); }
-  .glasscard { font-size: clamp(7px, 2.1vw, 10px); }
+  .protect__grid { margin-top: 28px; }
   .ahead { padding: 96px 0 110px; }
   .ahead__head { flex-direction: column; gap: 22px; }
   .foot__grid { grid-template-columns: 1fr 1fr; }

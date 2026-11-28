@@ -64,6 +64,12 @@ ul { padding: 0; list-style: none; }
 /* the motion switch (core.js, wired in ui.js): left hidden without scripts and where nothing moves (reduced motion) */
 [data-motion][hidden], .is-calm [data-motion] { display: none !important; }
 .foot__acts { display: flex; flex: none; gap: 28px; }   /* the two side by side; the line of small print wraps instead */
+/* In Inter 'Play motion' is 0.9015em shorter than 'Pause motion' (0.913em in the pill). Paused, the switches keep their
+   width, so nothing moves out from under the pointer: the footer one as room after its label (which starts where it did,
+   underline under the words, Back to top in place), the pill at the top as room around its centred label */
+.is-paused .foot__acts [data-motion] { padding-right: 0.9015em; }
+.is-paused .foot__acts [data-motion]::after { right: 0.9015em; }
+.is-paused .skip[data-motion] { padding-inline: calc(14px + 0.4565em); }
 
 .i { width: 18px; height: 18px; flex: none; }
 .wrap { width: 100%; max-width: var(--max); margin-inline: auto; padding-inline: var(--pad); }

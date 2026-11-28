@@ -17,11 +17,18 @@ export async function init({ hurry: rush = false } = {}) {
   const low = gl.tier < 2;
   // the build hands the main thread back between its slices, so frames and scrolling keep running. A timer, as in
   // hero3d, lets a frame in between; scheduler.yield's turn would come first and run slices back to back for 100 ms
-  // and more. A turn of over a quarter second, or turns adding up to 1.5 s, mean frames that slow (a weak or software
-  // GPU), where waiting only starves the build: the rest is built in one go, as without slices (all of it when main.js
-  // says so)
-  let hurry = rush, waited = 0;
-  const late = (t0, ms = 0) => { const d = performance.now() - t0 - ms; waited += d; if (d > 250 || waited > 1500) hurry = true; };
+  // and more. How late each turn comes back is what the frames and the rest of the page took meanwhile (not these
+  // slices): on a slow CPU about a frame or two, a few hundred ms now and then. One late turn is a hitch (a collection,
+  // a task of another module's); most of the last few over half a second late mean frames that slow (a software GPU, or
+  // the tab put away), where waiting only starves the build: the rest is built in one go, as without slices (all of it
+  // when main.js says so)
+  let hurry = rush;
+  const waits = [];
+  const late = (t0, ms = 0) => {
+    waits.push(performance.now() - t0 - ms);
+    const w = waits.slice(-5).sort((a, b) => a - b);
+    if (w.length >= 3 && w[(w.length - 1) >> 1] > 500) hurry = true;
+  };
   const breathe = async () => {
     if (hurry) return;
     const t0 = performance.now();

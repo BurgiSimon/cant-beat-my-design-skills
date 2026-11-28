@@ -113,8 +113,9 @@
 .panel { position: relative; border-radius: 1.2em; padding: 1.6em 1.6em 1.3em; color: #fff; }
 .panel--dark { background: linear-gradient(180deg, #232323, #1b1b1b); box-shadow: inset 0 0 0 0.1em rgb(255 255 255 / 0.07), 0 1.6em 3em -1.4em rgb(0 0 0 / 0.55); }
 .panel--glass { background: linear-gradient(180deg, rgb(30 45 52 / 0.5), rgb(20 30 36 / 0.62)); box-shadow: inset 0 0 0 0.1em rgb(255 255 255 / 0.12), inset 0 0.1em 0 rgb(255 255 255 / 0.12); backdrop-filter: blur(1.4em); -webkit-backdrop-filter: blur(1.4em); }
-/* The title stays on one line: where the card is narrow (901-1040 px) it gives up size to the room left beside the
-   Alert button (4.8em) and the gap, rather than wrap. 11.6 is the longest title's width in its own em. */
+/* The title stays on one line: where the card is narrow (1001-1049 px; at 1000 and under the grid stacks) it gives up
+   size to the room left beside the Alert button (4.8em) and the gap, rather than wrap. 11.6 is the longest title's
+   width in its own em. */
 .panel__head { display: flex; align-items: center; justify-content: space-between; gap: 1em; min-height: 2.6em; container-type: inline-size; }
 .panel__head strong { font-size: 1.6em; font-size: min(1.6em, (100cqw - 5.8em) / 11.6); font-weight: 600; letter-spacing: -0.01em; }
 .alert-btn {
