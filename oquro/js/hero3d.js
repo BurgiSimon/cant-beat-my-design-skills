@@ -225,39 +225,106 @@ export async function init() {
   const cbox = { left: 0, top: 0, width: 1, height: 1 }; let boxY = 0;
   const rect = () => { cbox.top = boxY - scroll.y; return cbox; };
   // the cost follows the machine: start sharp and, while the hero's frames are what holds the page back, step down a
-  // rung at a time, never back up: the pixel ratio to 1, then thinner moss and grass, then below 1, then a smaller
-  // shadow map. What counts is what a frame costs, not the pace frames come at: a 30 fps cap (Low Power Mode, Energy
-  // Saver, a 30 Hz screen) or a busy main thread spaces them out however light they are. So a spell of frames that
-  // come late (median interval over 24 ms, or clearly over the pace the page was last found to keep anyway) is put
-  // to the test: six frames skip the draw, six draw, and only if the bare ones came clearly sooner is the hero the
-  // cost; if not, that pace is the page's own, and is left alone. The hero's own work (its script and the draw's
-  // submission) counts at once when it fills most of a 60 Hz frame. A rung that costs detail waits for two slow
-  // spells in a row, and nothing counts until the intro has settled (shaders warming up).
-  const quality = { dpr: dpr(low ? 1.25 : 1.75), rung: 0, on: false, slow: 0, at: 0, iv: [], sum: 0, work: [], testing: false, tested: [], pace: 0 };
+  // rung at a time: the pixel ratio to 1, then thinner moss and grass, then below 1, then a smaller shadow map. What
+  // counts is what a frame costs, not the pace frames come at: a 30 fps cap (Low Power Mode, Energy Saver, a 30 Hz
+  // screen) or a busy main thread spaces them out however light they are. So a spell of frames that come late (median
+  // interval over 24 ms, or clearly over the pace the page was last found to keep anyway) is put to the test: six
+  // frames skip the draw, six draw, and only if the bare ones came clearly sooner is the hero the cost; if not, that
+  // pace is the page's own, and is left alone once a second test running says so (one may have caught a hitch). A
+  // rung that costs detail waits for two slow spells in a row, and nothing counts until the intro has settled
+  // (shaders warming up). The hero's own work (its script and the submission) counts at once when it fills most of a
+  // 60 Hz frame, for the one rung that saves any of it, the thinning.
+  // The test can't tell where in the draw the cost is: on a slow CPU with a capable GPU it is the submission, and
+  // fewer pixels save nothing there. So a step a test took is checked on the two tests after it: the frames (the pace
+  // of the spells before them, every frame drawn) and the hero's share of them (that less their bare frames, pooled)
+  // must both come in a twentieth of a frame under what they were in the tests that pinned the step (that share taken
+  // as at least the quarter of a frame a pin implies). A check asks for a test after every spell, but one after a
+  // spell that wasn't late pins nothing. While the hero pins both, the next step is taken at once against the same
+  // baseline: a GPU paced in whole frames may need more than one before a frame comes a vsync sooner (the thinning
+  // saves GPU work too, the moss's layers most). If it pins one or neither, two more tests are taken, once (a build
+  // or a hitch slows the page's own frames too), and then the run is kept as it stands: there is no telling what it
+  // saves, and keeping it is what no check would do. If it pins both after the last step there is and the run hasn't
+  // paid, every GPU step of it is undone, back to the value it had, and none is taken again. Either way a run that
+  // hasn't paid gives the thinning back (for good) unless a spell after it came a hundredth sooner than the ones just
+  // before it: detail goes only for frames. An undo is watched for four spells: two in a row a fifth slower than the
+  // quicker of the run's last two say the GPU was the cost after all (a step that pays on a screen paced in whole
+  // frames saves a vsync, a fifth of a frame or more; a spell's median strays by less than a tenth), and the run's end
+  // is put back, with no more checks from then on. A new size voids what was measured at the old one: an open check
+  // is kept, a watch ends, and retired GPU steps come back. Short of that, nothing see-saws: one undo at most, and one
+  // putting back.
+  const quality = { dpr: dpr(low ? 1.25 : 1.75), rung: 0, on: false, slow: 0, pins: [], at: 0, iv: [], sum: 0, work: [], testing: false, tested: [], pace: 0, free: false, late: 0, check: null, watch: null, gpu: true, checks: true, area: 0 };
   once('intro:done', () => setTimeout(() => { quality.on = true; }, 2500));
+  const setDpr = (v) => { quality.dpr = v; fit(); };
+  const setShadow = (n) => { sun.shadow.mapSize.set(n, n); sun.shadow.map?.dispose(); sun.shadow.map = null; };
+  // (each rung returns its undo; a shadow map built at 1024 has no rung)
   const rungs = [
     () => {
+      const was = [shells.map((m) => [m.geometry.instanceCount, m.userData.uniforms.uLayers.value]), grass.geometry.instanceCount, clumpsMesh.count];
       for (const m of shells) { const k = Math.max(6, Math.round(m.geometry.instanceCount * 0.65)); m.geometry.instanceCount = k; m.userData.uniforms.uLayers.value = k; }
       grass.geometry.instanceCount = Math.round(grass.geometry.instanceCount * 0.45);   // placed at random: thins evenly
       clumpsMesh.count = Math.round(CLUMPS * 0.6);
+      return () => { shells.forEach((m, i) => { [m.geometry.instanceCount, m.userData.uniforms.uLayers.value] = was[0][i]; }); [, grass.geometry.instanceCount, clumpsMesh.count] = was; };
     },
     // (below 1 only for a cost the test has pinned on the hero, after the thinning: pixels are what the stone and
     // moss shaders cost most by, and the antialiasing keeps 0.75 clean)
-    () => { quality.dpr = Math.min(quality.dpr, 0.75); fit(); },
-    () => { if (sun.shadow.mapSize.x > 1024) { sun.shadow.mapSize.set(1024, 1024); sun.shadow.map?.dispose(); sun.shadow.map = null; } },
+    () => { const was = quality.dpr; setDpr(Math.min(was, 0.75)); return () => setDpr(was); },
+    ...(low ? [] : [() => { const was = sun.shadow.mapSize.x; setShadow(1024); return () => setShadow(was); }]),
   ];
+  const top = () => (quality.gpu ? rungs.length : 1);   // with the GPU steps retired, only the thinning is left
+  const done = () => quality.rung >= top() && !quality.check && !quality.watch;
   const median = (a) => [...a].sort((x, y) => x - y)[a.length >> 1];
+  const mean = (a) => a.reduce((s, x) => s + x, 0) / a.length;
+  // slow: slow spells in a row (a test that pinned the hero, or its own work over 12 ms); pins: what each such test
+  // saw (the pace of the spell before it, then its bare frames), a check's baseline. A step starts the run over
+  const fresh = () => { quality.slow = 0; quality.pins.length = 0; };
+  const paceOf = (seen) => mean(seen.map((t) => t[0]));
+  const share = (seen) => paceOf(seen) - median(seen.flatMap((t) => t.slice(1)));   // (the bare frames pooled)
+  // the next step down, if one is left (a rung waits for two slow spells); true if one was taken. It joins the open
+  // check, or opens one on the tests that pinned it, while steps are still checked; the thinning keeps aside the pace
+  // just before it
   const stepDown = () => {
-    const ratio = renderer.getPixelRatio();
-    if (ratio > 1) { quality.dpr = Math.max(1, Math.min(quality.dpr, ratio) - 0.35); fit(); quality.slow = 0; }
-    else if (++quality.slow >= 2) { rungs[quality.rung++](); quality.slow = 0; }
+    const ratio = renderer.getPixelRatio(); let undo, thin;
+    if (ratio > 1 && quality.gpu) {
+      const was = quality.dpr, d = Math.min(was, ratio) - 0.35;
+      setDpr(d < 1.25 ? 1 : d); undo = () => setDpr(was);   // (no last step too small to check)
+    } else if (quality.rung < top() && quality.slow >= 2) {
+      const r = quality.rung++, u = rungs[r]();
+      if (r) undo = () => { u(); quality.rung = r; }; else thin = { undo: u, pace: paceOf(quality.pins) };
+    } else return false;
+    if ((undo || thin) && quality.checks) {
+      if (!quality.check) {
+        // (what the run must come in under: the frame, and the hero's share of it, in the tests that pinned the step,
+        // less a twentieth of that frame)
+        const p = quality.pins, pace = paceOf(p), cut = pace / 20;
+        quality.check = { frame: pace - cut, share: Math.max(share(p), pace / 4) - cut, undo: [], thin: null, after: [], again: false };
+      }
+      if (undo) quality.check.undo.push(undo); else quality.check.thin = thin;
+    }
+    fresh();
+    return true;
   };
   const restart = () => { quality.at = 0; quality.iv.length = 0; quality.sum = 0; quality.work.length = 0; quality.testing = false; };
+  // a new size (over a twentieth more or fewer pixels) voids what was measured at the old one: an open check is kept,
+  // a watch ends, retired GPU steps come back (a pixel costs more, or less, now), and the spell or test under way
+  // starts over
+  const resized = () => {
+    quality.area = W * H; quality.check = null; quality.watch = null; quality.gpu = true; fresh();
+    quality.iv.length = 0; quality.sum = 0; quality.work.length = 0; quality.testing = false;
+  };
+  // a watched undo was a mistake: the run's end, exactly, and no more checks
+  const putBack = (w) => {
+    if (quality.dpr !== w.dpr) setDpr(w.dpr);
+    if (sun.shadow.mapSize.x !== w.shadow) setShadow(w.shadow);
+    if (w.thin) rungs[0]();
+    quality.rung = w.rung; quality.gpu = true; quality.checks = false; quality.watch = null; fresh();
+  };
   // asked at the start of each moving frame; true: skip this frame's draw (a test is on). Intervals are read off the
   // clock, not the loop's dt, which is capped at 50 ms (and smoothed by GSAP after a long gap).
   const watchFrame = (now) => {
     const iv = quality.at ? now - quality.at : 0; quality.at = now;
-    if (calm || !quality.on || quality.rung >= rungs.length || !iv || iv > 5000) return false;   // (a gap: the loop stopped)
+    if (calm || !quality.on || !iv || iv > 5000) return false;   // (a gap: the loop stopped)
+    if (Math.abs(W * H / quality.area - 1) > 0.05) resized();
+    if (done()) return false;
     if (quality.testing) {
       // the frame that began the test and the next five go bare, the next six draw: each half judged on its last
       // four intervals (the GPU may still be catching up at the switch), side by side, so a spell that has just
@@ -265,22 +332,50 @@ export async function init() {
       const k = quality.tested.push(iv);
       if (k < 12) return k < 6;
       quality.testing = false;
-      const bare = median(quality.tested.slice(2, 6)), full = median(quality.tested.slice(8));
-      if (full > 24 && bare < full * 0.75) stepDown();
-      else { quality.pace = full > 24 ? full : 0; quality.slow = 0; }
+      const bare = median(quality.tested.slice(2, 6)), full = median(quality.tested.slice(8)), c = quality.check;
+      // due: the spell before was late, as a test without a check always follows; pinned: the hero is the cost
+      const due = quality.late > Math.max(24, quality.pace * 1.25), pinned = due && full > 24 && bare < full * 0.75;
+      const seen = [quality.late, ...quality.tested.slice(2, 6)];
+      if (pinned) { quality.slow++; quality.pins.push(seen); } else fresh();
+      if (c) {
+        if (c.after.push(seen) < 2) return false;   // (a check is judged on two tests)
+        const paid = paceOf(c.after) < c.frame && share(c.after) < c.share, quick = Math.min(c.after[0][0], c.after[1][0]);
+        const thin = !paid && c.thin && quick > c.thin.pace * 0.99 ? c.thin.undo : null;   // (given back with an unpaid run)
+        c.after.length = 0;
+        if (paid) quality.check = null;   // the run paid: kept
+        else if (quality.slow >= 2) {   // the hero pinned in both
+          if (stepDown()) return false;   // the next step, against the same baseline
+          // none left, and nothing paid: not the GPU. Undone, and watched (the run's end kept to put back)
+          quality.watch = { dpr: quality.dpr, shadow: sun.shadow.mapSize.x, rung: quality.rung, thin: !!thin, bar: quick * 1.2, n: 0, over: 0 };
+          for (const u of c.undo.reverse()) u();
+          if (thin) thin();
+          quality.check = null; quality.gpu = false; fresh(); return false;
+        } else if (!c.again) { c.again = true; return false; }   // two more tests, once
+        else { if (thin) thin(); quality.check = null; }   // still no telling: kept
+      }
+      // own: the second test running to find the page's own pace (a check's tests aside: they follow its steps)
+      const own = !pinned && due && full > 24 && quality.free;
+      quality.free = !pinned && due && full > 24;
+      if (pinned) stepDown();
+      else if (own) quality.pace = full;
       return false;
     }
     quality.iv.push(iv); quality.sum += iv;
     if (quality.iv.length < 45 && !(quality.iv.length >= 10 && quality.sum > 3000)) return false;   // 45 frames, or 3 s
-    const late = median(quality.iv), work = quality.work.length ? median(quality.work) : 0;
+    const late = median(quality.iv), work = quality.work.length ? median(quality.work) : 0, w = quality.watch;
     quality.iv.length = 0; quality.sum = 0; quality.work.length = 0;
     if (quality.pace && late < quality.pace * 0.8) quality.pace = 0;   // the page is quicker again: forget its old pace
-    if (work > 12) { stepDown(); return false; }
-    if (late > Math.max(24, quality.pace * 1.25) && !wheel.dragging) { quality.testing = true; quality.tested.length = 0; return true; }
-    quality.slow = 0;
+    if (w) {   // (an undo on watch: spells only, no tests)
+      w.over = late > w.bar ? w.over + 1 : 0;
+      if (w.over >= 2) putBack(w); else if (++w.n >= 4) quality.watch = null;
+      return false;
+    }
+    if (work > 12 && !quality.rung && !quality.check) { if (++quality.slow >= 2) { rungs[quality.rung++](); fresh(); } return false; }
+    if ((quality.check || late > Math.max(24, quality.pace * 1.25)) && !wheel.dragging) { quality.testing = true; quality.tested.length = 0; quality.late = late; return true; }
+    quality.free = false; fresh();
     return false;
   };
-  const frameCost = (ms) => { if (quality.on && !quality.testing && quality.rung < rungs.length && !calm) quality.work.push(ms); };
+  const frameCost = (ms) => { if (quality.on && !quality.testing && !done() && !calm) quality.work.push(ms); };
   function fit() {
     const r = canvas.getBoundingClientRect();
     W = Math.max(1, r.width); H = Math.max(1, r.height);
